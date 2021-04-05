@@ -1,0 +1,59 @@
+version: '3.8'
+services:
+  dev:
+    image: tmaxmax/fiveit-template
+    command: sleep infinity
+    volumes:
+      - ..:/workspace:cached
+      - ${GOOGLE_APPLICATION_CREDENTIALS:-~/.config/gcloud/application_default_credentials.json}:/root/.config/gcloud/application_default_credentials.json
+      - pnpm_store:/workspace/.pnpm-store
+      - go_mod_cache:/root/go/pkg/mod
+      - go_build_cache:/root/.cache/go-build
+      - cypress_cache:/root/.cache/Cypress
+    environment:
+      - FUNCTIONS_URL=http://localhost:4000
+      - TIKA_URL=http://tika:9998
+      - HASURA_URL=http://hasura:8080
+      - HASURA_GRAPHQL_ADMIN_SECRET=ghimbir
+      - GOOGLE_APPLICATION_CREDENTIALS=/root/.config/gcloud/application_default_credentials.json
+      - CGO_ENABLED=0
+      - DISPLAY=host.docker.internal:0.0
+      - LIBGL_ALWAYS_INDIRECT=0
+    ports:
+      - 3000:3000
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
+    depends_on:
+      - tika
+      - hasura
+  tika:
+    image: apache/tika:1.25
+    restart: always
+  hasura:
+    image: hasura/graphql-engine:v2.0.0-alpha.4
+    ports:
+      - 8080:8080
+    restart: always
+    environment:
+      - HASURA_GRAPHQL_DATABASE_URL=postgres://postgres:sarmale@db:5432/eseuri
+      - HASURA_GRAPHQL_ENABLE_CONSOLE=true
+      - HASURA_GRAPHQL_ADMIN_SECRET=ghimbir
+    depends_on:
+      - db
+  db:
+    image: postgres:13.2-alpine
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=sarmale
+      - POSTGRES_DB=eseuri
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
+  pnpm_store:
+  go_mod_cache:
+  go_build_cache:
+  cypress_cache:

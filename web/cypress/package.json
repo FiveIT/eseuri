@@ -1,0 +1,12 @@
+{
+  "type": "commonjs",
+  "eslintConfig": {
+    "plugins": [
+      "cypress"
+    ],
+    "env": {
+      "cypress/globals": true,
+      "commonjs": true
+    }
+  }
+}

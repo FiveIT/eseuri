@@ -1,0 +1,9 @@
+root = '.'
+tmp_dir = 'tmp'
+
+[build]
+cmd = "make build-dev"
+bin = "tmp/index"
+include_ext = ["go"]
+exclude_dir = ["web", "tmp", "vendor"]
+exclude_unchanged = true

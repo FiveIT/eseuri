@@ -1,0 +1,31 @@
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - '**/*.go'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - '**/*.go'
+name: Backend
+jobs:
+  ci:
+    name: CI
+    runs-on: ubuntu-latest
+    env:
+      COMPOSE_FILE: .devcontainer/docker-compose.yml
+    steps:
+      - uses: actions/checkout@v2
+      - uses: google-github-actions/setup-gcloud@v0.2.0
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+      - name: Format
+        uses: Jerome1337/goimports-action@v1.0.3
+      - name: Lint
+        uses: golangci/golangci-lint-action@v2
+      - name: Test
+        run: docker-compose run dev go test -v ./...

@@ -1,0 +1,7 @@
+@supports (backdrop-filter: blur(100px)) or
+  (-webkit-backdrop-filter: blur(100px)) {
+  .blur {
+    -webkit-backdrop-filter: blur(100px);
+    backdrop-filter: blur(100px);
+  }
+}
