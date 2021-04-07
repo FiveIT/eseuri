@@ -1,12 +1,20 @@
 <script lang="ts">
+  import { Auth0Context } from '@dopry/svelte-auth0'
   import { Router } from '@roxi/routify'
   import Window from '$/components/Window.svelte'
   import { routes } from '../.routify/routes'
 </script>
 
-<Router {routes} />
+<Auth0Context
+  domain="eseuri-prod.eu.auth0.com"
+  client_id="NJgHdaXoixiNUpEks7b3TtYi95ZH433P"
+  audience="https://eseuri-prod.eu.auth0.com/api/v2/"
+  callback_url={window.location.origin}
+  logout_url={window.location.origin}>
+  <Router {routes} />
 
-<Window />
+  <Window />
+</Auth0Context>
 
 <style global>
   :root {
