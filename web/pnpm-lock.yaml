@@ -1,4 +1,5 @@
 dependencies:
+  '@dopry/svelte-auth0': 2.0.0
   '@tmaxmax/renderless-svelte': 1.5.0
 devDependencies:
   '@babel/core': 7.13.10
@@ -47,6 +48,17 @@ optionalDependencies:
   cypress: 6.8.0
   eslint-plugin-cypress: 2.11.2_eslint@7.22.0
 packages:
+  /@auth0/auth0-spa-js/1.6.2:
+    dependencies:
+      browser-tabs-lock: 1.2.12
+      core-js: 3.10.0
+      es-cookie: 1.3.2
+      fast-text-encoding: 1.0.3
+      promise-polyfill: 8.2.0
+      unfetch: 4.2.0
+    dev: false
+    resolution:
+      integrity: sha512-FaPLOY3tmBn/kLVroPgsiqtblfowd9bboMOtd7re49WgLp9rGwcI55bcz1wP/b33INi/0jhMlpzRWtyu8OK1wA==
   /@babel/code-frame/7.12.11:
     dependencies:
       '@babel/highlight': 7.13.10
@@ -1085,6 +1097,12 @@ packages:
     optional: true
     resolution:
       integrity: sha512-skbBzPggOVYCbnGgV+0dmBdW/s77ZkAOXIC1knS8NagwDjBrNC1LuXtQJeiN6l+m7lzmHtaoUw/ctJKdqkG57Q==
+  /@dopry/svelte-auth0/2.0.0:
+    dependencies:
+      '@auth0/auth0-spa-js': 1.6.2
+    dev: false
+    resolution:
+      integrity: sha512-nw1z3rpQlzviM9AI8Rq4upXOgmQMV+jWmDcAcGy5hS7SJKNGrQnWw/64B4QkUKg+g/f+vTdV5kGO5zKfImCcpQ==
   /@eslint/eslintrc/0.4.0:
     dependencies:
       ajv: 6.12.6
@@ -2384,6 +2402,13 @@ packages:
     dev: true
     resolution:
       integrity: sha512-9o5UecI3GhkpM6DrXr69PblIuWxPKk9Y0jHBRhdocZ2y7YECBFCsHm79Pr3OyR2AvjhDkabFJaDJMYRazHgsow==
+  /browser-tabs-lock/1.2.12:
+    dependencies:
+      lodash: 4.17.21
+    dev: false
+    requiresBuild: true
+    resolution:
+      integrity: sha512-KbhQtoe6c59mOxdrRN+i2sJwI6+dqrG5Qrjj+Gf+vVymlTBeHksET9kY/OdgWBfmmBrn6tjJotNbabnUsLVcnQ==
   /browserslist/4.16.3:
     dependencies:
       caniuse-lite: 1.0.30001204
@@ -2822,6 +2847,11 @@ packages:
     requiresBuild: true
     resolution:
       integrity: sha512-laz3Zx0avrw9a4QEIdmIblnVuJz8W51leY9iLThatCsFawWxC3sE4guASC78JbCin+DkwMpCdp1AVAuzL/GN7A==
+  /core-js/3.10.0:
+    dev: false
+    requiresBuild: true
+    resolution:
+      integrity: sha512-MQx/7TLgmmDVamSyfE+O+5BHvG1aUGj/gHhLn1wVtm2B5u1eVIPvh7vkfjwWKNCjrTJB8+He99IntSQ1qP+vYQ==
   /core-util-is/1.0.2:
     resolution:
       integrity: sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=
@@ -3240,6 +3270,10 @@ packages:
       node: '>= 0.4'
     resolution:
       integrity: sha512-LJzK7MrQa8TS0ja2w3YNLzUgJCGPdPOV1yVvezjNnS89D+VR08+Szt2mz3YB2Dck/+w5tfIq/RoUAFqJJGM2yw==
+  /es-cookie/1.3.2:
+    dev: false
+    resolution:
+      integrity: sha512-UTlYYhXGLOy05P/vKVT2Ui7WtC7NiRzGtJyAKKn32g5Gvcjn7KAClLPWlipCtxIus934dFg9o9jXiBL0nP+t9Q==
   /es-to-primitive/1.2.1:
     dependencies:
       is-callable: 1.2.3
@@ -3661,6 +3695,10 @@ packages:
     dev: true
     resolution:
       integrity: sha1-PYpcZog6FqMMqGQ+hR8Zuqd5eRc=
+  /fast-text-encoding/1.0.3:
+    dev: false
+    resolution:
+      integrity: sha512-dtm4QZH9nZtcDt8qJiOH9fcQd1NAgi+K1O2DbE6GG1PPCK/BWfOH3idCTRQ4ImXRUOyopDEgDEnVEE7Y/2Wrig==
   /fastq/1.11.0:
     dependencies:
       reusify: 1.0.4
@@ -6294,6 +6332,10 @@ packages:
       node: '>=0.4.0'
     resolution:
       integrity: sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
+  /promise-polyfill/8.2.0:
+    dev: false
+    resolution:
+      integrity: sha512-k/TC0mIcPVF6yHhUvwAp7cvL6I2fFV7TzF1DuGPI8mBh4QQazf36xCKEHKTZKRysEoTQoQdKyP25J8MPJp7j5g==
   /prompts/2.4.0:
     dependencies:
       kleur: 3.0.3
@@ -7552,6 +7594,10 @@ packages:
     dev: true
     resolution:
       integrity: sha512-tZU/3NqK3dA5gpE1KtyiJUrEB0lxnGkMFHptJ7q6ewdZ8s12QrODwNbhIJStmJkd1QDXa1NRA8aF2A1zk/Ypyw==
+  /unfetch/4.2.0:
+    dev: false
+    resolution:
+      integrity: sha512-F9p7yYCn6cIW9El1zi0HI6vqpeIvBsr3dSuRO6Xuppb1u5rXpCPmMvLSyECLhybr9isec8Ohl0hPekMVrEinDA==
   /unicode-canonical-property-names-ecmascript/1.0.4:
     dev: true
     engines:
@@ -7933,6 +7979,7 @@ packages:
 specifiers:
   '@babel/core': ^7.13.10
   '@babel/preset-env': ^7.13.12
+  '@dopry/svelte-auth0': ^2.0.0
   '@jest/globals': ^26.6.2
   '@rollup/plugin-typescript': ^8.2.0
   '@roxi/routify': ^2.15.1

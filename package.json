@@ -1,0 +1,6 @@
+{
+	"dependencies": {
+		"@dopry/svelte-auth0": "^2.0.0",
+		"svelte-material-icons": "^1.0.3"
+	}
+}

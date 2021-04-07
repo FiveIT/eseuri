@@ -6,3 +6,4 @@ google_credentials.json
 .pnpm-debug.log
 ./**/.env.local
 ./**/.env.*.local
+node_modules
