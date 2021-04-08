@@ -1,4 +1,5 @@
 <script lang="ts">
+  // @ts-nocheck
   import { Auth0Context } from '@dopry/svelte-auth0'
   import { Router } from '@roxi/routify'
   import Window from '$/components/Window.svelte'

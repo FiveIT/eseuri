@@ -5,7 +5,7 @@
 </script>
 
 <div class="w-full h-full relative">
-  <div class="bg-white bg" />
+  <div class="bg-white  bg fixed w-full h-full -z-1000 blur" />
   <Orange />
   <Red />
   <Blue />
@@ -20,10 +20,5 @@
     font-size: 18px;
     height: 100%;
     overflow-x: hidden;
-  }
-  .bg {
-    z-index: -1000;
-    filter: blur(100px);
-    @apply fixed w-full h-full;
   }
 </style>
