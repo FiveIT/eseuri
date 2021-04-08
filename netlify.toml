@@ -16,7 +16,7 @@ package = "netlify-plugin-cache"
   paths = ["web/node_modules", "web/.routify", ".pnpm-store"]
 
 [[plugins]]
-package = "netlfiy-plugin-cypress"
+package = "netlify-plugin-cypress"
   [plugins.inputs]
   record = true
   group = "deployed"
