@@ -59,7 +59,8 @@
       "./windi.config.ts": true,
       "config_credentials": true,
       ".github": true,
-      ".pnpm-debug.log": true
+      ".pnpm-debug.log": true,
+      "pnpm-lock.yaml": true
     }
   },
   "extensions": [

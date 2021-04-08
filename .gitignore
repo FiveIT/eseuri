@@ -9,3 +9,5 @@ google_credentials.json
 **/node_modules
 package-lock.json
 yarn-lock.json
+cypress/screenshots
+cypress/videos

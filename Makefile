@@ -41,6 +41,11 @@ test-server:
 test: test-client test-server
 
 cypress:
-	cd web && pnpm e2e
+	pnpm cy:open
+	
+cypress-run:
+	pnpm cy:run	
 
 e2e: dev cypress
+
+e2e-run: dev cypress-run
