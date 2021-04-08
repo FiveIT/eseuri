@@ -8,7 +8,7 @@ NPM_FLAGS = "--prefix=/"
 FUNCTIONS_URL = "/.netlify/functions/index"
 NODE_VERSION = "15"
 GO_IMPORT_PATH = "github.com/FiveIT/template"
-CYPRESS_CACHE_FOLDER = "web/node_modules/CypressBinary"
+CYPRESS_CACHE_FOLDER = "node_modules/CypressBinary"
 TERM = "xterm"
 
 [[plugins]]
@@ -22,8 +22,6 @@ package = "netlfiy-plugin-cypress"
   record = true
   group = "deployed"
   spa = true
-  configFile = "web/cypress.json"
-  spec = "web/cypress/spec/**/*.js"
 
 [[redirects]]
 from = "/*"
