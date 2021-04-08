@@ -20,7 +20,6 @@ package = "netlify-plugin-cypress"
   [plugins.inputs]
   record = true
   group = "deployed"
-  spa = true
 
 [[redirects]]
 from = "/*"
