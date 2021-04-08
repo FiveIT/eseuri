@@ -13,7 +13,7 @@ TERM = "xterm"
 [[plugins]]
 package = "netlify-plugin-cache"
   [plugins.inputs]
-  paths = ["web/node_modules", "web/.routify", ".pnpm-store"]
+  paths = ["web/node_modules", "web/.routify", "web/dist/", ".pnpm-store"]
 
 [[plugins]]
 package = "netlify-plugin-cypress"
