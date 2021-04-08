@@ -1,6 +1,5 @@
 devDependencies:
   cypress: 7.0.1
-  netlify-plugin-cache: 1.0.3
   netlify-plugin-cypress: 2.2.0
   pnpm: 6.0.1
 lockfileVersion: 5.2
@@ -2006,10 +2005,6 @@ packages:
       node: '>= 0.6'
     resolution:
       integrity: sha512-hZXc7K2e+PgeI1eDBe/10Ard4ekbfrrqG8Ep+8Jmf4JID2bNg7NvCPOZN+kfF574pFQI7mum2AUqDidoKqcTOw==
-  /netlify-plugin-cache/1.0.3:
-    dev: true
-    resolution:
-      integrity: sha512-CTOwNWrTOP59T6y6unxQNnp1WX702v2R/faR5peSH94ebrYfyY4zT5IsRcIiHKq57jXeyCrhy0GLuTN8ktzuQg==
   /netlify-plugin-cypress/2.2.0:
     dependencies:
       common-tags: 1.8.0
@@ -2944,6 +2939,5 @@ packages:
       integrity: sha512-faQrqNMzcPCHGVC2aaOINk13K+aaBDUPjGWl0teOXywElLjyVAB6Oe2jj62jHYtwsU49jXhScYbvPENK+6zAvQ==
 specifiers:
   cypress: ^7.0.1
-  netlify-plugin-cache: ^1.0.3
   netlify-plugin-cypress: ^2.2.0
   pnpm: ^6.0.1
