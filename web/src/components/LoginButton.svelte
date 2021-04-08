@@ -1,12 +1,11 @@
-<script lang="ts">
-  // @ts-nocheck
+<script>
   import {
     Auth0LoginButton,
     Auth0LogoutButton,
     isAuthenticated,
     isLoading,
   } from '@dopry/svelte-auth0'
-  export let white: boolean
+  export let white = false
   $: console.log($isAuthenticated)
   $: console.log($isLoading)
 </script>
