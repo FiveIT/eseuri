@@ -4,7 +4,6 @@ functions = ".netlify/functions"
 command = "make -j2 build"
 
 [build.environment]
-NPM_FLAGS = "--prefix=/"
 FUNCTIONS_URL = "/.netlify/functions/index"
 NODE_VERSION = "15"
 GO_IMPORT_PATH = "github.com/FiveIT/template"
