@@ -1,4 +1,5 @@
 <script lang="ts">
+  // @ts-nocheck
   import {
     Auth0LoginButton,
     Auth0LogoutButton,
