@@ -3,7 +3,7 @@
 </script>
 
 <div
-  class="text-lg font-serif font-bold "
+  class="text-lg font-serif font-bold subpixel-antialiased"
   class:text-white={white}
   class:text-black={!white}>
   Eseuri<span class="text-orange">.</span>
