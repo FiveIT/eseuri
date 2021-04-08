@@ -10,7 +10,7 @@
   import { onMount } from 'svelte'
   import Buton from '../../components/buton.svelte'
   let name = ''
-  let isstudent = true
+  let isstudent: boolean = true
   metatags.title = 'Eseuri'
 
   let mounted = false
@@ -64,94 +64,78 @@
 {#if alive}
   <div
     class="blur w-full h-screen "
-    transition:fly={{ y: -$window.height, duration: 300 }}
-  >
+    transition:fly={{ y: -$window.height, duration: 300 }}>
     <div
-      class="container relative grid gap-x-l_gap_column gap-y-l_gap_row mt-xlg mx-auto"
-    >
+      class="container relative grid gap-x-l_gap_column gap-y-l_gap_row mt-xlg mx-auto">
       <div class="row-start-1 row-span-1 col-start-1  col-span-1 my-auto">
         <Link href="../" bind:alive>
           <Logo />
         </Link>
       </div>
       <div
-        class="row-start-3 row-span-1 col-start-1 col-span-3 my-auto text-md"
-      >
+        class="row-start-3 row-span-1 col-start-1 col-span-3 my-auto text-md">
         Completează-ți profilul
       </div>
       <div
-        class="row-start-4 row-span-1 col-start-1 col-span-1 my-auto text-base text-center"
-      >
+        class="row-start-4 row-span-1 col-start-1 col-span-1 my-auto text-base text-center">
         Numele tău
       </div>
       <div class="row-start-4 row-span-1 col-start-2 col-span-2 my-auto">
         <input
           class=" w-full h-full bg-opacity-0 bg-white text-center"
           placeholder="Scrie-ți aici numele de familie..."
-          bind:value={name}
-        />
+          bind:value={name} />
       </div>
       <div
-        class="row-start-5 row-span-1 col-start-1 col-span-1 my-auto text-base text-center"
-      >
+        class="row-start-5 row-span-1 col-start-1 col-span-1 my-auto text-base text-center">
         Prenumele tău
       </div>
       <div class="row-start-5 row-span-1 col-start-2 col-span-2 my-auto">
         <input
           class=" w-full h-full bg-opacity-0 bg-white text-center"
           placeholder="Scrie-ți aici prenumele ..."
-          bind:value={name}
-        />
+          bind:value={name} />
       </div>
       <div
-        class="row-start-6 row-span-1 col-start-1 col-span-1 my-auto text-base text-center"
-      >
+        class="row-start-6 row-span-1 col-start-1 col-span-1 my-auto text-base text-center">
         Școala ta
       </div>
       <div class="row-start-6 row-span-1 col-start-2 col-span-2 my-auto">
         <input
           class=" w-full h-full bg-opacity-0 bg-white text-center"
           placeholder="Scrie aici numele școlii... ..."
-          bind:value={name}
-        />
+          bind:value={name} />
       </div>
       <div
-        class="row-start-7 row-span-1 col-start-1 col-span-1 my-auto text-base text-center"
-      >
+        class="row-start-7 row-span-1 col-start-1 col-span-1 my-auto text-base text-center">
         Ocupația ta
       </div>
       <div
-        class="row-start-7 row-span-1 col-start-2 col-span-1 my-auto text-center"
-      >
+        class="row-start-7 row-span-1 col-start-2 col-span-1 my-auto text-center">
         <button
           on:click={() => {
             isstudent = true
           }}
           class="bg-opacity-0 focus:outline-none focus:md:underline my-auto text-base"
-          >Elev</button
-        >
+          >Elev</button>
       </div>
       <div
-        class="row-start-7 row-span-1 col-start-3 col-span-1 my-auto text-center"
-      >
+        class="row-start-7 row-span-1 col-start-3 col-span-1 my-auto text-center">
         <button
           on:click={() => {
             isstudent = false
           }}
           class=" relative bg-opacity-0 focus:outline-none focus:md:underline my-auto text-base"
-          >Profesor</button
-        >
+          >Profesor</button>
       </div>
       <div
-        class="row-start-8 row-span-1 col-start-3 col-span-1 my-auto mx-auto w-full h-full bg-blue publish"
-      >
+        class="row-start-8 row-span-1 col-start-3 col-span-1 my-auto mx-auto w-full h-full bg-blue publish">
         <button class="w-full h-full mx-auto my-auto text-white">
           Sunt gata
         </button>
       </div>
       <div
-        class="row-start-8 row-span-1 col-start-4 my-auto col-span-1 bg-oppacity-0 publish"
-      >
+        class="row-start-8 row-span-1 col-start-4 my-auto col-span-1 bg-oppacity-0 publish">
         <Buton white={false} bind:alive link="../">Înapoi</Buton>
       </div>
     </div>

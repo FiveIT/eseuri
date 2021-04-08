@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { goto, metatags, ready, url } from '@roxi/routify'
+  import { metatags } from '@roxi/routify'
   import { store as orange } from '$/components/blob/Orange.svelte'
   import { store as red } from '$/components/blob/Red.svelte'
   import { store as blue } from '$/components/blob/Blue.svelte'

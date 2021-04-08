@@ -1,7 +1,5 @@
 <script lang="ts">
   import Link from './Link.svelte'
-  // TODO: Use Link component and remove shadow (add white property)
-  import { prefetch, url } from '@roxi/routify'
   /**
    * The location to navigate to
    * @type {string}

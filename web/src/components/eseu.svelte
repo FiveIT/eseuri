@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { goto, url } from '@roxi/routify'
   import Link from './Link.svelte'
   export let name: string
   export let scriitor: string
