@@ -24,6 +24,6 @@
   .bg {
     z-index: -1000;
     filter: blur(100px);
-    @apply fixed width-full height-full;
+    @apply fixed w-full h-full;
   }
 </style>

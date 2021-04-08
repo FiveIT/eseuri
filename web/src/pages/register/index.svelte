@@ -10,7 +10,6 @@
   import { onMount } from 'svelte'
   import Buton from '../../components/buton.svelte'
   let name = ''
-  let isstudent: boolean = true
   metatags.title = 'Eseuri'
 
   let mounted = false
@@ -113,18 +112,12 @@
       <div
         class="row-start-7 row-span-1 col-start-2 col-span-1 my-auto text-center">
         <button
-          on:click={() => {
-            isstudent = true
-          }}
           class="bg-opacity-0 focus:outline-none focus:md:underline my-auto text-base"
           >Elev</button>
       </div>
       <div
         class="row-start-7 row-span-1 col-start-3 col-span-1 my-auto text-center">
         <button
-          on:click={() => {
-            isstudent = false
-          }}
           class=" relative bg-opacity-0 focus:outline-none focus:md:underline my-auto text-base"
           >Profesor</button>
       </div>

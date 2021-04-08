@@ -81,7 +81,6 @@
     mounted = true
   })
   export let page_name: string
-  let saved = false
 
   let alive = true
   $: if (mounted) {

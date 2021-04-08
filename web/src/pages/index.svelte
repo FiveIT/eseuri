@@ -10,7 +10,7 @@
   import UploadButton from '../components/upload_button.svelte'
   import Eseu from '../components/eseu.svelte'
   import Logo from '../components/logo.svelte'
-  import { fly, fade } from 'svelte/transition'
+  import { fly } from 'svelte/transition'
   import LoginButton from '../components/LoginButton.svelte'
   let eseuri = [
     { name: 'Ion', scriitor: 'Liviu Rebreanu' },
