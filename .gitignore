@@ -6,4 +6,6 @@ google_credentials.json
 .pnpm-debug.log
 **/.env.local
 **/.env.*.local
-node_modules
+**/node_modules
+package-lock.json
+yarn-lock.json
