@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "routify -c dev-vite",
     "dev:windows": "run-p open dev",
-    "prebuild": "[[ $CI = true ]] && npx pnpm install --store=../.pnpm-store || echo 'skipping pnpm install'",
+    "prebuild": "[ $CI = true ] && npx pnpm install --store=../.pnpm-store || echo 'skipping pnpm install'",
     "build": "routify -b && vite build && node br.cjs",
     "dev-vite": "vite",
     "serve-vite": "vite preview",
