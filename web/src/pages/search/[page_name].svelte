@@ -70,7 +70,7 @@
     $blue = {
       x: ($window.width - blue.width * 0.8) / 2,
       y: -blue.height * 0.635 + $window.height * 0.17,
-      scale: $window.height / 20,
+      scale: 17,
       rotate: 0,
       flip: {
         x: 0,
@@ -94,7 +94,7 @@
 </script>
 
 {#if alive}
-  <div class=" w-full h-screen">
+  <div class=" w-full h-screen" style="padding-left: calc(100vw - 100%);">
     <div class="parent relative " transition:fly={{ y: -1000, duration: 300 }}>
       <div class="container">
         <div class="col-start-1 row-span-1 row-start-1 col-span-1 m-auto">
@@ -128,17 +128,17 @@
 
         {#if eseuri_chosen == true}
           <div
-            class="eseuri row-start-5 grid-cols-3 grid overflow-x-visible"
+            class="eseuri relative fixed grid row-start-5  col-start-1 col-end-7 overflow-x-visible w-full h-full gap-x-l_gap_column gap-y-l_gap_row "
             transition:fly={{ x: -100, duration: 100 }}>
             {#each eseuri as { name, scriitor }}
-              <div class="h-full w-full">
+              <div rel="preload" class="h-full w-full">
                 <Eseu bind:alive {name} {scriitor} white={true} />
               </div>
             {/each}
           </div>
         {:else}
           <div
-            class="eseuri row-start-5 grid-cols-3 grid overflow-x-visible"
+            class="eseuri relative  grid row-start-5 col-start-1 col-end-7 overflow-x-visible w-full h-full gap-x-l_gap_column gap-y-l_gap_row "
             transition:fly={{ x: 100, duration: 100 }}>
             {#each caracterizari as { name, scriitor }}
               <Eseu bind:alive {name} {scriitor} white={true} />
@@ -152,10 +152,12 @@
 
 <style>
   .eseuri {
-    grid-column: 1/-1;
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(calc(var(--l_column) * 2 + var(--l_gap_column)), 1fr)
+    );
     grid-auto-rows: calc(var(--l_row) * 2 + var(--l_gap_row));
-    column-gap: 30px;
-    row-gap: inherit;
+    max-width: calc(var(--l_column) * 6 + var(--l_gap_column) * 5);
   }
   .parent {
     margin-top: 70px;
