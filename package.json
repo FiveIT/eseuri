@@ -1,0 +1,21 @@
+{
+  "scripts": {
+    "cy:open": "cypress open",
+    "cy:run": "cypress run"
+  },
+  "devDependencies": {
+    "cypress": "^7.0.1",
+    "netlify-plugin-cache": "^1.0.3",
+    "netlify-plugin-cypress": "^2.2.0",
+    "pnpm": "^6.0.1"
+  },
+  "eslintConfig": {
+    "plugins": [
+      "cypress"
+    ],
+    "env": {
+      "cypress/globals": true,
+      "commonjs": true
+    }
+  }
+}
