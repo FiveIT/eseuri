@@ -1,9 +1,12 @@
 package meta
 
 import (
+	"os"
+
 	"github.com/rs/zerolog/log"
 )
 
+//nolint:gochecknoglobals
 var (
 	context string
 	url     string
@@ -17,9 +20,13 @@ var (
 	// IsDeployPreview specifies if Netlify built the site for pull/merge request preview.
 	IsDeployPreview = context == "deploy-preview"
 	// IsBranchDeploy specifies if Netlify built the site from a branch different than the site's main production branch.
-	IsBranchDeply = context == "branch-deploy"
+	IsBranchDeploy = context == "branch-deploy"
 	// FunctionsBasePath is the location of the function handler when deployed to Netlify.
 	FunctionsBasePath string
+	// TikaURL is the endpoint used to connect to the Apache Tika service.
+	TikaURL = os.Getenv("TIKA_URL")
+	// HasuraURL is the endpoint used to connect to the Hasura GraphQL service.
+	HasuraURL = os.Getenv("HASURA_URL")
 )
 
 // URL returns the addres at which the client app exists.
