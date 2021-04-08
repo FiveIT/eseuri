@@ -4,9 +4,26 @@ functions = ".netlify/functions"
 command = "make -j2 build"
 
 [build.environment]
+NPM_FLAGS = "--prefix=/"
 FUNCTIONS_URL = "/.netlify/functions/index"
 NODE_VERSION = "15"
 GO_IMPORT_PATH = "github.com/FiveIT/template"
+CYPRESS_CACHE_FOLDER = "web/node_modules/CypressBinary"
+TERM = "xterm"
+
+[[plugins]]
+package = "netlify-plugin-cache"
+  [plugins.inputs]
+  paths = ["web/node_modules", "web/.routify", ".pnpm-store"]
+
+[[plugins]]
+package = "netlfiy-plugin-cypress"
+  [plugins.inputs]
+  record = true
+  group = "deployed"
+  spa = true
+  configFile = "web/cypress.json"
+  spec = "web/cypress/spec/**/*.js"
 
 [[redirects]]
 from = "/*"
