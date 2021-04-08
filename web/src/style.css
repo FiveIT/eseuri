@@ -5,11 +5,27 @@
     backdrop-filter: blur(100px);
   }
 }
+
 :root {
+  --shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  --shadow-soft: 2px 2px 5px rgba(0, 0, 0, 0.25);
+  --shadow-large: 4px 4px 5px rgba(0, 0, 0, 0.25);
   --alb: #fcfaf9;
   --negru: #000000;
   --l_row: 4.133rem;
   --l_gap_row: 1rem;
   --l_column: 7.6rem;
   --l_gap_column: 1.6rem;
+}
+
+.filter-shadow {
+  filter: drop-shadow(var(--shadow));
+}
+
+.filter-shadow-soft {
+  filter: drop-shadow(var(--shadow-soft));
+}
+
+.filter-shadow-large {
+  filter: drop-shadow(var(--shadow-large));
 }
