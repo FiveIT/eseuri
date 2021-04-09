@@ -44,6 +44,8 @@ Deschide dashboard-ul Cypress:
 pnpm e2e
 ```
 
+Pentru a putea avea autentificarea funcțională, cere datele Auth0 de la cineva. Le vei primi într-un fișier `.env.local`, pe care îl vei pune în folderul `web`.
+
 NOTĂ: Pentru a putea rula Cypress, mai trebuie făcuți următorii pași (înainte de a deschide container-ul):
 
 - Instalează [VcXsrv](https://sourceforge.net/projects/vcxsrv/)

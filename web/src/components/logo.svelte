@@ -2,9 +2,9 @@
   export let white = false
 </script>
 
-<div
-  class="text-lg font-serif font-bold "
+<h1
+  class="text-lg font-serif font-bold subpixel-antialiased"
   class:text-white={white}
   class:text-black={!white}>
   Eseuri<span class="text-orange">.</span>
-</div>
+</h1>

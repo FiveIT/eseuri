@@ -1,9 +1,9 @@
 <script lang="ts">
-  import Link from '../../components/Link.svelte'
-  import { store as orange } from '../../components/blob/Orange.svelte'
-  import { store as red } from '../../components/blob/Red.svelte'
-  import { store as blue } from '../../components/blob/Blue.svelte'
-  import { store as window } from '../../components/Window.svelte'
+  import Link from '$/components/Link.svelte'
+  import { store as orange } from '$/components/blob/Orange.svelte'
+  import { store as red } from '$/components/blob/Red.svelte'
+  import { store as blue } from '$/components/blob/Blue.svelte'
+  import { store as window } from '$/components/Window.svelte'
   import { fly } from 'svelte/transition'
   import { onMount } from 'svelte'
 

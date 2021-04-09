@@ -4,6 +4,10 @@ tmp/
 .netlify/
 google_credentials.json
 .pnpm-debug.log
-./**/.env.local
-./**/.env.*.local
-node_modules
+**/.env.local
+**/.env.*.local
+**/node_modules
+package-lock.json
+yarn-lock.json
+cypress/screenshots
+cypress/videos

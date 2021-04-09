@@ -12,19 +12,11 @@
   export let white = false
 </script>
 
-<div class:text-white={white} class:text-black={!white} class="stiluri">
+<div
+  class:text-white={white}
+  class:text-black={!white}
+  class="no-underline outline-none text-center mt-auto mb-auto filter-shadow">
   <Link bind:alive href={link}>
     <slot />
   </Link>
 </div>
-
-<style>
-  .stiluri {
-    margin-top: auto;
-    margin-bottom: auto;
-    text-align: center;
-    outline: none;
-    text-decoration: none;
-    filter: drop-shadow(2px 2px 5px rgba(0, 0, 0, 0.5));
-  }
-</style>

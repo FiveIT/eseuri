@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "cy:open": "cypress open",
+    "cy:run": "cypress run"
+  },
+  "devDependencies": {
+    "cypress": "^7.0.1",
+    "netlify-plugin-cypress": "^2.2.0",
+    "pnpm": "^6.0.1"
+  }
+}

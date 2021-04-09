@@ -5,13 +5,13 @@
   import { store as blue } from '$/components/blob/Blue.svelte'
   import { store as window } from '$/components/Window.svelte'
   import { onMount } from 'svelte'
-  import Buton from '../components/buton.svelte'
-  import Search from '../components/search_bar.svelte'
-  import UploadButton from '../components/upload_button.svelte'
-  import Eseu from '../components/eseu.svelte'
-  import Logo from '../components/logo.svelte'
+  import Buton from '$/components/buton.svelte'
+  import Search from '$/components/search_bar.svelte'
+  import UploadButton from '$/components/upload_button.svelte'
+  import Eseu from '$/components/eseu.svelte'
+  import Logo from '$/components/logo.svelte'
   import { fly } from 'svelte/transition'
-  import LoginButton from '../components/LoginButton.svelte'
+  import LoginButton from '$/components/LoginButton.svelte'
   let eseuri = [
     { name: 'Ion', scriitor: 'Liviu Rebreanu' },
     { name: 'O scrisoare gasita', scriitor: 'I.L. Caragiale' },

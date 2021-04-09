@@ -1,24 +1,25 @@
-<script lang="ts">
-  // @ts-nocheck
+<script>
   import {
     Auth0LoginButton,
     Auth0LogoutButton,
     isAuthenticated,
     isLoading,
-  } from '@dopry/svelte-auth0'
-  export let white: boolean
+  } from '@tmaxmax/svelte-auth0'
+  export let white = false
   $: console.log($isAuthenticated)
   $: console.log($isLoading)
 </script>
 
 {#if $isAuthenticated}
-  <Auth0LogoutButton
-    ><div class=" mx-auto" class:text-white={white} class:text-black={!white}>
+  <Auth0LogoutButton>
+    <span class=" mx-auto" class:text-white={white} class:text-black={!white}>
       Ieși din cont
-    </div></Auth0LogoutButton>
+    </span>
+  </Auth0LogoutButton>
 {:else}
-  <Auth0LoginButton preserveRoute={true}
-    ><span class:text-white={white} class:text-black={!white}
-      >Intră în cont</span
-    ></Auth0LoginButton>
+  <Auth0LoginButton preserveRoute={true}>
+    <span class:text-white={white} class:text-black={!white}>
+      Intră în cont
+    </span>
+  </Auth0LoginButton>
 {/if}
