@@ -57,11 +57,11 @@
 
 {#if alive}
   <div
-    class="blur w-full h-screen flex flex-row justify-center flex-wrap relative padding"
+    class="w-full flex flex-row justify-center flex-wrap relative padding"
     transition:fly={{ y: -$window.height, duration: 300 }}>
     <div class="parent relative mt-xlg ">
       <div
-        class="container relative grid gap-x-l_gap_column gap-y-l_gap_row  mx-md ">
+        class="container relative grid gap-x-l_gap_column gap-y-l_gap_row  mx-md  ">
         <div class="row-start-4  col-start-4 col-end-6">
           <Link href="../" bind:alive>
             <div class="text-xl top-auto font-serif font-bold ">
@@ -70,14 +70,14 @@
           </Link>
         </div>
         <div
-          class="row-start-2 row-end-8 col-start-1 col-end-3 border-black bg-opacity-20 border bg-white white_thing relative" />
+          class="blur  row-start-2 row-end-8 col-start-1 col-end-3 border-black border white_thing relative bg-white bg-opacity-50 " />
         <div
-          class="row-start-2 row-end-3 col-start-1 col-end-3 mx-auto my-auto border-black relative">
+          class="row-start-2 row-end-3 col-start-1 col-end-3 mx-auto my-auto relative">
           Publică o lucrare
         </div>
 
         <div
-          class=" flex row-start-3 row-end-4 col-start-1 frame col-end-3 border border-black">
+          class=" flex row-start-3 row-end-4 col-start-1 frame col-end-3 border border-black z-10 ">
           <div class="mx-sm my-auto bold  w-1/2 relative">Scrie-o aici</div>
           <div class="flex w-1/2 my-auto justify-end">
             <svg
@@ -170,9 +170,7 @@
     grid-auto-rows: var(--l_row);
     max-width: calc(var(--l_column) * 6 + var(--l_gap_column) * 5);
   }
-  .blur {
-    backdrop-filter: blur(100px);
-  }
+
   .white_thing {
     position: relative;
     margin-left: calc(-1 * (var(--l_gap_column)));
