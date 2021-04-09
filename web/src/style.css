@@ -5,7 +5,7 @@
     backdrop-filter: blur(100px);
   }
 }
-.padding {
+.scrollbar-window-padding {
   padding-left: calc(100vw - 100%);
 }
 

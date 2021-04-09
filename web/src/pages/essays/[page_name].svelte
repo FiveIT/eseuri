@@ -145,7 +145,7 @@
 
 {#if alive}
   <div
-    class="parent relative mt-xlg padding"
+    class="parent relative mt-xlg scrollbar-window-padding"
     transition:fly={{ y: $window.height, duration: 300 }}>
     <div
       class="container relative w-full grid gap-x-l_gap_column gap-y-l_gap_row  mx-md  ">

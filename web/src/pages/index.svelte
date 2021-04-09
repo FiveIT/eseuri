@@ -94,7 +94,7 @@
 
 {#if alive}
   <div
-    class="w-full over flex flex-row justify-center flex-wrap relative padding ">
+    class="w-full over flex flex-row justify-center flex-wrap relative scrollbar-window-padding ">
     <div
       class=" z-0 relative mt-xlg  "
       transition:fly={{ y: -$window.height, duration: 300 }}>
