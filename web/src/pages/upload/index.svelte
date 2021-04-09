@@ -57,7 +57,7 @@
 
 {#if alive}
   <div
-    class="blur w-full h-screen flex flex-row justify-center flex-wrap relative"
+    class="blur w-full h-screen flex flex-row justify-center flex-wrap relative padding"
     transition:fly={{ y: -$window.height, duration: 300 }}>
     <div class="parent relative mt-xlg ">
       <div

@@ -61,7 +61,7 @@
   }
 </script>
 
-<div class="w-full h-screen blur">
+<div class="w-full h-screen blur padding">
   {#if alive}
     <div transition:fly={{ y: -$window.height, duration: 300 }}>
       <div

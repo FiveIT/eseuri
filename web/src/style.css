@@ -5,6 +5,9 @@
     backdrop-filter: blur(100px);
   }
 }
+.padding {
+  padding-left: calc(100vw - 100%);
+}
 :root {
   --alb: #fcfaf9;
   --negru: #000000;

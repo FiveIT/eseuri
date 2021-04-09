@@ -11,7 +11,8 @@
   client_id="NJgHdaXoixiNUpEks7b3TtYi95ZH433P"
   audience="https://eseuri-prod.eu.auth0.com/api/v2/"
   callback_url={window.location.origin}
-  logout_url={window.location.origin}>
+  logout_url={window.location.origin}
+  style="padding-left: calc(100vw - 100%);">
   <Router {routes} />
 
   <Window />

@@ -62,7 +62,7 @@
 
 {#if alive}
   <div
-    class="blur w-full h-screen "
+    class="blur w-full h-screen padding "
     transition:fly={{ y: -$window.height, duration: 300 }}>
     <div
       class="container relative grid gap-x-l_gap_column gap-y-l_gap_row mt-xlg mx-auto">
