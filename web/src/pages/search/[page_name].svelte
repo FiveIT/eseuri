@@ -94,7 +94,8 @@
 </script>
 
 {#if alive}
-  <div class=" w-full h-screen padding">
+  <div
+    class=" w-full over flex flex-row justify-center flex-wrap relative padding">
     <div class="parent relative " transition:fly={{ y: -1000, duration: 300 }}>
       <div class="container">
         <div class="col-start-1 row-span-1 row-start-1 col-span-1 m-auto">
