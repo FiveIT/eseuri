@@ -72,12 +72,12 @@
 </script>
 
 <script lang="ts">
-  import Link from '$/components/Link.svelte'
+  import Link from '$/components/link.svelte'
   import Logo from '$/components/logo.svelte'
-  import LoginButton from '$/components/LoginButton.svelte'
+  import LoginButton from '$/components/login_button.svelte'
   import Buton from '$/components/buton.svelte'
   import UploadButton from '$/components/upload_button.svelte'
-  import FavButton from '$/components/Fav_Button.svelte'
+  import FavButton from '$/components/favorite_button.svelte'
   import Next from '$/components/next_essay.svelte'
   import Back from '$/components/last_essay.svelte'
   import { store as orange } from '$/components/blob/Orange.svelte'

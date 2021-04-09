@@ -8,10 +8,10 @@
   import Buton from '$/components/buton.svelte'
   import Search from '$/components/search_bar.svelte'
   import UploadButton from '$/components/upload_button.svelte'
-  import Eseu from '$/components/eseu.svelte'
+  import Eseu from '$/components/essay.svelte'
   import Logo from '$/components/logo.svelte'
   import { fly } from 'svelte/transition'
-  import LoginButton from '$/components/LoginButton.svelte'
+  import LoginButton from '$/components/login_button.svelte'
   let eseuri = [
     { name: 'Ion', scriitor: 'Liviu Rebreanu' },
     { name: 'O scrisoare gasita', scriitor: 'I.L. Caragiale' },

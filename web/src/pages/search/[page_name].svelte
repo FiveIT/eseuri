@@ -1,7 +1,7 @@
 <script lang="ts">
-  import Eseu from '$/components/eseu.svelte'
-  import Link from '$/components/Link.svelte'
-  import LoginButton from '$/components/LoginButton.svelte'
+  import Eseu from '$/components/essay.svelte'
+  import Link from '$/components/link.svelte'
+  import LoginButton from '$/components/login_button.svelte'
   import Logo from '$/components/logo.svelte'
   import Buton from '$/components/buton.svelte'
   import UploadButton from '$/components/upload_button.svelte'

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Link from '$/components/Link.svelte'
+  import Link from '$/components/link.svelte'
   import Logo from '$/components/logo.svelte'
   import { metatags } from '@roxi/routify'
   import { store as orange } from '$/components/blob/Orange.svelte'
