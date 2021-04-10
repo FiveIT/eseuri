@@ -32,12 +32,15 @@ services:
     image: apache/tika:1.25
     restart: always
   hasura:
-    image: hasura/graphql-engine:v2.0.0-alpha.4
+    image: hasura/graphql-engine:v2.0.0-alpha.7.cli-migrations-v3
+    volumes:
+      - ../db/migrations:/hasura-migrations
+      - ../db/metadata:/hasura-metadata
     ports:
       - 8080:8080
     restart: always
     environment:
-      - HASURA_GRAPHQL_DATABASE_URL=postgres://postgres:sarmale@db:5432/eseuri
+      - HASURA_GRAPHQL_DATABASE_URL=postgres://postgres:sarmale@db:5432/postgres
       - HASURA_GRAPHQL_ENABLE_CONSOLE=true
       - HASURA_GRAPHQL_ADMIN_SECRET=ghimbir
     depends_on:
@@ -49,7 +52,6 @@ services:
       - 5432:5432
     environment:
       - POSTGRES_PASSWORD=sarmale
-      - POSTGRES_DB=eseuri
     volumes:
       - db_data:/var/lib/postgresql/data
 
