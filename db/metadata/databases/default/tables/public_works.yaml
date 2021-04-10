@@ -1,0 +1,36 @@
+table:
+  name: works
+  schema: public
+object_relationships:
+- name: characterization
+  using:
+    manual_configuration:
+      column_mapping:
+        id: work_id
+      insertion_order: null
+      remote_table:
+        name: characterizations
+        schema: public
+- name: essay
+  using:
+    manual_configuration:
+      column_mapping:
+        id: work_id
+      insertion_order: null
+      remote_table:
+        name: essays
+        schema: public
+- name: teacher
+  using:
+    foreign_key_constraint_on: teacher_id
+- name: users_all
+  using:
+    foreign_key_constraint_on: user_id
+array_relationships:
+- name: bookmarks
+  using:
+    foreign_key_constraint_on:
+      column: work_id
+      table:
+        name: bookmarks
+        schema: public

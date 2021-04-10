@@ -1,0 +1,10 @@
+table:
+  name: bookmarks
+  schema: public
+object_relationships:
+- name: users_all
+  using:
+    foreign_key_constraint_on: user_id
+- name: work
+  using:
+    foreign_key_constraint_on: work_id

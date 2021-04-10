@@ -1,0 +1,68 @@
+table:
+  name: users
+  schema: public
+object_relationships:
+- name: school
+  using:
+    manual_configuration:
+      column_mapping:
+        school_id: id
+      insertion_order: null
+      remote_table:
+        name: schools
+        schema: public
+- name: student
+  using:
+    manual_configuration:
+      column_mapping:
+        id: user_id
+      insertion_order: null
+      remote_table:
+        name: students
+        schema: public
+- name: teacher
+  using:
+    manual_configuration:
+      column_mapping:
+        id: user_id
+      insertion_order: null
+      remote_table:
+        name: teachers
+        schema: public
+- name: teacher_request
+  using:
+    manual_configuration:
+      column_mapping:
+        id: user_id
+      insertion_order: null
+      remote_table:
+        name: teacher_requests
+        schema: public
+array_relationships:
+- name: bookmarks
+  using:
+    manual_configuration:
+      column_mapping:
+        id: user_id
+      insertion_order: null
+      remote_table:
+        name: bookmarks
+        schema: public
+- name: teacher_student_associations
+  using:
+    manual_configuration:
+      column_mapping:
+        id: initiator_id
+      insertion_order: null
+      remote_table:
+        name: teacher_student_associations
+        schema: public
+- name: works
+  using:
+    manual_configuration:
+      column_mapping:
+        id: user_id
+      insertion_order: null
+      remote_table:
+        name: works
+        schema: public

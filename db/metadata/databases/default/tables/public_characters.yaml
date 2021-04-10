@@ -1,0 +1,15 @@
+table:
+  name: characters
+  schema: public
+object_relationships:
+- name: title
+  using:
+    foreign_key_constraint_on: title_id
+array_relationships:
+- name: characterizations
+  using:
+    foreign_key_constraint_on:
+      column: character_id
+      table:
+        name: characterizations
+        schema: public

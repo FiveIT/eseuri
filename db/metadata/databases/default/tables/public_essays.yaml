@@ -1,0 +1,10 @@
+table:
+  name: essays
+  schema: public
+object_relationships:
+- name: title
+  using:
+    foreign_key_constraint_on: title_id
+- name: work
+  using:
+    foreign_key_constraint_on: work_id

@@ -1,0 +1,11 @@
+table:
+  name: counties
+  schema: public
+array_relationships:
+- name: schools
+  using:
+    foreign_key_constraint_on:
+      column: county_id
+      table:
+        name: schools
+        schema: public

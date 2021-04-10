@@ -1,0 +1,13 @@
+table:
+  name: teacher_student_associations
+  schema: public
+object_relationships:
+- name: student
+  using:
+    foreign_key_constraint_on: student_id
+- name: teacher
+  using:
+    foreign_key_constraint_on: teacher_id
+- name: users_all
+  using:
+    foreign_key_constraint_on: initiator_id
