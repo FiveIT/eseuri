@@ -1,3 +1,4 @@
+CREATE SCHEMA IF NOT EXISTS public;
 SET search_path TO public;
 
 CREATE FUNCTION trigger_set_updated_at()
