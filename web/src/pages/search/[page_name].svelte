@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Eseu from '$/components/essay.svelte'
+  import Essay from '$/components/essay.svelte'
   import Link from '$/components/link.svelte'
   import LoginButton from '$/components/login_button.svelte'
   import Logo from '$/components/logo.svelte'
@@ -133,7 +133,7 @@
             transition:fly={{ x: -100, duration: 100 }}>
             {#each eseuri as { name, scriitor }}
               <div rel="preload" class="h-full w-full">
-                <Eseu bind:alive {name} {scriitor} white={true} />
+                <Essay bind:alive {name} {scriitor} white={true} />
               </div>
             {/each}
           </div>
@@ -142,7 +142,7 @@
             class="eseuri relative  grid row-start-5 col-start-1 col-end-7 overflow-x-visible w-full h-full gap-x-l_gap_column gap-y-l_gap_row "
             transition:fly={{ x: 100, duration: 100 }}>
             {#each caracterizari as { name, scriitor }}
-              <Eseu bind:alive {name} {scriitor} white={true} />
+              <Essay bind:alive {name} {scriitor} white={true} />
             {/each}
           </div>
         {/if}

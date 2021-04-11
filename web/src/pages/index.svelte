@@ -139,7 +139,7 @@
             transition:fly={{ x: -100, duration: 100 }}>
             {#each eseuri as { name, scriitor }}
               <div rel="preload" class="h-full w-full">
-                <Eseu bind:alive {name} {scriitor} white={false} />
+                <Essay bind:alive {name} {scriitor} white={false} />
               </div>
             {/each}
           </div>
@@ -148,7 +148,7 @@
             class="eseuri relative  grid row-start-5 col-start-1 col-end-7 overflow-x-visible w-full h-full gap-x-l_gap_column gap-y-l_gap_row "
             transition:fly={{ x: 100, duration: 100 }}>
             {#each caracterizari as { name, scriitor }}
-              <Eseu bind:alive {name} {scriitor} white={false} />
+              <Essay bind:alive {name} {scriitor} white={false} />
             {/each}
           </div>
         {/if}
