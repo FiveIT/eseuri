@@ -9,25 +9,32 @@
 <Link bind:alive href={`/essays/${name}`}>
   {#if white}
     <div
-      class="relative grid blur_white border-2 w-full h-full "
+      class="relative grid blur_white border-2 w-full h-full font-sans "
       class:text-white={white}
       class:border-white={white}
       class:border-1={!white}
       class:border-black={!white}
       class:text-black={!white}>
-      <titlu class=" text-prose my-auto ml-sm">{name}</titlu>
-      <p class=" ml-sm">{scriitor}</p>
+      <titlu class=" text-prose my-auto ml-sm font-normal">{name}</titlu>
+      <p class=" ml-sm " class:text-gray={!white} class:text-white={white}>
+        {scriitor}
+      </p>
     </div>
   {:else}
     <div
-      class="relative grid blur border-2 w-full h-full "
+      class="relative grid blur border-2 w-full h-full font-sans  "
       class:text-white={white}
       class:border-white={white}
       class:border-1={!white}
       class:border-black={!white}
       class:text-black={!white}>
-      <titlu class=" text-prose my-auto ml-sm">{name}</titlu>
-      <p class=" ml-sm">{scriitor}</p>
+      <titlu class=" text-prose my-auto ml-sm font-normal">{name}</titlu>
+      <p
+        class=" ml-sm text-gray-dark"
+        class:text-black={!white}
+        class:text-white={white}>
+        {scriitor}
+      </p>
     </div>
   {/if}
 </Link>

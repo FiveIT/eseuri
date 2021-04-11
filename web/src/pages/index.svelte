@@ -122,12 +122,12 @@
         </div>
         <div class=" col-start-3 col-end-4 row-start-4  m-auto my-auto ">
           <button
-            class="  bg-white bg-opacity-0 focus:outline-none outline-none focus:md:underline "
+            class="  bg-white bg-opacity-0 focus:outline-none outline-none focus:md:underline font-sans "
             on:click={show_eseuri}>Eseuri</button>
         </div>
         <div class="col-start-4 col-end-5 row-start-4  m-auto my-auto">
           <button
-            class="bg-white bg-opacity-0 focus:outline-none focus:md:underline  my-auto"
+            class="bg-white bg-opacity-0 focus:outline-none focus:md:underline  my-auto font-sans "
             on:click={show_caracterizari}>Caracterizari</button>
         </div>
         <div class="col-span-1 col-start-6 row-span-1 row-start-3 mx-auto">

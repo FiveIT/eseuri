@@ -156,13 +156,13 @@
           </Link>
         </div>
         <div class="col-start-3 col-span-1 m-auto">
-          <Buton bind:alive link="/search/Cauta">Cauta</Buton>
+          <Buton white={false} bind:alive link="/search/Cauta">Cauta</Buton>
         </div>
         <div class="col-start-4 col-span-1 m-auto">
-          <Buton bind:alive link="../">Plagiat</Buton>
+          <Buton white={false} bind:alive link="../">Plagiat</Buton>
         </div>
         <div class="col-start-5 col-span-1 m-auto">
-          <Buton bind:alive link="../">Profesori</Buton>
+          <Buton white={false} bind:alive link="../">Profesori</Buton>
         </div>
         <div class="col-start-6 col-span-1 m-auto">
           <LoginButton white={false} />
@@ -172,7 +172,7 @@
         <UploadButton bind:alive link={'../upload'} />
       </div>
       <div class=" grid col-start-2 col-end-6 row-span-2 row-start-3 text-4xl">
-        <z>{decodeURI(page_name)}<z /></z>
+        <z class=" font-serif">{decodeURI(page_name)}</z>
       </div>
       <div class=" type_save_bar">
         <div class=" col-start-1 col-span-1 my-auto text-gray">
@@ -201,7 +201,7 @@
         </div>
       </div>
       <div class="referat grid ">
-        <p>
+        <p class=" font-serif">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec est
           nibh, tristique non magna maximus, maximus ornare nibh. Ut cursus
           libero in mi egestas blandit. Quisque tincidunt enim nec ex dignissim

@@ -18,7 +18,7 @@
   </Auth0LogoutButton>
 {:else}
   <Auth0LoginButton preserveRoute={true}>
-    <span class:text-white={white} class:text-black={!white}>
+    <span class=" mx-auto " class:text-white={white} class:text-black={!white}>
       Intră în cont
     </span>
   </Auth0LoginButton>

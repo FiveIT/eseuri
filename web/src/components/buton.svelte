@@ -15,7 +15,8 @@
 <div
   class:text-white={white}
   class:text-black={!white}
-  class="no-underline outline-none text-center mt-auto mb-auto filter-shadow">
+  class:filter-shadow={white}
+  class=" font-sans no-underline outline-none text-center mt-auto mb-auto">
   <Link bind:alive href={link}>
     <slot />
   </Link>

@@ -20,7 +20,6 @@
   --l_column: 7.6rem;
   --l_gap_column: 1.6rem;
 }
-
 .filter-shadow {
   filter: drop-shadow(var(--shadow));
 }
