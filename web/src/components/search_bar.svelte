@@ -4,7 +4,7 @@
   export let page_name: string | undefined
   let Place_holder: string | undefined
   if (page_name === undefined) {
-    Place_holder = 'Cauta'
+    Place_holder = 'Caută titluri sau personaje'
   } else {
     Place_holder = decodeURI(page_name)
   }
@@ -57,7 +57,7 @@
   </div>
   <input
     type="text"
-    class=" relative z-3 my-auto  bg-white bg-opacity-0 placeholder-white focus:outline-none outline-none text-white ml-sm w-full"
+    class=" font-normal font-sans relative z-3 my-auto  bg-white bg-opacity-0 placeholder-white focus:outline-none outline-none text-white ml-sm w-full"
     class:text-md={isBig}
     placeholder={Place_holder}
     bind:value={element}
