@@ -40,6 +40,7 @@ services:
       - 8080:8080
     restart: always
     environment:
+      - HASURA_GRAPHQL_UNAUTHORIZED_ROLE=anonymous
       - HASURA_GRAPHQL_DATABASE_URL=postgres://postgres:sarmale@db:5432/postgres
       - HASURA_GRAPHQL_ENABLE_CONSOLE=true
       - HASURA_GRAPHQL_ADMIN_SECRET=ghimbir
