@@ -11,3 +11,4 @@ package-lock.json
 yarn-lock.json
 cypress/screenshots
 cypress/videos
+.idea/
