@@ -48,7 +48,7 @@
       },
     })
 
-    // Normally, some fetcch requests to the API would exist
+    // Normally, some fetch requests to the API would exist
     // here, instead of a boolean flag.
     return {
       subscribe,
