@@ -12,4 +12,5 @@
 - "!include public_titles.yaml"
 - "!include public_users.yaml"
 - "!include public_users_all.yaml"
+- "!include public_work_summaries.yaml"
 - "!include public_works.yaml"
