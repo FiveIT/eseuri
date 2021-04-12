@@ -148,44 +148,106 @@
     class="parent relative mt-xlg scrollbar-window-padding"
     transition:fly={{ y: $window.height, duration: 300 }}>
     <div
-      class="container relative w-full grid gap-x-l_gap_column gap-y-l_gap_row  mx-md  ">
-      <div class="top_bar">
-        <div class="col-start-1 col-span-1 m-auto">
-          <Link bind:alive href="../">
-            <Logo />
-          </Link>
-        </div>
-        <div class="col-start-3 col-span-1 m-auto">
-          <Buton white={false} bind:alive link="/search/Cauta">Cauta</Buton>
-        </div>
-        <div class="col-start-4 col-span-1 m-auto">
-          <Buton white={false} bind:alive link="../">Plagiat</Buton>
-        </div>
-        <div class="col-start-5 col-span-1 m-auto">
-          <Buton white={false} bind:alive link="../">Profesori</Buton>
-        </div>
-        <div class="col-start-6 col-span-1 m-auto">
-          <LoginButton white={false} />
-        </div>
+      class=" max-w-layout grid-cols-layout auto-rows-layout relative w-full grid gap-x-l_gap_column gap-y-l_gap_row  mx-md  ">
+      <div class="row-start-1 row-span-1 col-start-1 col-span-1 m-auto">
+        <Link bind:alive href="../">
+          <Logo />
+        </Link>
       </div>
-      <div class=" grid mx-auto col-start-6 col-span-1 row-span-1 row-start-2">
+      <div class="row-start-1 row-span-1 col-start-3 col-span-1 m-auto">
+        <Buton white={false} bind:alive link="/search/Cauta">Cauta</Buton>
+      </div>
+      <div class="row-start-1 row-span-1 col-start-4 col-span-1 m-auto">
+        <Buton white={false} bind:alive link="../">Plagiat</Buton>
+      </div>
+      <div class="row-start-1 row-span-1 col-start-5 col-span-1 m-auto">
+        <Buton white={false} bind:alive link="../">Profesori</Buton>
+      </div>
+      <div class="row-start-1 row-span-1 col-start-6 col-span-1 m-auto">
+        <LoginButton white={false} />
+      </div>
+      <div
+        class=" row-start-2 row-span-1  grid mx-auto col-start-6 col-span-1 row-span-1 row-start-2">
         <UploadButton bind:alive link={'../upload'} />
       </div>
-      <div class=" grid col-start-2 col-end-6 row-start-3">
-        <h2 class="text-title font-serif">{decodeURI(page_name)}</h2>
-      </div>
-      <div class=" type_save_bar">
-        <div class=" col-start-1 col-span-1 my-auto text-gray">
-          {#if essay_type}
-            Eseu
-          {:else}
-            Caracterizare
-          {/if}
+      <div
+        class=" col-start-2 col-end-6 row-start-3 flex flex-col justify-between ">
+        <h2 class="text-title font-serif mt-l_gap_row">
+          {decodeURI(page_name)}
+        </h2>
+        <div
+          class=" flex-row flex w-full justify-between align-middle mt-l_gap_row">
+          <div class="relative w-min mt-l_gap_row ">
+            {#if essay_type}
+              Eseu
+            {:else}
+              Caracterizare
+            {/if}
+          </div>
+          <div class="relative w-min "><FavButton /></div>
         </div>
-        <div class="col-start-4 col-span-1 my-auto mr-0 ml-auto">
+        <div>
+          <p class="text-prose font-serif mt-l_gap_row">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec est
+            nibh, tristique non magna maximus, maximus ornare nibh. Ut cursus
+            libero in mi egestas blandit. Quisque tincidunt enim nec ex
+            dignissim mattis eget ac nisi. Suspendisse consectetur molestie leo,
+            iaculis dictum erat vehicula vitae. Fusce aliquet lorem suscipit,
+            convallis ante at, ultricies augue. Proin aliquam, ligula at finibus
+            dignissim, erat nisi rhoncus justo, at posuere velit lorem vitae
+            augue. Ut ultrices nulla tincidunt tristique convallis. Nunc magna
+            est, vestibulum eu ante sed, sagittis auctor mauris. Vivamus sit
+            amet dignissim mauris, at porta orci. Etiam commodo vel eros
+            porttitor interdum. Nullam dolor dui, dapibus quis felis nec, tempor
+            vehicula ligula. Mauris tortor orci, eleifend vel urna a, fringilla
+            rutrum lorem. Nulla laoreet, leo ut vestibulum interdum, felis nisi
+            consequat dolor, in congue justo sapien et augue. Ut malesuada
+            rutrum nunc eu eleifend. Donec bibendum nunc sed mauris eleifend
+            tristique. Etiam ullamcorper ac turpis et blandit. Suspendisse
+            varius magna id consequat sodales. Pellentesque habitant morbi
+            tristique senectus et netus et malesuada fames ac turpis egestas.
+            Vivamus pellentesque odio nisl, facilisis consectetur quam ornare
+            eu. Cras porttitor, arcu nec dictum posuere, orci odio varius mi,
+            eget bibendum nibh nisl ut mauris. Quisque placerat nulla arcu,
+            commodo varius ipsum ultrices vel. Integer a velit scelerisque,
+            dictum arcu eu, sollicitudin ipsum. Quisque malesuada ultrices
+            felis, mollis bibendum tellus tincidunt vel. Integer nec ex tortor.
+            Interdum et malesuada fames ac ante ipsum primis in faucibus. Cras
+            fringilla, sapien in molestie ullamcorper, elit mi venenatis quam,
+            egestas porttitor turpis magna sed dui. Donec id bibendum orci,
+            accumsan viverra lacus. Phasellus et porttitor neque, at sodales
+            massa. Etiam sed nulla ipsum. Cras vitae consequat odio, eu varius
+            orci. Suspendisse vehicula neque quis dapibus maximus. Aliquam in
+            mauris sed velit ornare elementum id id justo. Vivamus bibendum
+            placerat enim at sollicitudin. Donec id lorem a purus porttitor
+            viverra nec non tortor. Ut dapibus felis et ante aliquam, a
+            hendrerit nunc vulputate. Aliquam placerat eu magna at gravida.
+            Vivamus imperdiet lorem mollis, tincidunt orci at, rhoncus risus.
+            Suspendisse eleifend porta justo a faucibus. Proin mollis nunc sed
+            eros lobortis consectetur. Quisque laoreet, eros a rhoncus
+            pellentesque, felis lectus feugiat nunc, in lacinia erat felis sed
+            velit. Phasellus auctor neque nec magna tincidunt, sit amet
+            tincidunt nunc placerat. Nunc in iaculis ex. Nullam vel facilisis
+            metus, in facilisis tortor. Vivamus et quam aliquet, ornare tellus
+            vel, hendrerit lectus. Nam convallis a enim eget vulputate. Nam quis
+            aliquam purus, quis faucibus est. Nunc id sollicitudin mauris, nec
+            accumsan ligula. Fusce sit amet lobortis massa, at ultricies urna.
+            Praesent mattis vehicula justo, a blandit tellus dapibus non. Sed
+            vitae pellentesque dolor. Aliquam erat volutpat. Aliquam a mollis
+            quam, sit amet malesuada orci. Curabitur ac urna in mauris pulvinar
+            vestibulum et in sem. Nunc laoreet nisl at erat iaculis laoreet.
+            Praesent molestie nisi eros, quis mattis dui pulvinar sed. Donec
+            tincidunt vitae libero vel fringilla. Aliquam ut leo at diam
+            fringilla rhoncus sed non neque. Phasellus et urna odio. Vivamus
+            nibh felis, sodales quis euismod at, varius elementum mi. Nullam
+            pretium neque non eleifend
+          </p>
+        </div>
+        <div class="mt-l_gap_row">
           <FavButton />
         </div>
       </div>
+
       <div class="col-start-6 col-span-1 row-start-6 row-span-1 ">
         <div class=" ml-1">
           <button class="fixed focus:outline-none outline-none">
@@ -200,100 +262,6 @@
           </button>
         </div>
       </div>
-      <div class="referat grid ">
-        <p class="text-prose font-serif">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec est
-          nibh, tristique non magna maximus, maximus ornare nibh. Ut cursus
-          libero in mi egestas blandit. Quisque tincidunt enim nec ex dignissim
-          mattis eget ac nisi. Suspendisse consectetur molestie leo, iaculis
-          dictum erat vehicula vitae. Fusce aliquet lorem suscipit, convallis
-          ante at, ultricies augue. Proin aliquam, ligula at finibus dignissim,
-          erat nisi rhoncus justo, at posuere velit lorem vitae augue. Ut
-          ultrices nulla tincidunt tristique convallis. Nunc magna est,
-          vestibulum eu ante sed, sagittis auctor mauris. Vivamus sit amet
-          dignissim mauris, at porta orci. Etiam commodo vel eros porttitor
-          interdum. Nullam dolor dui, dapibus quis felis nec, tempor vehicula
-          ligula. Mauris tortor orci, eleifend vel urna a, fringilla rutrum
-          lorem. Nulla laoreet, leo ut vestibulum interdum, felis nisi consequat
-          dolor, in congue justo sapien et augue. Ut malesuada rutrum nunc eu
-          eleifend. Donec bibendum nunc sed mauris eleifend tristique. Etiam
-          ullamcorper ac turpis et blandit. Suspendisse varius magna id
-          consequat sodales. Pellentesque habitant morbi tristique senectus et
-          netus et malesuada fames ac turpis egestas. Vivamus pellentesque odio
-          nisl, facilisis consectetur quam ornare eu. Cras porttitor, arcu nec
-          dictum posuere, orci odio varius mi, eget bibendum nibh nisl ut
-          mauris. Quisque placerat nulla arcu, commodo varius ipsum ultrices
-          vel. Integer a velit scelerisque, dictum arcu eu, sollicitudin ipsum.
-          Quisque malesuada ultrices felis, mollis bibendum tellus tincidunt
-          vel. Integer nec ex tortor. Interdum et malesuada fames ac ante ipsum
-          primis in faucibus. Cras fringilla, sapien in molestie ullamcorper,
-          elit mi venenatis quam, egestas porttitor turpis magna sed dui. Donec
-          id bibendum orci, accumsan viverra lacus. Phasellus et porttitor
-          neque, at sodales massa. Etiam sed nulla ipsum. Cras vitae consequat
-          odio, eu varius orci. Suspendisse vehicula neque quis dapibus maximus.
-          Aliquam in mauris sed velit ornare elementum id id justo. Vivamus
-          bibendum placerat enim at sollicitudin. Donec id lorem a purus
-          porttitor viverra nec non tortor. Ut dapibus felis et ante aliquam, a
-          hendrerit nunc vulputate. Aliquam placerat eu magna at gravida.
-          Vivamus imperdiet lorem mollis, tincidunt orci at, rhoncus risus.
-          Suspendisse eleifend porta justo a faucibus. Proin mollis nunc sed
-          eros lobortis consectetur. Quisque laoreet, eros a rhoncus
-          pellentesque, felis lectus feugiat nunc, in lacinia erat felis sed
-          velit. Phasellus auctor neque nec magna tincidunt, sit amet tincidunt
-          nunc placerat. Nunc in iaculis ex. Nullam vel facilisis metus, in
-          facilisis tortor. Vivamus et quam aliquet, ornare tellus vel,
-          hendrerit lectus. Nam convallis a enim eget vulputate. Nam quis
-          aliquam purus, quis faucibus est. Nunc id sollicitudin mauris, nec
-          accumsan ligula. Fusce sit amet lobortis massa, at ultricies urna.
-          Praesent mattis vehicula justo, a blandit tellus dapibus non. Sed
-          vitae pellentesque dolor. Aliquam erat volutpat. Aliquam a mollis
-          quam, sit amet malesuada orci. Curabitur ac urna in mauris pulvinar
-          vestibulum et in sem. Nunc laoreet nisl at erat iaculis laoreet.
-          Praesent molestie nisi eros, quis mattis dui pulvinar sed. Donec
-          tincidunt vitae libero vel fringilla. Aliquam ut leo at diam fringilla
-          rhoncus sed non neque. Phasellus et urna odio. Vivamus nibh felis,
-          sodales quis euismod at, varius elementum mi. Nullam pretium neque non
-          eleifend
-        </p>
-        <div class="evaluare">
-          <div class="col-start-1 col-span-1 my-auto  ml-0">
-            <FavButton />
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 {/if}
-
-<style>
-  .evaluare {
-    display: inherit;
-    grid-row: auto;
-    grid-template-columns: repeat(4, var(--l_column));
-    column-gap: inherit;
-  }
-  .type_save_bar {
-    grid-column: 2/5;
-    grid-row: 5 / span 1;
-    display: inherit;
-    grid-template-columns: repeat(4, var(--l_column));
-    column-gap: inherit;
-  }
-  .referat {
-    grid-column: 2/6;
-    grid-row-start: 6;
-    grid-row-end: auto;
-  }
-  .top_bar {
-    grid-column: 1/-1;
-    grid-row: 1 / span 1;
-    display: inherit;
-    grid-template-columns: inherit;
-    column-gap: inherit;
-  }
-  .container {
-    grid-template-columns: repeat(6, 1fr);
-    grid-auto-rows: var(--l_row);
-    max-width: calc(var(--l_column) * 6 + var(--l_gap_column) * 5);
-  }
-</style>
