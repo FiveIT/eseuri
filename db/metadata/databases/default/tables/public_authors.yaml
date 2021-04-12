@@ -13,7 +13,6 @@ select_permissions:
 - permission:
     columns:
     - first_name
-    - id
     - last_name
     - middle_name
     filter: {}

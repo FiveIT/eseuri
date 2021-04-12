@@ -16,7 +16,6 @@ array_relationships:
 select_permissions:
 - permission:
     columns:
-    - id
     - name
     - title_id
     filter: {}
