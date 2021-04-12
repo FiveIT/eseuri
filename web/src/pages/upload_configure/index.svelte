@@ -6,7 +6,7 @@
   import { store as red } from '$/components/blob/Red.svelte'
   import { store as blue } from '$/components/blob/Blue.svelte'
   import { store as window } from '$/components/Window.svelte'
-  import { fly } from 'svelte/transition'
+  import { fly, fade } from 'svelte/transition'
   import { onMount } from 'svelte'
   import Buton from '$/components/buton.svelte'
   let name = ''
@@ -111,12 +111,12 @@
         </div>
         {#if isessay}
           <div
-            transition:fly={{ x: -100, duration: 100 }}
+            transition:fade
             class="row-start-5 row-span-1 col-start-1 col-span-1 my-auto text-center text-base">
             Titlu
           </div>
           <div
-            transition:fly={{ x: -100, duration: 100 }}
+            transition:fade
             class="row-start-5 row-span-1 col-start-2 col-span-2 my-auto">
             <input
               class=" w-full h-full bg-opacity-0 bg-white text-center"
@@ -125,12 +125,12 @@
           </div>
         {:else}
           <div
-            transition:fly={{ x: -100, duration: 100 }}
+            transition:fade
             class="row-start-5 row-span-1 col-start-1 col-span-1 my-auto text-center text-base">
             Personaj
           </div>
           <div
-            transition:fly={{ x: -100, duration: 100 }}
+            transition:fade
             class="row-start-5 row-span-1 col-start-2 col-span-2 my-auto">
             <input
               class=" w-full h-full bg-opacity-0 bg-white text-center"
