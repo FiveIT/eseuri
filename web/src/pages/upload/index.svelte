@@ -93,8 +93,7 @@
           </div>
         </div>
         <div
-          class="row-start-3 row-end-4 col-start-1 col-end-3 col-span-2 row-span-1 "
-          on:click={() => progress.set(1)}>
+          class="row-start-3 row-end-4 col-start-1 col-end-3 col-span-2 row-span-1 ">
           <Link bind:alive href="../upload_configure">
             <div class="flex w-full h-full frame bg-blue relative">
               <div class="ml-sm my-auto bold w-full text-white  ">
