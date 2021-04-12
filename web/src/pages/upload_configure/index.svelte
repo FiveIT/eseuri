@@ -63,7 +63,7 @@
 
 <div class="w-full h-screen blur scrollbar-window-padding">
   {#if alive}
-    <div transition:fly={{ y: -$window.height, duration: 300 }}>
+    <div transition:fly={{ x: +$window.width, duration: 300 }}>
       <div
         class="container relative grid gap-x-l_gap_column gap-y-l_gap_row mt-xlg mx-auto">
         <div class="row-start-1 row-span-1 col-start-1  col-span-1 my-auto">
