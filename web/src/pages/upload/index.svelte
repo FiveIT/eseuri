@@ -60,23 +60,25 @@
     transition:fly={{ y: -$window.height, duration: 300 }}>
     <div class=" relative ">
       <div
-        class="container relative grid gap-x-l_gap_column gap-y-l_gap_row  mx-md  ">
-        <div class="row-start-3  col-start-4 col-end-6">
+        class="auto-rows-layout  max-w-layout  grid-cols-layout relative w-full grid gap-x-l_gap_column gap-y-l_gap_row mx-auto">
+        <div class="row-start-3 row-span-1  col-start-4 col-end-6">
           <Link href="../" bind:alive>
-            <div class="text-xl top-auto font-serif font-bold ">
-              Eseuri<span class="text-orange">.</span>
+            <div class=" text-xl   font-serif font-bold ">
+              <div class="h-min">
+                Eseuri<span class="text-orange">.</span>
+              </div>
             </div>
           </Link>
         </div>
         <div
-          class="blur  row-start-1 row-end-7 col-start-1 col-end-3 border-black border white_thing relative bg-white bg-opacity-50 " />
+          class="blur  row-start-1 row-end-7 col-start-1 col-end-3 border-black border -mt-l_gap_row -m-l_gap_column rounded  relative bg-white bg-opacity-50 " />
         <div
           class="row-start-1 row-end- col-start-1 col-end-3 mx-auto my-auto relative">
           Publică o lucrare
         </div>
 
         <div
-          class=" flex row-start-2 row-end-3 col-start-1 frame col-end-3 border border-black z-10 ">
+          class=" flex row-start-2 row-end-3 col-start-1 rounded col-end-3 border border-black z-10 ">
           <div class="mx-sm my-auto bold  w-1/2 relative">Scrie-o aici</div>
           <div class="flex w-1/2 my-auto justify-end">
             <svg
@@ -95,7 +97,7 @@
         <div
           class="row-start-3 row-end-4 col-start-1 col-end-3 col-span-2 row-span-1 ">
           <Link bind:alive href="../upload_configure">
-            <div class="flex w-full h-full frame bg-blue relative">
+            <div class="flex w-full h-full rounded bg-blue relative">
               <div class="ml-sm my-auto bold w-full text-white  ">
                 Încarcă un document
               </div>
@@ -116,7 +118,7 @@
           </Link>
         </div>
         <div
-          class="flex  row-start-4 row-end-5 col-start-1 frame col-end-3 text-white frame_google  relative">
+          class="flex  row-start-4 row-end-5 col-start-1 rounded col-end-3 text-white  bg-google-docs  relative">
           <div class="ml-sm my-auto bold w-full  ">Încarcă din Google Docs</div>
           <div class="flex w-1/2 my-auto justify-end">
             <svg
@@ -133,11 +135,11 @@
           </div>
         </div>
         <div
-          class="row-start-5 row-end-6 col-start-1 frame col-end-3  relative mx-auto my-auto">
+          class="row-start-5 row-end-6 col-start-1 rounded col-end-3  relative mx-auto my-auto">
           Ai scris de mână?
         </div>
         <div
-          class=" flex row-start-6 row-end-7 col-start-1 frame w-full h-full col-end-3 bg-red relative">
+          class=" flex row-start-6 row-end-7 col-start-1 rounded w-full h-full col-end-3 bg-red relative">
           <div class=" mx-sm w-full my-auto bold text-white relative">
             Încarcă imagini/PDF
           </div>
@@ -163,26 +165,3 @@
     </div>
   </div>
 {/if}
-
-<style>
-  .container {
-    grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: repeat(6, var(--l_row));
-    max-width: calc(var(--l_column) * 6 + var(--l_gap_column) * 5);
-  }
-
-  .white_thing {
-    position: relative;
-    margin-left: calc(-1 * (var(--l_gap_column)));
-    margin-top: calc(-1 * (var(--l_gap_row)));
-    border-radius: 20px;
-    width: calc((var(--l_gap_column) * 3) + (var(--l_column) * 2));
-    height: calc((var(--l_gap_row) * 7) + (var(--l_row) * 6));
-  }
-  .frame {
-    border-radius: 20px;
-  }
-  .frame_google {
-    background-color: #337dfa;
-  }
-</style>

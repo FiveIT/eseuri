@@ -61,11 +61,12 @@
   }
 </script>
 
-<div class="w-full h-screen blur scrollbar-window-padding">
+<div
+  class="w-full bg-white bg-opacity-50 h-screen blur scrollbar-window-padding">
   {#if alive}
     <div transition:fly={{ x: +$window.width, duration: 300 }}>
       <div
-        class="container relative grid gap-x-l_gap_column gap-y-l_gap_row mt-xlg mx-auto">
+        class=" mt-xlg auto-rows-layout  max-w-layout  grid-cols-layout relative w-full grid gap-x-l_gap_column gap-y-l_gap_row mx-auto">
         <div class="row-start-1 row-span-1 col-start-1  col-span-1 my-auto">
           <Link href="../" bind:alive>
             <Logo />
@@ -139,7 +140,7 @@
           </div>
         {/if}
         <div
-          class="row-start-8 row-span-1 col-start-3 col-span-1 my-auto mx-auto w-full h-full bg-blue publish">
+          class="row-start-8 row-span-1 col-start-3 col-span-1 my-auto mx-auto w-full h-full bg-blue rounded">
           <button class="w-full h-full mx-auto my-auto text-white">
             Publică
           </button>
@@ -152,17 +153,3 @@
     </div>
   {/if}
 </div>
-
-<style>
-  .container {
-    grid-template-columns: repeat(6, 1fr);
-    grid-auto-rows: var(--l_row);
-    max-width: calc(var(--l_column) * 6 + var(--l_gap_column) * 5);
-  }
-  .publish {
-    border-radius: 20px;
-  }
-  .blur {
-    backdrop-filter: blur(100px);
-  }
-</style>

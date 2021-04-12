@@ -96,8 +96,9 @@
 {#if alive}
   <div
     class=" w-full over flex flex-row justify-center flex-wrap relative scrollbar-window-padding">
-    <div class="parent relative " transition:fly={{ y: -1000, duration: 300 }}>
-      <div class="container">
+    <div class=" mt-xlg relative " transition:fly={{ y: -1000, duration: 300 }}>
+      <div
+        class="auto-rows-layout  max-w-layout  grid-cols-layout relative grid gap-x-l_gap_column gap-y-l_gap_row mx-auto">
         <div class="col-start-1 row-span-1 row-start-1 col-span-1 m-auto">
           <Link bind:alive href="../">
             <Logo white={true} />
@@ -129,7 +130,7 @@
 
         {#if eseuri_chosen == true}
           <div
-            class="eseuri relative fixed grid row-start-5  col-start-1 col-end-7 overflow-x-visible w-full h-full gap-x-l_gap_column gap-y-l_gap_row "
+            class="grid-cols-essays auto-rows-essays max-w-layout grid relative fixed grid row-start-4  col-start-1 col-end-7 overflow-x-visible w-full h-full gap-x-l_gap_column gap-y-l_gap_row "
             transition:fly={{ x: -100, duration: 100 }}>
             {#each eseuri as { name, scriitor }}
               <div rel="preload" class="h-full w-full">
@@ -139,7 +140,7 @@
           </div>
         {:else}
           <div
-            class="eseuri relative  grid row-start-5 col-start-1 col-end-7 overflow-x-visible w-full h-full gap-x-l_gap_column gap-y-l_gap_row "
+            class="grid-cols-essays auto-rows-essays max-w-layout grid relative fixed grid row-start-4  col-start-1 col-end-7 overflow-x-visible w-full h-full gap-x-l_gap_column gap-y-l_gap_row "
             transition:fly={{ x: 100, duration: 100 }}>
             {#each caracterizari as { name, scriitor }}
               <Essay bind:alive {name} {scriitor} white={true} />
@@ -150,32 +151,3 @@
     </div>
   </div>
 {/if}
-
-<style>
-  .eseuri {
-    grid-template-columns: repeat(
-      auto-fit,
-      minmax(calc(var(--l_column) * 2 + var(--l_gap_column)), 1fr)
-    );
-    grid-auto-rows: calc(var(--l_row) * 2 + var(--l_gap_row));
-    max-width: calc(var(--l_column) * 6 + var(--l_gap_column) * 5);
-  }
-  .parent {
-    margin-top: 70px;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: fit-content;
-    z-index: 1;
-  }
-  .container {
-    position: relative;
-    width: 100%;
-    display: grid;
-    column-gap: var(--l_gap_column);
-    background-color: transparent;
-    grid-template-columns: repeat(6, var(--l_column));
-    grid-auto-rows: var(--l_row);
-    row-gap: var(--l_gap_row);
-    z-index: 3;
-  }
-</style>
