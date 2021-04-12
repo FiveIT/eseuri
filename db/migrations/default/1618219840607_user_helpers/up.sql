@@ -13,7 +13,7 @@ BEGIN
 end;
 $$ LANGUAGE plpgsql;
 
-DROP VIEW users CASCADE;
+DROP VIEW users;
 CREATE VIEW users AS
 SELECT id, first_name, middle_name, last_name, get_role(id) "role", school_id, created_at, auth0_id FROM users_all
 WHERE deleted_at IS NULL;
