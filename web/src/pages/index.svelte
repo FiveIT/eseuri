@@ -99,7 +99,7 @@
       class=" z-0 relative mt-xlg  "
       transition:fly={{ y: -$window.height, duration: 300 }}>
       <div
-        class="bg-transparent auto-rows-layout  max-w-layout  grid-cols-layout bg-transparent relative w-full grid gap-x-l_gap_column gap-y-l_gap_row mx-auto">
+        class="bg-transparent auto-rows-layout  max-w-layout  grid-cols-layout relative w-full grid gap-x-l_gap_column gap-y-l_gap_row mx-auto">
         <div class="row-start-1 row-span-1 col-start-1  col-span-1 my-auto">
           <Logo />
         </div>
