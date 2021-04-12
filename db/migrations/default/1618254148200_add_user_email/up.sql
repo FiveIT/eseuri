@@ -1,0 +1,4 @@
+-- TODO:
+--  - Add "email" field to "users_all"
+--  - Add "email" field to "users" view
+--  - Modify "users" trigger functions to account for the new "email" field
