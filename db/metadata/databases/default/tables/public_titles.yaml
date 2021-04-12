@@ -23,7 +23,6 @@ array_relationships:
 select_permissions:
 - permission:
     columns:
-    - author_id
     - name
     filter: {}
     limit: 50
