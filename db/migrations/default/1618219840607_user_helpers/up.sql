@@ -36,7 +36,7 @@ BEGIN
             school_id = schoolID,
             deleted_at = null,
             created_at = localtimestamp
-        RETURNING id, first_name, middle_name, last_name, school_id, created_at, auth0_id;
+        RETURNING id, first_name, middle_name, last_name, 0, school_id, created_at, auth0_id;
     END IF;
 END;
 $$ LANGUAGE plpgsql;
