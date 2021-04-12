@@ -11,24 +11,42 @@ DROP INDEX idx_works_status;
 DROP INDEX idx_works_teacher;
 DROP INDEX idx_works_user;
 
-ALTER TABLE "students" DROP CONSTRAINT "fk_user_student";
-ALTER TABLE "teachers" DROP CONSTRAINT "fk_user_teacher";
-ALTER TABLE "works" DROP CONSTRAINT "fk_user_works";
-ALTER TABLE "bookmarks" DROP CONSTRAINT "fk_user_bookmarks";
-ALTER TABLE "teacher_requests" DROP CONSTRAINT "fk_user_teacher_request";
-ALTER TABLE "teacher_student_associations" DROP CONSTRAINT "fk_user_teacher_student_associations";
-ALTER TABLE "teacher_student_associations" DROP CONSTRAINT "fk_student_teacher_student_associations";
-ALTER TABLE "works" DROP CONSTRAINT "fk_teacher_works";
-ALTER TABLE "teacher_student_associations" DROP CONSTRAINT "fk_teacher_teacher_student_associations";
-ALTER TABLE "essays" DROP CONSTRAINT "fk_work_essay";
-ALTER TABLE "characterizations" DROP CONSTRAINT "fk_work_characterization";
-ALTER TABLE "bookmarks" DROP CONSTRAINT "fk_work_bookmarks";
-ALTER TABLE "characterizations" DROP CONSTRAINT "fk_character_characterizations";
-ALTER TABLE "essays" DROP CONSTRAINT "fk_title_essays";
-ALTER TABLE "characters" DROP CONSTRAINT "fk_title_character";
-ALTER TABLE "titles" DROP CONSTRAINT "fk_author_title";
-ALTER TABLE "users_all" DROP CONSTRAINT "school_user";
-ALTER TABLE "schools" DROP CONSTRAINT "county_school";
+ALTER TABLE "students"
+    DROP CONSTRAINT "fk_user_student";
+ALTER TABLE "teachers"
+    DROP CONSTRAINT "fk_user_teacher";
+ALTER TABLE "works"
+    DROP CONSTRAINT "fk_user_works";
+ALTER TABLE "bookmarks"
+    DROP CONSTRAINT "fk_user_bookmarks";
+ALTER TABLE "teacher_requests"
+    DROP CONSTRAINT "fk_user_teacher_request";
+ALTER TABLE "teacher_student_associations"
+    DROP CONSTRAINT "fk_user_teacher_student_associations";
+ALTER TABLE "teacher_student_associations"
+    DROP CONSTRAINT "fk_student_teacher_student_associations";
+ALTER TABLE "works"
+    DROP CONSTRAINT "fk_teacher_works";
+ALTER TABLE "teacher_student_associations"
+    DROP CONSTRAINT "fk_teacher_teacher_student_associations";
+ALTER TABLE "essays"
+    DROP CONSTRAINT "fk_work_essay";
+ALTER TABLE "characterizations"
+    DROP CONSTRAINT "fk_work_characterization";
+ALTER TABLE "bookmarks"
+    DROP CONSTRAINT "fk_work_bookmarks";
+ALTER TABLE "characterizations"
+    DROP CONSTRAINT "fk_character_characterizations";
+ALTER TABLE "essays"
+    DROP CONSTRAINT "fk_title_essays";
+ALTER TABLE "characters"
+    DROP CONSTRAINT "fk_title_character";
+ALTER TABLE "titles"
+    DROP CONSTRAINT "fk_author_title";
+ALTER TABLE "users_all"
+    DROP CONSTRAINT "school_user";
+ALTER TABLE "schools"
+    DROP CONSTRAINT "county_school";
 
 DROP TABLE counties;
 DROP TABLE schools;
