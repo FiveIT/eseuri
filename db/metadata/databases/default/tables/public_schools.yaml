@@ -13,3 +13,31 @@ array_relationships:
       table:
         name: users_all
         schema: public
+select_permissions:
+- permission:
+    columns:
+    - id
+    - name
+    - short_name
+    - county_id
+    filter: {}
+    limit: 50
+  role: anonymous
+- permission:
+    columns:
+    - id
+    - name
+    - short_name
+    - county_id
+    filter: {}
+    limit: 50
+  role: student
+- permission:
+    columns:
+    - id
+    - name
+    - short_name
+    - county_id
+    filter: {}
+    limit: 50
+  role: teacher

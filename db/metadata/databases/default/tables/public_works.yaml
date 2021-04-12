@@ -34,3 +34,78 @@ array_relationships:
       table:
         name: bookmarks
         schema: public
+insert_permissions:
+- permission:
+    backend_only: true
+    check:
+      user_id:
+        _eq: X-Hasura-User-Id
+    columns:
+    - content
+    - status
+    set:
+      user_id: x-hasura-User-Id
+  role: student
+- permission:
+    backend_only: true
+    check:
+      user_id:
+        _eq: X-Hasura-User-Id
+    columns:
+    - content
+    - status
+    set:
+      user_id: x-hasura-User-Id
+  role: teacher
+select_permissions:
+- permission:
+    columns:
+    - content
+    - updated_at
+    filter:
+      status:
+        _eq: 3
+    limit: 10
+  role: anonymous
+- permission:
+    columns:
+    - content
+    - created_at
+    - status
+    - updated_at
+    filter:
+      _or:
+      - status:
+          _eq: 3
+      - user_id:
+          _eq: X-Hasura-User-Id
+    limit: 10
+  role: student
+- permission:
+    columns:
+    - content
+    - created_at
+    - status
+    - updated_at
+    filter:
+      _or:
+      - _or:
+        - status:
+            _in:
+            - 1
+            - 3
+        - _and:
+          - status:
+              _eq: 2
+          - teacher_id:
+              _eq: X-Hasura-User-Id
+      - user_id:
+          _eq: X-Hasura-User-Id
+      - teacher_id:
+          _eq: X-Hasura-User-Id
+      - users_all:
+          teacher_student_associations:
+            teacher_id:
+              _eq: X-Hasura-User-Id
+    limit: 10
+  role: teacher

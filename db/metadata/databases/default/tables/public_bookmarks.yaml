@@ -8,3 +8,52 @@ object_relationships:
 - name: work
   using:
     foreign_key_constraint_on: work_id
+insert_permissions:
+- permission:
+    backend_only: false
+    check:
+      user_id:
+        _eq: X-Hasura-User-Id
+    columns:
+    - work_id
+    set:
+      user_id: x-hasura-User-Id
+  role: student
+- permission:
+    backend_only: false
+    check:
+      user_id:
+        _eq: X-Hasura-User-Id
+    columns:
+    - work_id
+    set:
+      user_id: x-hasura-User-Id
+  role: teacher
+select_permissions:
+- permission:
+    allow_aggregations: true
+    columns:
+    - work_id
+    filter:
+      user_id:
+        _eq: X-Hasura-User-Id
+  role: student
+- permission:
+    allow_aggregations: true
+    columns:
+    - work_id
+    filter:
+      user_id:
+        _eq: X-Hasura-User-Id
+  role: teacher
+delete_permissions:
+- permission:
+    filter:
+      user_id:
+        _eq: X-Hasura-User-Id
+  role: student
+- permission:
+    filter:
+      user_id:
+        _eq: X-Hasura-User-Id
+  role: teacher

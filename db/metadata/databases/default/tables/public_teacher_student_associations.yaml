@@ -11,3 +11,73 @@ object_relationships:
 - name: users_all
   using:
     foreign_key_constraint_on: initiator_id
+insert_permissions:
+- permission:
+    backend_only: false
+    check:
+      _and:
+      - student_id:
+          _eq: X-Hasura-User-Id
+      - initiator_id:
+          _eq: X-Hasura-User-Id
+    columns:
+    - teacher_id
+    set:
+      initiator_id: x-hasura-User-Id
+      student_id: x-hasura-User-Id
+  role: student
+- permission:
+    backend_only: false
+    check:
+      _and:
+      - initiator_id:
+          _eq: X-Hasura-User-Id
+      - teacher_id:
+          _eq: X-Hasura-User-Id
+    columns:
+    - student_id
+    set:
+      initiator_id: x-hasura-User-Id
+      teacher_id: x-hasura-User-Id
+  role: teacher
+select_permissions:
+- permission:
+    allow_aggregations: true
+    columns: []
+    filter:
+      status:
+        _eq: 1
+  role: anonymous
+- permission:
+    allow_aggregations: true
+    columns:
+    - status
+    filter:
+      _or:
+      - status:
+          _eq: 1
+      - student_id:
+          _eq: X-Hasura-User-Id
+  role: student
+- permission:
+    allow_aggregations: true
+    columns:
+    - status
+    filter:
+      _or:
+      - status:
+          _eq: 1
+      - teacher_id:
+          _eq: X-Hasura-User-Id
+  role: teacher
+delete_permissions:
+- permission:
+    filter:
+      student_id:
+        _eq: X-Hasura-User-Id
+  role: student
+- permission:
+    filter:
+      teacher_id:
+        _eq: X-Hasura-User-Id
+  role: teacher

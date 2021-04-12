@@ -20,3 +20,43 @@ array_relationships:
       table:
         name: works
         schema: public
+select_permissions:
+- permission:
+    columns:
+    - about
+    - image_url
+    filter: {}
+    limit: 10
+  role: anonymous
+- permission:
+    columns:
+    - about
+    - image_url
+    - user_id
+    filter: {}
+    limit: 10
+  role: student
+- permission:
+    columns:
+    - about
+    - image_url
+    - user_id
+    filter: {}
+    limit: 10
+  role: teacher
+update_permissions:
+- permission:
+    check: null
+    columns:
+    - about
+    - image_url
+    filter:
+      user_id:
+        _eq: X-Hasura-User-Id
+  role: teacher
+delete_permissions:
+- permission:
+    filter:
+      user_id:
+        _eq: X-Hasura-User-Id
+  role: teacher

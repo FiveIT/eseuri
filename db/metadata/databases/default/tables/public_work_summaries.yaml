@@ -1,3 +1,31 @@
 table:
   name: work_summaries
   schema: public
+select_permissions:
+- permission:
+    columns:
+    - name
+    - creator
+    - type
+    - work_count
+    filter: {}
+    limit: 50
+  role: anonymous
+- permission:
+    columns:
+    - name
+    - creator
+    - type
+    - work_count
+    filter: {}
+    limit: 50
+  role: student
+- permission:
+    columns:
+    - name
+    - creator
+    - type
+    - work_count
+    filter: {}
+    limit: 50
+  role: teacher

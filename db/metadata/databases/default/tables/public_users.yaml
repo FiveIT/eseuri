@@ -66,3 +66,90 @@ array_relationships:
       remote_table:
         name: works
         schema: public
+select_permissions:
+- permission:
+    columns:
+    - created_at
+    - first_name
+    - last_name
+    - middle_name
+    - role
+    - school_id
+    - updated_at
+    filter:
+      role:
+        _eq: 2
+    limit: 10
+  role: anonymous
+- permission:
+    columns:
+    - created_at
+    - first_name
+    - id
+    - last_name
+    - middle_name
+    - role
+    - school_id
+    - updated_at
+    filter:
+      _or:
+      - id:
+          _eq: X-Hasura-User-Id
+      - role:
+          _eq: 2
+    limit: 10
+  role: student
+- permission:
+    columns:
+    - created_at
+    - first_name
+    - id
+    - last_name
+    - middle_name
+    - role
+    - school_id
+    - updated_at
+    filter:
+      _or:
+      - id:
+          _eq: X-Hasura-User-Id
+      - role:
+          _in:
+          - 1
+          - 2
+    limit: 10
+  role: teacher
+update_permissions:
+- permission:
+    check: null
+    columns:
+    - first_name
+    - last_name
+    - middle_name
+    - school_id
+    filter:
+      id:
+        _eq: X-Hasura-User-Id
+  role: student
+- permission:
+    check: null
+    columns:
+    - first_name
+    - last_name
+    - middle_name
+    - school_id
+    filter:
+      id:
+        _eq: X-Hasura-User-Id
+  role: teacher
+delete_permissions:
+- permission:
+    filter:
+      id:
+        _eq: X-Hasura-User-Id
+  role: student
+- permission:
+    filter:
+      id:
+        _eq: X-Hasura-User-Id
+  role: teacher

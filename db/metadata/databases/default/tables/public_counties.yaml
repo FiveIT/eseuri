@@ -9,3 +9,25 @@ array_relationships:
       table:
         name: schools
         schema: public
+select_permissions:
+- permission:
+    columns:
+    - id
+    - name
+    filter: {}
+    limit: 50
+  role: anonymous
+- permission:
+    columns:
+    - id
+    - name
+    filter: {}
+    limit: 50
+  role: student
+- permission:
+    columns:
+    - id
+    - name
+    filter: {}
+    limit: 50
+  role: teacher

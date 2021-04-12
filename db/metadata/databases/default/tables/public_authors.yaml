@@ -9,3 +9,31 @@ array_relationships:
       table:
         name: titles
         schema: public
+select_permissions:
+- permission:
+    columns:
+    - first_name
+    - id
+    - last_name
+    - middle_name
+    filter: {}
+    limit: 50
+  role: anonymous
+- permission:
+    columns:
+    - first_name
+    - id
+    - last_name
+    - middle_name
+    filter: {}
+    limit: 50
+  role: student
+- permission:
+    columns:
+    - first_name
+    - id
+    - last_name
+    - middle_name
+    filter: {}
+    limit: 50
+  role: teacher
