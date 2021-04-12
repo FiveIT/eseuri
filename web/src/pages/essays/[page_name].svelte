@@ -171,8 +171,8 @@
       <div class=" grid mx-auto col-start-6 col-span-1 row-span-1 row-start-2">
         <UploadButton bind:alive link={'../upload'} />
       </div>
-      <div class=" grid col-start-2 col-end-6 row-span-2 row-start-3 text-4xl">
-        <z class=" font-serif">{decodeURI(page_name)}</z>
+      <div class=" grid col-start-2 col-end-6 row-start-3">
+        <h2 class="text-title font-serif">{decodeURI(page_name)}</h2>
       </div>
       <div class=" type_save_bar">
         <div class=" col-start-1 col-span-1 my-auto text-gray">
@@ -201,7 +201,7 @@
         </div>
       </div>
       <div class="referat grid ">
-        <p class=" font-serif">
+        <p class="text-prose font-serif">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec est
           nibh, tristique non magna maximus, maximus ornare nibh. Ut cursus
           libero in mi egestas blandit. Quisque tincidunt enim nec ex dignissim
