@@ -15,10 +15,16 @@
   --shadow-large: 4px 4px 5px rgba(0, 0, 0, 0.25);
   --alb: #fcfaf9;
   --negru: #000000;
-  --l_row: 4.133rem;
-  --l_gap_row: 1rem;
-  --l_column: 7.6rem;
-  --l_gap_column: 1.6rem;
+  --row-height: 4.133rem;
+  --row-gap: 1rem;
+  --column-width: 7.6rem;
+  --column-gap: 1.6rem;
+  --essay-column-width: calc(var(--column-width) * 2 + var(--column-gap));
+  --essay-row-heigth: calc(var(--row-height) * 2 + var(--row-gap));
+  --l_row: var(--row-height);
+  --l_gap_row: var(--row-gap);
+  --l_column: var(--column-width);
+  --l_gap_column: var(--column-gap);
 }
 .filter-shadow {
   filter: drop-shadow(var(--shadow));

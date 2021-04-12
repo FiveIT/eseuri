@@ -51,9 +51,9 @@ export default defineConfig({
       ],
     },
     spacing: {
-      sm: '0.625rem',
+      sm: 'var(--row-gap, 0.625rem)',
       md: '1.25rem',
-      lg: '1.875rem',
+      lg: 'var(--column-gap, 1.875rem)',
       xlg: '3.700rem',
       l_row: '4.133rem',
       l_gap_row: '1.000rem',
@@ -69,6 +69,17 @@ export default defineConfig({
       DEFAULT: 'var(--shadow)',
       large: 'var(--shadow-large)',
       none: 'none',
+    },
+    gridTemplateColumns: {
+      layout: 'repeat(auto-fit, minmax(var(--column-width), 1fr)',
+      essays: 'repeat(auto-fit, minmax(var(--essay-column-width), 1fr)',
+    },
+    gridAutoRows: {
+      layout: 'var(--row-heigth)',
+      essays: 'var(--essay-row-heigth)',
+    },
+    maxWidth: {
+      layout: 'calc(6 * var(--column-width) + 5 * var(--column-gap))',
     },
   },
   darkMode: false,
