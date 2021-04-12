@@ -70,14 +70,15 @@ export default defineConfig({
       large: 'var(--shadow-large)',
       none: 'none',
     },
-    gridTemplateColumns: {
-      layout: 'repeat(auto-fit, minmax(var(--column-width), 1fr)',
-      essays: 'repeat(auto-fit, minmax(var(--essay-column-width), 1fr)',
-    },
     gridAutoRows: {
-      layout: 'var(--row-heigth)',
+      layout: 'var(--row-height)',
       essays: 'var(--essay-row-heigth)',
     },
+    gridTemplateColumns: {
+      layout: 'repeat(6, 1fr)',
+      essays: 'repeat(3, 1fr)',
+    },
+
     maxWidth: {
       layout: 'calc(6 * var(--column-width) + 5 * var(--column-gap))',
     },
