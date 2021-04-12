@@ -99,7 +99,7 @@
       class=" z-0 relative mt-xlg  "
       transition:fly={{ y: -$window.height, duration: 300 }}>
       <div
-        class="container relative w-full grid gap-x-l_gap_column gap-y-l_gap_row  mx-md  ">
+        class="bg-transparent auto-rows-layout  max-w-layout  grid-cols-layout bg-transparent relative w-full grid gap-x-l_gap_column gap-y-l_gap_row mx-auto">
         <div class="row-start-1 row-span-1 col-start-1  col-span-1 my-auto">
           <Logo />
         </div>
@@ -135,7 +135,7 @@
         </div>
         {#if eseuri_chosen == true}
           <div
-            class="eseuri relative fixed grid row-start-5  col-start-1 col-end-7 overflow-x-visible w-full h-full gap-x-l_gap_column gap-y-l_gap_row "
+            class="grid-cols-essays auto-rows-essays max-w-layout grid relative fixed grid row-start-5  col-start-1 col-end-7 overflow-x-visible w-full h-full gap-x-l_gap_column gap-y-l_gap_row "
             transition:fly={{ x: -100, duration: 100 }}>
             {#each eseuri as { name, scriitor }}
               <div rel="preload" class="h-full w-full">
@@ -145,7 +145,7 @@
           </div>
         {:else}
           <div
-            class="eseuri relative  grid row-start-5 col-start-1 col-end-7 overflow-x-visible w-full h-full gap-x-l_gap_column gap-y-l_gap_row "
+            class="grid-cols-essays auto-rows-essays max-w-layout grid relative fixed grid row-start-5  col-start-1 col-end-7 overflow-x-visible w-full h-full gap-x-l_gap_column gap-y-l_gap_row "
             transition:fly={{ x: 100, duration: 100 }}>
             {#each caracterizari as { name, scriitor }}
               <Essay bind:alive {name} {scriitor} white={false} />
@@ -156,20 +156,3 @@
     </div>
   </div>
 {/if}
-
-<style>
-  .eseuri {
-    grid-template-columns: repeat(
-      auto-fit,
-      minmax(calc(var(--l_column) * 2 + var(--l_gap_column)), 1fr)
-    );
-    grid-auto-rows: calc(var(--l_row) * 2 + var(--l_gap_row));
-    max-width: calc(var(--l_column) * 6 + var(--l_gap_column) * 5);
-  }
-  .container {
-    background-color: transparent;
-    grid-template-columns: repeat(6, 1fr);
-    grid-auto-rows: var(--l_row);
-    max-width: calc(var(--l_column) * 6 + var(--l_gap_column) * 5);
-  }
-</style>
