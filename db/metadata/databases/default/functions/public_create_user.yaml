@@ -1,5 +1,0 @@
-function:
-  name: create_user
-  schema: public
-configuration:
-  exposed_as: mutation
