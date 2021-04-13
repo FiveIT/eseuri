@@ -193,7 +193,7 @@ begin
             deleted_at  = null,
             updated_at  = localtimestamp,
             created_at  = localtimestamp
-    returning id, first_name, middle_name, last_name, role, school_id, created_at, updated_at, auth0_id into new;
+    returning id, first_name, middle_name, last_name, email, role, school_id, created_at, updated_at, auth0_id into new;
     if new.role = 1 then
         insert into students (user_id) values (new.id);
     elseif new.role = 2 then
