@@ -51,12 +51,10 @@ export default defineConfig({
       ],
     },
     spacing: {
-      sm: '0.625rem',
+      sm: 'var(--row-gap)',
       md: '1.25rem',
-      lg: 'var(--column-gap, 1.875rem)',
+      lg: 'var(--essay-column-gap)',
       xlg: '3.700rem',
-      l_row: '4.133rem',
-      l_column: '7.555rem',
     },
     borderRadius: {
       DEFAULT: '0.625rem',
@@ -78,7 +76,7 @@ export default defineConfig({
     },
 
     maxWidth: {
-      layout: 'calc(6 * var(--column-width) + 5 * var(--column-gap))',
+      layout: 'calc(6 * var(--column-width) + 5 * var(--essay-column-gap))',
     },
   },
   darkMode: false,

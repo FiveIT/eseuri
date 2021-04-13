@@ -16,15 +16,15 @@
   --alb: #fcfaf9;
   --negru: #000000;
   --row-height: 4.133rem;
-  --row-gap: 1rem;
+  --row-gap: 0.625rem;
   --column-width: 7.6rem;
-  --column-gap: 1.6rem;
-  --essay-column-width: calc(var(--column-width) * 2 + var(--column-gap));
+  --essay-column-gap: 1.875rem;
+  --essay-column-width: calc(var(--column-width) * 2 + var(--essay-column-gap));
   --essay-row-heigth: calc(var(--row-height) * 2 + var(--row-gap));
   --l_row: var(--row-height);
   --l_gap_row: var(--row-gap);
   --l_column: var(--column-width);
-  --l_gap_column: var(--column-gap);
+  --l_gap_column: var(--essay-column-gap);
 }
 .filter-shadow {
   filter: drop-shadow(var(--shadow));
