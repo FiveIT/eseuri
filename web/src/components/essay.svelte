@@ -6,8 +6,6 @@
   export let alive: boolean
   export let white: boolean
   let size: string
-  if (name.length > 26) size = 'prose'
-  else size = 'md'
 </script>
 
 <Link bind:alive href={`/essays/${name}`}>
@@ -19,8 +17,11 @@
       class:border-1={!white}
       class:border-black={!white}
       class:text-black={!white}>
-      <h2 class=" text-{size} my-auto ml-sm font-sans">{name}</h2>
-      <div class=" ml-sm " class:text-gray={!white} class:text-white={white}>
+      <h2 class=" text-md my-auto ml-sm font-sans">{name}</h2>
+      <div
+        class=" ml-sm text-sm"
+        class:text-gray={!white}
+        class:text-white={white}>
         {scriitor}
         <div>{works}</div>
       </div>
@@ -32,11 +33,11 @@
       class:border-white={white}
       class:border-black={!white}
       class:text-black={!white}>
-      <h2 class=" h-1/2 w-full text-{size} my-auto ml-sm font-sans  ">
+      <h2 class=" h-1/2 w-full text-md my-auto ml-sm font-sans  ">
         {name}
       </h2>
       <div
-        class=" ml-sm text-gray-dark"
+        class=" ml-sm text-gray-dark text-sm"
         class:text-black={!white}
         class:text-white={white}>
         {scriitor}
