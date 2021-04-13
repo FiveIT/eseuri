@@ -82,6 +82,7 @@ select_permissions:
 - permission:
     columns:
     - created_at
+    - email
     - first_name
     - id
     - last_name
@@ -100,6 +101,7 @@ select_permissions:
 - permission:
     columns:
     - created_at
+    - email
     - first_name
     - id
     - last_name
@@ -121,6 +123,7 @@ update_permissions:
 - permission:
     check: null
     columns:
+    - email
     - first_name
     - last_name
     - middle_name
@@ -132,6 +135,7 @@ update_permissions:
 - permission:
     check: null
     columns:
+    - email
     - first_name
     - last_name
     - middle_name

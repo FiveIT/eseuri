@@ -8,6 +8,9 @@ object_relationships:
 - name: teacher
   using:
     foreign_key_constraint_on: teacher_id
+- name: teacher_student_association_status
+  using:
+    foreign_key_constraint_on: status
 - name: users_all
   using:
     foreign_key_constraint_on: initiator_id
@@ -46,7 +49,7 @@ select_permissions:
     columns: []
     filter:
       status:
-        _eq: 1
+        _eq: approved
   role: anonymous
 - permission:
     allow_aggregations: true
@@ -55,7 +58,7 @@ select_permissions:
     filter:
       _or:
       - status:
-          _eq: 1
+          _eq: approved
       - student_id:
           _eq: X-Hasura-User-Id
   role: student
@@ -66,7 +69,7 @@ select_permissions:
     filter:
       _or:
       - status:
-          _eq: 1
+          _eq: approved
       - teacher_id:
           _eq: X-Hasura-User-Id
   role: teacher

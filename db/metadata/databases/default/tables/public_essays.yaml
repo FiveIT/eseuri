@@ -41,7 +41,7 @@ select_permissions:
       _or:
       - work:
           status:
-            _eq: 3
+            _eq: approved
       - work:
           user_id:
             _eq: X-Hasura-User-Id
