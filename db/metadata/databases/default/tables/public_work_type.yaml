@@ -1,0 +1,14 @@
+table:
+  name: work_type
+  schema: public
+is_enum: true
+array_relationships:
+- name: works
+  using:
+    manual_configuration:
+      column_mapping:
+        value: type
+      insertion_order: null
+      remote_table:
+        name: work_summaries
+        schema: public

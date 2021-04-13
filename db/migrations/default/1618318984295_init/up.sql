@@ -1,322 +1,507 @@
-CREATE SCHEMA IF NOT EXISTS public;
-SET search_path TO public;
+create schema if not exists public;
+set search_path to public;
 
-CREATE FUNCTION trigger_set_updated_at()
-    RETURNS TRIGGER AS
+create function trigger_set_updated_at() returns trigger as
 $$
-BEGIN
-    NEW.updated_at = localtimestamp;
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
+begin
+    new.updated_at = localtimestamp;
+    return new;
+end;
+$$ language plpgsql;
 
-CREATE TABLE users_all
+
+-- metadata tables
+
+create table counties
 (
-    "id"          SERIAL PRIMARY KEY,
-    "first_name"  text,
-    "middle_name" text,
-    "last_name"   text,
-    "school_id"   int,
-    "created_at"  timestamp DEFAULT (localtimestamp),
-    "deleted_at"  timestamp,
-    "auth0_id"    text NOT NULL UNIQUE
+    id   varchar(2) primary key,
+    name text unique not null
 );
 
-CREATE FUNCTION trigger_delete_user()
-    RETURNS TRIGGER AS
+
+create table schools
+(
+    id         serial primary key,
+    name       text       not null,
+    short_name text,
+    county_id  varchar(2) not null
+);
+
+create index idx_schools_county on schools (county_id);
+
+alter table schools
+    add constraint county_school foreign key (county_id) references counties (id) on delete restrict on update cascade;
+
+
+create table authors
+(
+    id          serial primary key,
+    first_name  text not null,
+    middle_name text default null,
+    last_name   text default null
+);
+
+create table titles
+(
+    id        serial primary key,
+    name      text not null,
+    author_id int  not null
+);
+
+create index idx_titles_author on titles (author_id);
+
+alter table titles
+    add constraint fk_author_title foreign key (author_id) references authors (id) on delete restrict on update cascade;
+
+
+create table characters
+(
+    id       serial primary key,
+    name     text not null,
+    title_id int  not null
+);
+
+create index idx_characters_title on characters (title_id);
+
+alter table characters
+    add constraint fk_title_character foreign key (title_id) references titles (id) on delete restrict on update cascade;
+
+
+-- users tables, triggers, views, and functions
+
+create table users_all
+(
+    id          serial primary key,
+    first_name  text,
+    middle_name text,
+    last_name   text,
+    email       text,
+    school_id   int,
+    created_at  timestamp default (localtimestamp),
+    updated_at  timestamp default null,
+    deleted_at  timestamp default null,
+    auth0_id    text not null
+        constraint users_all_auth0_id_key unique
+);
+
+create index idx_users_school on users_all (school_id);
+
+alter table users_all
+    add constraint school_user foreign key (school_id) references schools (id) on delete restrict on update cascade;
+
+create table students
+(
+    user_id int primary key
+);
+
+alter table students
+    add constraint fk_user_student foreign key (user_id) references users_all (id) on delete cascade on update cascade;
+
+create table teachers
+(
+    user_id   int primary key,
+    about     text,
+    image_url text
+);
+
+alter table teachers
+    add constraint fk_user_teacher foreign key (user_id) references users_all (id) on delete cascade on update cascade;
+
+create function trigger_insert_student() returns trigger as
 $$
-BEGIN
-    UPDATE users_all
-    SET first_name  = null,
+begin
+    if exists(select 1 from teachers where user_id = new.user_id) then
+        raise exception 'utilizatorul este deja profesor, nu poate fi și elev';
+    end if;
+    return new;
+end
+$$ language plpgsql;
+
+create trigger insert_student
+    before insert
+    on students
+    for each row
+execute function trigger_insert_student();
+
+create function trigger_insert_teacher() returns trigger as
+$$
+begin
+    if exists(select 1 from students where user_id = new.user_id) then
+        raise exception 'utilizatorul este deja elev, nu poate fi și profesor';
+    end if;
+    return new;
+end
+$$ language plpgsql;
+
+create trigger insert_teacher
+    before insert
+    on teachers
+    for each row
+execute function trigger_insert_teacher();
+
+
+create function get_role(userID int) returns int
+    stable as
+$$
+begin
+    if exists(select 1 from students where user_id = userID) then
+        return 1;
+    elseif exists(select 1 from teachers where user_id = userID) then
+        return 2;
+    end if;
+    return 0;
+end;
+$$ language plpgsql;
+
+create view users as
+select id,
+       first_name,
+       middle_name,
+       last_name,
+       email,
+       get_role(id) as role,
+       school_id,
+       created_at,
+       updated_at,
+       auth0_id
+from users_all
+where deleted_at is null;
+
+create function trigger_insert_user() returns trigger as
+$$
+declare
+    existingUser users;
+    role         int := new.role;
+begin
+    -- check if the user is already in the database and was not deleted before
+    select * from users where auth0_id = new.auth0_id into existingUser;
+    if existingUser.created_at is not null then
+        return null;
+    end if;
+    -- determine role to be inserted with
+    if role is null then
+        role := 0;
+    end if;
+    insert into users_all (first_name, middle_name, last_name, school_id, auth0_id)
+    values (new.first_name, new.middle_name, new.last_name, new.school_id, new.auth0_id)
+    on conflict on constraint users_all_auth0_id_key do update
+        set first_name  = new.first_name,
+            middle_name = new.middle_name,
+            last_name   = new.last_name,
+            email       = new.email,
+            school_id   = new.school_id,
+            deleted_at  = null,
+            updated_at  = localtimestamp,
+            created_at  = localtimestamp
+    returning id, first_name, middle_name, last_name, role, school_id, created_at, updated_at, auth0_id into new;
+    if new.role = 1 then
+        insert into students (user_id) values (new.id);
+    elseif new.role = 2 then
+        insert into teachers (user_id) values (new.id);
+    end if;
+    return new;
+end;
+$$ language plpgsql;
+
+create trigger insert_user
+    instead of insert
+    on users
+    for each row
+execute function trigger_insert_user();
+
+create function trigger_update_user() returns trigger as
+$$
+begin
+    new.updated_at = localtimestamp;
+    update users_all
+    set first_name  = new.first_name,
+        middle_name = new.middle_name,
+        last_name   = new.last_name,
+        email       = new.email,
+        school_id   = new.school_id,
+        updated_at  = new.updated_at
+    where id = new.id;
+    return new;
+end
+$$ language plpgsql;
+
+create trigger update_user
+    instead of update
+    on users
+    for each row
+execute function trigger_update_user();
+
+create function trigger_delete_user() returns trigger as
+$$
+begin
+    update users_all
+    set first_name  = null,
         middle_name = null,
         last_name   = null,
         school_id   = null,
         created_at  = null,
+        updated_at  = null,
+        email       = null,
         deleted_at  = localtimestamp
-    WHERE id = old.id;
-    RETURN null;
-END;
-$$ LANGUAGE plpgsql;
+    where id = old.id;
+    if old.role = 1 then
+        delete from students where user_id = old.id;
+    elseif old.role = 2 then
+        delete from teachers where user_id = old.id;
+    end if;
+    return null;
+end;
+$$ language plpgsql;
 
-CREATE TRIGGER delete_users
-    BEFORE DELETE
-    on users_all
-    FOR EACH ROW
-EXECUTE FUNCTION trigger_delete_user();
+create trigger delete_user
+    instead of delete
+    on users
+    for each row
+execute function trigger_delete_user();
 
-CREATE VIEW users AS
-SELECT id, first_name, middle_name, last_name, school_id, created_at, auth0_id
-FROM users_all
-WHERE deleted_at IS NOT NULL;
 
-CREATE TABLE bookmarks
+-- teacher requests and teacher-student associations
+
+create table teacher_request_status
 (
-    "user_id" int NOT NULL,
-    "work_id" int NOT NULL,
-    PRIMARY KEY ("user_id", "work_id")
+    value   text primary key,
+    comment text
 );
 
-CREATE TABLE students
+insert into teacher_request_status (value, comment)
+values ('pending', 'The request awaits review from an administrator.'),
+       ('approved', 'The request was accepted, and the request initiator is now a teacher.'),
+       ('rejected', 'The request was rejected, and the request initiator''s role is unchanged.');
+
+create table teacher_requests
 (
-    "user_id" int PRIMARY KEY
+    user_id    int primary key,
+    status     text      not null default 'pending',
+    created_at timestamp not null default (localtimestamp),
+    updated_at timestamp
 );
 
-CREATE FUNCTION trigger_insert_student()
-    RETURNS TRIGGER AS
+create index idx_teacher_requests_status on teacher_requests (status);
+
+create trigger teacher_requests_after_status_update
+    after update
+    on teacher_requests
+    for each row
+    when (old.status is distinct from new.status)
+execute function trigger_set_updated_at();
+
+alter table teacher_requests
+    add constraint fk_status_teacher_request foreign key (status) references teacher_request_status (value) on delete restrict on update cascade;
+alter table teacher_requests
+    add constraint fk_user_teacher_request foreign key (user_id) references users_all (id) on delete cascade on update cascade;
+
+create table teacher_student_association_status
+(
+    value   text primary key,
+    comment text
+);
+
+insert into teacher_student_association_status (value, comment)
+values ('pending', 'The request awaits approval or rejection from the user the association was request to.'),
+       ('approved', 'The user requested approved the association, and is now associated with the initiator.'),
+       ('rejected', 'The user requested rejected the association, and the association status is unchanged.');
+
+create table teacher_student_associations
+(
+    teacher_id   int  not null,
+    student_id   int  not null,
+    initiator_id int  not null,
+    status       text not null default 'pending',
+    primary key (student_id, teacher_id)
+);
+
+create index idx_teacher_student_associations_initiator on teacher_student_associations (initiator_id);
+create index idx_teacher_student_associations_student on teacher_student_associations (student_id);
+create index idx_teacher_student_associations_teacher on teacher_student_associations (teacher_id);
+create index idx_teacher_student_associations_status on teacher_student_associations (status);
+
+alter table teacher_student_associations
+    add constraint fk_status_teacher_student_associations foreign key (status) references teacher_student_association_status (value) on delete restrict on update cascade;
+alter table teacher_student_associations
+    add constraint fk_student_teacher_student_associations foreign key (student_id) references students (user_id) on delete cascade on update cascade;
+alter table teacher_student_associations
+    add constraint fk_teacher_teacher_student_associations foreign key (teacher_id) references teachers (user_id) on delete cascade on update cascade;
+alter table teacher_student_associations
+    add constraint fk_user_teacher_student_associations foreign key (initiator_id) references users_all (id) on delete cascade on update cascade;
+
+
+-- works, essays, and characterizations
+
+create table work_status
+(
+    value   text primary key,
+    comment text
+);
+
+insert into work_status (value, comment)
+values ('draft', 'The work is in progress, and not ready for review.'),
+       ('pending',
+        'The work is done and awaits a teacher''s review. A teacher may also have been specifically requested for review at this stage.'),
+       ('inReview', 'The work is currently reviewed by a teacher.'),
+       ('approved', 'A teacher approved the work for publishing. The work is now visible to everyone.'),
+       ('rejected', 'A teacher found the work unsuitable for publishing. The work isn''t visible to the public.');
+
+create table works
+(
+    id         serial primary key,
+    user_id    int       not null,
+    teacher_id int,
+    status     text      not null default 'draft',
+    content    text      not null,
+    created_at timestamp not null default (localtimestamp),
+    updated_at timestamp
+);
+
+create index idx_works_user on works (user_id);
+create index idx_works_review_teacher on works (teacher_id);
+create index idx_works_status on works (status);
+-- hash-based unique index for content
+create index idx_works_content on works using hash (content);
+alter table works
+    add constraint unique_content exclude using hash (content with =);
+
+alter table works
+    add constraint fk_user_works foreign key (user_id) references users_all (id) on delete set null on update cascade;
+alter table works
+    add constraint fk_teacher_works foreign key (teacher_id) references teachers (user_id) on delete set null on update cascade;
+
+create trigger update_works_status
+    before update
+    on works
+    for each row
+    when (old.status is distinct from new.status)
+execute function trigger_set_updated_at();
+
+
+create table essays
+(
+    work_id  int primary key,
+    title_id int not null
+);
+
+create index idx_essays_title on essays (title_id);
+
+alter table essays
+    add constraint fk_work_essay foreign key (work_id) references works (id) on delete cascade on update cascade;
+alter table essays
+    add constraint fk_title_essays foreign key (title_id) references titles (id) on delete restrict on update cascade;
+
+
+create table characterizations
+(
+    work_id      int primary key,
+    character_id int not null
+);
+
+create index idx_characterizations_character on characterizations (character_id);
+
+alter table characterizations
+    add constraint fk_work_characterization foreign key (work_id) references works (id) on delete cascade on update cascade;
+alter table characterizations
+    add constraint fk_character_characterizations foreign key (character_id) references characters (id) on delete restrict on update cascade;
+
+
+create function trigger_insert_essay() returns trigger as
 $$
-BEGIN
-    IF exists(SELECT 1 FROM teachers WHERE user_id = new.user_id) THEN
-        RAISE EXCEPTION 'User is already a teacher!';
-    END IF;
-    RETURN new;
-END
-$$ LANGUAGE plpgsql;
+begin
+    if exists(select 1 from characterizations where work_id = new.work_id) then
+        raise exception 'lucrarea este deja o caracterizare, nu poate fi și un eseu';
+    end if;
+    return new;
+end;
+$$ language plpgsql;
 
-CREATE TRIGGER check_student
-    BEFORE INSERT
-    ON students
-    FOR EACH ROW
-EXECUTE FUNCTION trigger_insert_student();
-
-CREATE TABLE "teachers"
-(
-    "user_id"   int PRIMARY KEY,
-    "about"     text,
-    "image_url" text
-);
-
-CREATE FUNCTION trigger_insert_teacher()
-    RETURNS TRIGGER AS
-$$
-BEGIN
-    IF exists(SELECT 1 FROM students WHERE user_id = new.user_id) THEN
-        RAISE EXCEPTION 'User is already a student!';
-    END IF;
-    RETURN new;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER check_teacher
-    BEFORE INSERT
-    ON teachers
-    FOR EACH ROW
-EXECUTE FUNCTION trigger_insert_teacher();
-
-CREATE TABLE "teacher_requests"
-(
-    "user_id"    int PRIMARY KEY,
-    "status"     int       NOT NULL DEFAULT 0,
-    "created_at" timestamp NOT NULL DEFAULT (localtimestamp),
-    "updated_at" timestamp
-);
-
-CREATE TRIGGER teacher_requests_after_status_update
-    AFTER UPDATE
-    ON teacher_requests
-    FOR EACH ROW
-    WHEN (OLD.status IS DISTINCT FROM NEW.status)
-EXECUTE FUNCTION trigger_set_updated_at();
-
-CREATE TABLE teacher_student_associations
-(
-    "teacher_id"   int NOT NULL,
-    "student_id"   int NOT NULL,
-    "initiator_id" int NOT NULL,
-    "status"       int NOT NULL DEFAULT 0,
-    PRIMARY KEY ("student_id", "teacher_id")
-);
-
-CREATE TABLE works
-(
-    "id"           SERIAL PRIMARY KEY,
-    "user_id"      int       NOT NULL,
-    "teacher_id"   int,
-    "status"       int       NOT NULL DEFAULT 0,
-    "content"      text      NOT NULL,
-    "content_hash" text      NOT NULL UNIQUE GENERATED ALWAYS AS (md5(content)) STORED,
-    "created_at"   timestamp NOT NULL DEFAULT (localtimestamp),
-    "updated_at"   timestamp
-);
-
-CREATE TRIGGER update_works_status
-    BEFORE UPDATE
-    ON works
-    FOR EACH ROW
-    WHEN (old.status IS DISTINCT FROM new.status)
-EXECUTE FUNCTION trigger_set_updated_at();
-
-CREATE TABLE essays
-(
-    "work_id"  int PRIMARY KEY,
-    "title_id" int NOT NULL
-);
-
-CREATE FUNCTION trigger_insert_essay()
-    RETURNS TRIGGER AS
-$$
-BEGIN
-    IF exists(SELECT 1 FROM characterizations WHERE work_id = new.work_id) THEN
-        RAISE EXCEPTION 'Work is already a characterization!';
-    END IF;
-    RETURN new;
-END;
-$$ LANGUAGE plpgsql;
-
-CREATE TRIGGER check_essay
-    BEFORE INSERT
+create trigger insert_essay
+    before insert
     on essays
-    FOR EACH ROW
-EXECUTE FUNCTION trigger_insert_essay();
+    for each row
+execute function trigger_insert_essay();
 
-CREATE TABLE "characterizations"
-(
-    "work_id"      int PRIMARY KEY,
-    "character_id" int NOT NULL
-);
-
-CREATE FUNCTION trigger_insert_characterization()
-    RETURNS TRIGGER AS
+create function trigger_insert_characterization() returns trigger as
 $$
-BEGIN
-    IF exists(SELECT 1 FROM essays WHERE work_id = new.work_id) THEN
-        RAISE EXCEPTION 'Work is already an essay!';
-    END IF;
-    RETURN new;
-END;
-$$ LANGUAGE plpgsql;
+begin
+    if exists(select 1 from essays where work_id = new.work_id) then
+        raise exception 'lucrarea este deja un eseu, nu poate fi și o caracterizare';
+    end if;
+    return new;
+end;
+$$ language plpgsql;
 
-CREATE TRIGGER check_characterization
-    BEFORE INSERT
+create trigger insert_characterization
+    before insert
     on characterizations
-    FOR EACH ROW
-EXECUTE FUNCTION trigger_insert_characterization();
+    for each row
+execute function trigger_insert_characterization();
 
-CREATE TABLE "characters"
+
+create function get_name(first text, middle text, last text) returns text
+    immutable as
+$$
+begin
+    if middle is null then
+        return first || ' ' || last;
+    end if;
+    return first || ' ' || middle || ' ' || last;
+end
+$$ language plpgsql;
+
+create table work_type
 (
-    "id"       SERIAL PRIMARY KEY,
-    "name"     text NOT NULL,
-    "title_id" int  NOT NULL
+    value text primary key
 );
 
-CREATE TABLE "titles"
+insert into work_type (value)
+values ('essay'),
+       ('characterization');
+
+create view work_summaries as
+select name, creator, type, count(work_id) work_count
+from (
+         select t.name                                             as name,
+                get_name(a.first_name, a.middle_name, a.last_name) as creator,
+                e.work_id                                          as work_id,
+                'essay'                                            as type
+         from titles t
+                  left join authors a on t.author_id = a.id
+                  left join essays e on t.id = e.title_id
+         union
+         select c.name             as name,
+                t2.name            as creator,
+                c2.work_id         as work_id,
+                'characterization' as type
+         from characters c
+                  left join titles t2 on c.title_id = t2.id
+                  left join characterizations c2 on c.id = c2.character_id
+     ) as q
+group by name, creator, type
+order by type, creator, name;
+
+
+-- bookmarks
+
+create table bookmarks
 (
-    "id"        SERIAL PRIMARY KEY,
-    "name"      text NOT NULL,
-    "author_id" int  NOT NULL
+    user_id int  not null,
+    work_id int  not null,
+    name    text not null,
+    primary key (user_id, work_id)
 );
 
-CREATE TABLE "authors"
-(
-    "id"          SERIAL PRIMARY KEY,
-    "first_name"  text DEFAULT null,
-    "middle_name" text DEFAULT null,
-    "last_name"   text NOT NULL
-);
+create index idx_bookmarks_user on bookmarks (user_id);
+create index idx_bookmarks_work on bookmarks (work_id);
 
-CREATE TABLE "schools"
-(
-    "id"         SERIAL PRIMARY KEY,
-    "name"       text       NOT NULL,
-    "short_name" text,
-    "county_id"  varchar(2) NOT NULL
-);
+alter table bookmarks
+    add constraint fk_user_bookmarks foreign key (user_id) references users_all (id) on delete cascade on update cascade;
+alter table bookmarks
+    add constraint fk_work_bookmarks foreign key (work_id) references works (id) on delete cascade on update cascade;
 
-CREATE TABLE "counties"
-(
-    "id"   varchar(2) PRIMARY KEY,
-    "name" text NOT NULL
-);
 
-ALTER TABLE "students"
-    ADD CONSTRAINT "fk_user_student" FOREIGN KEY ("user_id") REFERENCES "users_all" ("id") ON DELETE CASCADE;
-
-ALTER TABLE "teachers"
-    ADD CONSTRAINT "fk_user_teacher" FOREIGN KEY ("user_id") REFERENCES "users_all" ("id") ON DELETE CASCADE;
-
-ALTER TABLE "works"
-    ADD CONSTRAINT "fk_user_works" FOREIGN KEY ("user_id") REFERENCES "users_all" ("id") ON DELETE NO ACTION;
-
-ALTER TABLE "bookmarks"
-    ADD CONSTRAINT "fk_user_bookmarks" FOREIGN KEY ("user_id") REFERENCES "users_all" ("id") ON DELETE CASCADE;
-
-ALTER TABLE "teacher_requests"
-    ADD CONSTRAINT "fk_user_teacher_request" FOREIGN KEY ("user_id") REFERENCES "users_all" ("id") ON DELETE CASCADE;
-
-ALTER TABLE "teacher_student_associations"
-    ADD CONSTRAINT "fk_user_teacher_student_associations" FOREIGN KEY ("initiator_id") REFERENCES "users_all" ("id") ON DELETE CASCADE;
-
-ALTER TABLE "teacher_student_associations"
-    ADD CONSTRAINT "fk_student_teacher_student_associations" FOREIGN KEY ("student_id") REFERENCES "students" ("user_id") ON DELETE CASCADE;
-
-ALTER TABLE "works"
-    ADD CONSTRAINT "fk_teacher_works" FOREIGN KEY ("teacher_id") REFERENCES "teachers" ("user_id") ON DELETE SET NULL;
-
-ALTER TABLE "teacher_student_associations"
-    ADD CONSTRAINT "fk_teacher_teacher_student_associations" FOREIGN KEY ("teacher_id") REFERENCES "teachers" ("user_id") ON DELETE CASCADE;
-
-ALTER TABLE "essays"
-    ADD CONSTRAINT "fk_work_essay" FOREIGN KEY ("work_id") REFERENCES "works" ("id") ON DELETE RESTRICT;
-
-ALTER TABLE "characterizations"
-    ADD CONSTRAINT "fk_work_characterization" FOREIGN KEY ("work_id") REFERENCES "works" ("id") ON DELETE RESTRICT;
-
-ALTER TABLE "bookmarks"
-    ADD CONSTRAINT "fk_work_bookmarks" FOREIGN KEY ("work_id") REFERENCES "works" ("id") ON DELETE CASCADE;
-
-ALTER TABLE "characterizations"
-    ADD CONSTRAINT "fk_character_characterizations" FOREIGN KEY ("character_id") REFERENCES "characters" ("id") ON DELETE RESTRICT;
-
-ALTER TABLE "essays"
-    ADD CONSTRAINT "fk_title_essays" FOREIGN KEY ("title_id") REFERENCES "titles" ("id") ON DELETE RESTRICT;
-
-ALTER TABLE "characters"
-    ADD CONSTRAINT "fk_title_character" FOREIGN KEY ("title_id") REFERENCES "titles" ("id") ON DELETE CASCADE;
-
-ALTER TABLE "titles"
-    ADD CONSTRAINT "fk_author_title" FOREIGN KEY ("author_id") REFERENCES "authors" ("id") ON DELETE CASCADE;
-
-ALTER TABLE "users_all"
-    ADD CONSTRAINT "school_user" FOREIGN KEY ("school_id") REFERENCES "schools" ("id") ON DELETE RESTRICT;
-
-ALTER TABLE "schools"
-    ADD CONSTRAINT "county_school" FOREIGN KEY ("county_id") REFERENCES "counties" ("id") ON DELETE RESTRICT;
-
-CREATE INDEX idx_users_school ON "users_all" ("school_id");
-
-CREATE INDEX idx_teacher_student_associations_initiator ON "teacher_student_associations" ("initiator_id");
-
-CREATE INDEX idx_teacher_student_associations_student ON "teacher_student_associations" ("student_id");
-
-CREATE INDEX idx_teacher_student_associations_teacher ON "teacher_student_associations" ("teacher_id");
-
-CREATE INDEX idx_teacher_student_associations_status ON "teacher_student_associations" ("status");
-
-CREATE INDEX idx_works_user ON "works" ("user_id");
-
-CREATE INDEX idx_works_teacher ON "works" ("teacher_id");
-
-CREATE INDEX idx_works_status ON "works" ("status");
-
-CREATE INDEX idx_characters_title ON "characters" ("title_id");
-
-CREATE INDEX idx_titles_author ON "titles" ("author_id");
-
-COMMENT ON COLUMN "teacher_requests"."status" IS '0: Pending
-1: Approved
-2: Rejected';
-
-COMMENT ON COLUMN "teacher_student_associations"."status" IS '0: Pending
-1: Accepted
-2: Denied';
-
-COMMENT ON COLUMN "works"."status" IS '0: Draft
-1: Pending review
-2: In review
-3: Approved
-4: Rejected';
-
-COMMENT ON COLUMN "works"."content_hash" IS 'Set by the database, do not assign this column!';
-
+-- load metadata
 INSERT INTO "counties" ("id", "name")
 VALUES ('AB', 'Alba');
 INSERT INTO "counties" ("id", "name")
