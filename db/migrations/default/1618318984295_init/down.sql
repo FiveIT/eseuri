@@ -71,7 +71,6 @@ drop table teachers;
 alter table students drop constraint fk_user_student;
 drop table students;
 alter table users_all drop constraint school_user;
-alter table users_all drop constraint user_info_nullability;
 drop index idx_users_school;
 drop table users_all;
 

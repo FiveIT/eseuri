@@ -87,18 +87,6 @@ create table users_all
 create index idx_users_school on users_all (school_id);
 
 alter table users_all
-    add constraint user_info_nullability check (
-        deleted_at is not null or
-        (
-            first_name is not null and
-            middle_name is not null and
-            last_name is not null and
-            email is not null and
-            school_id is not null
-        )
-    );
-
-alter table users_all
     add constraint school_user foreign key (school_id) references schools (id) on delete restrict on update cascade;
 
 create table students
