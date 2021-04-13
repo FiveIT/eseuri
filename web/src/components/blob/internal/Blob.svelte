@@ -12,7 +12,6 @@
   export let width: number
   export let height: number
   export let zIndex: number
-  let innerHeight: number, innerWidth: number
   $: flipX = flip.x * 180
   $: flipY = flip.y * 180
 </script>
@@ -25,8 +24,6 @@
   bind:offsetHeight={height}>
   <slot />
 </div>
-
-<svelte:window bind:innerHeight bind:innerWidth />
 
 <style>
   div {
