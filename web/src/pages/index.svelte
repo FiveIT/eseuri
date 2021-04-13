@@ -129,13 +129,15 @@
         <div
           class=" col-start-3 col-end-4 row-start-4 w-full h-full m-auto my-auto ">
           <button
-            class=" w-full h-full  bg-white bg-opacity-0 focus:outline-none outline-none focus:underline  font-sans text-sm "
+            class=" w-full h-full  bg-white bg-opacity-0 focus:outline-none outline-none    font-sans text-sm "
+            class:underline={eseuri_chosen}
             on:click={show_eseuri}>Eseuri</button>
         </div>
         <div
           class="col-start-4 col-end-5 row-start-4 w-full h-full m-auto my-auto">
           <button
-            class="bg-white w-full h-full bg-opacity-0  focus:outline-none focus:underline  my-auto font-sans text-sm "
+            class="bg-white w-full h-full bg-opacity-0  focus:outline-none   my-auto font-sans text-sm "
+            class:underline={!eseuri_chosen}
             on:click={show_caracterizari}>Caracterizari</button>
         </div>
         <div class="col-span-1 col-start-6 row-span-1 row-start-3 mx-auto">

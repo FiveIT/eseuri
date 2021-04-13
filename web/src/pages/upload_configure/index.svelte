@@ -103,8 +103,8 @@
             on:click={() => {
               isessay = true
             }}
-            class="bg-opacity-0 focus:outline-none focus:md:underline my-auto text-sm w-full h-full"
-            >Eseu</button>
+            class="bg-opacity-0 focus:outline-none  my-auto text-sm w-full h-full"
+            class:underline={isessay}>Eseu</button>
         </div>
         <div
           class="row-start-4 row-span-1 col-start-3 col-span-1 my-auto text-center w-full h-full">
@@ -112,8 +112,8 @@
             on:click={() => {
               isessay = false
             }}
-            class=" relative bg-opacity-0 focus:outline-none focus:md:underline my-auto text-sm w-full h-full"
-            >Caracterizare</button>
+            class=" relative bg-opacity-0 focus:outline-none  my-auto text-sm w-full h-full"
+            class:underline={!isessay}>Caracterizare</button>
         </div>
         {#if isessay}
           <div

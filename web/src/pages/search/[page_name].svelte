@@ -127,10 +127,12 @@
           <Search {page_name} isBig={true} isAtHome={false} bind:alive />
         </div>
         <button
-          class="bg-white bg-opacity-0 row-span-1 row-start-3  text-white focus:outline-none outline-none focus:md:underline col-start-4 col-span-1 text-sm"
+          class="bg-white bg-opacity-0 row-span-1 row-start-3  text-white focus:outline-none outline-none  col-start-4 col-span-1 text-sm"
+          class:underline={eseuri_chosen}
           on:click={show_eseuri}>Eseuri</button>
         <button
-          class="bg-white bg-opacity-0 text-white row-span-1 row-start-3  focus:outline-none focus:md:underline col-start-5 col-span-1 text-sm"
+          class="bg-white bg-opacity-0 text-white row-span-1 row-start-3  focus:outline-none  col-start-5 col-span-1 text-sm"
+          class:underline={!eseuri_chosen}
           on:click={show_caracterizari}>Caracterizari</button>
 
         {#if eseuri_chosen == true}

@@ -9,6 +9,7 @@
   import { fly } from 'svelte/transition'
   import { onMount } from 'svelte'
   import Buton from '$/components/buton.svelte'
+  let isstudent: boolean = true
   let name = ''
   let secondname = ''
   let school = ''
@@ -117,14 +118,20 @@
       <div
         class="row-start-7 row-span-1 col-start-2 col-span-1 my-auto text-center w-full h-full">
         <button
-          class="bg-opacity-0 focus:outline-none focus:md:underline my-auto text-sm w-full h-full"
-          >Elev</button>
+          on:click={() => {
+            isstudent = true
+          }}
+          class="bg-opacity-0 focus:outline-none  my-auto text-sm w-full h-full"
+          class:underline={isstudent}>Elev</button>
       </div>
       <div
         class="row-start-7 row-span-1 col-start-3 col-span-1 my-auto text-center w-full h-full">
         <button
-          class=" relative bg-opacity-0 focus:outline-none focus:md:underline my-auto text-sm w-full h-full"
-          >Profesor</button>
+          on:click={() => {
+            isstudent = false
+          }}
+          class=" relative bg-opacity-0 focus:outline-none my-auto text-sm w-full h-full"
+          class:underline={!isstudent}>Profesor</button>
       </div>
       <div
         class="row-start-8 row-span-1 col-start-3 col-span-1 my-auto mx-auto w-full h-full bg-blue rounded">
