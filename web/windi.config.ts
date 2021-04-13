@@ -56,9 +56,10 @@ export default defineConfig({
       lg: 'var(--column-gap, 1.875rem)',
       xlg: '3.700rem',
       l_row: '4.133rem',
-      l_gap_row: '1.000rem',
+      l_gap_row: '0.625rem',
       l_column: '7.555rem',
-      l_gap_column: '1.600rem',
+      l_gap_column: '1.25rem',
+      l_gap_column: '1.875rem',
     },
     borderRadius: {
       DEFAULT: '0.625rem',
