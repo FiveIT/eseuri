@@ -72,10 +72,10 @@ alter table characters
 create table users_all
 (
     id          serial primary key,
-    first_name  text check (<> ''),
-    middle_name text check (<> ''),
-    last_name   text check (<> ''),
-    email       text check (<> ''),
+    first_name  text check (first_name <> ''),
+    middle_name text check (middle_name <> ''),
+    last_name   text check (last_name <> ''),
+    email       text check (email <> ''),
     school_id   int,
     created_at  timestamp default (localtimestamp),
     updated_at  timestamp default null,
