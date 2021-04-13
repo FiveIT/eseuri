@@ -6,13 +6,14 @@
    */
   export let link: string
   export let alive: boolean
+  export let disable: boolean
   /**
    * Toggle this if the button should be white
    */
   export let white = false
 </script>
 
-<Link bind:alive href={link}>
+{#if disable}
   <div
     class:text-white={white}
     class:text-black={!white}
@@ -20,4 +21,14 @@
     class="w-full h-full flex justify-center items-center font-sans no-underline outline-none text-sm ">
     <slot />
   </div>
-</Link>
+{:else}
+  <Link bind:alive href={link}>
+    <div
+      class:text-white={white}
+      class:text-black={!white}
+      class:filter-shadow={white}
+      class="w-full h-full flex justify-center items-center font-sans no-underline outline-none text-sm ">
+      <slot />
+    </div>
+  </Link>
+{/if}
