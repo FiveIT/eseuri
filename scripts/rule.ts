@@ -35,9 +35,9 @@ type ResponseInsert = Response<'insert_users_one', User | null>
 type ResponseSelect = Response<'users', [User]>
 
 export const callback: IAuthRuleFunction<{}, {}> = async (user, context, callback) => {
-  const { HASURA_GRAPHQL_API_URL, HASURA_GRAPHQL_ADMIN_SECRET } = configuration as any;
-  const post = util.promisify(request.post);
-  const namespace = 'https://hasura.io/jwt/claims';
+  const { HASURA_GRAPHQL_API_URL, HASURA_GRAPHQL_ADMIN_SECRET } = configuration as any
+  const post = util.promisify(request.post)
+  const namespace = 'https://hasura.io/jwt/claims'
   const insertUserQuery = `
     mutation insertUser($firstName: String!, $middleName: String, $lastName: String!, $email: String!, $auth0ID: String!) {
       insert_users_one(object: {first_name: $firstName, middle_name: $middleName, last_name: $lastName, email: $email, auth0_id: $auth0ID}) {
@@ -45,7 +45,7 @@ export const callback: IAuthRuleFunction<{}, {}> = async (user, context, callbac
         role
       }
     }
-  `;
+  `
   const getUserQuery = `
     query getUser($auth0ID: String!) {
       users(where: {auth0_id: {_eq: $auth0ID}}) {
@@ -53,23 +53,23 @@ export const callback: IAuthRuleFunction<{}, {}> = async (user, context, callbac
         role
       }
     }
-  `;
-  const url = HASURA_GRAPHQL_API_URL;
+  `
+  const url = HASURA_GRAPHQL_API_URL
   const headers = {
     'X-Hasura-Admin-Secret': HASURA_GRAPHQL_ADMIN_SECRET,
     'X-Hasura-Use-Backend-Only-Permissions': 'true',
-  };
+  }
   const variables = {
     firstName: user.given_name || null,
     middleName: user.nickname || null,
     lastName: user.family_name || null,
     email: user.email || null,
     auth0ID: user.user_id,
-  };
+  }
 
   function assertData<K extends QueryKey, V extends QueryValue>(body: Response<K, V>['body']): asserts body is Data<K, V> {
     if ('errors' in body.data) {
-      throw new Error(body.data.errors.map(e => e.message).join('\n\n'));
+      throw new Error(body.data.errors.map(e => e.message).join('\n\n'))
     }
   }
 
@@ -80,13 +80,13 @@ export const callback: IAuthRuleFunction<{}, {}> = async (user, context, callbac
       json: {
         query: insertUserQuery,
         variables,
-      }
-    });
+      },
+    })
 
-    assertData(body);
+    assertData(body)
 
-    let id = body.data.insert_users_one?.id;
-    let role = body.data.insert_users_one?.role;
+    let id = body.data.insert_users_one?.id
+    let role = body.data.insert_users_one?.role
     if (typeof id === 'undefined') {
       const { body }: ResponseSelect = await post({
         url,
@@ -94,25 +94,25 @@ export const callback: IAuthRuleFunction<{}, {}> = async (user, context, callbac
         json: {
           query: getUserQuery,
           variables: {
-            auth0ID: variables.auth0ID
-          }
-        }
-      });
+            auth0ID: variables.auth0ID,
+          },
+        },
+      })
 
-      assertData(body);
-      
-      ({ id, role } = body.data.users[0]);
+      assertData(body)
+
+      ;({ id, role } = body.data.users[0])
     }
-    
+
     context.accessToken[namespace] = {
       'X-Hasura-Default-Role': 'anonymous',
       'X-Hasura-Role': role || 'anonymous',
       'X-Hasura-Allowed-Roles': ['anonymous', role].filter(x => !!x),
-      'X-Hasura-User-Id': id
-    };
-    
-    callback(null, user, context);
+      'X-Hasura-User-Id': id,
+    }
+
+    callback(null, user, context)
   } catch (err) {
-    callback(err);
+    callback(err)
   }
 }
