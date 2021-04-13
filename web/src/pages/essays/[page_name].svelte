@@ -156,15 +156,18 @@
       </div>
       <div
         class="row-start-1 row-span-1 col-start-3 col-span-1 m-auto text-sm w-full h-full">
-        <Buton white={false} bind:alive link="/search/Cauta">Cauta</Buton>
+        <Buton white={false} disable={false} bind:alive link="/search/Cauta"
+          >Cauta</Buton>
       </div>
       <div
         class="row-start-1 row-span-1 col-start-4 col-span-1 m-auto text-sm w-full h-full">
-        <Buton white={false} bind:alive link="../">Plagiat</Buton>
+        <Buton white={false} disable={true} bind:alive link="../"
+          >Plagiat</Buton>
       </div>
       <div
         class="row-start-1 row-span-1 col-start-5 col-span-1 m-auto text-sm w-full h-full">
-        <Buton white={false} bind:alive link="../">Profesori</Buton>
+        <Buton white={false} disable={true} bind:alive link="../"
+          >Profesori</Buton>
       </div>
       <div
         class="row-start-1 row-span-1 col-start-6 col-span-1 m-auto w-full h-full">
@@ -180,7 +183,7 @@
           {decodeURI(page_name)}
         </h2>
         <div class=" flex-row flex w-full justify-between align-middle mt-sm">
-          <div class="relative w-min mt-sm ">
+          <div class="relative w-min mt-sm text-sm ">
             {#if essay_type}
               Eseu
             {:else}

@@ -134,7 +134,7 @@
       </div>
       <div
         class="row-start-8 row-span-1 col-start-4 my-auto col-span-1 bg-oppacity-0 publish w-full h-full">
-        <Buton white={false} bind:alive link="../"
+        <Buton white={false} disable={false} bind:alive link="../"
           ><div class="text-sm">Înapoi</div></Buton>
       </div>
     </div>

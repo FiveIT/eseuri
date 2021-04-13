@@ -106,11 +106,13 @@
         </div>
         <div
           class="col-start-4 row-span-1 row-start-1 col-span-1 m-auto w-full h-full">
-          <Buton white={true} bind:alive link="../">Plagiat</Buton>
+          <Buton white={true} disable={true} bind:alive link="../"
+            >Plagiat</Buton>
         </div>
         <div
           class="col-start-5 col-span-1 row-span-1 row-start-1 m-auto w-full h-full">
-          <Buton white={true} bind:alive link="../">Profesori</Buton>
+          <Buton white={true} disable={true} bind:alive link="../"
+            >Profesori</Buton>
         </div>
         <div
           class="col-start-6 row-span-1 row-start-1 col-span-1 m-auto w-full h-full">
@@ -125,10 +127,10 @@
           <Search {page_name} isBig={true} isAtHome={false} bind:alive />
         </div>
         <button
-          class="bg-white bg-opacity-0 row-span-1 row-start-3  text-white focus:outline-none outline-none focus:md:underline col-start-4 col-span-1"
+          class="bg-white bg-opacity-0 row-span-1 row-start-3  text-white focus:outline-none outline-none focus:md:underline col-start-4 col-span-1 text-sm"
           on:click={show_eseuri}>Eseuri</button>
         <button
-          class="bg-white bg-opacity-0 text-white row-span-1 row-start-3  focus:outline-none focus:md:underline col-start-5 col-span-1"
+          class="bg-white bg-opacity-0 text-white row-span-1 row-start-3  focus:outline-none focus:md:underline col-start-5 col-span-1 text-sm"
           on:click={show_caracterizari}>Caracterizari</button>
 
         {#if eseuri_chosen == true}

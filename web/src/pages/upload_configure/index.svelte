@@ -1,5 +1,6 @@
 <script lang="ts">
   import Link from '$/components/link.svelte'
+  import LoginButton from '$/components/login_button.svelte'
   import Logo from '$/components/logo.svelte'
   import { metatags } from '@roxi/routify'
   import { store as orange } from '$/components/blob/Orange.svelte'
@@ -73,16 +74,20 @@
           </Link>
         </div>
         <div class=" row-start-1 row-span-1 col-start-3 col-span-1 my-auto">
-          <Buton white={false} bind:alive link="./search">Caută</Buton>
+          <Buton white={false} disable={false} bind:alive link="./search"
+            >Caută</Buton>
         </div>
-        <div class=" row-start-1 row-span-1 col-start-6 col-span-1 my-auto">
-          <Buton white={false} bind:alive link="./loginto">Intra in cont</Buton>
+        <div
+          class=" row-start-1 row-span-1 col-start-6 col-span-1 my-auto w-full h-full">
+          <LoginButton />
         </div>
         <div class="col-start-4 col-end-5 row-start-1  my-auto ">
-          <Buton white={false} bind:alive link="./">Plagiat</Buton>
+          <Buton white={false} disable={true} bind:alive link="./"
+            >Plagiat</Buton>
         </div>
         <div class="col-start-5 col-end-6 row-start-1 my-auto">
-          <Buton white={false} bind:alive link="./">Profesori</Buton>
+          <Buton white={false} disable={true} bind:alive link="./"
+            >Profesori</Buton>
         </div>
         <div
           class="row-start-3 row-span-1 col-start-1 col-span-3 my-auto text-md">
@@ -143,7 +148,8 @@
         </div>
         <div
           class="row-start-8 row-span-1 col-start-4 my-auto col-span-1 bg-oppacity-0 publish w-full h-full">
-          <Buton white={false} bind:alive link="../upload">Înapoi</Buton>
+          <Buton white={false} disable={false} bind:alive link="../upload"
+            >Înapoi</Buton>
         </div>
       </div>
     </div>
