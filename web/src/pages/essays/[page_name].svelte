@@ -155,15 +155,15 @@
         </Link>
       </div>
       <div
-        class="row-start-1 row-span-1 col-start-3 col-span-1 m-auto w-full h-full">
+        class="row-start-1 row-span-1 col-start-3 col-span-1 m-auto text-sm w-full h-full">
         <Buton white={false} bind:alive link="/search/Cauta">Cauta</Buton>
       </div>
       <div
-        class="row-start-1 row-span-1 col-start-4 col-span-1 m-auto w-full h-full">
+        class="row-start-1 row-span-1 col-start-4 col-span-1 m-auto text-sm w-full h-full">
         <Buton white={false} bind:alive link="../">Plagiat</Buton>
       </div>
       <div
-        class="row-start-1 row-span-1 col-start-5 col-span-1 m-auto w-full h-full">
+        class="row-start-1 row-span-1 col-start-5 col-span-1 m-auto text-sm w-full h-full">
         <Buton white={false} bind:alive link="../">Profesori</Buton>
       </div>
       <div

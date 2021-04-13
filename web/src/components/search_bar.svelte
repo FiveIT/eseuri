@@ -57,7 +57,7 @@
   </div>
   <input
     type="text"
-    class=" font-normal font-sans relative z-3 my-auto  bg-white bg-opacity-0 placeholder-white focus:outline-none outline-none text-white ml-sm w-full"
+    class=" font-normal font-sans text-md relative z-3 my-auto  bg-white bg-opacity-0 placeholder-white focus:outline-none outline-none text-white ml-sm w-full"
     class:text-md={isBig}
     placeholder={Place_holder}
     bind:value={element}

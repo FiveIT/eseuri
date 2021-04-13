@@ -13,7 +13,7 @@
 {#if $isAuthenticated}
   <Auth0LogoutButton class="w-full h-full">
     <span
-      class=" mx-auto my-auto"
+      class=" mx-auto my-auto text-sm"
       class:text-white={white}
       class:text-black={!white}>
       Ieși din cont
@@ -22,7 +22,7 @@
 {:else}
   <Auth0LoginButton class="w-full h-full" preserveRoute={true}>
     <span
-      class="mx-auto my-auto "
+      class="mx-auto my-auto text-sm "
       class:text-white={white}
       class:text-black={!white}>
       Intră în cont

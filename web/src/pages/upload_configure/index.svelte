@@ -89,16 +89,16 @@
           Despre lucrare
         </div>
         <div
-          class="row-start-4 row-span-1 col-start-1 col-span-1 my-auto text-base text-center">
+          class="row-start-4 row-span-1 col-start-1 col-span-1 my-auto text-sm text-center">
           Tip
         </div>
         <div
-          class="row-start-4 row-span-1 col-start-2 col-span-1 my-auto text-center w-full h-full">
+          class="row-start-4 row-span-1 col-start-2 col-span-1 my-auto  text-center w-full h-full">
           <button
             on:click={() => {
               isessay = true
             }}
-            class="bg-opacity-0 focus:outline-none focus:md:underline my-auto text-base w-full h-full"
+            class="bg-opacity-0 focus:outline-none focus:md:underline my-auto text-sm w-full h-full"
             >Eseu</button>
         </div>
         <div
@@ -107,17 +107,18 @@
             on:click={() => {
               isessay = false
             }}
-            class=" relative bg-opacity-0 focus:outline-none focus:md:underline my-auto text-base w-full h-full"
+            class=" relative bg-opacity-0 focus:outline-none focus:md:underline my-auto text-sm w-full h-full"
             >Caracterizare</button>
         </div>
         {#if isessay}
           <div
-            class="row-start-5 row-span-1 col-start-1 col-span-1 my-auto text-center text-base">
+            class="row-start-5 row-span-1 col-start-1 col-span-1 my-auto text-center text-sm ">
             Titlu
           </div>
-          <div class="row-start-5 row-span-1 col-start-2 col-span-2 my-auto">
+          <div
+            class="row-start-5 row-span-1 col-start-2 col-span-2 my-auto w-full h-full">
             <input
-              class=" w-full h-full bg-opacity-0 bg-white text-center"
+              class=" w-full h-full bg-opacity-0 bg-white text-sm"
               placeholder="Scrie aici titlul..."
               bind:value={name} />
           </div>
@@ -126,16 +127,17 @@
             class="row-start-5 row-span-1 col-start-1 col-span-1 my-auto text-center text-base">
             Personaj
           </div>
-          <div class="row-start-5 row-span-1 col-start-2 col-span-2 my-auto">
+          <div
+            class="row-start-5 row-span-1 col-start-2 col-span-2 my-auto w-full h-full">
             <input
-              class=" w-full h-full bg-opacity-0 bg-white text-center"
+              class=" w-full h-full bg-opacity-0 bg-white text-sm "
               placeholder="Scrie aici numele personajului..."
               bind:value={name} />
           </div>
         {/if}
         <div
           class="row-start-8 row-span-1 col-start-3 col-span-1 my-auto mx-auto w-full h-full bg-blue rounded">
-          <button class="w-full h-full mx-auto my-auto text-white">
+          <button class="w-full h-full mx-auto my-auto text-sm text-white">
             Publică
           </button>
         </div>

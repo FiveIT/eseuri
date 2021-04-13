@@ -17,7 +17,7 @@
     class:text-white={white}
     class:text-black={!white}
     class:filter-shadow={white}
-    class="w-full h-full flex justify-center items-center font-sans no-underline outline-none text-center ">
+    class="w-full h-full flex justify-center items-center font-sans no-underline outline-none text-sm ">
     <slot />
   </div>
 </Link>

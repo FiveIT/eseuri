@@ -73,13 +73,15 @@
         <div
           class="blur  row-start-1 row-end-7 col-start-1 col-end-3 border-black border -mt-sm -m-md rounded  relative bg-white bg-opacity-50 " />
         <div
-          class="row-start-1 row-end- col-start-1 col-end-3 mx-auto my-auto relative">
+          class="row-start-1 row-end- col-start-1 col-end-3 mx-auto my-auto relative text-sm">
           Publică o lucrare
         </div>
 
         <div
           class=" flex row-start-2 row-end-3 col-start-1 rounded col-end-3 border border-black z-10 ">
-          <div class="mx-sm my-auto bold  w-1/2 relative">Scrie-o aici</div>
+          <div class="mx-sm my-auto bold  w-1/2 relative text-sm">
+            Scrie-o aici
+          </div>
           <div class="flex w-1/2 my-auto justify-end">
             <svg
               width="16"
@@ -98,7 +100,7 @@
           class="row-start-3 row-end-4 col-start-1 col-end-3 col-span-2 row-span-1 ">
           <Link bind:alive href="../upload_configure">
             <div class="flex w-full h-full rounded bg-blue relative">
-              <div class="ml-sm my-auto bold w-full text-white  ">
+              <div class="ml-sm my-auto bold w-full text-white text-sm  ">
                 Încarcă un document
               </div>
               <div class="flex w-1/2 my-auto justify-end">
@@ -119,7 +121,9 @@
         </div>
         <div
           class="flex  row-start-4 row-end-5 col-start-1 rounded col-end-3 text-white  bg-google-docs  relative">
-          <div class="ml-sm my-auto bold w-full  ">Încarcă din Google Docs</div>
+          <div class="ml-sm my-auto bold w-full text-sm  ">
+            Încarcă din Google Docs
+          </div>
           <div class="flex w-1/2 my-auto justify-end">
             <svg
               width="16"
@@ -135,12 +139,12 @@
           </div>
         </div>
         <div
-          class="row-start-5 row-end-6 col-start-1 rounded col-end-3  relative mx-auto my-auto">
+          class="row-start-5 row-end-6 col-start-1 rounded col-end-3  relative mx-auto my-auto text-sm">
           Ai scris de mână?
         </div>
         <div
           class=" flex row-start-6 row-end-7 col-start-1 rounded w-full h-full col-end-3 bg-red relative">
-          <div class=" mx-sm w-full my-auto bold text-white relative">
+          <div class=" mx-sm w-full my-auto bold text-white relative text-sm">
             Încarcă imagini/PDF
           </div>
           <div class=" flex w-1/2 my-auto justify-end">
@@ -158,7 +162,7 @@
           </div>
         </div>
 
-        <div class="row-start-5 row-span-1 col-start-4 col-end-6 ">
+        <div class="row-start-5 row-span-1 col-start-4 col-end-6 text-sm ">
           Perfecționează-ți-le cu cea mai extinsă colecție din România!
         </div>
       </div>

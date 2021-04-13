@@ -78,63 +78,64 @@
         Completează-ți profilul
       </div>
       <div
-        class="row-start-4 row-span-1 col-start-1 col-span-1 my-auto text-base text-center">
+        class="row-start-4 row-span-1 col-start-1 col-span-1 my-auto text-sm text-center">
         Numele tău
       </div>
       <div
         class="row-start-4 row-span-1 col-start-2 col-span-2 my-auto w-full h-full">
         <input
-          class=" w-full h-full bg-opacity-0 bg-white text-center"
+          class=" w-full h-full bg-opacity-0 bg-white text-sm"
           placeholder="Scrie-ți aici numele de familie..."
           bind:value={name} />
       </div>
       <div
-        class="row-start-5 row-span-1 col-start-1 col-span-1 my-auto text-base text-center">
+        class="row-start-5 row-span-1 col-start-1 col-span-1 my-auto text-sm text-center">
         Prenumele tău
       </div>
       <div
-        class="row-start-5 w-full h-full row-span-1 col-start-2 col-span-2 my-auto">
+        class="row-start-5 w-full h-full row-span-1 col-start-2 col-span-2  my-auto">
         <input
-          class=" w-full h-full bg-opacity-0 bg-white text-center"
+          class=" w-full h-full bg-opacity-0 bg-white text-sm"
           placeholder="Scrie-ți aici prenumele ..."
           bind:value={secondname} />
       </div>
       <div
-        class="row-start-6 row-span-1 col-start-1 col-span-1 my-auto text-base text-center">
+        class="row-start-6 row-span-1 col-start-1 col-span-1 my-auto text-sm text-center">
         Școala ta
       </div>
       <div
         class="row-start-6 w-full h-full row-span-1 col-start-2 col-span-2 my-auto ">
         <input
-          class=" w-full h-full bg-opacity-0 bg-white text-center"
+          class=" w-full h-full bg-opacity-0 bg-white text-sm"
           placeholder="Scrie aici numele școlii... ..."
           bind:value={school} />
       </div>
       <div
-        class="row-start-7 row-span-1 col-start-1 col-span-1 my-auto text-base text-center">
+        class="row-start-7 row-span-1 col-start-1 col-span-1 my-auto text-sm text-center">
         Ocupația ta
       </div>
       <div
         class="row-start-7 row-span-1 col-start-2 col-span-1 my-auto text-center w-full h-full">
         <button
-          class="bg-opacity-0 focus:outline-none focus:md:underline my-auto text-base w-full h-full"
+          class="bg-opacity-0 focus:outline-none focus:md:underline my-auto text-sm w-full h-full"
           >Elev</button>
       </div>
       <div
         class="row-start-7 row-span-1 col-start-3 col-span-1 my-auto text-center w-full h-full">
         <button
-          class=" relative bg-opacity-0 focus:outline-none focus:md:underline my-auto text-base w-full h-full"
+          class=" relative bg-opacity-0 focus:outline-none focus:md:underline my-auto text-sm w-full h-full"
           >Profesor</button>
       </div>
       <div
         class="row-start-8 row-span-1 col-start-3 col-span-1 my-auto mx-auto w-full h-full bg-blue rounded">
-        <button class="w-full h-full mx-auto my-auto text-white">
+        <button class="w-full h-full mx-auto my-auto text-sm text-white">
           Sunt gata
         </button>
       </div>
       <div
         class="row-start-8 row-span-1 col-start-4 my-auto col-span-1 bg-oppacity-0 publish w-full h-full">
-        <Buton white={false} bind:alive link="../">Înapoi</Buton>
+        <Buton white={false} bind:alive link="../"
+          ><div class="text-sm">Înapoi</div></Buton>
       </div>
     </div>
   </div>

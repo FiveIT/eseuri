@@ -103,7 +103,8 @@
         <div class="row-start-1 row-span-1 col-start-1  col-span-1 my-auto">
           <Logo />
         </div>
-        <div class=" row-start-1 row-span-1 col-start-3 col-end-6 my-auto">
+        <div
+          class=" row-start-1 row-span-1 col-start-3 col-end-6 text-sm my-auto">
           <Search
             page_name={undefined}
             isAtHome={true}
@@ -114,22 +115,24 @@
           class="w-full h-full row-start-1 row-span-1 col-start-6 col-span-1">
           <LoginButton white={true} />
         </div>
-        <div class="col-start-4 col-end-5 row-start-2 w-full h-full  my-auto ">
+        <div
+          class="col-start-4 col-end-5 row-start-2 w-full h-full text-sm my-auto ">
           <Buton white={true} bind:alive link="./">Plagiat</Buton>
         </div>
-        <div class="col-start-5 col-end-6 row-start-2 w-full h-full my-auto">
+        <div
+          class="col-start-5 col-end-6 row-start-2 w-full h-full text-sm my-auto">
           <Buton white={true} bind:alive link="./">Profesori</Buton>
         </div>
         <div
           class=" col-start-3 col-end-4 row-start-4 w-full h-full m-auto my-auto ">
           <button
-            class=" w-full h-full  bg-white bg-opacity-0 focus:outline-none outline-none focus:md:underline font-sans "
+            class=" w-full h-full  bg-white bg-opacity-0 focus:outline-none outline-none focus:underline  font-sans text-sm "
             on:click={show_eseuri}>Eseuri</button>
         </div>
         <div
           class="col-start-4 col-end-5 row-start-4 w-full h-full m-auto my-auto">
           <button
-            class="bg-white w-full h-full bg-opacity-0  focus:outline-none focus:md:underline  my-auto font-sans "
+            class="bg-white w-full h-full bg-opacity-0  focus:outline-none focus:underline  my-auto font-sans text-sm "
             on:click={show_caracterizari}>Caracterizari</button>
         </div>
         <div class="col-span-1 col-start-6 row-span-1 row-start-3 mx-auto">
@@ -141,7 +144,7 @@
             transition:fly={{ x: -100, duration: 100 }}>
             {#each eseuri as { name, scriitor }}
               <div rel="preload" class="h-full w-full">
-                <Essay bind:alive {name} {scriitor} white={false} />
+                <Essay bind:alive {name} {scriitor} works={0} white={false} />
               </div>
             {/each}
           </div>
@@ -150,7 +153,7 @@
             class="grid-cols-essays auto-rows-essays max-w-layout grid relative fixed grid row-start-5  col-start-1 col-end-7 overflow-x-visible w-full h-full gap-x-lg gap-y-sm "
             transition:fly={{ x: 100, duration: 100 }}>
             {#each caracterizari as { name, scriitor }}
-              <Essay bind:alive {name} {scriitor} white={false} />
+              <Essay bind:alive {name} {scriitor} works={0} white={false} />
             {/each}
           </div>
         {/if}
