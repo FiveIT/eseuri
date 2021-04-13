@@ -10,6 +10,8 @@
   import { onMount } from 'svelte'
   import Buton from '$/components/buton.svelte'
   let name = ''
+  let secondname = ''
+  let school = ''
   metatags.title = 'Eseuri'
 
   let mounted = false
@@ -79,7 +81,8 @@
         class="row-start-4 row-span-1 col-start-1 col-span-1 my-auto text-base text-center">
         Numele tău
       </div>
-      <div class="row-start-4 row-span-1 col-start-2 col-span-2 my-auto">
+      <div
+        class="row-start-4 row-span-1 col-start-2 col-span-2 my-auto w-full h-full">
         <input
           class=" w-full h-full bg-opacity-0 bg-white text-center"
           placeholder="Scrie-ți aici numele de familie..."
@@ -89,36 +92,38 @@
         class="row-start-5 row-span-1 col-start-1 col-span-1 my-auto text-base text-center">
         Prenumele tău
       </div>
-      <div class="row-start-5 row-span-1 col-start-2 col-span-2 my-auto">
+      <div
+        class="row-start-5 w-full h-full row-span-1 col-start-2 col-span-2 my-auto">
         <input
           class=" w-full h-full bg-opacity-0 bg-white text-center"
           placeholder="Scrie-ți aici prenumele ..."
-          bind:value={name} />
+          bind:value={secondname} />
       </div>
       <div
         class="row-start-6 row-span-1 col-start-1 col-span-1 my-auto text-base text-center">
         Școala ta
       </div>
-      <div class="row-start-6 row-span-1 col-start-2 col-span-2 my-auto">
+      <div
+        class="row-start-6 w-full h-full row-span-1 col-start-2 col-span-2 my-auto ">
         <input
           class=" w-full h-full bg-opacity-0 bg-white text-center"
           placeholder="Scrie aici numele școlii... ..."
-          bind:value={name} />
+          bind:value={school} />
       </div>
       <div
         class="row-start-7 row-span-1 col-start-1 col-span-1 my-auto text-base text-center">
         Ocupația ta
       </div>
       <div
-        class="row-start-7 row-span-1 col-start-2 col-span-1 my-auto text-center">
+        class="row-start-7 row-span-1 col-start-2 col-span-1 my-auto text-center w-full h-full">
         <button
-          class="bg-opacity-0 focus:outline-none focus:md:underline my-auto text-base"
+          class="bg-opacity-0 focus:outline-none focus:md:underline my-auto text-base w-full h-full"
           >Elev</button>
       </div>
       <div
-        class="row-start-7 row-span-1 col-start-3 col-span-1 my-auto text-center">
+        class="row-start-7 row-span-1 col-start-3 col-span-1 my-auto text-center w-full h-full">
         <button
-          class=" relative bg-opacity-0 focus:outline-none focus:md:underline my-auto text-base"
+          class=" relative bg-opacity-0 focus:outline-none focus:md:underline my-auto text-base w-full h-full"
           >Profesor</button>
       </div>
       <div
@@ -128,7 +133,7 @@
         </button>
       </div>
       <div
-        class="row-start-8 row-span-1 col-start-4 my-auto col-span-1 bg-oppacity-0 publish">
+        class="row-start-8 row-span-1 col-start-4 my-auto col-span-1 bg-oppacity-0 publish w-full h-full">
         <Buton white={false} bind:alive link="../">Înapoi</Buton>
       </div>
     </div>

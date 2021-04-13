@@ -6,7 +6,7 @@
   import { store as red } from '$/components/blob/Red.svelte'
   import { store as blue } from '$/components/blob/Blue.svelte'
   import { store as window } from '$/components/Window.svelte'
-  import { fly, fade } from 'svelte/transition'
+  import { fly } from 'svelte/transition'
   import { onMount } from 'svelte'
   import Buton from '$/components/buton.svelte'
   let name = ''
@@ -93,32 +93,29 @@
           Tip
         </div>
         <div
-          class="row-start-4 row-span-1 col-start-2 col-span-1 my-auto text-center">
+          class="row-start-4 row-span-1 col-start-2 col-span-1 my-auto text-center w-full h-full">
           <button
             on:click={() => {
               isessay = true
             }}
-            class="bg-opacity-0 focus:outline-none focus:md:underline my-auto text-base"
+            class="bg-opacity-0 focus:outline-none focus:md:underline my-auto text-base w-full h-full"
             >Eseu</button>
         </div>
         <div
-          class="row-start-4 row-span-1 col-start-3 col-span-1 my-auto text-center">
+          class="row-start-4 row-span-1 col-start-3 col-span-1 my-auto text-center w-full h-full">
           <button
             on:click={() => {
               isessay = false
             }}
-            class=" relative bg-opacity-0 focus:outline-none focus:md:underline my-auto text-base"
+            class=" relative bg-opacity-0 focus:outline-none focus:md:underline my-auto text-base w-full h-full"
             >Caracterizare</button>
         </div>
         {#if isessay}
           <div
-            transition:fade
             class="row-start-5 row-span-1 col-start-1 col-span-1 my-auto text-center text-base">
             Titlu
           </div>
-          <div
-            transition:fade
-            class="row-start-5 row-span-1 col-start-2 col-span-2 my-auto">
+          <div class="row-start-5 row-span-1 col-start-2 col-span-2 my-auto">
             <input
               class=" w-full h-full bg-opacity-0 bg-white text-center"
               placeholder="Scrie aici titlul..."
@@ -126,13 +123,10 @@
           </div>
         {:else}
           <div
-            transition:fade
             class="row-start-5 row-span-1 col-start-1 col-span-1 my-auto text-center text-base">
             Personaj
           </div>
-          <div
-            transition:fade
-            class="row-start-5 row-span-1 col-start-2 col-span-2 my-auto">
+          <div class="row-start-5 row-span-1 col-start-2 col-span-2 my-auto">
             <input
               class=" w-full h-full bg-opacity-0 bg-white text-center"
               placeholder="Scrie aici numele personajului..."
@@ -146,7 +140,7 @@
           </button>
         </div>
         <div
-          class="row-start-8 row-span-1 col-start-4 my-auto col-span-1 bg-oppacity-0 publish">
+          class="row-start-8 row-span-1 col-start-4 my-auto col-span-1 bg-oppacity-0 publish w-full h-full">
           <Buton white={false} bind:alive link="../upload">Înapoi</Buton>
         </div>
       </div>

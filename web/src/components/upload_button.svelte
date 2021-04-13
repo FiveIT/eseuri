@@ -9,8 +9,8 @@
     class="bg-orange rounded-full m-auto focus:outline-none outline-none focus:md:underline">
     <div class="mx-auto my-auto">
       <svg
-        width="18"
-        height="18"
+        width="25"
+        height="25"
         viewBox="0 0 18 18"
         fill="none"
         class="mx-auto my-auto"

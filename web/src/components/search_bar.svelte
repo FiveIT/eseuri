@@ -41,7 +41,7 @@
 
 <div class="flex flex-row">
   <div class="relative my-auto ml-sm">
-    <button on:click={search}>
+    <button class=" w-full" on:click={search}>
       <svg
         width="16"
         height="16"

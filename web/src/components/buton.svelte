@@ -12,12 +12,12 @@
   export let white = false
 </script>
 
-<div
-  class:text-white={white}
-  class:text-black={!white}
-  class:filter-shadow={white}
-  class=" font-sans no-underline outline-none text-center mt-auto mb-auto">
-  <Link bind:alive href={link}>
+<Link bind:alive href={link}>
+  <div
+    class:text-white={white}
+    class:text-black={!white}
+    class:filter-shadow={white}
+    class="w-full h-full flex justify-center items-center font-sans no-underline outline-none text-center ">
     <slot />
-  </Link>
-</div>
+  </div>
+</Link>

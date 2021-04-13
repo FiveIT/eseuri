@@ -154,16 +154,20 @@
           <Logo />
         </Link>
       </div>
-      <div class="row-start-1 row-span-1 col-start-3 col-span-1 m-auto">
+      <div
+        class="row-start-1 row-span-1 col-start-3 col-span-1 m-auto w-full h-full">
         <Buton white={false} bind:alive link="/search/Cauta">Cauta</Buton>
       </div>
-      <div class="row-start-1 row-span-1 col-start-4 col-span-1 m-auto">
+      <div
+        class="row-start-1 row-span-1 col-start-4 col-span-1 m-auto w-full h-full">
         <Buton white={false} bind:alive link="../">Plagiat</Buton>
       </div>
-      <div class="row-start-1 row-span-1 col-start-5 col-span-1 m-auto">
+      <div
+        class="row-start-1 row-span-1 col-start-5 col-span-1 m-auto w-full h-full">
         <Buton white={false} bind:alive link="../">Profesori</Buton>
       </div>
-      <div class="row-start-1 row-span-1 col-start-6 col-span-1 m-auto">
+      <div
+        class="row-start-1 row-span-1 col-start-6 col-span-1 m-auto w-full h-full">
         <LoginButton white={false} />
       </div>
       <div
@@ -184,7 +188,7 @@
               Caracterizare
             {/if}
           </div>
-          <div class="relative w-min "><FavButton /></div>
+          <div class="relative w-min mt-l_gap_row"><FavButton /></div>
         </div>
         <div>
           <p class="text-prose font-serif mt-l_gap_row">

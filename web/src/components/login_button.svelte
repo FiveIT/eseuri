@@ -11,14 +11,20 @@
 </script>
 
 {#if $isAuthenticated}
-  <Auth0LogoutButton>
-    <span class=" mx-auto" class:text-white={white} class:text-black={!white}>
+  <Auth0LogoutButton class="w-full h-full">
+    <span
+      class=" mx-auto my-auto"
+      class:text-white={white}
+      class:text-black={!white}>
       Ieși din cont
     </span>
   </Auth0LogoutButton>
 {:else}
-  <Auth0LoginButton preserveRoute={true}>
-    <span class=" mx-auto " class:text-white={white} class:text-black={!white}>
+  <Auth0LoginButton class="w-full h-full" preserveRoute={true}>
+    <span
+      class="mx-auto my-auto "
+      class:text-white={white}
+      class:text-black={!white}>
       Intră în cont
     </span>
   </Auth0LoginButton>

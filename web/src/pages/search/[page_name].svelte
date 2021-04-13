@@ -104,13 +104,16 @@
             <Logo white={true} />
           </Link>
         </div>
-        <div class="col-start-4 row-span-1 row-start-1 col-span-1 m-auto">
+        <div
+          class="col-start-4 row-span-1 row-start-1 col-span-1 m-auto w-full h-full">
           <Buton white={true} bind:alive link="../">Plagiat</Buton>
         </div>
-        <div class="col-start-5 col-span-1 row-span-1 row-start-1 m-auto">
+        <div
+          class="col-start-5 col-span-1 row-span-1 row-start-1 m-auto w-full h-full">
           <Buton white={true} bind:alive link="../">Profesori</Buton>
         </div>
-        <div class="col-start-6 row-span-1 row-start-1 col-span-1 m-auto">
+        <div
+          class="col-start-6 row-span-1 row-start-1 col-span-1 m-auto w-full h-full">
           <LoginButton white={true} />
         </div>
         <div
@@ -118,7 +121,7 @@
           <UploadButton bind:alive link={'../upload'} />
         </div>
 
-        <div class="col-start-1 row-span-1 row-start-3 col-end-4 my-auto">
+        <div class="col-start-1 row-span-1 row-start-3 col-end-4 my-auto ">
           <Search {page_name} isBig={true} isAtHome={false} bind:alive />
         </div>
         <button
