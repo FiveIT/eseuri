@@ -1,5 +1,5 @@
 import '@tepez/auth0-rules-types'
-import { IAuthRuleFunction } from '@tepez/auth0-rules-types'
+import { IAuth0RuleCallback, IAuth0RuleContext, IAuth0RuleUser } from '@tepez/auth0-rules-types'
 import * as request from 'request'
 import * as util from 'util'
 
@@ -34,7 +34,7 @@ interface Response<K extends QueryKey, V extends QueryValue> extends request.Res
 type ResponseInsert = Response<'insert_users_one', User | null>
 type ResponseSelect = Response<'users', [User]>
 
-export const callback: IAuthRuleFunction<{}, {}> = async (user, context, callback) => {
+async function callback(user: IAuth0RuleUser<{}, {}>, context: IAuth0RuleContext, callback: IAuth0RuleCallback<{}, {}>) {
   const { HASURA_GRAPHQL_API_URL, HASURA_GRAPHQL_ADMIN_SECRET } = configuration as any
   const post = util.promisify(request.post)
   const namespace = 'https://hasura.io/jwt/claims'
@@ -68,6 +68,8 @@ export const callback: IAuthRuleFunction<{}, {}> = async (user, context, callbac
   }
 
   function assertData<K extends QueryKey, V extends QueryValue>(body: Response<K, V>['body']): asserts body is Data<K, V> {
+    console.dir({ body }, { depth: null })
+
     if ('errors' in body.data) {
       throw new Error(body.data.errors.map(e => e.message).join('\n\n'))
     }
@@ -100,7 +102,6 @@ export const callback: IAuthRuleFunction<{}, {}> = async (user, context, callbac
       })
 
       assertData(body)
-
       ;({ id, role } = body.data.users[0])
     }
 
@@ -113,6 +114,7 @@ export const callback: IAuthRuleFunction<{}, {}> = async (user, context, callbac
 
     callback(null, user, context)
   } catch (err) {
+    console.error(err)
     callback(err)
   }
 }
