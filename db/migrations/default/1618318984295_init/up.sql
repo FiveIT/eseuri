@@ -72,10 +72,10 @@ alter table characters
 create table users_all
 (
     id          serial primary key,
-    first_name  text,
-    middle_name text,
-    last_name   text,
-    email       text,
+    first_name  text check (<> ''),
+    middle_name text check (<> ''),
+    last_name   text check (<> ''),
+    email       text check (<> ''),
     school_id   int,
     created_at  timestamp default (localtimestamp),
     updated_at  timestamp default null,
@@ -85,6 +85,18 @@ create table users_all
 );
 
 create index idx_users_school on users_all (school_id);
+
+alter table users_all
+    add constraint user_info_nullability check (
+        deleted_at is not null or
+        (
+            first_name is not null and
+            middle_name is not null and
+            last_name is not null and
+            email is not null and
+            school_id is not null
+        )
+    );
 
 alter table users_all
     add constraint school_user foreign key (school_id) references schools (id) on delete restrict on update cascade;
@@ -140,16 +152,22 @@ create trigger insert_teacher
 execute function trigger_insert_teacher();
 
 
-create function get_role(userID int) returns int
+create table user_role (
+    value text primary key
+);
+
+insert into user_role values ('student'), ('teacher');
+
+create function get_role(userID int) returns text
     stable as
 $$
 begin
     if exists(select 1 from students where user_id = userID) then
-        return 1;
+        return 'student';
     elseif exists(select 1 from teachers where user_id = userID) then
-        return 2;
+        return 'teacher';
     end if;
-    return 0;
+    return null;
 end;
 $$ language plpgsql;
 
@@ -171,16 +189,12 @@ create function trigger_insert_user() returns trigger as
 $$
 declare
     existingUser users;
-    role         int := new.role;
+    role         text := new.role;
 begin
     -- check if the user is already in the database and was not deleted before
     select * from users where auth0_id = new.auth0_id into existingUser;
     if existingUser.created_at is not null then
         return null;
-    end if;
-    -- determine role to be inserted with
-    if role is null then
-        role := 0;
     end if;
     insert into users_all (first_name, middle_name, last_name, school_id, auth0_id)
     values (new.first_name, new.middle_name, new.last_name, new.school_id, new.auth0_id)
@@ -194,9 +208,9 @@ begin
             updated_at  = localtimestamp,
             created_at  = localtimestamp
     returning id, first_name, middle_name, last_name, email, role, school_id, created_at, updated_at, auth0_id into new;
-    if new.role = 1 then
+    if new.role = 'student' then
         insert into students (user_id) values (new.id);
-    elseif new.role = 2 then
+    elseif new.role = 'teacher' then
         insert into teachers (user_id) values (new.id);
     end if;
     return new;
@@ -244,9 +258,9 @@ begin
         email       = null,
         deleted_at  = localtimestamp
     where id = old.id;
-    if old.role = 1 then
+    if old.role = 'student' then
         delete from students where user_id = old.id;
-    elseif old.role = 2 then
+    elseif old.role = 'teacher' then
         delete from teachers where user_id = old.id;
     end if;
     return null;
@@ -369,6 +383,8 @@ alter table works
     add constraint fk_user_works foreign key (user_id) references users_all (id) on delete set null on update cascade;
 alter table works
     add constraint fk_teacher_works foreign key (teacher_id) references teachers (user_id) on delete set null on update cascade;
+alter table works
+    add constraint fk_status_works foreign key (status) references work_status (value) on delete restrict on update cascade;
 
 create trigger update_works_status
     before update

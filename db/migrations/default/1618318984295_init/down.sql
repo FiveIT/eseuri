@@ -24,6 +24,7 @@ drop index idx_essays_title;
 drop table essays;
 
 drop trigger update_works_status on works;
+alter table works drop constraint fk_status_works;
 alter table works drop constraint fk_teacher_works;
 alter table works drop constraint fk_user_works;
 alter table works drop constraint unique_content;
@@ -60,6 +61,7 @@ drop trigger insert_user on users;
 drop function trigger_insert_user;
 drop view users;
 drop function get_role;
+drop table user_role;
 drop trigger insert_teacher on teachers;
 drop function trigger_insert_teacher;
 drop trigger insert_student on students;
@@ -69,6 +71,7 @@ drop table teachers;
 alter table students drop constraint fk_user_student;
 drop table students;
 alter table users_all drop constraint school_user;
+alter table users_all drop constraint user_info_nullability;
 drop index idx_users_school;
 drop table users_all;
 
