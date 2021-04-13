@@ -62,96 +62,94 @@
   }
 </script>
 
-<div
-  class="w-full bg-white bg-opacity-50 h-screen blur scrollbar-window-padding">
-  {#if alive}
-    <div transition:fly={{ x: +$window.width, duration: 300 }}>
+{#if alive}
+  <div
+    class="w-full bg-white bg-opacity-50 h-screen blur scrollbar-window-padding"
+    transition:fly={{ y: +$window.height, duration: 300 }}>
+    <div
+      class=" mt-xlg auto-rows-layout  max-w-layout  grid-cols-layout relative w-full gap-y-sm grid gap-x-md mx-auto">
+      <div class="row-start-1 row-span-1 col-start-1  col-span-1 my-auto">
+        <Link href="../" bind:alive>
+          <Logo />
+        </Link>
+      </div>
+      <div class=" row-start-1 row-span-1 col-start-3 col-span-1 my-auto">
+        <Buton white={false} disable={false} bind:alive link="./search"
+          >Caută</Buton>
+      </div>
       <div
-        class=" mt-xlg auto-rows-layout  max-w-layout  grid-cols-layout relative w-full gap-y-sm grid gap-x-md mx-auto">
-        <div class="row-start-1 row-span-1 col-start-1  col-span-1 my-auto">
-          <Link href="../" bind:alive>
-            <Logo />
-          </Link>
-        </div>
-        <div class=" row-start-1 row-span-1 col-start-3 col-span-1 my-auto">
-          <Buton white={false} disable={false} bind:alive link="./search"
-            >Caută</Buton>
+        class=" row-start-1 row-span-1 col-start-6 col-span-1 my-auto w-full h-full">
+        <LoginButton />
+      </div>
+      <div class="col-start-4 col-end-5 row-start-1  my-auto ">
+        <Buton white={false} disable={true} bind:alive link="./">Plagiat</Buton>
+      </div>
+      <div class="col-start-5 col-end-6 row-start-1 my-auto">
+        <Buton white={false} disable={true} bind:alive link="./"
+          >Profesori</Buton>
+      </div>
+      <div
+        class="row-start-3 row-span-1 col-start-1 col-span-3 my-auto text-md">
+        Despre lucrare
+      </div>
+      <div
+        class="row-start-4 row-span-1 col-start-1 col-span-1 my-auto text-sm text-center">
+        Tip
+      </div>
+      <div
+        class="row-start-4 row-span-1 col-start-2 col-span-1 my-auto  text-center w-full h-full">
+        <button
+          on:click={() => {
+            isessay = true
+          }}
+          class="bg-opacity-0 focus:outline-none  my-auto text-sm w-full h-full"
+          class:underline={isessay}>Eseu</button>
+      </div>
+      <div
+        class="row-start-4 row-span-1 col-start-3 col-span-1 my-auto text-center w-full h-full">
+        <button
+          on:click={() => {
+            isessay = false
+          }}
+          class=" relative bg-opacity-0 focus:outline-none  my-auto text-sm w-full h-full"
+          class:underline={!isessay}>Caracterizare</button>
+      </div>
+      {#if isessay}
+        <div
+          class="row-start-5 row-span-1 col-start-1 col-span-1 my-auto text-center text-sm ">
+          Titlu
         </div>
         <div
-          class=" row-start-1 row-span-1 col-start-6 col-span-1 my-auto w-full h-full">
-          <LoginButton />
+          class="row-start-5 row-span-1 col-start-2 col-span-2 my-auto w-full h-full">
+          <input
+            class=" w-full h-full bg-opacity-0 bg-white text-sm"
+            placeholder="Scrie aici titlul..."
+            bind:value={name} />
         </div>
-        <div class="col-start-4 col-end-5 row-start-1  my-auto ">
-          <Buton white={false} disable={true} bind:alive link="./"
-            >Plagiat</Buton>
-        </div>
-        <div class="col-start-5 col-end-6 row-start-1 my-auto">
-          <Buton white={false} disable={true} bind:alive link="./"
-            >Profesori</Buton>
+      {:else}
+        <div
+          class="row-start-5 row-span-1 col-start-1 col-span-1 my-auto text-center text-sm">
+          Personaj
         </div>
         <div
-          class="row-start-3 row-span-1 col-start-1 col-span-3 my-auto text-md">
-          Despre lucrare
+          class="row-start-5 row-span-1 col-start-2 col-span-2 my-auto w-full h-full">
+          <input
+            class=" w-full h-full bg-opacity-0 bg-white text-sm "
+            placeholder="Scrie aici numele personajului..."
+            bind:value={name} />
         </div>
-        <div
-          class="row-start-4 row-span-1 col-start-1 col-span-1 my-auto text-sm text-center">
-          Tip
-        </div>
-        <div
-          class="row-start-4 row-span-1 col-start-2 col-span-1 my-auto  text-center w-full h-full">
-          <button
-            on:click={() => {
-              isessay = true
-            }}
-            class="bg-opacity-0 focus:outline-none  my-auto text-sm w-full h-full"
-            class:underline={isessay}>Eseu</button>
-        </div>
-        <div
-          class="row-start-4 row-span-1 col-start-3 col-span-1 my-auto text-center w-full h-full">
-          <button
-            on:click={() => {
-              isessay = false
-            }}
-            class=" relative bg-opacity-0 focus:outline-none  my-auto text-sm w-full h-full"
-            class:underline={!isessay}>Caracterizare</button>
-        </div>
-        {#if isessay}
-          <div
-            class="row-start-5 row-span-1 col-start-1 col-span-1 my-auto text-center text-sm ">
-            Titlu
-          </div>
-          <div
-            class="row-start-5 row-span-1 col-start-2 col-span-2 my-auto w-full h-full">
-            <input
-              class=" w-full h-full bg-opacity-0 bg-white text-sm"
-              placeholder="Scrie aici titlul..."
-              bind:value={name} />
-          </div>
-        {:else}
-          <div
-            class="row-start-5 row-span-1 col-start-1 col-span-1 my-auto text-center text-base">
-            Personaj
-          </div>
-          <div
-            class="row-start-5 row-span-1 col-start-2 col-span-2 my-auto w-full h-full">
-            <input
-              class=" w-full h-full bg-opacity-0 bg-white text-sm "
-              placeholder="Scrie aici numele personajului..."
-              bind:value={name} />
-          </div>
-        {/if}
-        <div
-          class="row-start-8 row-span-1 col-start-3 col-span-1 my-auto mx-auto w-full h-full bg-blue rounded">
-          <button class="w-full h-full mx-auto my-auto text-sm text-white">
-            Publică
-          </button>
-        </div>
-        <div
-          class="row-start-8 row-span-1 col-start-4 my-auto col-span-1 bg-oppacity-0 publish w-full h-full">
-          <Buton white={false} disable={false} bind:alive link="../upload"
-            >Înapoi</Buton>
-        </div>
+      {/if}
+      <div
+        class="row-start-8 row-span-1 col-start-3 col-span-1 my-auto mx-auto w-full h-full bg-blue rounded">
+        <button class="w-full h-full mx-auto my-auto text-sm text-white">
+          Publică
+        </button>
+      </div>
+      <div
+        class="row-start-8 row-span-1 col-start-4 my-auto col-span-1 bg-oppacity-0 publish w-full h-full">
+        <Buton white={false} disable={false} bind:alive link="../upload"
+          >Înapoi</Buton>
       </div>
     </div>
-  {/if}
-</div>
+  </div>
+{/if}
