@@ -38,6 +38,15 @@ object_relationships:
       remote_table:
         name: teacher_requests
         schema: public
+- name: user_role
+  using:
+    manual_configuration:
+      column_mapping:
+        role: value
+      insertion_order: null
+      remote_table:
+        name: user_role
+        schema: public
 array_relationships:
 - name: bookmarks
   using:
@@ -76,7 +85,7 @@ select_permissions:
     - role
     filter:
       role:
-        _eq: 2
+        _eq: teacher
     limit: 10
   role: anonymous
 - permission:
@@ -95,7 +104,7 @@ select_permissions:
       - id:
           _eq: X-Hasura-User-Id
       - role:
-          _eq: 2
+          _eq: teacher
     limit: 10
   role: student
 - permission:
@@ -115,8 +124,8 @@ select_permissions:
           _eq: X-Hasura-User-Id
       - role:
           _in:
-          - 1
-          - 2
+          - student
+          - teacher
     limit: 10
   role: teacher
 update_permissions:

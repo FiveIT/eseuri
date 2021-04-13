@@ -12,6 +12,7 @@
 - "!include public_teacher_student_associations.yaml"
 - "!include public_teachers.yaml"
 - "!include public_titles.yaml"
+- "!include public_user_role.yaml"
 - "!include public_users.yaml"
 - "!include public_users_all.yaml"
 - "!include public_work_status.yaml"

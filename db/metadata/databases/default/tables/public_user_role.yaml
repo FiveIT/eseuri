@@ -1,0 +1,14 @@
+table:
+  name: user_role
+  schema: public
+is_enum: true
+array_relationships:
+- name: users
+  using:
+    manual_configuration:
+      column_mapping:
+        value: role
+      insertion_order: null
+      remote_table:
+        name: users
+        schema: public
