@@ -43,7 +43,7 @@ export default defineConfig({
         },
       ],
       title: [
-        '2.625rem',
+        '3.5rem',
         {
           lineHeight: '100%',
           letterSpacing: '-0.225rem',
