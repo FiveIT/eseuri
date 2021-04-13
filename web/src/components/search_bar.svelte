@@ -49,6 +49,7 @@
     class=" text-sm font-sans text-md relative z-3 my-auto bg-white bg-opacity-0 placeholder-white focus:outline-none outline-none text-white ml-sm w-full"
     class:text-md={isBig}
     class:filter-shadow={isAtHome}
+    class:filter-shadow-soft={!isAtHome}
     placeholder={Place_holder}
     bind:value={element}
     on:keydown={handleKeydown} />
