@@ -15,6 +15,7 @@
     <span
       class=" mx-auto my-auto text-sm"
       class:text-white={white}
+      class:filter-shadow={white}
       class:text-black={!white}>
       Ieși din cont
     </span>
@@ -22,6 +23,7 @@
 {:else}
   <Auth0LoginButton class="w-full h-full" preserveRoute={true}>
     <span
+      class:filter-shadow={white}
       class="mx-auto my-auto text-sm "
       class:text-white={white}
       class:text-black={!white}>
