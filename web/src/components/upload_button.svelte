@@ -1,5 +1,6 @@
 <script lang="ts">
   import Link from './link.svelte'
+  import Cross from 'svelte-material-icons/Plus.svelte'
   export let link: string
   export let alive: boolean
 </script>
@@ -8,17 +9,9 @@
   <button
     class="bg-orange rounded-full m-auto focus:outline-none outline-none focus:md:underline">
     <div class="mx-auto my-auto">
-      <svg
-        width="25"
-        height="25"
-        viewBox="0 0 18 18"
-        fill="none"
-        class="mx-auto my-auto"
-        xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M18 10.2857H10.2857V18H7.71429V10.2857H0V7.71429H7.71429V0H10.2857V7.71429H18V10.2857Z"
-          fill="#FCFAF9" />
-      </svg>
+      <div class="mx-auto w-min h-min">
+        <Cross size="2rem" color="white" />
+      </div>
     </div>
   </button>
 </Link>
