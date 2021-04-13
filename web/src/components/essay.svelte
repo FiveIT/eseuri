@@ -5,7 +5,6 @@
   export let works: number
   export let alive: boolean
   export let white: boolean
-  let size: string
 </script>
 
 <Link bind:alive href={`/essays/${name}`}>
