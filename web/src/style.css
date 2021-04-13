@@ -37,3 +37,6 @@
 .filter-shadow-large {
   filter: drop-shadow(var(--shadow-large));
 }
+.underline {
+  text-decoration: underline;
+}
