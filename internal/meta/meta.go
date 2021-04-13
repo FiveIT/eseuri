@@ -25,8 +25,8 @@ var (
 	FunctionsBasePath string
 	// TikaURL is the endpoint used to connect to the Apache Tika service.
 	TikaURL = os.Getenv("TIKA_URL")
-	// HasuraURL is the endpoint used to connect to the Hasura GraphQL service.
-	HasuraURL = os.Getenv("HASURA_URL")
+	// HasuraEndpoint is the endpoint used to connect to the Hasura GraphQL service.
+	HasuraEndpoint = os.Getenv("HASURA_GRAPHQL_ENDPOINT")
 	// HasuraAdminSecret is required to make requests to the Hasura GraphQL service.
 	HasuraAdminSecret = os.Getenv("HASURA_GRAPHQL_ADMIN_SECRET")
 )
