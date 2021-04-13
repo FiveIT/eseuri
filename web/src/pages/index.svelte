@@ -99,7 +99,7 @@
       class=" z-0 relative mt-xlg  "
       transition:fly={{ y: -$window.height, duration: 300 }}>
       <div
-        class="bg-transparent auto-rows-layout  max-w-layout  grid-cols-layout relative w-full grid gap-x-md gap-y-l_gap_row mx-auto">
+        class="bg-transparent auto-rows-layout  max-w-layout  grid-cols-layout relative w-full grid gap-x-md gap-y-sm mx-auto">
         <div class="row-start-1 row-span-1 col-start-1  col-span-1 my-auto">
           <Logo />
         </div>
@@ -137,7 +137,7 @@
         </div>
         {#if eseuri_chosen == true}
           <div
-            class="grid-cols-essays auto-rows-essays max-w-layout grid relative fixed grid row-start-5  col-start-1 col-end-7 overflow-x-visible w-full h-full gap-x-lg gap-y-l_gap_row "
+            class="grid-cols-essays auto-rows-essays max-w-layout grid relative fixed grid row-start-5  col-start-1 col-end-7 overflow-x-visible w-full h-full gap-x-lg gap-y-sm "
             transition:fly={{ x: -100, duration: 100 }}>
             {#each eseuri as { name, scriitor }}
               <div rel="preload" class="h-full w-full">
@@ -147,7 +147,7 @@
           </div>
         {:else}
           <div
-            class="grid-cols-essays auto-rows-essays max-w-layout grid relative fixed grid row-start-5  col-start-1 col-end-7 overflow-x-visible w-full h-full gap-x-lg gap-y-l_gap_row "
+            class="grid-cols-essays auto-rows-essays max-w-layout grid relative fixed grid row-start-5  col-start-1 col-end-7 overflow-x-visible w-full h-full gap-x-lg gap-y-sm "
             transition:fly={{ x: 100, duration: 100 }}>
             {#each caracterizari as { name, scriitor }}
               <Essay bind:alive {name} {scriitor} white={false} />

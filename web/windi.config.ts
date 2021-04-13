@@ -51,15 +51,12 @@ export default defineConfig({
       ],
     },
     spacing: {
-      sm: 'var(--row-gap, 0.625rem)',
+      sm: '0.625rem',
       md: '1.25rem',
       lg: 'var(--column-gap, 1.875rem)',
       xlg: '3.700rem',
       l_row: '4.133rem',
-      l_gap_row: '0.625rem',
       l_column: '7.555rem',
-      l_gap_column: '1.25rem',
-      l_gap_column: '1.875rem',
     },
     borderRadius: {
       DEFAULT: '0.625rem',

@@ -148,7 +148,7 @@
     class="parent relative mt-xlg scrollbar-window-padding"
     transition:fly={{ y: $window.height, duration: 300 }}>
     <div
-      class=" max-w-layout grid-cols-layout auto-rows-layout relative w-full grid gap-x-l_gap_column gap-y-l_gap_row  mx-md  ">
+      class=" max-w-layout grid-cols-layout auto-rows-layout relative w-full grid gap-x-md gap-y-sm  mx-md  ">
       <div class="row-start-1 row-span-1 col-start-1 col-span-1 m-auto">
         <Link bind:alive href="../">
           <Logo />
@@ -176,22 +176,21 @@
       </div>
       <div
         class=" col-start-2 col-end-6 row-start-3 flex flex-col justify-between ">
-        <h2 class="text-title font-serif mt-l_gap_row">
+        <h2 class="text-title font-serif mt-sm">
           {decodeURI(page_name)}
         </h2>
-        <div
-          class=" flex-row flex w-full justify-between align-middle mt-l_gap_row">
-          <div class="relative w-min mt-l_gap_row ">
+        <div class=" flex-row flex w-full justify-between align-middle mt-sm">
+          <div class="relative w-min mt-sm ">
             {#if essay_type}
               Eseu
             {:else}
               Caracterizare
             {/if}
           </div>
-          <div class="relative w-min mt-l_gap_row"><FavButton /></div>
+          <div class="relative w-min mt-sm"><FavButton /></div>
         </div>
         <div>
-          <p class="text-prose font-serif mt-l_gap_row">
+          <p class="text-prose font-serif mt-sm">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec est
             nibh, tristique non magna maximus, maximus ornare nibh. Ut cursus
             libero in mi egestas blandit. Quisque tincidunt enim nec ex
@@ -247,7 +246,7 @@
             pretium neque non eleifend
           </p>
         </div>
-        <div class="mt-l_gap_row">
+        <div class="mt-sm">
           <FavButton />
         </div>
       </div>

@@ -60,7 +60,7 @@
     transition:fly={{ y: -$window.height, duration: 300 }}>
     <div class=" relative ">
       <div
-        class="auto-rows-layout  max-w-layout  grid-cols-layout relative w-full grid gap-x-l_gap_column gap-y-l_gap_row mx-auto">
+        class="auto-rows-layout  max-w-layout  grid-cols-layout relative w-full grid gap-x-md gap-y-sm mx-auto">
         <div class="row-start-3 row-span-1  col-start-4 col-end-6">
           <Link href="../" bind:alive>
             <div class=" text-xl   font-serif font-bold ">
@@ -71,7 +71,7 @@
           </Link>
         </div>
         <div
-          class="blur  row-start-1 row-end-7 col-start-1 col-end-3 border-black border -mt-l_gap_row -m-l_gap_column rounded  relative bg-white bg-opacity-50 " />
+          class="blur  row-start-1 row-end-7 col-start-1 col-end-3 border-black border -mt-sm -m-md rounded  relative bg-white bg-opacity-50 " />
         <div
           class="row-start-1 row-end- col-start-1 col-end-3 mx-auto my-auto relative">
           Publică o lucrare

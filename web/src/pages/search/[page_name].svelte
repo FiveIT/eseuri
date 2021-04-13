@@ -98,7 +98,7 @@
     class=" w-full over flex flex-row justify-center flex-wrap relative scrollbar-window-padding">
     <div class=" mt-xlg relative " transition:fly={{ y: -1000, duration: 300 }}>
       <div
-        class="auto-rows-layout  max-w-layout  grid-cols-layout relative grid gap-x-l_gap_column gap-y-l_gap_row mx-auto">
+        class="auto-rows-layout  max-w-layout  grid-cols-layout relative grid gap-x-md gap-y-sm mx-auto">
         <div class="col-start-1 row-span-1 row-start-1 col-span-1 m-auto">
           <Link bind:alive href="../">
             <Logo white={true} />
@@ -133,7 +133,7 @@
 
         {#if eseuri_chosen == true}
           <div
-            class="grid-cols-essays auto-rows-essays max-w-layout grid relative fixed grid row-start-4  col-start-1 col-end-7 overflow-x-visible w-full h-full gap-x-l_gap_column gap-y-l_gap_row "
+            class="grid-cols-essays auto-rows-essays max-w-layout grid relative fixed grid row-start-4  col-start-1 col-end-7 overflow-x-visible w-full h-full gap-x-lg gap-y-sm "
             transition:fly={{ x: -100, duration: 100 }}>
             {#each eseuri as { name, scriitor }}
               <div rel="preload" class="h-full w-full">
@@ -143,7 +143,7 @@
           </div>
         {:else}
           <div
-            class="grid-cols-essays auto-rows-essays max-w-layout grid relative fixed grid row-start-4  col-start-1 col-end-7 overflow-x-visible w-full h-full gap-x-l_gap_column gap-y-l_gap_row "
+            class="grid-cols-essays auto-rows-essays max-w-layout grid relative fixed grid row-start-4  col-start-1 col-end-7 overflow-x-visible w-full h-full gap-x-lg gap-y-sm "
             transition:fly={{ x: 100, duration: 100 }}>
             {#each caracterizari as { name, scriitor }}
               <Essay bind:alive {name} {scriitor} white={true} />

@@ -66,7 +66,7 @@
   {#if alive}
     <div transition:fly={{ x: +$window.width, duration: 300 }}>
       <div
-        class=" mt-xlg auto-rows-layout  max-w-layout  grid-cols-layout relative w-full grid gap-x-l_gap_column gap-y-l_gap_row mx-auto">
+        class=" mt-xlg auto-rows-layout  max-w-layout  grid-cols-layout relative w-full gap-y-sm grid gap-x-md mx-auto">
         <div class="row-start-1 row-span-1 col-start-1  col-span-1 my-auto">
           <Link href="../" bind:alive>
             <Logo />

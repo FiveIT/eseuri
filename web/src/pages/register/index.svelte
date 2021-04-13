@@ -67,7 +67,7 @@
     class="blur bg-white bg-opacity-50 w-full h-screen scrollbar-window-padding "
     transition:fly={{ y: -$window.height, duration: 300 }}>
     <div
-      class="auto-rows-layout  max-w-layout  grid-cols-layout relative grid gap-x-l_gap_column gap-y-l_gap_row mt-xlg mx-auto">
+      class="auto-rows-layout  max-w-layout  grid-cols-layout relative grid gap-x-md gap-y-sm mt-xlg mx-auto">
       <div class="row-start-1 row-span-1 col-start-1  col-span-1 my-auto">
         <Link href="../" bind:alive>
           <Logo />
