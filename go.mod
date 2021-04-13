@@ -7,6 +7,7 @@ require (
 	github.com/awslabs/aws-lambda-go-api-proxy v0.9.0
 	github.com/gofiber/fiber/v2 v2.5.0
 	github.com/gofiber/redirect/v2 v2.1.0
+	github.com/google/go-tika v0.1.21 // indirect
 	github.com/klauspost/compress v1.11.12 // indirect
 	github.com/rs/zerolog v1.20.0 // indirect
 	github.com/valyala/fasthttp v1.22.0 // indirect
