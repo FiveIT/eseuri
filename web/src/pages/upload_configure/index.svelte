@@ -74,7 +74,7 @@
         </Link>
       </div>
       <div class=" row-start-1 row-span-1 col-start-3 col-span-1 my-auto">
-        <Buton white={false} disable={false} bind:alive link="./search"
+        <Buton white={false} disable={false} bind:alive link="../search/Cauta"
           >Caută</Buton>
       </div>
       <div
