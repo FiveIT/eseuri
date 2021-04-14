@@ -54,7 +54,7 @@ async function callback(user: IAuth0RuleUser<{}, {}>, context: IAuth0RuleContext
       }
     }
   `
-  const url = HASURA_GRAPHQL_API_URL
+  const url = `${HASURA_GRAPHQL_API_URL}/v1/graphql`
   const headers = {
     'X-Hasura-Admin-Secret': HASURA_GRAPHQL_ADMIN_SECRET,
     'X-Hasura-Use-Backend-Only-Permissions': 'true',
