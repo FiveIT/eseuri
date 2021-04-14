@@ -105,11 +105,11 @@ async function callback(user: IAuth0RuleUser<{}, {}>, context: IAuth0RuleContext
       ;({ id, role } = body.data.users[0])
     }
 
-    context.accessToken[namespace] = {
-      'X-Hasura-Default-Role': 'anonymous',
+    context.idToken[namespace] = {
+      'X-Hasura-Default-Role': role || 'anonymous',
       'X-Hasura-Role': role || 'anonymous',
       'X-Hasura-Allowed-Roles': ['anonymous', role].filter(x => !!x),
-      'X-Hasura-User-Id': id,
+      'X-Hasura-User-Id': `${id}`,
     }
 
     callback(null, user, context)
