@@ -10,11 +10,12 @@ services:
       - go_mod_cache:/root/go/pkg/mod
       - go_build_cache:/root/.cache/go-build
       - cypress_cache:/root/.cache/Cypress
+    env_file:
+      - ../.env.local
     environment:
       - FUNCTIONS_URL=http://localhost:4000
       - TIKA_URL=http://tika:9998
       - HASURA_GRAPHQL_ENDPOINT=http://hasura:8080
-      - HASURA_GRAPHQL_ADMIN_SECRET=ghimbir
       - GOOGLE_APPLICATION_CREDENTIALS=/root/.config/gcloud/application_default_credentials.json
       - CGO_ENABLED=0
       - DISPLAY=host.docker.internal:0.0
@@ -39,11 +40,12 @@ services:
     ports:
       - 8080:8080
     restart: always
+    env_file:
+      - ../.env.local
     environment:
       - HASURA_GRAPHQL_UNAUTHORIZED_ROLE=anonymous
       - HASURA_GRAPHQL_DATABASE_URL=postgres://postgres:sarmale@db:5432/postgres
       - HASURA_GRAPHQL_ENABLE_CONSOLE=true
-      - HASURA_GRAPHQL_ADMIN_SECRET=ghimbir
     depends_on:
       - db
   db:
