@@ -286,7 +286,7 @@ create table teacher_requests
 create index idx_teacher_requests_status on teacher_requests (status);
 
 create trigger teacher_requests_after_status_update
-    after update
+    before update
     on teacher_requests
     for each row
     when (old.status is distinct from new.status)
