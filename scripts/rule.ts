@@ -75,6 +75,10 @@ async function callback(user: IAuth0RuleUser<{}, {}>, context: IAuth0RuleContext
     }
   }
 
+  function truthy<T>(v: T): v is NonNullable<T> {
+    return !!v
+  }
+
   try {
     const { body }: ResponseInsert = await post({
       url,
@@ -107,8 +111,7 @@ async function callback(user: IAuth0RuleUser<{}, {}>, context: IAuth0RuleContext
 
     context.idToken[namespace] = {
       'X-Hasura-Default-Role': role || 'anonymous',
-      'X-Hasura-Role': role || 'anonymous',
-      'X-Hasura-Allowed-Roles': ['anonymous', role].filter(x => !!x),
+      'X-Hasura-Allowed-Roles': ['anonymous', role].filter(truthy),
       'X-Hasura-User-Id': `${id}`,
     }
 
