@@ -35,7 +35,7 @@ type ResponseInsert = Response<'insert_users_one', User | null>
 type ResponseSelect = Response<'users', [User]>
 
 async function callback(user: IAuth0RuleUser<{}, {}>, context: IAuth0RuleContext, callback: IAuth0RuleCallback<{}, {}>) {
-  const { HASURA_GRAPHQL_API_URL, HASURA_GRAPHQL_ADMIN_SECRET } = configuration as any
+  const { HASURA_GRAPHQL_ENDPOINT, HASURA_GRAPHQL_ADMIN_SECRET } = configuration as any
   const post = util.promisify(request.post)
   const namespace = 'https://hasura.io/jwt/claims'
   const insertUserQuery = `
@@ -54,7 +54,7 @@ async function callback(user: IAuth0RuleUser<{}, {}>, context: IAuth0RuleContext
       }
     }
   `
-  const url = `${HASURA_GRAPHQL_API_URL}/v1/graphql`
+  const url = `${HASURA_GRAPHQL_ENDPOINT}/v1/graphql`
   const headers = {
     'X-Hasura-Admin-Secret': HASURA_GRAPHQL_ADMIN_SECRET,
     'X-Hasura-Use-Backend-Only-Permissions': 'true',
