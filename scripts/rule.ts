@@ -89,9 +89,9 @@ async function callback(user: IAuth0RuleUser<{}, {}>, context: IAuth0RuleContext
 
     let id = body.data.insert_users_one?.id
     let role = body.data.insert_users_one?.role
-    let isRegistered = true
+    let isRegistered = false
     if (typeof id === 'undefined') {
-      isRegistered = false
+      isRegistered = true
       const { body }: ResponseSelect = await post({
         url,
         headers,
