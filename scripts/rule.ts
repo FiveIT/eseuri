@@ -8,6 +8,7 @@ type Role = 'student' | 'teacher'
 interface User {
   id: number
   role: Role
+  updated_at: string | null
 }
 
 interface Error {
@@ -43,6 +44,7 @@ async function callback(user: IAuth0RuleUser<{}, {}>, context: IAuth0RuleContext
       insert_users_one(object: {first_name: $firstName, middle_name: $middleName, last_name: $lastName, email: $email, role: "student", auth0_id: $auth0ID}) {
         id
         role
+        updated_at
       }
     }
   `
@@ -51,6 +53,7 @@ async function callback(user: IAuth0RuleUser<{}, {}>, context: IAuth0RuleContext
       users(where: {auth0_id: {_eq: $auth0ID}}) {
         id
         role
+        updated_at
       }
     }
   `
@@ -89,9 +92,8 @@ async function callback(user: IAuth0RuleUser<{}, {}>, context: IAuth0RuleContext
 
     let id = body.data.insert_users_one?.id
     let role = body.data.insert_users_one?.role
-    let isRegistered = false
+    let updated_at = body.data.insert_users_one?.updated_at
     if (typeof id === 'undefined') {
-      isRegistered = true
       const { body }: ResponseSelect = await post({
         url,
         headers,
@@ -104,7 +106,7 @@ async function callback(user: IAuth0RuleUser<{}, {}>, context: IAuth0RuleContext
       })
 
       assertData(body)
-      ;({ id, role } = body.data.users[0])
+      ;({ id, role, updated_at } = body.data.users[0])
     }
 
     if (typeof role === 'undefined') {
@@ -117,7 +119,7 @@ async function callback(user: IAuth0RuleUser<{}, {}>, context: IAuth0RuleContext
       'X-Hasura-User-Id': `${id}`,
     }
     context.accessToken['https://eseuri.com'] = {
-      isRegistered,
+      hasCompletedRegistration: updated_at !== null,
     }
 
     callback(null, user, context)
