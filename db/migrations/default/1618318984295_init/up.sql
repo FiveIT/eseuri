@@ -184,8 +184,8 @@ begin
     if existingUser.created_at is not null then
         return null;
     end if;
-    insert into users_all (first_name, middle_name, last_name, school_id, auth0_id)
-    values (new.first_name, new.middle_name, new.last_name, new.school_id, new.auth0_id)
+    insert into users_all (first_name, middle_name, last_name, email, school_id, auth0_id)
+    values (new.first_name, new.middle_name, new.last_name, new.email, new.school_id, new.auth0_id)
     on conflict on constraint users_all_auth0_id_key do update
         set first_name  = new.first_name,
             middle_name = new.middle_name,
