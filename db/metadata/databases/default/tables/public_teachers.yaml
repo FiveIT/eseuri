@@ -54,9 +54,3 @@ update_permissions:
       user_id:
         _eq: X-Hasura-User-Id
   role: teacher
-delete_permissions:
-- permission:
-    filter:
-      user_id:
-        _eq: X-Hasura-User-Id
-  role: teacher
