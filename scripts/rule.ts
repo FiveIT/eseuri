@@ -3,7 +3,7 @@ import { IAuth0RuleCallback, IAuth0RuleContext, IAuth0RuleUser } from '@tepez/au
 import * as request from 'request'
 import * as util from 'util'
 
-type Role = 'student' | 'teacher' | null
+type Role = 'student' | 'teacher'
 
 interface User {
   id: number
@@ -40,7 +40,7 @@ async function callback(user: IAuth0RuleUser<{}, {}>, context: IAuth0RuleContext
   const namespace = 'https://hasura.io/jwt/claims'
   const insertUserQuery = `
     mutation insertUser($firstName: String!, $middleName: String, $lastName: String!, $email: String!, $auth0ID: String!) {
-      insert_users_one(object: {first_name: $firstName, middle_name: $middleName, last_name: $lastName, email: $email, auth0_id: $auth0ID}) {
+      insert_users_one(object: {first_name: $firstName, middle_name: $middleName, last_name: $lastName, email: $email, role: "student", auth0_id: $auth0ID}) {
         id
         role
       }
@@ -75,10 +75,6 @@ async function callback(user: IAuth0RuleUser<{}, {}>, context: IAuth0RuleContext
     }
   }
 
-  function truthy<T>(v: T): v is NonNullable<T> {
-    return !!v
-  }
-
   try {
     const { body }: ResponseInsert = await post({
       url,
@@ -109,9 +105,13 @@ async function callback(user: IAuth0RuleUser<{}, {}>, context: IAuth0RuleContext
       ;({ id, role } = body.data.users[0])
     }
 
+    if (typeof role === 'undefined') {
+      throw new Error('Role is still undefined, something went terribly wrong!')
+    }
+
     context.idToken[namespace] = {
-      'X-Hasura-Default-Role': role || 'anonymous',
-      'X-Hasura-Allowed-Roles': ['anonymous', role].filter(truthy),
+      'X-Hasura-Default-Role': role,
+      'X-Hasura-Allowed-Roles': ['anonymous', role],
       'X-Hasura-User-Id': `${id}`,
     }
 
