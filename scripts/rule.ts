@@ -116,7 +116,7 @@ async function callback(user: IAuth0RuleUser<{}, {}>, context: IAuth0RuleContext
       'X-Hasura-Allowed-Roles': ['anonymous', role],
       'X-Hasura-User-Id': `${id}`,
     }
-    context.accessToken['eseuri'] = {
+    context.accessToken['https://eseuri.com'] = {
       isRegistered,
     }
 
