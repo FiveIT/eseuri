@@ -89,7 +89,9 @@ async function callback(user: IAuth0RuleUser<{}, {}>, context: IAuth0RuleContext
 
     let id = body.data.insert_users_one?.id
     let role = body.data.insert_users_one?.role
+    let isRegistered = true
     if (typeof id === 'undefined') {
+      isRegistered = false
       const { body }: ResponseSelect = await post({
         url,
         headers,
@@ -109,10 +111,13 @@ async function callback(user: IAuth0RuleUser<{}, {}>, context: IAuth0RuleContext
       throw new Error('Role is still undefined, something went terribly wrong!')
     }
 
-    context.idToken[namespace] = {
+    context.accessToken[namespace] = {
       'X-Hasura-Default-Role': role,
       'X-Hasura-Allowed-Roles': ['anonymous', role],
       'X-Hasura-User-Id': `${id}`,
+    }
+    context.accessToken['eseuri'] = {
+      isRegistered,
     }
 
     callback(null, user, context)
