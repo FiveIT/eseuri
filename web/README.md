@@ -46,6 +46,15 @@ Deschide dashboard-ul Cypress:
 pnpm e2e
 ```
 
+## Informații utile
+
+Pentru a interoga backend-ul și baza de date ale aplicației, sunt disponibile următoarele variabile:
+
+```js
+import.meta.env.VITE_FUNCTIONS_URL // backend
+import.meta.env.VITE_HASURA_GRAPHQL_ENDPOINT // baza de date
+```
+
 ## Configurarea Cypress
 
 Pentru a putea rula Cypress, mai trebuie făcuți următorii pași (înainte de a deschide container-ul):
