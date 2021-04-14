@@ -1,8 +1,6 @@
 package server
 
 import (
-	"bytes"
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -11,6 +9,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/google/go-tika/tika"
+	"github.com/machinebox/graphql"
 )
 
 type Eseu struct {
@@ -20,12 +19,18 @@ type Eseu struct {
 	Creator       string `form:"auth_token"`
 	CorectorCerut string `form:"corector_cerut"`
 }
-
-const succes_code = 200
+type response struct {
+	Name  string
+	Items struct {
+		Records []struct {
+			Title string
+		}
+	}
+}
 
 func New() *fiber.App {
 	app := fiber.New()
-	post_client := &http.Client{}
+	graphqlClient := graphql.NewClient(meta.HasuraURL)
 	client := tika.NewClient(nil, meta.TikaURL)
 
 	var routes fiber.Router = app
@@ -43,54 +48,45 @@ func New() *fiber.App {
 		return c.SendString("sarmale cu ghimbir")
 	})
 
-	routes.Post("/upload", func(context *fiber.Ctx) error {
+	routes.Post("/upload", func(c *fiber.Ctx) (err error) {
+		defer func() {
+			if err != nil {
+				err = fmt.Errorf("upload error: %w", err)
+			}
+		}()
 		infoLucrare := new(Eseu)
-		if err := context.BodyParser(infoLucrare); err != nil {
-			return fmt.Errorf("error: %w", err)
+		if err := c.BodyParser(infoLucrare); err != nil {
+			return fmt.Errorf("eroare de upload: %w", err)
 		}
-		fisierraw, err := context.FormFile("document")
-		if err != nil {
-			return fmt.Errorf("error: %w", err)
-		}
+		fisierraw, err := c.FormFile("document")
 		fisierprocesat, err := fisierraw.Open()
-		if err != nil {
-			return fmt.Errorf("error: %w", err)
-		}
-		body, err := client.Parse(context.Context(), fisierprocesat)
-		if err != nil {
-			return fmt.Errorf("error: %w", err)
-		}
-
-		// log.Println(infoLucrare.Caracter)
+		body, err := client.Parse(c.Context(), fisierprocesat)
+		log.Println(infoLucrare.Caracter)
 
 		// Se face request la Hasura de inserare cu detaliile din form
+		authorizationtoken := fmt.Sprintf("Bearer %s", infoLucrare.Creator)
 
-		reqBody, err := json.Marshal(map[string]string{})
-
-		if err != nil {
-			return fmt.Errorf("error: %w", err)
+		req := graphql.NewRequest(`
+		mutation($content: String!, $userID: Int!) {
+  			insert_works_one(object: {user_id: $userID, content: $content, status: pending) {
+    			work_id
+  				}
 		}
-
-		req, err := http.NewRequestWithContext(context.Context(), "POST", meta.HasuraURL, bytes.NewBuffer(reqBody))
-
-		if err != nil {
-			return fmt.Errorf("error: %w", err)
-		}
-
-		req.Header.Add("Authorization", "Bearer "+infoLucrare.Creator)
+`)
+		req.Var("content", body)
+		req.Var("userID", infoLucrare.Creator)
+		req.Header.Add("Authorization", authorizationtoken)
 		req.Header.Add("content-type", "application/json")
-
-		resp, err := post_client.Do(req)
-
-		if err != nil {
+		// req.Header.Add("X-Hasura-Admin-Secret", meta.HasuraKey)
+		// req.Header.Add("X-Hasura-Use-Backend-Only-Permissions", "true")
+		var resp response
+		if err := graphqlClient.Run(c.Context(), req, &resp); err != nil {
 			return fmt.Errorf("error: %w", err)
 		}
 
-		if resp.StatusCode == succes_code {
-			log.Println("Success!")
-		}
+		log.Println(resp)
 
-		return context.SendString(body)
+		return c.SendString(body)
 	})
 
 	// 404 Not found handler

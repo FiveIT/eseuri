@@ -9,6 +9,7 @@ require (
 	github.com/gofiber/redirect/v2 v2.1.0
 	github.com/google/go-tika v0.1.21 // indirect
 	github.com/klauspost/compress v1.11.12 // indirect
+	github.com/machinebox/graphql v0.2.2 // indirect
 	github.com/rs/zerolog v1.20.0 // indirect
 	github.com/valyala/fasthttp v1.22.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect
