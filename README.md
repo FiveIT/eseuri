@@ -124,7 +124,7 @@ Vezi [README-ul de pe frontend] pentru restul comenzilor.
 
 Înainte de toate, nu uita să faci publică instanța locală Hasura!
 
-Pentru a accesa consola Hasura, deschide o pagină în browser la adresa `http://localhost:8080`.
+Pentru a accesa consola Hasura, deschide o pagină în browser la adresa `http://localhost:8080`. Indiferent dacă o accesezi local sau prin endpoint-ul public, admin-secret-ul configurat de tine este necesar.
 
 Dacă vrei să inspectezi baza de date locală PostgreSQL, te poți conecta la ea cu următorul URL de conectare (dinafara container-ului de development, de exemplu cu [Jetbrains DataGrip][5]):
 
