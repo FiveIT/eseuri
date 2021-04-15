@@ -23,7 +23,7 @@ create table schools
 (
     id         serial primary key,
     name       text       not null,
-    short_name text,
+    short_name text default null,
     county_id  varchar(2) not null
 );
 
@@ -69,14 +69,24 @@ alter table characters
 
 -- users tables, triggers, views, and functions
 
+create extension citext;
+create domain email as citext
+    check (value ~
+           '^[a-zA-Z0-9.!#$%&''''*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$');
+
 create table users_all
 (
     id          serial primary key,
-    first_name  text check (first_name <> ''),
-    middle_name text check (middle_name <> ''),
-    last_name   text check (last_name <> ''),
-    email       text check (email <> ''),
-    school_id   int,
+    first_name  text
+        constraint registered_user_first_name check (updated_at is null or first_name is not null and first_name <> ''),
+    middle_name text
+        constraint registered_user_middle_name check (middle_name <> ''),
+    last_name   text
+        constraint registered_user_last_name check (updated_at is null or last_name is not null and last_name <> ''),
+    email       email
+        constraint users_all_email_key check (deleted_at is null or email is not null) unique,
+    school_id   int
+        constraint registered_user_school check (updated_at is null or school_id is not null),
     created_at  timestamp default (localtimestamp),
     updated_at  timestamp default null,
     deleted_at  timestamp default null,
@@ -100,8 +110,8 @@ alter table students
 create table teachers
 (
     user_id   int primary key,
-    about     text,
-    image_url text
+    about     text default null,
+    image_url text default null
 );
 
 alter table teachers
@@ -139,13 +149,6 @@ create trigger insert_teacher
     for each row
 execute function trigger_insert_teacher();
 
-
-create table user_role (
-    value text primary key
-);
-
-insert into user_role values ('student'), ('teacher');
-
 create function get_role(userID int) returns text
     stable as
 $$
@@ -182,7 +185,7 @@ begin
     -- check if the user is already in the database and was not deleted before
     select * from users where auth0_id = new.auth0_id into existingUser;
     if existingUser.created_at is not null then
-        return null;
+        return existingUser;
     end if;
     insert into users_all (first_name, middle_name, last_name, email, school_id, auth0_id)
     values (new.first_name, new.middle_name, new.last_name, new.email, new.school_id, new.auth0_id)
@@ -193,13 +196,13 @@ begin
             email       = new.email,
             school_id   = new.school_id,
             deleted_at  = null,
-            updated_at  = localtimestamp,
+            updated_at  = null,
             created_at  = localtimestamp
     returning id, first_name, middle_name, last_name, email, role, school_id, created_at, updated_at, auth0_id into new;
-    if new.role = 'student' then
-        insert into students (user_id) values (new.id);
-    elseif new.role = 'teacher' then
+    if new.role = 'teacher' then
         insert into teachers (user_id) values (new.id);
+    else
+        insert into students (user_id) values (new.id);
     end if;
     return new;
 end;
@@ -219,7 +222,6 @@ begin
     set first_name  = new.first_name,
         middle_name = new.middle_name,
         last_name   = new.last_name,
-        email       = new.email,
         school_id   = new.school_id,
         updated_at  = new.updated_at
     where id = new.id;
@@ -237,19 +239,19 @@ create function trigger_delete_user() returns trigger as
 $$
 begin
     update users_all
-    set first_name  = null,
+    set deleted_at  = localtimestamp,
+        first_name  = null,
         middle_name = null,
         last_name   = null,
         school_id   = null,
         created_at  = null,
         updated_at  = null,
-        email       = null,
-        deleted_at  = localtimestamp
+        email       = null
     where id = old.id;
-    if old.role = 'student' then
-        delete from students where user_id = old.id;
-    elseif old.role = 'teacher' then
+    if old.role = 'teacher' then
         delete from teachers where user_id = old.id;
+    else
+        delete from students where user_id = old.id;
     end if;
     return null;
 end;
@@ -267,7 +269,7 @@ execute function trigger_delete_user();
 create table teacher_request_status
 (
     value   text primary key,
-    comment text
+    comment text default null
 );
 
 insert into teacher_request_status (value, comment)
@@ -280,7 +282,7 @@ create table teacher_requests
     user_id    int primary key,
     status     text      not null default 'pending',
     created_at timestamp not null default (localtimestamp),
-    updated_at timestamp
+    updated_at timestamp default null
 );
 
 create index idx_teacher_requests_status on teacher_requests (status);
@@ -300,7 +302,7 @@ alter table teacher_requests
 create table teacher_student_association_status
 (
     value   text primary key,
-    comment text
+    comment text default null
 );
 
 insert into teacher_student_association_status (value, comment)
@@ -337,7 +339,7 @@ alter table teacher_student_associations
 create table work_status
 (
     value   text primary key,
-    comment text
+    comment text default null
 );
 
 insert into work_status (value, comment)
@@ -352,11 +354,11 @@ create table works
 (
     id         serial primary key,
     user_id    int       not null,
-    teacher_id int,
+    teacher_id int default null,
     status     text      not null default 'draft',
     content    text      not null,
     created_at timestamp not null default (localtimestamp),
-    updated_at timestamp
+    updated_at timestamp default null
 );
 
 create index idx_works_user on works (user_id);
