@@ -1,0 +1,38 @@
+table:
+  name: authors
+  schema: public
+array_relationships:
+- name: titles
+  using:
+    foreign_key_constraint_on:
+      column: author_id
+      table:
+        name: titles
+        schema: public
+select_permissions:
+- permission:
+    columns:
+    - first_name
+    - last_name
+    - middle_name
+    filter: {}
+    limit: 50
+  role: anonymous
+- permission:
+    columns:
+    - first_name
+    - id
+    - last_name
+    - middle_name
+    filter: {}
+    limit: 50
+  role: student
+- permission:
+    columns:
+    - first_name
+    - id
+    - last_name
+    - middle_name
+    filter: {}
+    limit: 50
+  role: teacher

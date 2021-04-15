@@ -1,3 +1,31 @@
+/*
+Package meta provides different constants and functions
+used for obtaining endpoints to different external services
+or for determining the environment the application
+is deployed in.
+
+Checking for Netlify environment:
+
+	// the opposite would mean the app runs in local development
+	if meta.IsNetlify {
+		log.Println("Deployed on Netlify!")
+	}
+
+Obtaining the Hasura GraphQL endpoint and admin secret:
+
+	// or "/v1beta/relay for the GraphQL relay API"
+	endpoint := fmt.Sprintf("%s/v1/graphql", meta.HasuraEndpoint)
+	secret := meta.HasuraAdminSecret
+
+Obtaining the Apache Tika endpoint:
+
+	endpoint := meta.TikaEndpoint
+
+Obtaining the endpoint of the application's client (for configuring CORS, for example):
+
+	clientURL := meta.URL()
+
+*/
 package meta
 
 import (
@@ -23,10 +51,12 @@ var (
 	IsBranchDeploy = context == "branch-deploy"
 	// FunctionsBasePath is the location of the function handler when deployed to Netlify.
 	FunctionsBasePath string
-	// TikaURL is the endpoint used to connect to the Apache Tika service.
-	TikaURL = os.Getenv("TIKA_URL")
-	// HasuraURL is the endpoint used to connect to the Hasura GraphQL service.
-	HasuraURL = os.Getenv("HASURA_URL")
+	// TikaEndpoint is the endpoint used to connect to the Apache Tika service.
+	TikaEndpoint = os.Getenv("TIKA_URL")
+	// HasuraEndpoint is the endpoint used to connect to the Hasura GraphQL service.
+	HasuraEndpoint = os.Getenv("HASURA_GRAPHQL_ENDPOINT")
+	// HasuraAdminSecret is required to make requests to the Hasura GraphQL service.
+	HasuraAdminSecret = os.Getenv("HASURA_GRAPHQL_ADMIN_SECRET")
 )
 
 // URL returns the addres at which the client app exists.

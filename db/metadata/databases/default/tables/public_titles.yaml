@@ -1,0 +1,45 @@
+table:
+  name: titles
+  schema: public
+object_relationships:
+- name: author
+  using:
+    foreign_key_constraint_on: author_id
+array_relationships:
+- name: characters
+  using:
+    foreign_key_constraint_on:
+      column: title_id
+      table:
+        name: characters
+        schema: public
+- name: essays
+  using:
+    foreign_key_constraint_on:
+      column: title_id
+      table:
+        name: essays
+        schema: public
+select_permissions:
+- permission:
+    columns:
+    - name
+    filter: {}
+    limit: 50
+  role: anonymous
+- permission:
+    columns:
+    - id
+    - name
+    - author_id
+    filter: {}
+    limit: 50
+  role: student
+- permission:
+    columns:
+    - id
+    - name
+    - author_id
+    filter: {}
+    limit: 50
+  role: teacher

@@ -1,0 +1,56 @@
+table:
+  name: users_all
+  schema: public
+object_relationships:
+- name: school
+  using:
+    foreign_key_constraint_on: school_id
+- name: student
+  using:
+    manual_configuration:
+      column_mapping:
+        id: user_id
+      insertion_order: null
+      remote_table:
+        name: students
+        schema: public
+- name: teacher
+  using:
+    manual_configuration:
+      column_mapping:
+        id: user_id
+      insertion_order: null
+      remote_table:
+        name: teachers
+        schema: public
+- name: teacher_request
+  using:
+    manual_configuration:
+      column_mapping:
+        id: user_id
+      insertion_order: null
+      remote_table:
+        name: teacher_requests
+        schema: public
+array_relationships:
+- name: bookmarks
+  using:
+    foreign_key_constraint_on:
+      column: user_id
+      table:
+        name: bookmarks
+        schema: public
+- name: teacher_student_associations
+  using:
+    foreign_key_constraint_on:
+      column: initiator_id
+      table:
+        name: teacher_student_associations
+        schema: public
+- name: works
+  using:
+    foreign_key_constraint_on:
+      column: user_id
+      table:
+        name: works
+        schema: public

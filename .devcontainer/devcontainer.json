@@ -59,7 +59,9 @@
       "./windi.config.ts": true,
       "config_credentials": true,
       ".github": true,
-      ".pnpm-debug.log": true
+      ".pnpm-debug.log": true,
+      ".idea": true,
+      ".gitmodules": true
     }
   },
   "extensions": [

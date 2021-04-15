@@ -1,0 +1,3 @@
+[submodule "db/eseuri-metadata-preprocess"]
+	path = db/eseuri-metadata-preprocess
+	url = https://github.com/FiveIT/eseuri-metadata-preprocess

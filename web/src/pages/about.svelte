@@ -58,7 +58,7 @@
 
   const script = getBeeMovieScript()
 
-  const composition = fetch(`${import.meta.env.FUNCTIONS_URL}/`).then(res =>
+  const composition = fetch(`${import.meta.env.VITE_FUNCTIONS_URL}/`).then(res =>
     res.text()
   )
 
