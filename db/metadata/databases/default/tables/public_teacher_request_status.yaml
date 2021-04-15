@@ -1,0 +1,12 @@
+table:
+  name: teacher_request_status
+  schema: public
+is_enum: true
+array_relationships:
+- name: teacher_requests
+  using:
+    foreign_key_constraint_on:
+      column: status
+      table:
+        name: teacher_requests
+        schema: public

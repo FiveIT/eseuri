@@ -11,11 +11,27 @@ on:
       - '**/*.go'
 name: Backend
 jobs:
-  ci:
-    name: CI
+  format:
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: Jerome1337/goimports-action@v1.0.3
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: golangci/golangci-lint-action@v2
+  test:
+    runs-on: ubuntu-latest
+    container: tmaxmax/fiveit-template:ci
+    services:
+      tika:
+        image: apache/tika:1.25
     env:
-      COMPOSE_FILE: .devcontainer/docker-compose.yml
+      TIKA_URL: http://tika:9998
+      HASURA_GRAPHQL_ADMIN_SECRET: ${{ secrets.HASURA_GRAPHQL_ADMIN_SECRET }}
+      HASURA_GRAPHQL_ENDPOINT: ${{ secrets.HASURA_GRAPHQL_ENDPOINT }}
+      CGO_ENABLED: 0
     steps:
       - uses: actions/checkout@v2
       - uses: google-github-actions/setup-gcloud@v0.2.0
@@ -23,9 +39,4 @@ jobs:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           service_account_key: ${{ secrets.GCP_SA_KEY }}
           export_default_credentials: true
-      - name: Format
-        uses: Jerome1337/goimports-action@v1.0.3
-      - name: Lint
-        uses: golangci/golangci-lint-action@v2
-      - name: Test
-        run: docker-compose run dev go test -v ./...
+      - run: go test -v ./...

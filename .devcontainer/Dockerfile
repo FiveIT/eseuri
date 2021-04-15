@@ -2,12 +2,17 @@ FROM cypress/base:14.16.0
 
 SHELL ["/bin/bash", "-c"]
 
-RUN apt-get update -y && apt-get install wget curl make -y && apt-get upgrade -y
+RUN apt-get update -y && \
+  apt-get install wget curl make software-properties-common -y && \
+  echo 'deb [trusted=yes] http://ppa.launchpad.net/git-core/ppa/ubuntu xenial main' >> /etc/apt/sources.list && \
+  apt-get update -y && \
+  apt-get install git -y && \
+  apt-get upgrade -y
 
 RUN touch /root/.bashrc
 
 # Install Go and required tooling
-ARG GO_VERSION=1.16.2
+ARG GO_VERSION=1.16.3
 ENV GO_FILENAME=go${GO_VERSION}.linux-amd64.tar.gz
 ENV PATH /usr/local/go/bin:$PATH
 RUN wget https://golang.org/dl/${GO_FILENAME} \
@@ -27,14 +32,18 @@ RUN echo 'export PATH=/root/go/bin:$PATH'
 ENV PATH /root/go/bin:${PATH}
 
 # Install NVM, Node, and pnpm 
-ARG NODE_VERSION=15.13.0
+ARG NODE_VERSION=15.14.0
 ENV NVM_DIR /root/.nvm
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash \
   && . ${NVM_DIR}/nvm.sh \
-  && nvm install ${NODE_VERSION} \
+  && nvm install "${NODE_VERSION}" \
   && npm i -g npm \
   && npm i -g pnpm \
-  && echo 'export PATH=/root/.nvm/versions/node/v${NODE_VERSION}/bin:$PATH' > /root/.bashrc
+  && echo 'export PATH=/root/.nvm/versions/node/v${NODE_VERSION}/bin:$PATH' >> /root/.bashrc
 ENV PATH /root/.nvm/versions/node/v${NODE_VERSION}/bin:$PATH
+
+# Install Hasura CLI
+RUN curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash && \
+  hasura update-cli --version v2.0.0-alpha.7
 
 WORKDIR /workspace

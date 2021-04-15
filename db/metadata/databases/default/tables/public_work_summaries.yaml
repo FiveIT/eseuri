@@ -1,0 +1,41 @@
+table:
+  name: work_summaries
+  schema: public
+object_relationships:
+- name: work_type
+  using:
+    manual_configuration:
+      column_mapping:
+        type: value
+      insertion_order: null
+      remote_table:
+        name: work_type
+        schema: public
+select_permissions:
+- permission:
+    columns:
+    - work_count
+    - creator
+    - name
+    - type
+    filter: {}
+    limit: 50
+  role: anonymous
+- permission:
+    columns:
+    - work_count
+    - creator
+    - name
+    - type
+    filter: {}
+    limit: 50
+  role: student
+- permission:
+    columns:
+    - name
+    - creator
+    - type
+    - work_count
+    filter: {}
+    limit: 50
+  role: teacher

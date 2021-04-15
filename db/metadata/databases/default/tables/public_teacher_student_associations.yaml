@@ -1,0 +1,86 @@
+table:
+  name: teacher_student_associations
+  schema: public
+object_relationships:
+- name: student
+  using:
+    foreign_key_constraint_on: student_id
+- name: teacher
+  using:
+    foreign_key_constraint_on: teacher_id
+- name: teacher_student_association_status
+  using:
+    foreign_key_constraint_on: status
+- name: users_all
+  using:
+    foreign_key_constraint_on: initiator_id
+insert_permissions:
+- permission:
+    backend_only: false
+    check:
+      _and:
+      - student_id:
+          _eq: X-Hasura-User-Id
+      - initiator_id:
+          _eq: X-Hasura-User-Id
+    columns:
+    - teacher_id
+    set:
+      initiator_id: x-hasura-User-Id
+      student_id: x-hasura-User-Id
+  role: student
+- permission:
+    backend_only: false
+    check:
+      _and:
+      - initiator_id:
+          _eq: X-Hasura-User-Id
+      - teacher_id:
+          _eq: X-Hasura-User-Id
+    columns:
+    - student_id
+    set:
+      initiator_id: x-hasura-User-Id
+      teacher_id: x-hasura-User-Id
+  role: teacher
+select_permissions:
+- permission:
+    allow_aggregations: true
+    columns: []
+    filter:
+      status:
+        _eq: approved
+  role: anonymous
+- permission:
+    allow_aggregations: true
+    columns:
+    - status
+    filter:
+      _or:
+      - status:
+          _eq: approved
+      - student_id:
+          _eq: X-Hasura-User-Id
+  role: student
+- permission:
+    allow_aggregations: true
+    columns:
+    - status
+    filter:
+      _or:
+      - status:
+          _eq: approved
+      - teacher_id:
+          _eq: X-Hasura-User-Id
+  role: teacher
+delete_permissions:
+- permission:
+    filter:
+      student_id:
+        _eq: X-Hasura-User-Id
+  role: student
+- permission:
+    filter:
+      teacher_id:
+        _eq: X-Hasura-User-Id
+  role: teacher
