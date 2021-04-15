@@ -182,6 +182,9 @@ declare
     existingUser users;
     role         text := new.role;
 begin
+    if role is null or role not in ('student', 'teacher') then
+        role := 'student';
+    end if;
     -- check if the user is already in the database and was not deleted before
     select * from users where auth0_id = new.auth0_id into existingUser;
     if existingUser.created_at is not null then
