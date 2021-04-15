@@ -11,16 +11,33 @@ on:
       - web/**/*
 name: Frontend
 jobs:
-  ci:
-    name: CI
+  format:
     runs-on: ubuntu-latest
+    steps:
+      - uses: checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+      - run: cd web
+      - uses: creyD/prettier_action@v3.1
+        with:
+          prettier_options: -w src
+          prettier_plugins: prettier-plugin-svelte
+          only_changed: true
+  ci:
+    runs-on: ubuntu-latest
+    container: tmaxmax/fiveit-template:ci
     env:
-      COMPOSE_FILE: .devcontainer/docker-compose.yml
+      VITE_FUNCTIONS_URL: http://localhost:4000
+      VITE_HASURA_GRAPHQL_ENDPOINT: ${{ secrets.HASURA_GRAPHQL_ENDPOINT }}
+      VITE_AUTH0_DOMAIN: ${{ secrets.AUTH0_DOMAIN }}
+      VITE_AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
+      VITE_AUTH0_AUDIENCE: ${{ secrets.AUTH0_AUDIENCE }}
     steps:
       - uses: actions/checkout@v2
-      - uses: google-github-actions/setup-gcloud@v0.2.0
-        with:
-          project_id: ${{ secrets.GCP_PROJECT_ID }}
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
-          export_default_credentials: true
-      - run: docker-compose run dev /bin/bash -c "cd /workspace/web && pnpm i --frozen-lockfile --no-optional && pnpm format && pnpm validate && pnpm t"
+      - run: cd web
+      - name: Install dependencies
+        run: pnpm i --no-optional
+      - name: Lint and validate code
+        run: pnpm validate
+      - name: Test code
+        run: pnpm t
