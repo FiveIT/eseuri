@@ -34,10 +34,12 @@ jobs:
       VITE_AUTH0_AUDIENCE: ${{ secrets.AUTH0_AUDIENCE }}
     steps:
       - uses: actions/checkout@v2
-      - run: cd web
       - name: Install dependencies
         run: pnpm i --no-optional
+        working-directory: web
       - name: Lint and validate code
         run: pnpm validate
+        working-directory: web
       - name: Test code
         run: pnpm t
+        working-directory: web
