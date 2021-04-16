@@ -63,7 +63,7 @@ Va apărea pe ecran, printre altele, o linie asemănătoare cu următoarea:
 aeb8f6d9182aeb.localhost.run tunneled with tls termination, https://aeb8f6d9182aeb.localhost.run
 ```
 
-URL-ul ce începe cu `https` este endpoint-ul public pentru Hasura. Dacă îl accesezi, se va deschide consola Hasura, care te va pune să introduci admin-secret-ul instanței. Nu este nevoie să faci acest lucru, iar de altfel nu va fi nevoie să folosești local endpoint-ul public. Endpoint-ul utilizat în container este configurat într-o variabilă de mediu numită `HASURA_GRAPHQL_ENDPOINT`, care poate fi utilizată în cod. Este necesar să păstrezi deschis SSH-ul cât timp ai nevoie de Auth0. Linkul nu se schimbă între rulări.
+URL-ul ce începe cu `https` este endpoint-ul public pentru Hasura. Dacă îl accesezi, se va deschide consola Hasura, care te va pune să introduci admin-secret-ul instanței. Nu este nevoie să faci acest lucru, iar de altfel nu va fi nevoie să folosești local endpoint-ul public. Endpoint-ul utilizat în container este configurat într-o variabilă de mediu numită `HASURA_GRAPHQL_ENDPOINT`, care poate fi utilizată în cod. Este necesar să păstrezi deschis SSH-ul cât timp ai nevoie de Auth0. Linkul se schimbă automat după o perioadă de timp, așa că periodic va trebui reintrodusă variabila `HASURA_GRAPHQL_ENDPOINT` în Auth0.
 
 După ce ai obținut un endpoint public pentru instanța Hasura, în VSCode, într-un terminal din container, rulează următoarele comenzi:
 
@@ -82,11 +82,9 @@ Salvează regula, și întoarce-te la meniul principal pentru reguli. În secți
 
 Configurarea este acum finalizată, iar baza de date și Auth0 sunt funcționale în dezvoltare!
 
-NOTĂ: Dacă subit nu mai funcționează autentificarea, și folosești localhost.run, se poate ori să nu fi deschis tunelul SSH, ori să se fi schimbat totuși URL-ul atribuit. Dacă are loc a doua variantă, nu trebuie decât să schimbi valoarea variabilei `HASURA_GRAPHQL_ENDPOINT` în setările regulilor Auth0 ca autentificarea să funcționeze din nou.
+NOTĂ: Dacă nu ai cum să te ocupi individual de acest proces (nu ai acces la proiectul Auth0 al organizației și/sau nu reușești să urmezi pașii), roagă pe cineva care poate să te asiste.
 
-Dacă regula de autentificare se schimbă, va trebui, după un `git pull`, să îi instalezi dependențele, să o compilezi și să o copiezi la tine în Auth0 din nou, în locul versiunii anterioare.
-
-Dacă nu ai cum să te ocupi individual de acest proces (nu ai acces la proiectul Auth0 al organizației și/sau nu reușești să urmezi pașii), roagă pe cineva care poate să te asiste.
+De altfel, Github Actions va folosi tot timpul regula Auth0 de autentificare de pe `master`, iar dacă regula ta locală este diferită vor putea exista erori. Nu există o rezolvare evidentă a acestei probleme, așa că la un pull request va trebui schimbată manual regula utilizată de Github.
 
 Urmează apoi pașii din [README-ul de pe frontend] pentru a finaliza configurarea, dacă ai nevoie de aplicația de client.
 
