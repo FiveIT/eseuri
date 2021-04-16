@@ -6,6 +6,7 @@ html {
 body {
   height: 100%;
   overflow-x: hidden;
+  padding-left: calc(100vw - 100%);
 }
 
 @supports (backdrop-filter: blur(100px)) or
@@ -14,9 +15,6 @@ body {
     -webkit-backdrop-filter: blur(100px);
     backdrop-filter: blur(100px);
   }
-}
-.scrollbar-window-padding {
-  padding-left: calc(100vw - 100%);
 }
 
 :root {
