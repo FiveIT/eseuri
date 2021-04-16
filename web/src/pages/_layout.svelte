@@ -4,7 +4,7 @@
   import Blue from '$/components/blob/Blue.svelte'
 </script>
 
-<div class="w-full h-full relative pb-lg">
+<div class="w-full h-full relative">
   <div class="bg-white  bg fixed w-full h-full mb-lg -z-1000 blur" />
   <Orange />
   <Red />
