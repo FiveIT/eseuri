@@ -2,46 +2,46 @@ table:
   name: characterizations
   schema: public
 object_relationships:
-- name: character
-  using:
-    foreign_key_constraint_on: character_id
-- name: work
-  using:
-    foreign_key_constraint_on: work_id
+  - name: character
+    using:
+      foreign_key_constraint_on: character_id
+  - name: work
+    using:
+      foreign_key_constraint_on: work_id
 insert_permissions:
-- permission:
-    backend_only: true
-    check:
-      work:
-        user_id:
-          _eq: X-Hasura-User-Id
-    columns:
-    - character_id
-    - work_id
-  role: student
-- permission:
-    backend_only: true
-    check:
-      work:
-        user_id:
-          _eq: X-Hasura-User-Id
-    columns:
-    - character_id
-    - work_id
-  role: teacher
+  - permission:
+      backend_only: true
+      check:
+        work:
+          user_id:
+            _eq: X-Hasura-User-Id
+      columns:
+        - character_id
+        - work_id
+    role: student
+  - permission:
+      backend_only: true
+      check:
+        work:
+          user_id:
+            _eq: X-Hasura-User-Id
+      columns:
+        - character_id
+        - work_id
+    role: teacher
 select_permissions:
-- permission:
-    columns: []
-    filter: {}
-    limit: 10
-  role: anonymous
-- permission:
-    columns: []
-    filter: {}
-    limit: 10
-  role: student
-- permission:
-    columns: []
-    filter: {}
-    limit: 10
-  role: teacher
+  - permission:
+      columns: []
+      filter: {}
+      limit: 50
+    role: anonymous
+  - permission:
+      columns: []
+      filter: {}
+      limit: 50
+    role: student
+  - permission:
+      columns: []
+      filter: {}
+      limit: 50
+    role: teacher

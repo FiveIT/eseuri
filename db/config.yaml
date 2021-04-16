@@ -4,4 +4,3 @@ actions:
   kind: synchronous
   handler_webhook_baseurl: http://localhost:3000
 # TODO: Create function for retrieving randomly ordered list of works from the database
-# TODO: Relax the fetched row count limits

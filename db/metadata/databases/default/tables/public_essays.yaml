@@ -2,52 +2,52 @@ table:
   name: essays
   schema: public
 object_relationships:
-- name: title
-  using:
-    foreign_key_constraint_on: title_id
-- name: work
-  using:
-    foreign_key_constraint_on: work_id
+  - name: title
+    using:
+      foreign_key_constraint_on: title_id
+  - name: work
+    using:
+      foreign_key_constraint_on: work_id
 insert_permissions:
-- permission:
-    backend_only: true
-    check:
-      work:
-        user_id:
-          _eq: X-Hasura-User-Id
-    columns:
-    - title_id
-    - work_id
-  role: student
-- permission:
-    backend_only: true
-    check:
-      work:
-        user_id:
-          _eq: X-Hasura-User-Id
-    columns:
-    - title_id
-    - work_id
-  role: teacher
-select_permissions:
-- permission:
-    columns: []
-    filter: {}
-    limit: 10
-  role: anonymous
-- permission:
-    columns: []
-    filter:
-      _or:
-      - work:
-          status:
-            _eq: approved
-      - work:
+  - permission:
+      backend_only: true
+      check:
+        work:
           user_id:
             _eq: X-Hasura-User-Id
-    limit: 10
-  role: student
-- permission:
-    columns: []
-    filter: {}
-  role: teacher
+      columns:
+        - title_id
+        - work_id
+    role: student
+  - permission:
+      backend_only: true
+      check:
+        work:
+          user_id:
+            _eq: X-Hasura-User-Id
+      columns:
+        - title_id
+        - work_id
+    role: teacher
+select_permissions:
+  - permission:
+      columns: []
+      filter: {}
+      limit: 50
+    role: anonymous
+  - permission:
+      columns: []
+      filter:
+        _or:
+          - work:
+              status:
+                _eq: approved
+          - work:
+              user_id:
+                _eq: X-Hasura-User-Id
+      limit: 50
+    role: student
+  - permission:
+      columns: []
+      filter: {}
+    role: teacher

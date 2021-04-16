@@ -2,55 +2,55 @@ table:
   name: teachers
   schema: public
 object_relationships:
-- name: users_all
-  using:
-    foreign_key_constraint_on: user_id
+  - name: users_all
+    using:
+      foreign_key_constraint_on: user_id
 array_relationships:
-- name: teacher_student_associations
-  using:
-    foreign_key_constraint_on:
-      column: teacher_id
-      table:
-        name: teacher_student_associations
-        schema: public
-- name: works
-  using:
-    foreign_key_constraint_on:
-      column: teacher_id
-      table:
-        name: works
-        schema: public
+  - name: teacher_student_associations
+    using:
+      foreign_key_constraint_on:
+        column: teacher_id
+        table:
+          name: teacher_student_associations
+          schema: public
+  - name: works
+    using:
+      foreign_key_constraint_on:
+        column: teacher_id
+        table:
+          name: works
+          schema: public
 select_permissions:
-- permission:
-    columns:
-    - about
-    - image_url
-    filter: {}
-    limit: 10
-  role: anonymous
-- permission:
-    columns:
-    - about
-    - image_url
-    - user_id
-    filter: {}
-    limit: 10
-  role: student
-- permission:
-    columns:
-    - about
-    - image_url
-    - user_id
-    filter: {}
-    limit: 10
-  role: teacher
+  - permission:
+      columns:
+        - about
+        - image_url
+      filter: {}
+      limit: 50
+    role: anonymous
+  - permission:
+      columns:
+        - about
+        - image_url
+        - user_id
+      filter: {}
+      limit: 50
+    role: student
+  - permission:
+      columns:
+        - about
+        - image_url
+        - user_id
+      filter: {}
+      limit: 50
+    role: teacher
 update_permissions:
-- permission:
-    check: null
-    columns:
-    - about
-    - image_url
-    filter:
-      user_id:
-        _eq: X-Hasura-User-Id
-  role: teacher
+  - permission:
+      check: null
+      columns:
+        - about
+        - image_url
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
+    role: teacher
