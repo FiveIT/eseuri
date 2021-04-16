@@ -5,23 +5,22 @@
     TRANSITION_EASING as easing,
     TRANSITION_DURATION as duration,
   } from '$/globals'
-  import { defaultBlobProps } from './store'
+  import { getBlobProps } from './store'
+  import type { BlobPropsInput } from './store'
 
-  export let props = defaultBlobProps()
+  export let props: BlobPropsInput
 
   export let width: number
   export let height: number
 
-  let { x, y, scale, rotate, flip, zIndex } = props
-  $: ({ x, y, scale, rotate, flip, zIndex } = props)
-  $: flipX = flip.x * 180
-  $: flipY = flip.y * 180
+  $: p = getBlobProps(props)
 </script>
 
 <div
   transition:fade={{ duration, easing }}
   class="fixed"
-  style="--x: {x}px; --y: {y}px; --scale: {scale}; --rotate: {rotate}deg; --flipX: {flipX}deg; --flipY: {flipY}deg; --z-index: {zIndex};"
+  style="--x: {p.x}px; --y: {p.y}px; --scale: {p.scale}; --rotate: {p.rotate}deg; --flipX: {p
+    .flip.x}deg; --flipY: {p.flip.y}deg; --z-index: {p.zIndex};"
   bind:offsetWidth={width}
   bind:offsetHeight={height}>
   <slot />

@@ -1,3 +1,4 @@
+import type { Writable } from 'svelte/store'
 import { tweened } from 'svelte/motion'
 
 import {
@@ -19,7 +20,9 @@ export interface BlobProps {
   zIndex: number
 }
 
-export function defaultBlobProps(): BlobProps {
+export type BlobPropsInput = Partial<BlobProps>
+
+export function getBlobProps(overrides: BlobPropsInput = {}): BlobProps {
   return {
     x: 0,
     y: 0,
@@ -30,19 +33,18 @@ export function defaultBlobProps(): BlobProps {
       y: 0,
     },
     zIndex: -1,
+    ...overrides,
   }
 }
 
-export default () => {
-  const { subscribe, set } = tweened<BlobProps>(defaultBlobProps(), {
+export default (): Writable<BlobPropsInput> & {
+  width: number
+  height: number
+} => ({
+  ...tweened<BlobPropsInput>(getBlobProps(), {
     duration,
     easing,
-  })
-
-  return {
-    subscribe,
-    set,
-    width: 0,
-    height: 0,
-  }
-}
+  }),
+  width: 0,
+  height: 0,
+})
