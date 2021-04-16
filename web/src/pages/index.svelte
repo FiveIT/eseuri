@@ -32,7 +32,7 @@
     { name: 'O scrisoare pierduta', scriitor: 'I.L. Caragiale' },
     {
       name: 'Ultima noapte de dragoste. Intaia noapte de razboi',
-      scriitor: 'Camil Petrescu',
+      scriitor: 'Ultima noapte de dragoste. Intaia noapte de razboi',
     },
     { name: 'Moara cu noroc', scriitor: 'Ioan Slavici' },
   ]

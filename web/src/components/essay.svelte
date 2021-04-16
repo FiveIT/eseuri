@@ -1,10 +1,23 @@
 <script lang="ts">
   import Link from './link.svelte'
+
   export let name: string
   export let scriitor: string
   export let works: number
   export let alive: boolean
   export let white: boolean
+  let title: string
+  let under: string
+  if (scriitor.length <= 26) {
+    under = 'sm'
+  } else {
+    under = 'xs'
+  }
+  if (name.length <= 26) {
+    title = 'md'
+  } else {
+    title = 'sm'
+  }
 </script>
 
 <Link bind:alive href={`/essays/${name}`}>
@@ -16,9 +29,9 @@
       class:border-1={!white}
       class:border-black={!white}
       class:text-black={!white}>
-      <h2 class=" text-md my-auto ml-sm font-sans">{name}</h2>
+      <h2 class=" text-{title} my-auto ml-sm font-sans">{name}</h2>
       <div
-        class=" ml-sm text-sm"
+        class=" ml-sm text-{under}"
         class:text-gray={!white}
         class:text-white={white}>
         {scriitor}
@@ -32,11 +45,11 @@
       class:border-white={white}
       class:border-black={!white}
       class:text-black={!white}>
-      <h2 class=" h-1/2 w-full text-md my-auto ml-sm font-sans  ">
+      <h2 class=" h-1/2 w-full text-{title} my-auto ml-sm font-sans  ">
         {name}
       </h2>
       <div
-        class=" ml-sm text-gray-dark text-sm"
+        class=" ml-sm text-gray-dark text-{under}"
         class:text-black={!white}
         class:text-white={white}>
         {scriitor}
