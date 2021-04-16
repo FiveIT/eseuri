@@ -9,11 +9,13 @@
   import { fly } from 'svelte/transition'
   import { onMount } from 'svelte'
   import Buton from '$/components/buton.svelte'
-  let isstudent: boolean = true
+
+  let isStudent = true
   let name = ''
-  let secondname = ''
+  let secondName = ''
   let school = ''
-  metatags.title = 'Eseuri'
+
+  metatags.title = 'Înregistrare'
 
   let mounted = false
   onMount(() => {
@@ -53,7 +55,8 @@
     mounted = true
   })
 
-  export let alive = true
+  let alive = true
+
   $: if (mounted) {
     $orange.y = $window.height - orange.height
     $red.x = $window.width - red.width * 1
@@ -65,10 +68,10 @@
 
 {#if alive}
   <div
-    class="blur bg-white bg-opacity-50 w-full h-screen scrollbar-window-padding "
+    class="min-h-screen blur bg-white bg-opacity-50"
     transition:fly={{ y: -$window.height, duration: 300 }}>
     <div
-      class="auto-rows-layout  max-w-layout  grid-cols-layout relative grid gap-x-md gap-y-sm mt-xlg mx-auto">
+      class="grid auto-rows-layout max-w-layout grid-cols-layout gap-x-md gap-y-sm mx-auto">
       <div class="row-start-1 row-span-1 col-start-1  col-span-1 my-auto">
         <Link href="../" bind:alive>
           <Logo />
@@ -85,7 +88,7 @@
       <div
         class="row-start-4 row-span-1 col-start-2 col-span-2 my-auto w-full h-full">
         <input
-          class=" w-full h-full bg-opacity-0 bg-white text-sm"
+          class="w-full h-full bg-opacity-0 bg-white text-sm"
           placeholder="Scrie-ți aici numele de familie..."
           bind:value={name} />
       </div>
@@ -98,7 +101,7 @@
         <input
           class=" w-full h-full bg-opacity-0 bg-white text-sm"
           placeholder="Scrie-ți aici prenumele ..."
-          bind:value={secondname} />
+          bind:value={secondName} />
       </div>
       <div
         class="row-start-6 row-span-1 col-start-1 col-span-1 my-auto text-sm text-center">
@@ -119,19 +122,19 @@
         class="row-start-7 row-span-1 col-start-2 col-span-1 my-auto text-center w-full h-full">
         <button
           on:click={() => {
-            isstudent = true
+            isStudent = true
           }}
           class="bg-opacity-0 focus:outline-none  my-auto text-sm w-full h-full"
-          class:underline={isstudent}>Elev</button>
+          class:underline={isStudent}>Elev</button>
       </div>
       <div
         class="row-start-7 row-span-1 col-start-3 col-span-1 my-auto text-center w-full h-full">
         <button
           on:click={() => {
-            isstudent = false
+            isStudent = false
           }}
           class=" relative bg-opacity-0 focus:outline-none my-auto text-sm w-full h-full"
-          class:underline={!isstudent}>Profesor</button>
+          class:underline={!isStudent}>Profesor</button>
       </div>
       <div
         class="row-start-8 row-span-1 col-start-3 col-span-1 my-auto mx-auto w-full h-full bg-blue rounded">
@@ -140,8 +143,8 @@
         </button>
       </div>
       <div
-        class="row-start-8 row-span-1 col-start-4 my-auto col-span-1 bg-oppacity-0 publish w-full h-full">
-        <Buton white={false} disable={false} bind:alive link="../"
+        class="row-start-8 row-span-1 col-start-4 my-auto col-span-1 bg-oppacity-0 w-full h-full">
+        <Buton white={false} disable={false} bind:alive link="/"
           ><div class="text-sm">Înapoi</div></Buton>
       </div>
     </div>

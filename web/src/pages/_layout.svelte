@@ -4,21 +4,10 @@
   import Blue from '$/components/blob/Blue.svelte'
 </script>
 
-<div class="w-full h-full relative">
-  <div class="bg-white  bg fixed w-full h-full mb-lg -z-1000 blur" />
+<div class="min-h-full">
+  <div class="fixed bg-white w-full h-full -z-1000 blur" />
   <Orange />
   <Red />
   <Blue />
-
-  <main class=" relative flex flex-col items-center w-full h-full mb-lg  ">
-    <slot />
-  </main>
+  <slot />
 </div>
-
-<style>
-  :global(html, body) {
-    font-size: 18px;
-    height: 100%;
-    overflow-x: hidden;
-  }
-</style>

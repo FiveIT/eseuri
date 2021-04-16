@@ -1,20 +1,22 @@
 <script lang="ts">
   import { tick } from 'svelte'
   import { goto, url, isActive } from '@roxi/routify'
-  async function goTo(href: string) {
-    alive = false
-    await tick()
-    $goto(href)
-  }
+
+  import { alive } from './Layout.svelte'
+
   export let href: string
-  export let alive: boolean
-  $: disabled = $isActive(href)
+
+  const go = () => {
+    // eslint-disable-next-line no-unused-vars
+    $alive = false
+    tick().then(() => $goto(href))
+  }
 </script>
 
 <a
   href={$url(href)}
-  on:click|preventDefault={() => goTo(href)}
+  on:click|preventDefault={go}
   class="w-auto h-auto"
-  class:pointer-events-none={disabled}>
+  class:pointer-events-none={$isActive(href)}>
   <slot />
 </a>

@@ -1,3 +1,13 @@
+html {
+  font-size: 18px;
+  height: 100%;
+}
+
+body {
+  height: 100%;
+  overflow-x: hidden;
+}
+
 @supports (backdrop-filter: blur(100px)) or
   (-webkit-backdrop-filter: blur(100px)) {
   .blur {
@@ -36,7 +46,4 @@
 
 .filter-shadow-large {
   filter: drop-shadow(var(--shadow-large));
-}
-.underline {
-  text-decoration: underline;
 }

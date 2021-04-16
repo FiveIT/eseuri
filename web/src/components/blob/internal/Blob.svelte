@@ -1,23 +1,25 @@
 <script lang="ts">
   import { fade } from 'svelte/transition'
-  import { cubicOut as easing } from 'svelte/easing'
-  export let x: number
-  export let y: number
-  export let scale: number
-  export let rotate: number
-  export let flip: {
-    x: number
-    y: number
-  }
+
+  import {
+    TRANSITION_EASING as easing,
+    TRANSITION_DURATION as duration,
+  } from '$/globals'
+  import { defaultBlobProps } from './store'
+
+  export let props = defaultBlobProps()
+
   export let width: number
   export let height: number
-  export let zIndex: number
+
+  let { x, y, scale, rotate, flip, zIndex } = props
+  $: ({ x, y, scale, rotate, flip, zIndex } = props)
   $: flipX = flip.x * 180
   $: flipY = flip.y * 180
 </script>
 
 <div
-  transition:fade={{ duration: 300, easing }}
+  transition:fade={{ duration, easing }}
   class="fixed"
   style="--x: {x}px; --y: {y}px; --scale: {scale}; --rotate: {rotate}deg; --flipX: {flipX}deg; --flipY: {flipY}deg; --z-index: {zIndex};"
   bind:offsetWidth={width}

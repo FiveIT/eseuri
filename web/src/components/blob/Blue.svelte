@@ -13,15 +13,7 @@
   $: store.height = height
 </script>
 
-<Blob
-  x={$store.x}
-  y={$store.y}
-  scale={$store.scale}
-  rotate={$store.rotate}
-  flip={$store.flip}
-  zIndex={$store.zIndex}
-  bind:width
-  bind:height>
+<Blob props={$store} bind:width bind:height>
   <svg
     width="650"
     height="311"
