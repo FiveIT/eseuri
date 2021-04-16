@@ -2,34 +2,34 @@ table:
   name: characters
   schema: public
 object_relationships:
-  - name: title
-    using:
-      foreign_key_constraint_on: title_id
+- name: title
+  using:
+    foreign_key_constraint_on: title_id
 array_relationships:
-  - name: characterizations
-    using:
-      foreign_key_constraint_on:
-        column: character_id
-        table:
-          name: characterizations
-          schema: public
+- name: characterizations
+  using:
+    foreign_key_constraint_on:
+      column: character_id
+      table:
+        name: characterizations
+        schema: public
 select_permissions:
-  - permission:
-      columns:
-        - name
-      filter: {}
-    role: anonymous
-  - permission:
-      columns:
-        - id
-        - name
-        - title_id
-      filter: {}
-    role: student
-  - permission:
-      columns:
-        - id
-        - name
-        - title_id
-      filter: {}
-    role: teacher
+- permission:
+    columns:
+    - name
+    filter: {}
+  role: anonymous
+- permission:
+    columns:
+    - id
+    - name
+    - title_id
+    filter: {}
+  role: student
+- permission:
+    columns:
+    - id
+    - name
+    - title_id
+    filter: {}
+  role: teacher

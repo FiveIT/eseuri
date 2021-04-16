@@ -2,29 +2,29 @@ table:
   name: counties
   schema: public
 array_relationships:
-  - name: schools
-    using:
-      foreign_key_constraint_on:
-        column: county_id
-        table:
-          name: schools
-          schema: public
+- name: schools
+  using:
+    foreign_key_constraint_on:
+      column: county_id
+      table:
+        name: schools
+        schema: public
 select_permissions:
-  - permission:
-      columns:
-        - id
-        - name
-      filter: {}
-    role: anonymous
-  - permission:
-      columns:
-        - id
-        - name
-      filter: {}
-    role: student
-  - permission:
-      columns:
-        - id
-        - name
-      filter: {}
-    role: teacher
+- permission:
+    columns:
+    - id
+    - name
+    filter: {}
+  role: anonymous
+- permission:
+    columns:
+    - id
+    - name
+    filter: {}
+  role: student
+- permission:
+    columns:
+    - id
+    - name
+    filter: {}
+  role: teacher
