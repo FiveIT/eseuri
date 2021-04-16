@@ -91,20 +91,22 @@
           </div>
         </div>
         <div
-          class="row-start-3 row-end-4 col-start-1 col-end-3 col-span-2 row-span-1 ">
+          class="row-start-3 row-end-4 col-start-1 col-end-3 col-span-2 row-span-1">
           <Link bind:alive href="../upload_configure">
-            <div class="flex w-full h-full rounded bg-blue relative">
-              <div class="ml-sm my-auto bold w-full text-white text-sm  ">
-                Încarcă un document
-              </div>
-              <div class="flex w-1/2 my-auto justify-end mr-sm">
-                <Docs color="white" size="1.5rem" />
-              </div>
+            <div class="flex w-full h-full rounded bg-blue relative ">
+              <button class="flex w-full h-full rounded bg-blue relative ">
+                <div class="ml-sm my-auto bold w-full text-white text-sm  ">
+                  Încarcă un document
+                </div>
+                <div class="flex w-1/2 my-auto justify-end mr-sm">
+                  <Docs color="white" size="1.5rem" />
+                </div>
+              </button>
             </div>
           </Link>
         </div>
         <div
-          class="flex  row-start-4 row-end-5 col-start-1 rounded col-end-3 text-white  bg-google-docs  relative">
+          class="flex  row-start-4 row-end-5 col-start-1 rounded col-end-3 text-white  bg-google-docs  relative    ">
           <div class="ml-sm my-auto bold w-full text-sm  ">
             Încarcă din Google Docs
           </div>
@@ -133,3 +135,9 @@
     </div>
   </div>
 {/if}
+
+<style>
+  button:focus {
+    outline: 3px solid black rounded;
+  }
+</style>

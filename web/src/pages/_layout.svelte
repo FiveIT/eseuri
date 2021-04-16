@@ -5,12 +5,12 @@
 </script>
 
 <div class="w-full h-full relative pb-lg">
-  <div class="bg-white  bg fixed w-full h-full -z-1000 blur" />
+  <div class="bg-white  bg fixed w-full h-full mb-lg -z-1000 blur" />
   <Orange />
   <Red />
   <Blue />
 
-  <main class=" relative flex flex-col items-center w-full min-h-full ">
+  <main class=" relative flex flex-col items-center w-full h-full mb-lg  ">
     <slot />
   </main>
 </div>
