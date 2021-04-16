@@ -10,5 +10,3 @@ $$ language plpgsql;
 
 alter table bookmarks
     add constraint bookmark_approved_works check (get_work_status(work_id) = 'approved');
-alter table bookmarks
-    add constraint bookmark_registered_user check (is_registered_user(user_id));
