@@ -110,11 +110,22 @@
   $: blueBlobProps = {
     x: ($window.width - blue.width * 1) / 2,
     y: -blue.height * 1 - $window.height * 0.1,
+    scale: 1.4,
   }
 </script>
 
 <Layout {orangeBlobProps} {redBlobProps} {blueBlobProps}>
   <SlimNav />
+  <div class="col-start-1 col-span-1 row-start-3 row-span-1">
+    <button class="fixed mt-40">
+      <Back size="4rem" color="var(--light-gray)" />
+    </button>
+  </div>
+  <div class="col-start-6 col-span-1 row-start-3 row-span-1 ">
+    <button class="fixed mt-40">
+      <Next size="4rem" color="var(--light-gray)" />
+    </button>
+  </div>
   <div class="col-start-2 col-end-6 row-start-3 flex flex-col justify-between">
     <h2 class="text-title font-serif mt-sm">
       {decodeURI(page_name)}
@@ -179,20 +190,6 @@
     </div>
     <div class="mt-sm">
       <FavButton />
-    </div>
-  </div>
-  <div class="col-start-6 col-span-1 row-start-6 row-span-1 ">
-    <div class="ml-1">
-      <button class="fixed">
-        <Next />
-      </button>
-    </div>
-  </div>
-  <div class="col-start-1 col-span-1 row-start-6 row-span-1 ">
-    <div class="ml-18">
-      <button class="fixed">
-        <Back />
-      </button>
     </div>
   </div>
 </Layout>
