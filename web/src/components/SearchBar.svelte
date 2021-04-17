@@ -57,7 +57,7 @@
   </button>
   <input
     type="text"
-    class="font-sans text-sm ubpixel-antialiased my-auto bg-transparent placeholder-white text-white ml-sm w-full"
+    class="font-sans text-sm subpixel-antialiased my-auto bg-transparent placeholder-white text-white ml-sm w-full"
     class:text-md={isSearch}
     class:filter-shadow={isHome}
     class:filter-shadow-soft={isSearch}
