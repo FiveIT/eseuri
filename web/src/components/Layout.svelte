@@ -42,6 +42,8 @@
   export let afterMount = () => {}
   export let beforeDestroy = () => {}
 
+  export let center = false
+
   const alive = writable(true)
   const themeStore = writable<Theme>(theme)
   // eslint-disable-next-line no-unused-vars
@@ -84,9 +86,10 @@
 
 {#if $alive}
   <div
-    class="min-h-full mx-auto max-w-layout grid grid-cols-layout auto-rows-layout gap-x-md gap-y-sm"
+    class="min-h-full mx-auto max-w-layout grid grid-cols-layout auto-rows-layout gap-x-md gap-y-sm py-xlg"
     class:blur={blurBackground}
     class:bg-white-50={blurBackground}
+    class:my-auto={center}
     transition:fly={transition}>
     <slot />
   </div>
