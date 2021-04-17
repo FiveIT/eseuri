@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { goto, params } from '@roxi/routify'
+
   import Layout from '$/components/Layout.svelte'
   import SlimNav from '$/components/SlimNav.svelte'
   import Search from '$/components/SearchBar.svelte'
@@ -9,50 +11,69 @@
   import { store as blue } from '$/components/blob/Blue.svelte'
   import { store as window } from '$/components/Window.svelte'
 
-  import type { BlobPropsInput, WorkType } from '$/types'
+  import type { BlobPropsInput, WorkType, Work } from '$/types'
+  import { isWorkType } from '$/types'
 
   import content from '$/content'
   import { workTypeTranslation } from '$/content'
 
-  let query = ''
-  let type: WorkType = 'essay'
+  let query: string = $params.query
+  let type: WorkType = isWorkType($params.type) ? $params.type : 'essay'
   let workTypes: WorkType[] = ['essay', 'characterization']
+  let works: Work[]
 
-  $: works = content.filter(
-    ({ type: t, name: n }) =>
-      t === type && n.toLowerCase().includes(query.toLowerCase())
-  )
+  const isValidEntry = (query: string, type: WorkType) => ({
+    type: t,
+    name: n,
+    creator: c,
+  }: Work) => {
+    return (
+      t === type &&
+      [n, c].some(v => v.toLowerCase().includes(query.toLowerCase()))
+    )
+  }
 
-  let orangeBlobProps: BlobPropsInput = { scale: 1.8 }
+  $: works = content.filter(isValidEntry(query, type))
+
+  let orangeBlobProps: BlobPropsInput
   $: orangeBlobProps = {
     x: -orange.width * 1.4,
     y: $window.height - orange.height,
+    scale: 1.8,
   }
 
-  let redBlobProps: BlobPropsInput = {
+  let redBlobProps: BlobPropsInput
+  $: redBlobProps = {
     scale: 2,
     x: $window.width + red.width * 0.6,
     y: $window.height - red.height * 0.45,
   }
 
-  let blueBlobProps: BlobPropsInput = { scale: 17 }
+  let blueBlobProps: BlobPropsInput
   $: blueBlobProps = {
     x: ($window.width - blue.width * 0.8) / 2,
     y: -blue.height * 0.635 + $window.height * 0.17,
+    scale: 17,
   }
 </script>
 
-<Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} theme="white">
+<Layout
+  {orangeBlobProps}
+  {redBlobProps}
+  {blueBlobProps}
+  theme="white"
+  afterMount={() => (document.body.style.backgroundColor = 'var(--blue)')}
+  beforeDestroy={() => (document.body.style.backgroundColor = '')}>
   <SlimNav />
   <div class="col-start-1 row-span-1 row-start-3 col-end-4 my-auto ">
-    <Search {query} isBig={true} isAtHome={false} />
+    <Search bind:query bind:type />
   </div>
   {#each workTypes as t, i}
     <button
-      class="bg-opacity-0 row-span-1 row-start-3 text-white col-start-{4 +
+      class="bg-opacity-0 row-span-1 row-start-3 text-white col-start-{5 +
         i} col-span-1 text-sm filter-shadow capitalize"
       class:underline={type === t}
-      on:click={() => (type = t)}
+      on:click={() => ((type = t), $goto('/search', { query, type }))}
       >{workTypeTranslation.ro[t].inarticulate.plural}</button>
   {/each}
   <Works {works} />
