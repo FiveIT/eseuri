@@ -18,20 +18,12 @@
 html {
   font-size: 18px;
   min-height: 100vh;
-  max-height: fit-content;
 }
 
 body {
   min-height: 100vh;
   padding-left: calc(100vw - 100%);
   background-color: var(--white);
-}
-
-#app {
-  min-height: 100vh;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
 }
 
 @supports (backdrop-filter: blur(100px)) or

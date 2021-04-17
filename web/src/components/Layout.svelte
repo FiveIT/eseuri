@@ -24,11 +24,21 @@
   import { store as red } from '$/components/blob/Red.svelte'
   import { store as blue } from '$/components/blob/Blue.svelte'
 
-  import { TRANSITION_DURATION } from '$/globals'
+  import {
+    TRANSITION_DURATION as duration,
+    TRANSITION_EASING as easing,
+  } from '$/globals'
 
-  export let transition: FlyParams = {
+  const defaultTransition: FlyParams = {
     y: -1000,
-    duration: 300,
+    duration,
+    easing,
+  }
+
+  export let transition: FlyParams = {}
+  $: finalTransition = {
+    ...defaultTransition,
+    ...transition,
   }
 
   export let orangeBlobProps: BlobPropsInput = {}
@@ -67,7 +77,7 @@
     setTimeout(() => {
       mounted = true
       afterMount()
-    }, TRANSITION_DURATION)
+    }, duration)
   })
 
   onDestroy(beforeDestroy)
@@ -86,11 +96,14 @@
 
 {#if $alive}
   <div
-    class="min-h-full mx-auto max-w-layout grid grid-cols-layout auto-rows-layout gap-x-md gap-y-sm py-xlg"
+    class="min-h-screen flex flex-col"
     class:blur={blurBackground}
     class:bg-white-50={blurBackground}
-    class:my-auto={center}
-    transition:fly={transition}>
-    <slot />
+    transition:fly={finalTransition}>
+    <div
+      class="min-h-full mx-auto max-w-layout grid grid-cols-layout auto-rows-layout gap-x-md gap-y-sm py-xlg"
+      class:my-auto={center}>
+      <slot />
+    </div>
   </div>
 {/if}
