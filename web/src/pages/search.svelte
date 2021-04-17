@@ -22,6 +22,7 @@
   let workTypes: WorkType[] = ['essay', 'characterization']
   let works: Work[]
   let focusInput = () => {}
+  $: query = query.trimStart()
 
   const isValidEntry = (query: string, type: WorkType) => ({
     type: t,
