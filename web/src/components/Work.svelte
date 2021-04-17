@@ -1,52 +1,54 @@
 <script lang="ts">
+  import { onMount } from 'svelte'
+
   import Link from './Link.svelte'
   import LayoutContext from './LayoutContext.svelte'
-  import AutoSize from './text/AutoSize.svelte'
-
-  import windi from '../../windi.config'
-  const fontSize = windi.theme!.fontSize as Record<string, [string]>
 
   import type { Work } from '$/types'
 
-  import { text, border } from '$/theme'
+  import { text, border, filterShadow } from '$/theme'
   import { workTypeTranslation } from '$/content'
 
-  export let work: Work
+  let titleParent: HTMLElement
+  let titleChild: HTMLElement
+  let creatorParent: HTMLElement
+  let creatorChild: HTMLElement
 
-  let nameHeight: number, creatorHeight: number
-  const min = parseInt(fontSize['sm'][0])
-  const max = parseInt(fontSize['md'][0])
-  const unit = 0.01
+  function fixFontSize(parent: HTMLElement, child: HTMLElement, compensation = 1) {
+    const { height: parentHeight } = parent.getBoundingClientRect()
+    const { height: childHeight } = child.getBoundingClientRect()
+
+    if (childHeight > parentHeight) {
+      const p = parentHeight / childHeight
+      const fontSize = parseInt(window.getComputedStyle(child).fontSize)
+      child.style.fontSize = `${p * compensation * fontSize}px`
+    }
+  }
+
+  onMount(() => {
+    fixFontSize(titleParent, titleChild, 1.15)
+    fixFontSize(creatorParent, creatorChild)
+  })
+
+  export let work: Work
 </script>
 
 <LayoutContext let:theme>
   <Link href={`/essays/${work.name}`}>
     <dl
-      class="grid w-full h-full grid-cols-4 gap-x-xs p-sm font-sans subpixel-antialiased {text[
+      class="grid w-full grid-flow-row h-full grid-rows-4 gap-y-xs px-sm py-xs font-sans subpixel-antialiased rounded leading-none {text[
         theme
-      ]} {border.color[theme]} {border.size[theme]}">
-      <dt class="grid-cols-2">
-        <AutoSize {min} {max} {unit} let:fontSize textHeight={nameHeight}>
-          <h2 bind:offsetHeight={nameHeight} style="font-size: {fontSize}rem;">
-            {work.name}
-          </h2>
-        </AutoSize>
+      ]} {border.color[theme]} {border.size[theme]} {filterShadow[theme]}"
+      class:blur={theme === 'default'}>
+      <dt class="row-span-2 h-full flex flex-col" bind:this={titleParent}>
+        <h2 class="text-md mt-auto" bind:this={titleChild}>
+          {work.name}
+        </h2>
       </dt>
-      <dt>
-        <AutoSize
-          min={min / 2}
-          max={min}
-          {unit}
-          let:fontSize
-          textHeight={creatorHeight}>
-          <span
-            bind:offsetHeight={creatorHeight}
-            style="font-size: {fontSize}rem;">
-            {work.creator}
-          </span>
-        </AutoSize>
+      <dt class="self-center h-full flex flex-col" bind:this={creatorParent}>
+        <span class="text-workInfo leading-none my-auto" bind:this={creatorChild}>{work.creator}</span>
       </dt>
-      <dt>
+      <dt class="text-workInfo">
         {work.work_count}{work.work_count > 19 ? ' de' : ''}
         {workTypeTranslation.ro[work.type].inarticulate[
           work.work_count === 1 ? 'singular' : 'plural'
