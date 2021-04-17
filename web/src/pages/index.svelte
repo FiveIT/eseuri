@@ -14,32 +14,35 @@
 
   import type { BlobPropsInput, WorkType } from '$/types'
 
-  import content from '$/content'
+  import content, { workTypeTranslation } from '$/content'
 
   metatags.title = 'Eseuri'
 
-  let orangeBlobProps: BlobPropsInput = { scale: 1.8 }
+  let orangeBlobProps: BlobPropsInput
   $: orangeBlobProps = {
+    scale: 1.8,
+    x: 0,
     y: $window.height - orange.height,
   }
 
-  let redBlobProps: BlobPropsInput = {
+  let redBlobProps: BlobPropsInput
+  $: redBlobProps = {
+    x: $window.width - red.width * 1.5,
+    y: $window.height - red.height * 0.45,
     scale: 2,
     rotate: 180 + 26.7,
     flip: { x: 1, y: 0 },
   }
-  $: redBlobProps = {
-    x: $window.width - red.width * 1.5,
-    y: $window.height - red.height * 0.45,
-  }
 
-  let blueBlobProps: BlobPropsInput = { scale: 1.5 }
+  let blueBlobProps: BlobPropsInput
   $: blueBlobProps = {
     x: ($window.width - blue.width * 0.8) / 2,
     y: -blue.height * 0.635 + $window.height * 0.17,
+    scale: 1.5,
   }
 
   let type: WorkType = 'essay'
+  const types: WorkType[] = ['essay', 'characterization']
   $: works = content.filter(work => work.type === type)
 </script>
 
@@ -49,31 +52,30 @@
     <Logo />
   </div>
   <div class=" row-start-1 row-span-1 col-start-3 col-end-6 text-sm my-auto">
-    <Search isAtHome={true} isBig={false} />
+    <Search />
   </div>
   <div class="w-full h-full row-start-1 row-span-1 col-start-6 col-span-1">
     <LoginButton theme="white" />
   </div>
   <div class="col-start-4 col-end-5 row-start-2 w-full h-full text-sm my-auto ">
-    <Buton enable={false}>Plagiat</Buton>
+    <Buton enable={false} theme="white">Plagiat</Buton>
   </div>
   <div class="col-start-5 col-end-6 row-start-2 w-full h-full text-sm my-auto">
-    <Buton enable={false}>Profesori</Buton>
+    <Buton enable={false} theme="white">Profesori</Buton>
   </div>
-  <div class="col-span-1 col-start-6 row-span-1 row-start-3 mx-auto">
+  <div class="col-span-1 col-start-6 row-span-1 row-start-3 place-self-center">
     <UploadButton />
   </div>
-  <div class=" col-start-3 col-end-4 row-start-4 w-full h-full m-auto my-auto ">
-    <button
-      class=" w-full h-full  bg-white bg-opacity-0 font-sans text-sm "
-      class:underline={type === 'essay'}
-      on:click={() => (type = 'essay')}>Eseuri</button>
-  </div>
-  <div class="col-start-4 col-end-5 row-start-4 w-full h-full m-auto my-auto">
-    <button
-      class="bg-white w-full h-full bg-opacity-0 my-auto font-sans text-sm "
-      class:underline={type === 'characterization'}
-      on:click={() => (type = 'characterization')}>Caracterizari</button>
-  </div>
+  {#each types as t, i}
+    <div
+      class="col-start-{3 +
+        i} col-span-1 row-start-4 w-full h-full m-auto my-auto">
+      <button
+        class="w-full h-full font-sans text-sm subpixel-antialiased capitalize"
+        class:underline={type === t}
+        on:click={() => (type = t)}
+        >{workTypeTranslation.ro[t].inarticulate.plural}</button>
+    </div>
+  {/each}
   <Works {works} />
 </Layout>
