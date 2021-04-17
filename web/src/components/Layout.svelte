@@ -13,7 +13,7 @@
 </script>
 
 <script lang="ts">
-  import { onMount, setContext } from 'svelte'
+  import { onMount, onDestroy, setContext } from 'svelte'
   import { writable } from 'svelte/store'
   import { fly } from 'svelte/transition'
   import type { FlyParams } from 'svelte/transition'
@@ -39,6 +39,9 @@
 
   export let theme: Theme = 'default'
 
+  export let afterMount = () => {}
+  export let beforeDestroy = () => {}
+
   const alive = writable(true)
   const themeStore = writable<Theme>(theme)
   // eslint-disable-next-line no-unused-vars
@@ -61,8 +64,11 @@
 
     setTimeout(() => {
       mounted = true
+      afterMount()
     }, TRANSITION_DURATION)
   })
+
+  onDestroy(beforeDestroy)
 
   $: if (mounted) {
     $orange.x = orangeBlobProps.x ?? $orange.x
