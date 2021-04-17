@@ -6,15 +6,15 @@ export default defineConfig({
     colors: {
       orange: '#FF7F11',
       red: '#FF3F00',
-      blue: '#485696',
+      blue: 'var(--blue, #485696)',
       green: '#008148',
       current: 'currentColor',
       transparent: 'transparent',
       white: 'var(--white, #FCFAF9)',
       black: 'var(--black, #000000)',
       gray: {
-        light: '#DADADA',
-        DEFAULT: '#939393',
+        light: 'var(--light-gray, #DADADA)',
+        DEFAULT: 'var(--gray, #939393)',
         dark: '#4F4F4F',
       },
       facebook: '#3B5998',
@@ -46,6 +46,7 @@ export default defineConfig({
           letterSpacing: '-0.225rem',
         },
       ],
+      workInfo: ['1.125rem', { letterSpacing: '-0.055rem', lineHeight: '90%' }],
     },
     spacing: {
       xs: 'calc(var(--row-gap) / 2)',
@@ -65,7 +66,7 @@ export default defineConfig({
       none: 'none',
     },
     gridAutoRows: {
-      layout: 'var(--row-height)',
+      layout: 'minmax(var(--row-height), auto)',
       essays: 'var(--essay-row-heigth)',
     },
     gridTemplateColumns: {

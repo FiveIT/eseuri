@@ -3,7 +3,10 @@
   --shadow-soft: 2px 2px 5px rgba(0, 0, 0, 0.25);
   --shadow-large: 4px 4px 5px rgba(0, 0, 0, 0.25);
   --white: #fcfaf9;
+  --light-gray: #dadada;
+  --gray: #939393;
   --black: #000000;
+  --blue: #485696;
   --row-height: 4.133rem;
   --row-gap: 0.625rem;
   --column-width: 7.6rem;
@@ -14,13 +17,15 @@
 
 html {
   font-size: 18px;
-  height: 100%;
+  min-height: 100vh;
+  max-height: fit-content;
 }
 
 body {
-  height: 100%;
-  overflow-x: hidden;
+  min-height: 100%;
   padding-left: calc(100vw - 100%);
+  padding-top: 3.7rem;
+  padding-bottom: 3.7rem;
   background-color: var(--white);
 }
 
