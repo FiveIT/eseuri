@@ -98,7 +98,7 @@
   <div
     class="min-h-screen flex flex-col scrollbar-window-padding"
     class:blur={blurBackground}
-    class:bg-white={blurBackground}
+    class:white-bg={blurBackground}
     class:bg-opacity-50={blurBackground}
     transition:fly={finalTransition}>
     <div

@@ -43,7 +43,7 @@
       class="grid w-full grid-flow-row h-full grid-rows-4 gap-y-xs px-sm py-xs font-sans subpixel-antialiased rounded leading-none {text[
         theme
       ]} {border.color[theme]} {border.size[theme]} {filterShadow[theme]}"
-      class:bg-white={theme === 'default'}
+      class:white-bg={theme === 'default'}
       class:blur={theme === 'default'}>
       <dt class="row-span-2 h-full flex flex-col" bind:this={titleParent}>
         <h2 class="text-md mt-auto" bind:this={titleChild}>
