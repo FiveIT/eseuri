@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Link from '$/components/link.svelte'
-  import Logo from '$/components/logo.svelte'
+  import Link from '$/components/Link.svelte'
+  import Logo from '$/components/Logo.svelte'
   import { metatags } from '@roxi/routify'
   import { store as orange } from '$/components/blob/Orange.svelte'
   import { store as red } from '$/components/blob/Red.svelte'
@@ -8,7 +8,7 @@
   import { store as window } from '$/components/Window.svelte'
   import { fly } from 'svelte/transition'
   import { onMount } from 'svelte'
-  import Buton from '$/components/buton.svelte'
+  import Buton from '$/components/NavButton.svelte'
 
   let isStudent = true
   let name = ''
