@@ -60,7 +60,7 @@
       class="blur row-span-6 col-span-2 border-black border -mt-sm -ml-md rounded bg-white bg-opacity-50 grid auto-rows-layout grid-flow-row px-md py-sm gap-y-sm text-sm font-sans subpixel-antialiased">
       <h2 class="m-auto">Publică o lucrare</h2>
       <div
-        class="flex items-center p-sm justify-between rounded border border-black select-none">
+        class="flex items-center p-sm justify-between bg-white rounded border border-black select-none">
         Scrie-o aici
         <ScrieAici color="var(--black)" size="1.5rem" />
       </div>
