@@ -1,24 +1,18 @@
-<script>
+<script lang="ts">
   import Orange from '$/components/blob/Orange.svelte'
   import Red from '$/components/blob/Red.svelte'
   import Blue from '$/components/blob/Blue.svelte'
+
+  import { setContext } from 'svelte'
+  import { contextKey } from '$/pages/upload.svelte'
+  import type { Context } from '$/pages/upload.svelte'
+
+  setContext<Context>(contextKey, {
+    file: null,
+  })
 </script>
 
-<div class="w-full h-full relative">
-  <div class="bg-white  bg fixed w-full h-full mb-lg -z-1000 blur" />
-  <Orange />
-  <Red />
-  <Blue />
-
-  <main class=" relative flex flex-col items-center w-full h-full mb-lg  ">
-    <slot />
-  </main>
-</div>
-
-<style>
-  :global(html, body) {
-    font-size: 18px;
-    height: 100%;
-    overflow-x: hidden;
-  }
-</style>
+<Orange />
+<Red />
+<Blue />
+<slot />
