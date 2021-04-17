@@ -15,6 +15,12 @@
   export let query: string = ''
   export let type: WorkType = 'essay'
 
+  let input: HTMLInputElement
+
+  export const focusInput = () => {
+    input.focus()
+  }
+
   $: isHome = $isActive('/index')
   $: isSearch = $isActive('/search')
 
@@ -46,6 +52,7 @@
     class:filter-shadow={isHome}
     class:filter-shadow-soft={isSearch}
     placeholder="Caută titluri sau personaje"
+    bind:this={input}
     on:keydown={onKeydown}
     bind:value={query} />
 </div>

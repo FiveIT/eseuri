@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { goto, params } from '@roxi/routify'
+  import { afterPageLoad, goto, params } from '@roxi/routify'
 
   import Layout from '$/components/Layout.svelte'
   import SlimNav from '$/components/SlimNav.svelte'
@@ -16,11 +16,13 @@
 
   import content from '$/content'
   import { workTypeTranslation } from '$/content'
+  import { onMount } from 'svelte'
 
   let query: string = $params.query
   let type: WorkType = isWorkType($params.type) ? $params.type : 'essay'
   let workTypes: WorkType[] = ['essay', 'characterization']
   let works: Work[]
+  let focusInput = () => {}
 
   const isValidEntry = (query: string, type: WorkType) => ({
     type: t,
@@ -55,6 +57,8 @@
     y: -blue.height * 0.635 + $window.height * 0.17,
     scale: 17,
   }
+
+  $afterPageLoad(() => focusInput())
 </script>
 
 <Layout
@@ -65,8 +69,8 @@
   afterMount={() => (document.body.style.backgroundColor = 'var(--blue)')}
   beforeDestroy={() => (document.body.style.backgroundColor = '')}>
   <SlimNav />
-  <div class="col-start-1 row-span-1 row-start-3 col-end-4 my-auto ">
-    <Search bind:query bind:type />
+  <div class="col-start-1 row-span-1 row-start-3 col-end-4 my-auto">
+    <Search bind:query bind:type bind:focusInput />
   </div>
   {#each workTypes as t, i}
     <button
