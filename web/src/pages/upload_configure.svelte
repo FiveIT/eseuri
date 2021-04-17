@@ -72,34 +72,38 @@
 
 <Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} blurBackground={true}>
   <LayoutContext let:alive>
-    <SlimNav />
-    <Form
-      name="work"
-      {action}
-      bind:formElement
-      on:submit={() => onSubmit(alive)}>
-      <span slot="legend">Despre lucrare</span>
-      <Radio
-        name="type"
-        options={workTypes}
-        displayModifier={translateWorkType}
-        bind:selected={currentWorkType}>
-        Tip
-      </Radio>
-      <Text
-        name="name"
-        placeholder="Scrie aici {currentWorkType === 'essay'
-          ? 'titlul'
-          : 'numele personajului'}..."
-        {suggestions}>
-        {currentWorkType === 'essay' ? 'Titlu' : 'Caracter'}
-      </Text>
-      <div
-        slot="actions"
-        class="row-end-7 col-start-3 col-span-2 grid auto-cols-layout grid-flow-col gap-x-md">
-        <Submit value="Publică" formenctype="multipart/form-data" />
-        <NavButton href="/upload">Înapoi</NavButton>
-      </div>
-    </Form>
+    {#if !ctx || ctx.file === null}
+      {go('/upload', alive, $goto)}
+    {:else}
+      <SlimNav />
+      <Form
+        name="work"
+        {action}
+        bind:formElement
+        on:submit={() => onSubmit(alive)}>
+        <span slot="legend">Despre lucrare</span>
+        <Radio
+          name="type"
+          options={workTypes}
+          displayModifier={translateWorkType}
+          bind:selected={currentWorkType}>
+          Tip
+        </Radio>
+        <Text
+          name="name"
+          placeholder="Scrie aici {currentWorkType === 'essay'
+            ? 'titlul'
+            : 'numele personajului'}..."
+          {suggestions}>
+          {currentWorkType === 'essay' ? 'Titlu' : 'Caracter'}
+        </Text>
+        <div
+          slot="actions"
+          class="row-end-7 col-start-3 col-span-2 grid auto-cols-layout grid-flow-col gap-x-md">
+          <Submit value="Publică" formenctype="multipart/form-data" />
+          <NavButton href="/upload">Înapoi</NavButton>
+        </div>
+      </Form>
+    {/if}
   </LayoutContext>
 </Layout>
