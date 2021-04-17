@@ -27,6 +27,7 @@
 
   export let href = '/'
   export let enable = !$isActive(href, undefined, { strict: false })
+  export let hideIfDisabled = false
 </script>
 
 {#if enable}
@@ -39,6 +40,6 @@
     class="w-auto h-auto select-none">
     <slot />
   </a>
-{:else}
+{:else if !hideIfDisabled}
   <slot />
 {/if}
