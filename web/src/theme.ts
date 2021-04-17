@@ -7,6 +7,11 @@ export const text: ThemeEntry = {
   white: 'text-white',
 }
 
+export const placeholderText: ThemeEntry = {
+  default: 'text-gray',
+  white: 'text-white',
+}
+
 export const border: Record<string, ThemeEntry> = {
   color: {
     default: 'border-black',
