@@ -60,7 +60,6 @@
 
   const ctx = getContext<Context>(contextKey)
 
-  // TODO: Fix not being able to upload multiple times
   function removeFile() {
     ctx.file = null
   }
