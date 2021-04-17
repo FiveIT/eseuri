@@ -1,26 +1,35 @@
-<script lang="ts">
+<script lang="ts" context="module">
   import { tick, getContext } from 'svelte'
-  import { goto, url, isActive } from '@roxi/routify'
+  import type { Writable } from 'svelte/store'
+  import type { GotoHelper } from '@roxi/routify'
 
   import { contextKey } from './Layout.svelte'
   import type { Context } from './Layout.svelte'
 
-  export let href = '/'
-  export let enable = !$isActive(href, undefined, { strict: false })
+  export function go(
+    href: string,
+    alive: Writable<boolean>,
+    gotoFn: GotoHelper,
+    param?: Parameters<GotoHelper>[1]
+  ) {
+    alive.set(false)
+    tick().then(() => gotoFn!(href, param))
+  }
+</script>
+
+<script lang="ts">
+  import { goto, url, isActive } from '@roxi/routify'
 
   const { alive } = getContext<Context>(contextKey)
 
-  const go = () => {
-    // eslint-disable-next-line no-unused-vars
-    $alive = false
-    tick().then(() => $goto(href))
-  }
+  export let href = '/'
+  export let enable = !$isActive(href, undefined, { strict: false })
 </script>
 
 {#if enable}
   <a
     href={$url(href)}
-    on:click|preventDefault={go}
+    on:click|preventDefault={() => go(href, alive, $goto)}
     class="w-auto h-auto select-none">
     <slot />
   </a>
