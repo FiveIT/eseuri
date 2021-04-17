@@ -1,11 +1,12 @@
 <script lang="ts">
-  import { getContext, tick } from 'svelte'
+  import { getContext } from 'svelte'
   import Search from 'svelte-material-icons/Magnify.svelte'
 
   import { isActive, goto } from '@roxi/routify'
 
   import type { Context } from './Layout.svelte'
   import { contextKey } from './Layout.svelte'
+  import { go } from './Link.svelte'
 
   import type { WorkType } from '$/types'
 
@@ -19,9 +20,7 @@
 
   function doSearch(condition = true) {
     if (isHome && condition) {
-      // eslint-disable-next-line no-unused-vars
-      $alive = false
-      tick().then(() => $goto('/search', { query, type }))
+      go('/search', alive, $goto, { query, type })
     } else if (isSearch) {
       $goto('/search', { query, type })
     }
@@ -34,8 +33,6 @@
   function onClick() {
     doSearch()
   }
-
-  $: console.log($isActive('/search'))
 </script>
 
 <div class="flex flex-row items-center">
