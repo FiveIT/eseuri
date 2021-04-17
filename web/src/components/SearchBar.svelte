@@ -24,7 +24,17 @@
   $: isHome = $isActive('/index')
   $: isSearch = $isActive('/search')
 
+  let size: string
+  $: if (isHome) {
+    size = '1.125rem'
+  } else if (isSearch) {
+    size = '1.75rem'
+  }
+
   function doSearch(condition = true) {
+    if (query === '') {
+      return
+    }
     if (isHome && condition) {
       go('/search', alive, $goto, { query, type })
     } else if (isSearch) {
@@ -42,8 +52,8 @@
 </script>
 
 <div class="flex flex-row items-center">
-  <button class="my-auto h-min ml-sm" on:click={onClick}>
-    <Search color="white" />
+  <button class="my-auto h-full ml-sm" on:click={onClick}>
+    <Search color="var(--white)" {size} />
   </button>
   <input
     type="text"
