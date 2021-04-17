@@ -1,4 +1,4 @@
-import type { Work, WorkType } from './types'
+import type { Work, WorkType, Role } from './types'
 
 interface TranslationArticulation {
   singular: string
@@ -10,10 +10,12 @@ interface Translation {
   inarticulate: TranslationArticulation
 }
 
-export const workTypeTranslation: Record<
+type TranslationRecord<T extends string> = Record<
   string,
-  Record<WorkType, Translation>
-> = {
+  Record<T, Translation>
+>
+
+export const workTypeTranslation: TranslationRecord<WorkType> = {
   ro: {
     characterization: {
       articulate: {
@@ -33,6 +35,31 @@ export const workTypeTranslation: Record<
       inarticulate: {
         singular: 'eseu',
         plural: 'eseuri',
+      },
+    },
+  },
+}
+
+export const roleTranslation: TranslationRecord<Role> = {
+  ro: {
+    student: {
+      articulate: {
+        singular: 'elevul',
+        plural: 'elevii',
+      },
+      inarticulate: {
+        singular: 'elev',
+        plural: 'elevi',
+      },
+    },
+    teacher: {
+      articulate: {
+        singular: 'profesorul',
+        plural: 'profesorii',
+      },
+      inarticulate: {
+        singular: 'profesor',
+        plural: 'profesori',
       },
     },
   },

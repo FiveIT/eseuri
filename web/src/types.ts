@@ -3,6 +3,8 @@ export type {
   BlobFlipProps,
 } from './components/blob/internal/store'
 
+export type Role = 'student' | 'teacher'
+
 export type Theme = 'white' | 'default'
 
 export type WorkType = 'essay' | 'characterization'
