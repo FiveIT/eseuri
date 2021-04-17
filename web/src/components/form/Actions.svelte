@@ -11,5 +11,5 @@
 <div
   class="row-end-7 col-start-3 col-span-2 grid auto-cols-layout grid-flow-col gap-x-md">
   <Submit value={submitValue} {formenctype} />
-  <NavButton href={abortHref}>{abortLabel}</NavButton>
+  <NavButton href={abortHref} on:navigate>{abortLabel}</NavButton>
 </div>

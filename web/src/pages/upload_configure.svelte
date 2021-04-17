@@ -60,11 +60,15 @@
 
   const ctx = getContext<Context>(contextKey)
 
+  function removeFile() {
+    ctx.file = null
+  }
+
   function onSubmit(alive: Writable<boolean>) {
     const form = new FormData(formElement)
     form.append('file', ctx.file!)
     form.forEach((v, k) => console.log({ [k]: v }))
-    ctx.file = null
+    removeFile()
     go('/', alive, $goto)
   }
 </script>
@@ -74,7 +78,7 @@
     {#if !ctx || ctx.file === null}
       {go('/upload', alive, $goto)}
     {:else}
-      <SlimNav />
+      <SlimNav on:navigate={removeFile} />
       <Form
         name="work"
         {action}
@@ -99,7 +103,8 @@
         <Actions
           slot="actions"
           formenctype="multipart/form-data"
-          submitValue="Publică" />
+          submitValue="Publică"
+          on:navigate={removeFile} />
       </Form>
     {/if}
   </LayoutContext>

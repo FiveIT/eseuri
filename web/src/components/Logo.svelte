@@ -8,7 +8,7 @@
 </script>
 
 <LayoutContext let:theme>
-  <Link href="/">
+  <Link href="/" on:navigate>
     <h1
       class="font-serif text-{big ? 'xl' : 'lg'} font-bold {text[
         theme

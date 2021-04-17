@@ -12,7 +12,8 @@
 <Link
   href="/upload"
   enable={!isUploadConfigure}
-  hideIfDisabled={isUploadConfigure}>
+  hideIfDisabled={isUploadConfigure}
+  on:navigate>
   <div class="bg-orange p-md rounded-full w-min filter-shadow">
     <Cross size="2rem" color="var(--white)" />
   </div>
