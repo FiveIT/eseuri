@@ -1,155 +1,105 @@
 <script lang="ts">
-  import Link from '$/components/Link.svelte'
-  import LoginButton from '$/components/LoginButton.svelte'
-  import Logo from '$/components/Logo.svelte'
-  import { metatags } from '@roxi/routify'
+  import Layout from '$/components/Layout.svelte'
+  import LayoutContext from '$/components/LayoutContext.svelte'
+  import SlimNav from '$/components/SlimNav.svelte'
+  import NavButton from '$/components/NavButton.svelte'
+
+  import Form from '$/components/form/Form.svelte'
+  import Radio from '$/components/form/Radio.svelte'
+  import Text from '$/components/form/Text.svelte'
+  import Submit from '$/components/form/Submit.svelte'
+
+  import { goto } from '@roxi/routify'
+
   import { store as orange } from '$/components/blob/Orange.svelte'
   import { store as red } from '$/components/blob/Red.svelte'
-  import { store as blue } from '$/components/blob/Blue.svelte'
   import { store as window } from '$/components/Window.svelte'
-  import { fly } from 'svelte/transition'
-  import { onMount } from 'svelte'
-  import Buton from '$/components/NavButton.svelte'
-  let name = ''
-  let isessay = true
-  metatags.title = 'Eseuri'
 
-  let mounted = false
-  onMount(() => {
-    $orange = {
-      x: 0,
-      y: $window.height - orange.height,
-      scale: 1.8,
-      rotate: 0,
-      flip: {
-        x: 0,
-        y: 0,
-      },
-      zIndex: -1,
-    }
-    $red = {
-      x: $window.width - red.width * 1,
-      y: 0,
-      scale: 2,
-      rotate: 0,
-      flip: {
-        x: 0,
-        y: 0,
-      },
-      zIndex: -1,
-    }
-    $blue = {
-      x: $window.width * 0.65,
-      y: $window.height * 0.9,
-      scale: 1.5,
-      rotate: 0,
-      flip: {
-        x: 0,
-        y: 0,
-      },
-      zIndex: -1,
-    }
-    mounted = true
-  })
+  import { getContext } from 'svelte'
 
-  export let alive = true
-  $: if (mounted) {
-    $orange.y = $window.height - orange.height
-    $red.x = $window.width - red.width * 1
-    $red.y = 0
-    $blue.x = $window.width * 0.65
-    $blue.y = $window.height * 0.9
+  import type { Context } from './upload.svelte'
+  import { contextKey } from './upload.svelte'
+  import { go } from '$/components/Link.svelte'
+
+  import type { BlobPropsInput, WorkType } from '$/types'
+  import content, { workTypeTranslation } from '$/content'
+  import type { Writable } from 'svelte/store'
+
+  let orangeBlobProps: BlobPropsInput
+  $: orangeBlobProps = {
+    x: 0,
+    y: $window.height - orange.height,
+    scale: 1.8,
+  }
+
+  let redBlobProps: BlobPropsInput
+  $: redBlobProps = {
+    x: $window.width - red.width * 1,
+    y: 0,
+    scale: 2,
+  }
+
+  let blueBlobProps: BlobPropsInput
+  $: blueBlobProps = {
+    x: $window.width * 0.65,
+    y: $window.height * 0.9,
+    scale: 1.5,
+  }
+
+  const action = import.meta.env.FUNCTIONS_URL as string
+  const workTypes: WorkType[] = ['essay', 'characterization']
+  const translateWorkType = (w: WorkType) =>
+    workTypeTranslation.ro[w].inarticulate.singular
+
+  let currentWorkType: WorkType
+
+  $: suggestions = content
+    .filter(({ type }) => type === currentWorkType)
+    .map(n => n.name)
+
+  let formElement: HTMLFormElement
+
+  const ctx = getContext<Context>(contextKey)
+
+  function onSubmit(alive: Writable<boolean>) {
+    const form = new FormData(formElement)
+    form.append('file', ctx.file!)
+    form.forEach((v, k) => console.log({ [k]: v }))
+    ctx.file = null
+    go('/', alive, $goto)
   }
 </script>
 
-{#if alive}
-  <div
-    class="w-full bg-white bg-opacity-50 h-screen blur scrollbar-window-padding"
-    transition:fly={{ y: +$window.height, duration: 300 }}>
-    <div
-      class=" mt-xlg auto-rows-layout  max-w-layout  grid-cols-layout relative w-full gap-y-sm grid gap-x-md mx-auto">
-      <div class="row-start-1 row-span-1 col-start-1  col-span-1 my-auto">
-        <Link href="../" bind:alive>
-          <Logo />
-        </Link>
-      </div>
-      <div class=" row-start-1 row-span-1 col-start-3 col-span-1 my-auto">
-        <Buton white={false} disable={false} bind:alive link="../search/Cauta"
-          >Caută</Buton>
-      </div>
-      <div
-        class=" row-start-1 row-span-1 col-start-6 col-span-1 my-auto w-full h-full">
-        <LoginButton />
-      </div>
-      <div class="col-start-4 col-end-5 row-start-1  my-auto ">
-        <Buton white={false} disable={true} bind:alive link="./">Plagiat</Buton>
-      </div>
-      <div class="col-start-5 col-end-6 row-start-1 my-auto">
-        <Buton white={false} disable={true} bind:alive link="./"
-          >Profesori</Buton>
-      </div>
-      <div
-        class="row-start-3 row-span-1 col-start-1 col-span-3 my-auto text-md">
-        Despre lucrare
-      </div>
-      <div
-        class="row-start-4 row-span-1 col-start-1 col-span-1 my-auto text-sm text-center">
+<Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} blurBackground={true}>
+  <LayoutContext let:alive>
+    <SlimNav />
+    <Form
+      name="work"
+      {action}
+      bind:formElement
+      on:submit={() => onSubmit(alive)}>
+      <span slot="legend">Despre lucrare</span>
+      <Radio
+        name="type"
+        options={workTypes}
+        displayModifier={translateWorkType}
+        bind:selected={currentWorkType}>
         Tip
-      </div>
+      </Radio>
+      <Text
+        name="name"
+        placeholder="Scrie aici {currentWorkType === 'essay'
+          ? 'titlul'
+          : 'numele personajului'}..."
+        {suggestions}>
+        {currentWorkType === 'essay' ? 'Titlu' : 'Caracter'}
+      </Text>
       <div
-        class="row-start-4 row-span-1 col-start-2 col-span-1 my-auto  text-center w-full h-full">
-        <button
-          on:click={() => {
-            isessay = true
-          }}
-          class="bg-opacity-0 focus:outline-none  my-auto text-sm w-full h-full"
-          class:underline={isessay}>Eseu</button>
+        slot="actions"
+        class="row-end-7 col-start-3 col-span-2 grid auto-cols-layout grid-flow-col gap-x-md">
+        <Submit value="Publică" formenctype="multipart/form-data" />
+        <NavButton href="/upload">Înapoi</NavButton>
       </div>
-      <div
-        class="row-start-4 row-span-1 col-start-3 col-span-1 my-auto text-center w-full h-full">
-        <button
-          on:click={() => {
-            isessay = false
-          }}
-          class=" relative bg-opacity-0 focus:outline-none  my-auto text-sm w-full h-full"
-          class:underline={!isessay}>Caracterizare</button>
-      </div>
-      {#if isessay}
-        <div
-          class="row-start-5 row-span-1 col-start-1 col-span-1 my-auto text-center text-sm ">
-          Titlu
-        </div>
-        <div
-          class="row-start-5 row-span-1 col-start-2 col-span-2 my-auto w-full h-full">
-          <input
-            class=" w-full h-full bg-opacity-0 bg-white text-sm"
-            placeholder="Scrie aici titlul..."
-            bind:value={name} />
-        </div>
-      {:else}
-        <div
-          class="row-start-5 row-span-1 col-start-1 col-span-1 my-auto text-center text-sm">
-          Personaj
-        </div>
-        <div
-          class="row-start-5 row-span-1 col-start-2 col-span-2 my-auto w-full h-full">
-          <input
-            class=" w-full h-full bg-opacity-0 bg-white text-sm "
-            placeholder="Scrie aici numele personajului..."
-            bind:value={name} />
-        </div>
-      {/if}
-      <div
-        class="row-start-8 row-span-1 col-start-3 col-span-1 my-auto mx-auto w-full h-full bg-blue rounded">
-        <button class="w-full h-full mx-auto my-auto text-sm text-white">
-          Publică
-        </button>
-      </div>
-      <div
-        class="row-start-8 row-span-1 col-start-4 my-auto col-span-1 bg-oppacity-0 publish w-full h-full">
-        <Buton white={false} disable={false} bind:alive link="../upload"
-          >Înapoi</Buton>
-      </div>
-    </div>
-  </div>
-{/if}
+    </Form>
+  </LayoutContext>
+</Layout>
