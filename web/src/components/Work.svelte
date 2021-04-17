@@ -14,7 +14,11 @@
   let creatorParent: HTMLElement
   let creatorChild: HTMLElement
 
-  function fixFontSize(parent: HTMLElement, child: HTMLElement, compensation = 1) {
+  function fixFontSize(
+    parent: HTMLElement,
+    child: HTMLElement,
+    compensation = 1
+  ) {
     const { height: parentHeight } = parent.getBoundingClientRect()
     const { height: childHeight } = child.getBoundingClientRect()
 
@@ -39,6 +43,7 @@
       class="grid w-full grid-flow-row h-full grid-rows-4 gap-y-xs px-sm py-xs font-sans subpixel-antialiased rounded leading-none {text[
         theme
       ]} {border.color[theme]} {border.size[theme]} {filterShadow[theme]}"
+      class:bg-white={theme === 'default'}
       class:blur={theme === 'default'}>
       <dt class="row-span-2 h-full flex flex-col" bind:this={titleParent}>
         <h2 class="text-md mt-auto" bind:this={titleChild}>
@@ -46,7 +51,9 @@
         </h2>
       </dt>
       <dt class="self-center h-full flex flex-col" bind:this={creatorParent}>
-        <span class="text-workInfo leading-none my-auto" bind:this={creatorChild}>{work.creator}</span>
+        <span
+          class="text-workInfo leading-none my-auto"
+          bind:this={creatorChild}>{work.creator}</span>
       </dt>
       <dt class="text-workInfo">
         {work.work_count}{work.work_count > 19 ? ' de' : ''}

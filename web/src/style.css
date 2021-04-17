@@ -42,6 +42,10 @@ body {
   }
 }
 
+.bg-white {
+  background-color: rgba(252, 250, 249, 0.5);
+}
+
 .filter-shadow {
   filter: drop-shadow(var(--shadow));
 }
