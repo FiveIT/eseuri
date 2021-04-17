@@ -16,9 +16,8 @@
 
   import content from '$/content'
   import { workTypeTranslation } from '$/content'
-  import { onMount } from 'svelte'
 
-  let query: string = $params.query
+  let query: string = $params.query || ''
   let type: WorkType = isWorkType($params.type) ? $params.type : 'essay'
   let workTypes: WorkType[] = ['essay', 'characterization']
   let works: Work[]
