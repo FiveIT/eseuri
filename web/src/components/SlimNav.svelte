@@ -9,6 +9,7 @@
   <div class="flex w-full">
     <Logo />
     <div class="ml-auto grid grid-flow-col gap-x-md auto-cols-layout">
+      <span />
       <NavButton href="/search" hideIfDisabled={true}>Caută</NavButton>
       <NavButton enable={false}>Plagiat</NavButton>
       <NavButton enable={false}>Profesori</NavButton>
