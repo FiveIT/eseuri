@@ -12,9 +12,11 @@
   import type { BlobPropsInput, WorkType } from '$/types'
 
   import content from '$/content'
+  import { workTypeTranslation } from '$/content'
 
   let query = ''
   let type: WorkType = 'essay'
+  let workTypes: WorkType[] = ['essay', 'characterization']
 
   $: works = content.filter(
     ({ type: t, name: n }) =>
@@ -45,13 +47,13 @@
   <div class="col-start-1 row-span-1 row-start-3 col-end-4 my-auto ">
     <Search {query} isBig={true} isAtHome={false} />
   </div>
-  <button
-    class="bg-opacity-0 row-span-1 row-start-3 text-white col-start-4 col-span-1 text-sm filter-shadow"
-    class:underline={type === 'essay'}
-    on:click={() => (type = 'essay')}>Eseuri</button>
-  <button
-    class="bg-opacity-0 text-white row-span-1 row-start-3 col-start-5 col-span-1 text-sm filter-shadow"
-    class:underline={type === 'characterization'}
-    on:click={() => (type = 'characterization')}>Caracterizari</button>
+  {#each workTypes as t, i}
+    <button
+      class="bg-opacity-0 row-span-1 row-start-3 text-white col-start-{4 +
+        i} col-span-1 text-sm filter-shadow capitalize"
+      class:underline={type === t}
+      on:click={() => (type = t)}
+      >{workTypeTranslation.ro[t].inarticulate.plural}</button>
+  {/each}
   <Works {works} />
 </Layout>
