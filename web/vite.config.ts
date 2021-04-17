@@ -20,9 +20,9 @@ const indexReplace = () => {
 export default defineConfig(({ mode }) => {
   const isProduction = mode === 'production'
   return {
-    extensions: ['ts', 'tsx', 'html', 'js', 'css', 'svg', 'json'],
+    extensions: ['ts', 'html', 'js', 'css', 'svg', 'json'],
     optimizeDeps: {
-      exclude: ['@roxi/routify'],
+      exclude: ['@roxi/routify', 'pug'],
     },
     define: {
       'import.meta.env.FUNCTIONS_URL': JSON.stringify(
