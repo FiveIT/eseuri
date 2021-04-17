@@ -46,7 +46,11 @@
   $: works = content.filter(work => work.type === type)
 </script>
 
-<Layout {orangeBlobProps} {redBlobProps} {blueBlobProps}>
+<Layout
+  {orangeBlobProps}
+  {redBlobProps}
+  {blueBlobProps}
+  transition={{ y: 1000 }}>
   <div
     class="row-start-1 row-span-1 col-start-1  col-span-1 my-auto select-none">
     <Logo />
