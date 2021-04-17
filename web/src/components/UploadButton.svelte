@@ -4,19 +4,7 @@
 </script>
 
 <Link href="/upload">
-  <button class="bg-orange rounded-full m-auto">
-    <div class="mx-auto my-auto">
-      <div class="mx-auto w-min h-min fill-white">
-        <Cross size="2rem" />
-      </div>
-    </div>
-  </button>
+  <div class="bg-orange p-md rounded-full w-min filter-shadow">
+    <Cross size="2rem" color="var(--white)" />
+  </div>
 </Link>
-
-<style>
-  button {
-    width: calc(var(--l_row) * 1.08);
-    height: calc(var(--l_row) * 1.08);
-    filter: drop-shadow(var(--shadow));
-  }
-</style>
