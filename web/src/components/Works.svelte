@@ -1,14 +1,28 @@
 <script lang="ts">
   import type { Work } from '$/types'
 
+  import LayoutContext from './LayoutContext.svelte'
   import W from './Work.svelte'
+
+  import { placeholderText, filterShadow } from '$/theme'
 
   export let works: Work[] = []
 </script>
 
-<div
-  class="grid w-full h-full grid-cols-essays auto-rows-essays gap-x-lg gap-y-sm">
-  {#each works as work}
-    <W {work} />
-  {/each}
-</div>
+<LayoutContext let:theme>
+  <div
+    class="grid w-full h-full grid-cols-essays auto-rows-essays gap-x-lg gap-y-sm col-start-1 col-end-7">
+    {#if works.length}
+      {#each works as work (work.name)}
+        <W {work} />
+      {/each}
+    {:else}
+      <p
+        class="col-start-2 place-self-center text-center text-md font-sans subpixel-antialiased {placeholderText[
+          theme
+        ]} {filterShadow[theme]}">
+        Liber!<br />Nicio lucrare.
+      </p>
+    {/if}
+  </div>
+</LayoutContext>
