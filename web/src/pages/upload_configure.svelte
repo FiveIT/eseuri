@@ -2,12 +2,11 @@
   import Layout from '$/components/Layout.svelte'
   import LayoutContext from '$/components/LayoutContext.svelte'
   import SlimNav from '$/components/SlimNav.svelte'
-  import NavButton from '$/components/NavButton.svelte'
 
   import Form from '$/components/form/Form.svelte'
   import Radio from '$/components/form/Radio.svelte'
   import Text from '$/components/form/Text.svelte'
-  import Submit from '$/components/form/Submit.svelte'
+  import Actions from '$/components/form/Actions.svelte'
 
   import { goto } from '@roxi/routify'
 
@@ -97,12 +96,10 @@
           {suggestions}>
           {currentWorkType === 'essay' ? 'Titlu' : 'Caracter'}
         </Text>
-        <div
+        <Actions
           slot="actions"
-          class="row-end-7 col-start-3 col-span-2 grid auto-cols-layout grid-flow-col gap-x-md">
-          <Submit value="Publică" formenctype="multipart/form-data" />
-          <NavButton href="/upload">Înapoi</NavButton>
-        </div>
+          formenctype="multipart/form-data"
+          submitValue="Publică" />
       </Form>
     {/if}
   </LayoutContext>
