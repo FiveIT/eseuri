@@ -1,16 +1,13 @@
 <script lang="ts">
-  import Link from './link.svelte'
   import Cross from 'svelte-material-icons/Plus.svelte'
-  export let link: string
-  export let alive: boolean
+  import Link from './Link.svelte'
 </script>
 
-<Link href={link} bind:alive>
-  <button
-    class="bg-orange rounded-full m-auto focus:outline-none outline-none focus:md:underline">
+<Link href="/upload">
+  <button class="bg-orange rounded-full m-auto">
     <div class="mx-auto my-auto">
-      <div class="mx-auto w-min h-min">
-        <Cross size="2rem" color="white" />
+      <div class="mx-auto w-min h-min fill-white">
+        <Cross size="2rem" />
       </div>
     </div>
   </button>

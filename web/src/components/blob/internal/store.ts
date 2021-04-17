@@ -40,11 +40,26 @@ export function getBlobProps(overrides: BlobPropsInput = {}): BlobProps {
 export default (): Writable<BlobPropsInput> & {
   width: number
   height: number
-} => ({
-  ...tweened<BlobPropsInput>(getBlobProps(), {
+} => {
+  const { subscribe, update } = tweened<BlobPropsInput>(getBlobProps(), {
     duration,
     easing,
-  }),
-  width: 0,
-  height: 0,
-})
+  })
+  return {
+    subscribe,
+    set(input) {
+      update(prev => ({
+        ...prev,
+        ...input,
+      }))
+    },
+    update(fn) {
+      update(prev => ({
+        ...prev,
+        ...fn(prev),
+      }))
+    },
+    width: 0,
+    height: 0,
+  }
+}

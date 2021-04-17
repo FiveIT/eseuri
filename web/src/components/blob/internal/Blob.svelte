@@ -8,7 +8,7 @@
   import { getBlobProps } from './store'
   import type { BlobPropsInput } from './store'
 
-  export let props: BlobPropsInput
+  export let props: BlobPropsInput = {}
 
   export let width: number
   export let height: number
