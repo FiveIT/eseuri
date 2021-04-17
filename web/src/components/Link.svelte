@@ -6,24 +6,24 @@
   import type { Context } from './Layout.svelte'
 
   export let href = '/'
-  export let enable = !$isActive(href)
+  export let enable = !$isActive(href, undefined, { strict: false })
 
   const { alive } = getContext<Context>(contextKey)
 
   const go = () => {
-    if (!enable) {
-      return
-    }
     // eslint-disable-next-line no-unused-vars
     $alive = false
     tick().then(() => $goto(href))
   }
 </script>
 
-<a
-  href={$url(href)}
-  on:click|preventDefault={go}
-  class="w-auto h-auto select-none"
-  class:pointer-events-none={!enable}>
+{#if enable}
+  <a
+    href={$url(href)}
+    on:click|preventDefault={go}
+    class="w-auto h-auto select-none">
+    <slot />
+  </a>
+{:else}
   <slot />
-</a>
+{/if}
