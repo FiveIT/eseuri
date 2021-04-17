@@ -19,6 +19,9 @@
 
 <script lang="ts">
   import { goto, url, isActive } from '@roxi/routify'
+  import { createEventDispatcher } from 'svelte'
+
+  const dispatch = createEventDispatcher()
 
   const { alive } = getContext<Context>(contextKey)
 
@@ -29,7 +32,10 @@
 {#if enable}
   <a
     href={$url(href)}
-    on:click|preventDefault={() => go(href, alive, $goto)}
+    on:click|preventDefault={() => {
+      dispatch('navigate', { href })
+      go(href, alive, $goto)
+    }}
     class="w-auto h-auto select-none">
     <slot />
   </a>

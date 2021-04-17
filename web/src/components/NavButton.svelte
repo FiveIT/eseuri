@@ -19,7 +19,7 @@
 </script>
 
 {#if !hideIfDisabled || enable}
-  <Link {href} {enable}>
+  <Link {href} {enable} on:navigate>
     <div
       class="w-full h-full flex justify-center items-center font-sans no-underline text-sm {text[
         theme
