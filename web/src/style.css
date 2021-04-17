@@ -22,8 +22,11 @@ html {
 
 body {
   min-height: 100vh;
-  padding-left: calc(100vw - 100%);
   background-color: var(--white);
+}
+
+.scrollbar-window-padding {
+  padding-left: calc(100vw - 100%);
 }
 
 @supports (backdrop-filter: blur(100px)) or
