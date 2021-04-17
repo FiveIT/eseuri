@@ -81,7 +81,7 @@ export default defineConfig({
   },
   safelist: [
     'underline',
-    [].concat(['white', 'black'].map(v => [`text-${v}`, `border-${v}`])),
+    [].concat(...['white', 'black'].map(v => [`text-${v}`, `border-${v}`])),
     [2, 3].map(v => `border-${v}`),
     Array.from({ length: 6 }, (_, i) => `grid-cols-${i + 1}`),
     'bg-white-50',
