@@ -92,6 +92,7 @@ export default defineConfig({
     ['lg', 'xl'].map(v => `text-${v}`),
     'my-auto',
     ['white', 'blue', 'google-docs', 'red'].map(v => `bg-${v}`),
+    'border',
   ],
   darkMode: false,
   preflight: true,
