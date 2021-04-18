@@ -91,6 +91,7 @@ export default defineConfig({
     'h-full',
     ['lg', 'xl'].map(v => `text-${v}`),
     'my-auto',
+    ['white', 'blue', 'google-docs', 'red'].map(v => `bg-${v}`),
   ],
   darkMode: false,
   preflight: true,
