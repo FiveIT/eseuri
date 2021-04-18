@@ -1,20 +1,18 @@
 <script lang="ts">
-  import { metatags } from '@roxi/routify'
+  import { store as blue } from '$/components/blob/Blue.svelte'
   import { store as orange } from '$/components/blob/Orange.svelte'
   import { store as red } from '$/components/blob/Red.svelte'
-  import { store as blue } from '$/components/blob/Blue.svelte'
-  import { store as window } from '$/components/Window.svelte'
+  import Layout from '$/components/Layout.svelte'
+  import LoginButton from '$/components/LoginButton.svelte'
+  import Logo from '$/components/Logo.svelte'
   import Buton from '$/components/NavButton.svelte'
   import Search from '$/components/SearchBar.svelte'
   import UploadButton from '$/components/UploadButton.svelte'
-  import Logo from '$/components/Logo.svelte'
-  import LoginButton from '$/components/LoginButton.svelte'
-  import Layout from '$/components/Layout.svelte'
+  import { store as window } from '$/components/Window.svelte'
   import Works from '$/components/Works.svelte'
-
-  import type { BlobPropsInput, WorkType } from '$/types'
-
   import content, { workTypeTranslation } from '$/content'
+  import type { BlobPropsInput, WorkType } from '$/types'
+  import { metatags } from '@roxi/routify'
 
   metatags.title = 'Eseuri'
 
