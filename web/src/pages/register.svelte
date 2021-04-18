@@ -53,7 +53,7 @@
   }
 </script>
 
-<Layout {orangeBlobProps} {redBlobProps} {blueBlobProps}>
+<Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} blurBackground>
   <LayoutContext let:alive>
     <SlimNav logoOnly={true} />
     <Form
