@@ -1,10 +1,9 @@
-import type { Writable } from 'svelte/store'
-import { tweened } from 'svelte/motion'
-
 import {
   TRANSITION_DURATION as duration,
   TRANSITION_EASING as easing,
 } from '$/globals'
+import { tweened } from 'svelte/motion'
+import type { Writable } from 'svelte/store'
 
 export interface BlobFlipProps {
   x: number
