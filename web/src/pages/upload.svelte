@@ -12,6 +12,7 @@
   import Logo from '$/components/Logo.svelte'
   import Layout from '$/components/Layout.svelte'
   import LayoutContext from '$/components/LayoutContext.svelte'
+  import UploadVariantPlaceholder from '$/components/UploadVariantPlaceholder.svelte'
 
   import { store as orange } from '$/components/blob/Orange.svelte'
   import { store as red } from '$/components/blob/Red.svelte'
@@ -22,6 +23,7 @@
   import GoogleDocs from 'svelte-material-icons/FileDocumentOutline.svelte'
   import Doodle from 'svelte-material-icons/Gesture.svelte'
 
+  import { px } from '$/util'
   import type { BlobPropsInput } from '$/types'
   import { getContext } from 'svelte'
   import { goto } from '@roxi/routify'
@@ -54,20 +56,18 @@
   const ctx = getContext<Context>(contextKey)
 </script>
 
-<Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} center={true}>
+<Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} center>
   <LayoutContext let:alive>
     <div
-      class="blur row-span-6 col-span-2 border-black border -mt-sm -ml-md rounded bg-white bg-opacity-50 grid auto-rows-layout grid-flow-row px-md py-sm gap-y-sm text-sm font-sans subpixel-antialiased">
+      class="blur row-span-6 col-span-2 border -mt-sm -ml-md rounded white-bg bg-opacity-50 grid auto-rows-layout grid-flow-row px-md py-sm gap-y-sm text-sm font-sans subpixel-antialiased">
       <h2 class="m-auto">Publică o lucrare</h2>
-      <div
-        class="flex items-center p-sm justify-between bg-white rounded border border-black select-none">
+      <UploadVariantPlaceholder icon={ScrieAici} fg="black" bg="white" border>
         Scrie-o aici
-        <ScrieAici color="var(--black)" size="1.5rem" />
-      </div>
+      </UploadVariantPlaceholder>
       <label
         class="flex items-center p-sm rounded bg-blue text-white justify-between cursor-pointer focus-within:outline-solid-black select-none">
         Încarcă un document
-        <Docs color="var(--white)" size="1.5rem" />
+        <Docs color="var(--white)" size={px(1.5)} />
         <input
           name="file"
           type="file"
@@ -82,17 +82,13 @@
           }}
           bind:this={input} />
       </label>
-      <div
-        class="flex items-center p-sm rounded bg-google-docs text-white justify-between select-none">
+      <UploadVariantPlaceholder icon={GoogleDocs} bg="google-docs">
         Încarcă din Google Docs
-        <GoogleDocs color="var(--white)" size="1.5rem" />
-      </div>
+      </UploadVariantPlaceholder>
       <h3 class="m-auto">Ai scris de mână?</h3>
-      <div
-        class="flex items-center p-sm rounded bg-red text-white justify-between select-none">
+      <UploadVariantPlaceholder icon={Doodle} bg="red">
         Încarcă imagini/PDF
-        <Doodle color="var(--white)" size="1.5rem" />
-      </div>
+      </UploadVariantPlaceholder>
     </div>
     <div class="row-start-3 row-span-2 col-start-4 col-span-2">
       <Logo big={true} />
