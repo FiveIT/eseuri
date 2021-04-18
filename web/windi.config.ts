@@ -1,5 +1,5 @@
-import defaults from 'windicss/defaultTheme'
 import { defineConfig } from 'vite-plugin-windicss'
+import defaults from 'windicss/defaultTheme'
 
 export default defineConfig({
   theme: {
@@ -66,7 +66,7 @@ export default defineConfig({
       none: 'none',
     },
     gridAutoRows: {
-      layout: 'minmax(var(--row-height), auto)',
+      layout: 'var(--row-height)',
       essays: 'var(--essay-row-heigth)',
     },
     gridTemplateColumns: {

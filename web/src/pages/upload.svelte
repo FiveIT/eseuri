@@ -9,26 +9,22 @@
 </script>
 
 <script lang="ts">
-  import Logo from '$/components/Logo.svelte'
-  import Layout from '$/components/Layout.svelte'
-  import LayoutContext from '$/components/LayoutContext.svelte'
-  import UploadVariantPlaceholder from '$/components/UploadVariantPlaceholder.svelte'
-
   import { store as orange } from '$/components/blob/Orange.svelte'
   import { store as red } from '$/components/blob/Red.svelte'
+  import Layout from '$/components/Layout.svelte'
+  import LayoutContext from '$/components/LayoutContext.svelte'
+  import { go } from '$/components/Link.svelte'
+  import Logo from '$/components/Logo.svelte'
+  import UploadVariantPlaceholder from '$/components/UploadVariantPlaceholder.svelte'
   import { store as window } from '$/components/Window.svelte'
-
-  import ScrieAici from 'svelte-material-icons/TextSubject.svelte'
+  import type { BlobPropsInput } from '$/types'
+  import { px } from '$/util'
+  import { goto } from '@roxi/routify'
+  import { getContext } from 'svelte'
   import Docs from 'svelte-material-icons/FileDocumentBoxMultiple.svelte'
   import GoogleDocs from 'svelte-material-icons/FileDocumentOutline.svelte'
   import Doodle from 'svelte-material-icons/Gesture.svelte'
-
-  import { px } from '$/util'
-  import type { BlobPropsInput } from '$/types'
-  import { getContext } from 'svelte'
-  import { goto } from '@roxi/routify'
-
-  import { go } from '$/components/Link.svelte'
+  import ScrieAici from 'svelte-material-icons/TextSubject.svelte'
 
   let orangeBlobProps: BlobPropsInput
   $: orangeBlobProps = {
@@ -59,7 +55,7 @@
 <Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} center>
   <LayoutContext let:alive>
     <div
-      class="blur row-span-6 col-span-2 border -mt-sm -ml-md rounded white-bg bg-opacity-50 grid auto-rows-layout grid-flow-row px-md py-sm gap-y-sm text-sm font-sans subpixel-antialiased">
+      class="blur row-span-6 col-span-2 border -mt-sm -ml-md rounded white-bg bg-opacity-50 grid auto-rows-1fr grid-flow-row px-md py-sm gap-y-sm text-sm font-sans subpixel-antialiased">
       <h2 class="m-auto">Publică o lucrare</h2>
       <UploadVariantPlaceholder icon={ScrieAici} fg="black" bg="white" border>
         Scrie-o aici
