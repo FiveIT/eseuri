@@ -15,18 +15,15 @@
   const { theme: themeStore } = getContext<Context>(contextKey)
 
   export let theme: Theme = $themeStore
+
+  $: auth = $isAuthenticated
 </script>
 
-{#if $isAuthenticated}
-  <Auth0LogoutButton class="w-full h-full">
-    <span class="mx-auto my-auto text-sm {text[theme]} {filterShadow[theme]}">
-      Ieși din cont
-    </span>
-  </Auth0LogoutButton>
-{:else}
-  <Auth0LoginButton class="w-full h-full" preserveRoute={true}>
-    <span class="mx-auto my-auto text-sm {text[theme]} {filterShadow[theme]}">
-      Intră în cont
-    </span>
-  </Auth0LoginButton>
-{/if}
+<svelte:component
+  this={auth ? Auth0LogoutButton : Auth0LoginButton}
+  class="w-full h-full font-sans text-sm antialiased {text[
+    theme
+  ]} {filterShadow[theme]}"
+  preserveRoute={!auth}>
+  {auth ? 'Ieși din cont' : 'Intră în cont'}
+</svelte:component>
