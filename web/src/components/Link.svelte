@@ -13,7 +13,7 @@
     param?: Parameters<GotoHelper>[1]
   ) {
     alive.set(false)
-    tick().then(() => gotoFn!(href, param))
+    tick().then(() => gotoFn(href, param))
   }
 </script>
 
