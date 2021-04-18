@@ -50,12 +50,14 @@
 </script>
 
 <div class="flex flex-row items-center">
-  <button class="my-auto h-full ml-sm" on:click={onClick}>
+  <button
+    class="my-auto pt-{isHome ? '0.02' : 1} h-full ml-sm"
+    on:click={onClick}>
     <Search color="var(--white)" {size} />
   </button>
   <input
     type="text"
-    class="font-sans text-sm subpixel-antialiased my-auto bg-transparent placeholder-white text-white ml-sm w-full"
+    class="font-sans text-sm antialiased my-auto bg-transparent placeholder-white text-white ml-sm w-full"
     class:text-md={isSearch}
     class:filter-shadow={isHome}
     class:filter-shadow-soft={isSearch}
