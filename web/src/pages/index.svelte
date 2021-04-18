@@ -73,7 +73,7 @@
       class="col-start-{3 +
         i} col-span-1 row-start-4 w-full h-full m-auto my-auto">
       <button
-        class="w-full h-full font-sans text-sm subpixel-antialiased capitalize"
+        class="w-full h-full font-sans text-sm antialiased capitalize"
         class:underline={type === t}
         on:click={() => (type = t)}
         >{workTypeTranslation.ro[t].inarticulate.plural}</button>

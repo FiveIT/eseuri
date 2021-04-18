@@ -55,7 +55,7 @@
 <Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} center>
   <LayoutContext let:alive>
     <div
-      class="blur row-span-6 col-span-2 border -mt-sm -ml-md rounded white-bg bg-opacity-50 grid auto-rows-1fr grid-flow-row px-md py-sm gap-y-sm text-sm font-sans subpixel-antialiased">
+      class="blur row-span-6 col-span-2 border -mt-sm -ml-md rounded white-bg bg-opacity-50 grid auto-rows-1fr grid-flow-row px-md py-sm gap-y-sm text-sm font-sans antialiased">
       <h2 class="m-auto">Publică o lucrare</h2>
       <UploadVariantPlaceholder icon={ScrieAici} fg="black" bg="white" border>
         Scrie-o aici
@@ -90,7 +90,7 @@
       <Logo big={true} />
     </div>
     <h3
-      class="row-start-5 row-span-1 col-start-4 col-end-6 text-sm font-sans subpixel-antialiased">
+      class="row-start-5 row-span-1 col-start-4 col-end-6 text-sm font-sans text-sm antialiased">
       Perfecționează-ți-le cu cea mai extinsă colecție din România!
     </h3>
   </LayoutContext>

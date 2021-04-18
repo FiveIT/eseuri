@@ -18,7 +18,7 @@
       {/each}
     {:else}
       <p
-        class="col-start-2 place-self-center text-center text-md font-sans subpixel-antialiased {placeholderText[
+        class="col-start-2 place-self-center text-center text-md font-sans antialiased {placeholderText[
           theme
         ]} {filterShadow[theme]}">
         Liber!<br />Nicio lucrare.

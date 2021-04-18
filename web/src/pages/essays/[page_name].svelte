@@ -127,15 +127,15 @@
     </button>
   </div>
   <div class="col-start-2 col-end-6 row-start-3 flex flex-col justify-between">
-    <h2 class="text-title font-serif mt-sm">
+    <h2 class="text-title font-serif mt-sm antialiased">
       {decodeURI(page_name)}
     </h2>
     <div class="flex-row flex w-full justify-between align-middle mt-sm">
-      <div class="relative w-min mt-sm text-sm ">Eseu</div>
+      <div class="relative w-min mt-sm text-sm font-sans antialiased">Eseu</div>
       <div class="relative w-min mt-sm"><FavButton /></div>
     </div>
     <div>
-      <p class="text-prose font-serif mt-sm">
+      <p class="text-prose font-serif mt-sm antialiased">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec est nibh,
         tristique non magna maximus, maximus ornare nibh. Ut cursus libero in mi
         egestas blandit. Quisque tincidunt enim nec ex dignissim mattis eget ac
