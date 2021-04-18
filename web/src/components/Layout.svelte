@@ -1,6 +1,17 @@
 <script context="module" lang="ts">
+  import { store as blue } from '$/components/blob/Blue.svelte'
+  import { store as orange } from '$/components/blob/Orange.svelte'
+  import { store as red } from '$/components/blob/Red.svelte'
+  import {
+    TRANSITION_DURATION as duration,
+    TRANSITION_EASING as easing,
+  } from '$/globals'
+  import type { BlobPropsInput, Theme } from '$/types'
+  import { onDestroy, onMount, setContext } from 'svelte'
   import type { Readable, Writable } from 'svelte/store'
-  import type { Theme } from '$/types'
+  import { writable } from 'svelte/store'
+  import type { FlyParams } from 'svelte/transition'
+  import { fly } from 'svelte/transition'
 
   export const contextKey = {}
 
@@ -13,22 +24,6 @@
 </script>
 
 <script lang="ts">
-  import { onMount, onDestroy, setContext } from 'svelte'
-  import { writable } from 'svelte/store'
-  import { fly } from 'svelte/transition'
-  import type { FlyParams } from 'svelte/transition'
-
-  import type { BlobPropsInput } from '$/types'
-
-  import { store as orange } from '$/components/blob/Orange.svelte'
-  import { store as red } from '$/components/blob/Red.svelte'
-  import { store as blue } from '$/components/blob/Blue.svelte'
-
-  import {
-    TRANSITION_DURATION as duration,
-    TRANSITION_EASING as easing,
-  } from '$/globals'
-
   const defaultTransition: FlyParams = {
     y: -1000,
     duration,
