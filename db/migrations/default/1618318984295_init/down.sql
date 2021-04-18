@@ -61,7 +61,6 @@ drop trigger insert_user on users;
 drop function trigger_insert_user;
 drop view users;
 drop function get_role;
-drop table user_role;
 drop trigger insert_teacher on teachers;
 drop function trigger_insert_teacher;
 drop trigger insert_student on students;
@@ -73,6 +72,8 @@ drop table students;
 alter table users_all drop constraint school_user;
 drop index idx_users_school;
 drop table users_all;
+drop domain email;
+drop extension citext;
 
 alter table characters drop constraint fk_title_character;
 drop index idx_characters_title;
