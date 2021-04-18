@@ -19,8 +19,8 @@
 <div
   transition:fade={{ duration, easing }}
   class="fixed"
-  style="--x: {p.x}px; --y: {p.y}px; --scale: {p.scale}; --rotate: {p.rotate}deg; --flipX: {p
-    .flip.x}deg; --flipY: {p.flip.y}deg; --z-index: {p.zIndex};"
+  style="--x: {p.x}px; --y: {p.y}px; --scale: {p.scale}; --rotate: {p.rotate}deg; --flip-x: {p
+    .flip.x}deg; --flip-y: {p.flip.y}deg; --z-index: {p.zIndex};"
   bind:offsetWidth={width}
   bind:offsetHeight={height}>
   <slot />
@@ -31,7 +31,7 @@
     z-index: var(--z-index);
     top: var(--y);
     left: var(--x);
-    transform: scale(var(--scale)) rotate(var(--rotate)) rotateX(var(--flipX))
-      rotateY(var(--flipY));
+    transform: scale(var(--scale)) rotate(var(--rotate)) rotateX(var(--flip-x))
+      rotateY(var(--flip-y));
   }
 </style>
