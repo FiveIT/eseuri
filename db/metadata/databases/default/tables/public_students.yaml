@@ -1,0 +1,36 @@
+table:
+  name: students
+  schema: public
+object_relationships:
+- name: users_all
+  using:
+    foreign_key_constraint_on: user_id
+array_relationships:
+- name: teacher_student_associations
+  using:
+    foreign_key_constraint_on:
+      column: student_id
+      table:
+        name: teacher_student_associations
+        schema: public
+select_permissions:
+- permission:
+    columns: []
+    filter:
+      user_id:
+        _eq: X-Hasura-User-Id
+  role: student
+- permission:
+    columns:
+    - user_id
+    filter: {}
+    limit: 50
+  role: teacher
+update_permissions:
+- permission:
+    check: null
+    columns: []
+    filter:
+      user_id:
+        _eq: X-Hasura-User-Id
+  role: student

@@ -1,0 +1,16 @@
+{
+  "scripts": {
+    "build": "rm -f rule.js && tsc --build tsconfig.json && cat rule.js | sed -n '/^async function callback/,$p' | sed -e '/async function callback/a\\ \\ \\ \\ const util = require(\"util\");' > out.js && mv out.js rule.js"
+  },
+  "dependencies": {
+    "@tepez/auth0-rules-types": "^0.3.1",
+    "request": "^2.88.2"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.37",
+    "@types/request": "^2.48.5",
+    "prettier": "^2.2.1",
+    "tslib": "^2.2.0",
+    "typescript": "^4.2.4"
+  }
+}

@@ -1,4 +1,4 @@
-# Eseuri frontend starter
+# Eseuri frontend
 
 Acest proiect utilizează `pnpm`.
 
@@ -7,6 +7,8 @@ Instalează dependențele:
 ```sh
 pnpm i
 ```
+
+Următoarele comenzi nu sunt relevante dacă rulezi serverul de development din container, utilizând comenzile `make` precizate în README-ul din rădăcina proiectului. Dacă acesta este cazul, sari direct la [configurarea cypress](#configurarea-cypress).
 
 Rulează serverul de development:
 
@@ -44,9 +46,18 @@ Deschide dashboard-ul Cypress:
 pnpm e2e
 ```
 
-Pentru a putea avea autentificarea funcțională, cere datele Auth0 de la cineva. Le vei primi într-un fișier `.env.local`, pe care îl vei pune în folderul `web`.
+## Informații utile
 
-NOTĂ: Pentru a putea rula Cypress, mai trebuie făcuți următorii pași (înainte de a deschide container-ul):
+Pentru a interoga backend-ul și baza de date ale aplicației, sunt disponibile următoarele variabile:
+
+```js
+import.meta.env.VITE_FUNCTIONS_URL // backend
+import.meta.env.VITE_HASURA_GRAPHQL_ENDPOINT // baza de date
+```
+
+## Configurarea Cypress
+
+Pentru a putea rula Cypress, mai trebuie făcuți următorii pași (înainte de a deschide container-ul):
 
 - Instalează [VcXsrv](https://sourceforge.net/projects/vcxsrv/)
 - Rulează programul XLaunch cu următoarele setări:

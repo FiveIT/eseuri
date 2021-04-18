@@ -24,11 +24,6 @@ export default defineConfig(({ mode }) => {
     optimizeDeps: {
       exclude: ['@roxi/routify', 'pug'],
     },
-    define: {
-      'import.meta.env.FUNCTIONS_URL': JSON.stringify(
-        process.env.FUNCTIONS_URL
-      ),
-    },
     resolve: {
       alias: {
         svelte: path.resolve(process.cwd(), 'node_modules/svelte'),
