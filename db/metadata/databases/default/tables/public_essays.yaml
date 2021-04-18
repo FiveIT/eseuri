@@ -33,7 +33,7 @@ select_permissions:
 - permission:
     columns: []
     filter: {}
-    limit: 10
+    limit: 50
   role: anonymous
 - permission:
     columns: []
@@ -45,7 +45,7 @@ select_permissions:
       - work:
           user_id:
             _eq: X-Hasura-User-Id
-    limit: 10
+    limit: 50
   role: student
 - permission:
     columns: []

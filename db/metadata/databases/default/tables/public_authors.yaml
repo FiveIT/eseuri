@@ -16,7 +16,6 @@ select_permissions:
     - last_name
     - middle_name
     filter: {}
-    limit: 50
   role: anonymous
 - permission:
     columns:
@@ -25,7 +24,6 @@ select_permissions:
     - last_name
     - middle_name
     filter: {}
-    limit: 50
   role: student
 - permission:
     columns:
@@ -34,5 +32,4 @@ select_permissions:
     - last_name
     - middle_name
     filter: {}
-    limit: 50
   role: teacher
