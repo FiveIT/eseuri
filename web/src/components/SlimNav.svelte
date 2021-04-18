@@ -17,9 +17,7 @@
       <Logo on:navigate />
       <div class="ml-auto grid grid-flow-col gap-x-md auto-cols-layout">
         <span />
-        <NavButton href="/search" hideIfDisabled={true} on:navigate>
-          Caută
-        </NavButton>
+        <NavButton href="/search" hideIfDisabled on:navigate>Caută</NavButton>
         <NavButton enable={false} on:navigate>Plagiat</NavButton>
         <NavButton enable={false} on:navigate>Profesori</NavButton>
         <LoginButton />

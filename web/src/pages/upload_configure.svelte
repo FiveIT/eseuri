@@ -73,7 +73,7 @@
   }
 </script>
 
-<Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} blurBackground={true}>
+<Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} blurBackground>
   <LayoutContext let:alive>
     {#if !ctx || ctx.file === null}
       {go('/upload', alive, $goto)}
