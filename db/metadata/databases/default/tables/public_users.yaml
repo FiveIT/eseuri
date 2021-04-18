@@ -77,7 +77,7 @@ select_permissions:
     filter:
       role:
         _eq: teacher
-    limit: 10
+    limit: 50
   role: anonymous
 - permission:
     columns:
@@ -96,7 +96,7 @@ select_permissions:
           _eq: X-Hasura-User-Id
       - role:
           _eq: teacher
-    limit: 10
+    limit: 50
   role: student
 - permission:
     columns:
@@ -117,7 +117,7 @@ select_permissions:
           _in:
           - student
           - teacher
-    limit: 10
+    limit: 50
   role: teacher
 update_permissions:
 - permission:

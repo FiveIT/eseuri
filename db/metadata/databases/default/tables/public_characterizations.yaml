@@ -33,15 +33,15 @@ select_permissions:
 - permission:
     columns: []
     filter: {}
-    limit: 10
+    limit: 50
   role: anonymous
 - permission:
     columns: []
     filter: {}
-    limit: 10
+    limit: 50
   role: student
 - permission:
     columns: []
     filter: {}
-    limit: 10
+    limit: 50
   role: teacher
