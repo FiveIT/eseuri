@@ -1,18 +1,18 @@
 <script lang="ts">
-  import Link from './Link.svelte'
-  import LayoutContext from './LayoutContext.svelte'
-
   import { text } from '$/theme'
+  import LayoutContext from './LayoutContext.svelte'
+  import Link from './Link.svelte'
 
   export let big = false
 </script>
 
 <LayoutContext let:theme>
-  <Link href="/" on:navigate>
+  <Link href="/" on:navigate let:enable>
     <h1
       class="font-serif text-{big ? 'xl' : 'lg'} font-bold {text[
         theme
-      ]} subpixel-antialiased">
+      ]} antialiased"
+      class:cursor-default={!enable}>
       Eseuri<span class="text-orange">.</span>
     </h1>
   </Link>

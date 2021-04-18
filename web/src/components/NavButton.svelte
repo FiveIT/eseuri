@@ -20,9 +20,10 @@
 
 <Link {href} {enable} {hideIfDisabled} on:navigate>
   <div
-    class="w-full h-full flex justify-center items-center font-sans no-underline text-sm select-none {text[
+    class="w-full h-full flex justify-center items-center font-sans no-underline text-sm antialiased select-none {text[
       theme
-    ]} {filterShadow[theme]}">
+    ]} {filterShadow[theme]}"
+    class:cursor-default={!enable}>
     <slot />
   </div>
 </Link>
