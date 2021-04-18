@@ -66,7 +66,7 @@ export default defineConfig({
       none: 'none',
     },
     gridAutoRows: {
-      layout: 'var(--row-height)',
+      layout: 'minmax(var(--row-height), max-content)',
       essays: 'var(--essay-row-heigth)',
     },
     gridTemplateColumns: {
