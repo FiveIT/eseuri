@@ -4,6 +4,8 @@
 
   import { isActive } from '@roxi/routify'
 
+  import { px } from '$/util'
+
   $: isUploadConfigure = $isActive('/upload_configure', undefined, {
     strict: false,
   })
@@ -15,6 +17,6 @@
   hideIfDisabled={isUploadConfigure}
   on:navigate>
   <div class="bg-orange p-md rounded-full w-min filter-shadow">
-    <Cross size="2rem" color="var(--white)" />
+    <Cross size={px(2)} color="var(--white)" />
   </div>
 </Link>

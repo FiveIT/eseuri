@@ -1,14 +1,12 @@
 <script lang="ts">
+  import type { WorkType } from '$/types'
+  import { px } from '$/util'
+  import { goto, isActive } from '@roxi/routify'
   import { getContext } from 'svelte'
   import Search from 'svelte-material-icons/Magnify.svelte'
-
-  import { isActive, goto } from '@roxi/routify'
-
   import type { Context } from './Layout.svelte'
   import { contextKey } from './Layout.svelte'
   import { go } from './Link.svelte'
-
-  import type { WorkType } from '$/types'
 
   const { alive } = getContext<Context>(contextKey)
 
@@ -26,9 +24,9 @@
 
   let size: string
   $: if (isHome) {
-    size = '1.125rem'
+    size = px(1.125)
   } else if (isSearch) {
-    size = '1.75rem'
+    size = px(1.75)
   }
 
   function doSearch(condition = true) {
