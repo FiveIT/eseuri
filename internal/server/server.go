@@ -2,7 +2,6 @@ package server
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/FiveIT/template/internal/meta"
@@ -20,18 +19,13 @@ type Eseu struct {
 	CorectorCerut string `form:"corector_cerut"`
 }
 type response struct {
-	Name  string
-	Items struct {
-		Records []struct {
-			Title string
-		}
-	}
+	id int
 }
 
 func New() *fiber.App {
 	app := fiber.New()
-	graphqlClient := graphql.NewClient(meta.HasuraURL)
-	client := tika.NewClient(nil, meta.TikaURL)
+	graphqlClient := graphql.NewClient(meta.HasuraEndpoint)
+	client := tika.NewClient(nil, meta.TikaEndpoint)
 
 	var routes fiber.Router = app
 	if meta.IsNetlify {
@@ -61,32 +55,87 @@ func New() *fiber.App {
 		fisierraw, err := c.FormFile("document")
 		fisierprocesat, err := fisierraw.Open()
 		body, err := client.Parse(c.Context(), fisierprocesat)
-		log.Println(infoLucrare.Caracter)
-
+		// log.Println(infoLucrare.Caracter)
+		if infoLucrare.Creator == "" {
+			return c.Status(http.StatusBadRequest).JSON(&fiber.Map{
+				"success": false,
+				"error":   "Tokenul de autentificare al utilizatorului nu a fost trimis",
+			})
+		}
 		// Se face request la Hasura de inserare cu detaliile din form
 		authorizationtoken := fmt.Sprintf("Bearer %s", infoLucrare.Creator)
 
 		req := graphql.NewRequest(`
-		mutation($content: String!, $userID: Int!) {
-  			insert_works_one(object: {user_id: $userID, content: $content, status: pending) {
-    			work_id
-  				}
+		mutation insertWork ($content: String!, $requestedTeacherID: Int) {
+			insert_works_one (object: {content: $content, status: pending, teacher_id: $requestedTeacherID}){
+				id
+			}
 		}
-`)
+		`)
+
 		req.Var("content", body)
-		req.Var("userID", infoLucrare.Creator)
+		req.Var("requestedTeacherID", infoLucrare.CorectorCerut)
 		req.Header.Add("Authorization", authorizationtoken)
-		req.Header.Add("content-type", "application/json")
-		// req.Header.Add("X-Hasura-Admin-Secret", meta.HasuraKey)
-		// req.Header.Add("X-Hasura-Use-Backend-Only-Permissions", "true")
+		req.Header.Add("X-Hasura-Admin-Secret", meta.HasuraAdminSecret)
+		req.Header.Add("X-Hasura-Use-Backend-Only-Permissions", "true")
+
 		var resp response
 		if err := graphqlClient.Run(c.Context(), req, &resp); err != nil {
-			return fmt.Errorf("error: %w", err)
+			return fmt.Errorf("eroare la query: %w", err)
 		}
 
-		log.Println(resp)
+		var idLucrare int
+		resp.id = idLucrare
 
-		return c.SendString(body)
+		switch infoLucrare.TipLucrare {
+		case "essay":
+			{
+				req := graphql.NewRequest(`
+			mutation insertEssay($workID: Int!, $titleID: Int!) {
+  				insert_essays_one(object: {work_id: $workID, title_id: $titleID}) {
+    				__typename
+  				}
+			}`)
+
+				req.Var("workID", idLucrare)
+				req.Var("titleID", infoLucrare.Titlu)
+				req.Header.Add("Authorization", authorizationtoken)
+				req.Header.Add("X-Hasura-Admin-Secret", meta.HasuraAdminSecret)
+				req.Header.Add("X-Hasura-Use-Backend-Only-Permissions", "true")
+
+				if err := graphqlClient.Run(c.Context(), req, &resp); err != nil {
+					return fmt.Errorf("eroare la query: %w", err)
+				}
+			}
+		case "characterization":
+			{
+				req := graphql.NewRequest(`
+			mutation insertCharacterization($workID: Int!, $characterID: Int!) {
+  				insert_characterizations_one(object: {work_id: $workID, character_id: $characterID}) {
+    				__typename
+  				}
+			}`)
+
+				req.Var("workID", idLucrare)
+				req.Var("characterID", infoLucrare.Caracter)
+				req.Header.Add("Authorization", authorizationtoken)
+				req.Header.Add("X-Hasura-Admin-Secret", meta.HasuraAdminSecret)
+				req.Header.Add("X-Hasura-Use-Backend-Only-Permissions", "true")
+
+				if err := graphqlClient.Run(c.Context(), req, &resp); err != nil {
+					return fmt.Errorf("eroare la query: %w", err)
+				}
+			}
+		default:
+			{
+				return c.Status(http.StatusBadRequest).JSON(&fiber.Map{
+					"success": false,
+					"error":   "Tipul lucrarii nu este valid.",
+				})
+			}
+		}
+
+		return c.SendStatus(http.StatusAccepted)
 	})
 
 	// 404 Not found handler
