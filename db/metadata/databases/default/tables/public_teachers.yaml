@@ -26,7 +26,7 @@ select_permissions:
     - about
     - image_url
     filter: {}
-    limit: 10
+    limit: 50
   role: anonymous
 - permission:
     columns:
@@ -34,7 +34,7 @@ select_permissions:
     - image_url
     - user_id
     filter: {}
-    limit: 10
+    limit: 50
   role: student
 - permission:
     columns:
@@ -42,7 +42,7 @@ select_permissions:
     - image_url
     - user_id
     filter: {}
-    limit: 10
+    limit: 50
   role: teacher
 update_permissions:
 - permission:

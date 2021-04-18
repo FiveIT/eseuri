@@ -40,6 +40,7 @@ select_permissions:
     filter:
       user_id:
         _eq: X-Hasura-User-Id
+    limit: 50
   role: student
 - permission:
     allow_aggregations: true
@@ -49,6 +50,7 @@ select_permissions:
     filter:
       user_id:
         _eq: X-Hasura-User-Id
+    limit: 50
   role: teacher
 delete_permissions:
 - permission:
