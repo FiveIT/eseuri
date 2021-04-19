@@ -124,7 +124,7 @@ Vezi [README-ul de pe frontend] pentru restul comenzilor.
 
 Pentru a accesa consola Hasura, deschide o pagină în browser la adresa `http://localhost:8080`. Indiferent dacă o accesezi local sau prin endpoint-ul public, admin-secret-ul configurat de tine este necesar.
 
-Dacă vrei să inspectezi baza de date locală PostgreSQL, te poți conecta la ea cu următorul URL de conectare (dinafara container-ului de development, de exemplu cu [Jetbrains DataGrip][5]):
+Dacă vrei să inspectezi baza de date locală PostgreSQL, te poți conecta la ea cu următorul URL de conectare (dinafara container-ului de development, de exemplu cu [Jetbrains DataGrip][6]):
 
 ```txt
 postgres://postgres:sarmale@localhost:5432/postgres
@@ -156,8 +156,8 @@ Este nevoie să specifici endpoint-ul și admin-secret-ul doar pentru alte insta
 [2]: https://code.visualstudio.com/
 [3]: https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers
 [4]: https://docs.microsoft.com/en-us/windows/wsl/install-win10
-[5]: https://www.jetbrains.com/datagrip/
-[6]: https://hasura.io/jwt-config
+[5]: https://hasura.io/jwt-config
+[6]: https://www.jetbrains.com/datagrip/
 [7]: https://ngrok.com/
 [8]: http://localhost.run
 [9]: https://docs.gitlab.com/ee/ssh/#generate-an-ssh-key-pair
