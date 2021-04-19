@@ -88,8 +88,6 @@
     "esbenp.prettier-vscode",
     "stylelint.vscode-stylelint",
     // Tools
-    "ms-azuretools.vscode-docker",
-    "mtxr.sqltools",
     "shd101wyy.markdown-preview-enhanced"
   ]
 }
