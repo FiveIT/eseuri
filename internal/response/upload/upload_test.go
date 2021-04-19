@@ -29,8 +29,6 @@ func decode(tb testing.TB, name string) upload.WorkResponse {
 		tb.Fatalf("Failed to unmarshal file %s: %v", name, err)
 	}
 
-	tb.Logf("Decoded response: %+v", data)
-
 	return r
 }
 
