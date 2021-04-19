@@ -60,6 +60,7 @@
       "config_credentials": true,
       ".github": true,
       ".pnpm-debug.log": true,
+      "pnpm-lock.yaml": true,
       ".idea": true,
       ".gitmodules": true
     }
@@ -87,8 +88,6 @@
     "esbenp.prettier-vscode",
     "stylelint.vscode-stylelint",
     // Tools
-    "ms-azuretools.vscode-docker",
-    "mtxr.sqltools",
     "shd101wyy.markdown-preview-enhanced"
   ]
 }

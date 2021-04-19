@@ -1,42 +1,25 @@
 <script lang="ts">
-  import { cubicOut as easing } from 'svelte/easing'
   import { fade } from 'svelte/transition'
 
-  export let x: number
-  export let y: number
-  export let scale: number
-  export let rotate: number
-  export let flip: {
-    x: number
-    y: number
-  }
+  import {
+    TRANSITION_EASING as easing,
+    TRANSITION_DURATION as duration,
+  } from '$/globals'
+  import type { BlobPropsInput } from './store'
+
+  export let props: BlobPropsInput = {}
+
   export let width: number
   export let height: number
 
-  let innerHeight: number, innerWidth: number
-
-  $: flipX = flip.x * 180
-  $: flipY = flip.y * 180
+  $: p = props
 </script>
 
 <div
-  transition:fade={{ duration: 300, easing }}
+  transition:fade={{ duration, easing }}
   class="fixed"
-  style="--x: {x}px; --y: {y}px; --scale: {scale}; --rotate: {rotate}deg; --flipX: {flipX}deg; --flipY: {flipY}deg;"
+  style="left: {p.x}px; top: {p.y}px; transform: scale({p.scale}) rotate({p.rotate}deg); z-index: {p.zIndex};"
   bind:offsetWidth={width}
-  bind:offsetHeight={height}
->
+  bind:offsetHeight={height}>
   <slot />
 </div>
-
-<svelte:window bind:innerHeight bind:innerWidth />
-
-<style>
-  div {
-    z-index: -1;
-    top: var(--y);
-    left: var(--x);
-    transform: scale(var(--scale)) rotate(var(--rotate)) rotateX(var(--flipX))
-      rotateY(var(--flipY));
-  }
-</style>

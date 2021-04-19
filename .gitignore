@@ -7,4 +7,8 @@ google_credentials.json
 **/.env.local
 **/.env.*.local
 **/node_modules
-.idea
+package-lock.json
+yarn-lock.json
+cypress/screenshots
+cypress/videos
+.idea/
