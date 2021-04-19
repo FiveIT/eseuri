@@ -31,6 +31,9 @@
 
   function doSearch(condition = true) {
     if (query === '') {
+      if (isSearch) {
+        $goto('/search', { type })
+      }
       return
     }
     if (isHome && condition) {
@@ -63,6 +66,6 @@
     class:filter-shadow-soft={isSearch}
     placeholder="Caută titluri sau personaje"
     bind:this={input}
-    on:keydown={onKeydown}
+    on:keyup={onKeydown}
     bind:value={query} />
 </div>
