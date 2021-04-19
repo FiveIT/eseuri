@@ -1,0 +1,11 @@
+{
+  "errors": [
+    {
+      "extensions": {
+        "path": "$.selectionSet.insert_works_one.args.object",
+        "code": "constraint-violation"
+      },
+      "message": "Exclusion violation. conflicting key value violates exclusion constraint \"unique_content\""
+    }
+  ]
+}
