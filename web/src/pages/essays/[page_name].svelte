@@ -99,7 +99,6 @@
   let redBlobProps: BlobPropsInput = {
     scale: 2,
     rotate: 180 + 26.7,
-    flip: { x: 1, y: 0 },
   }
   $: redBlobProps = {
     x: $window.width + red.width * 0.6,
