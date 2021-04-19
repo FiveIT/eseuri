@@ -1,146 +1,82 @@
 <script lang="ts">
-  import Carousel from '@tmaxmax/renderless-svelte/src/Carousel.svelte'
-  import type { CarouselControls } from '@tmaxmax/renderless-svelte/src/Carousel.svelte'
-  import Queue from '$/queue'
-  import NewFactButton from './_components/NewFactButton.svelte'
-  import FactNavButton from './_components/FactNavButton.svelte'
-  import Text from '$/components/text/Inline.svelte'
-  import TextProse from '$/components/text/prose/Inline.svelte'
-  import { metatags, ready } from '@roxi/routify'
+  import { store as blue } from '$/components/blob/Blue.svelte'
   import { store as orange } from '$/components/blob/Orange.svelte'
   import { store as red } from '$/components/blob/Red.svelte'
-  import { store as blue } from '$/components/blob/Blue.svelte'
+  import Layout from '$/components/Layout.svelte'
+  import LoginButton from '$/components/LoginButton.svelte'
+  import Logo from '$/components/Logo.svelte'
+  import Buton from '$/components/NavButton.svelte'
+  import Search from '$/components/SearchBar.svelte'
+  import UploadButton from '$/components/UploadButton.svelte'
   import { store as window } from '$/components/Window.svelte'
-  import { onMount } from 'svelte'
+  import Works from '$/components/Works.svelte'
+  import content, { workTypeTranslation } from '$/content'
+  import type { BlobPropsInput, WorkType } from '$/types'
+  import { metatags } from '@roxi/routify'
 
-  metatags.title = 'Cat facts'
+  metatags.title = 'Eseuri'
 
-  const responses: Promise<string[]>[] = []
-  let response: string[] | undefined
-
-  const getFact = async () => {
-    const length = response?.length ?? 0
-    if (length < 5) {
-      if (responses.length < 2) {
-        const res = fetch(
-          'https://cat-fact.herokuapp.com/facts/random?amount=10'
-        )
-          .then(res => res.json() as Promise<{ text: string }[]>)
-          .then(res => res.map(r => r.text))
-        responses.push(res)
-      }
-      if (length === 0) {
-        response = await responses.shift()!
-      }
-    }
-    return response!.shift()!
+  let orangeBlobProps: BlobPropsInput
+  $: orangeBlobProps = {
+    scale: 1.8,
+    x: 0,
+    y: $window.height - orange.height,
   }
 
-  let history = new Queue<Promise<string>>(10)
-  let items: any[]
-
-  const pushHistory = () => {
-    const fact = getFact()
-    history.push(fact)
-    items = history.array() as any[]
-    return fact
+  let redBlobProps: BlobPropsInput
+  $: redBlobProps = {
+    x: $window.width - red.width * 1.5,
+    y: $window.height - red.height * 0.45,
+    scale: 2,
+    rotate: 180 + 26.7,
   }
 
-  pushHistory().then($ready)
-
-  type Handler = () => void
-
-  let controls: CarouselControls
-
-  const keydownHandler = (left: Handler, right: Handler) => (
-    ev: KeyboardEvent
-  ) => {
-    switch (ev.code) {
-      case 'KeyH':
-      case 'ArrowLeft':
-        left()
-        break
-      case 'KeyL':
-      case 'ArrowRight':
-        right()
-        break
-    }
+  let blueBlobProps: BlobPropsInput
+  $: blueBlobProps = {
+    x: ($window.width - blue.width * 0.8) / 2,
+    y: -blue.height * 0.635 + $window.height * 0.17,
+    scale: 1.5,
   }
 
-  let mounted = false
-
-  onMount(() => {
-    $orange = {
-      x: 0,
-      y: $window.height - orange.height,
-      scale: 1.2,
-      rotate: 0,
-      flip: {
-        x: 0,
-        y: 0,
-      },
-    }
-    $red = {
-      x: $window.width - red.width * 1.5,
-      y: $window.height - red.height * 0.45,
-      scale: 1.2,
-      rotate: 32.5,
-      flip: {
-        x: 1,
-        y: 0,
-      },
-    }
-    $blue = {
-      x: ($window.width - blue.width * 0.49) / 2,
-      y: -blue.height * 0.635 + $window.height * 0.1,
-      scale: 1.2,
-      rotate: 0,
-      flip: {
-        x: 0,
-        y: 1,
-      },
-    }
-    mounted = true
-  })
-
-  $: if (mounted) {
-    $orange.y = $window.height - orange.height
-    $red.x = $window.width - red.width * 1.5
-    $red.y = $window.height - red.height * 0.45
-    $blue.x = ($window.width - blue.width * 0.49) / 2
-    $blue.y = -blue.height * 0.635 + $window.height * 0.1
-  }
+  let type: WorkType = 'essay'
+  const types: WorkType[] = ['essay', 'characterization']
+  $: works = content.filter(work => work.type === type)
 </script>
 
-<Carousel {items} let:payload bind:controls let:currentIndex let:setIndex>
-  <div class="flex flex-col items-center space-y-sm w-full min-h-full">
-    {#await payload}
-      <p class="text-center max-w-prose text-blue">
-        <Text>Retrieving a cat fact...</Text>
-      </p>
-    {:then text}
-      <p class="text-center max-w-prose">
-        <TextProse>{text}</TextProse>
-      </p>
-    {:catch}
-      <p class="text-center max-w-prose text-red">
-        <Text>Something terribly bad happened!</Text>
-      </p>
-    {/await}
+<Layout
+  {orangeBlobProps}
+  {redBlobProps}
+  {blueBlobProps}
+  transition={{ y: 1000 }}>
+  <div
+    class="row-start-1 row-span-1 col-start-1  col-span-1 my-auto select-none">
+    <Logo />
   </div>
-  <div class="flex space-x-sm items-center mt-auto mb-sm">
-    <FactNavButton on:click={controls.previous} disabled={currentIndex === 0}>
-      Previous
-    </FactNavButton>
-    <FactNavButton
-      on:click={controls.next}
-      disabled={!items || currentIndex === items.length - 1}>
-      Next
-    </FactNavButton>
+  <div class=" row-start-1 row-span-1 col-start-3 col-end-6 text-sm my-auto">
+    <Search />
   </div>
-  <NewFactButton on:click={() => (pushHistory(), setIndex(history.length - 1))}>
-    New fact
-  </NewFactButton>
-</Carousel>
-
-<svelte:window on:keydown={keydownHandler(controls.previous, controls.next)} />
+  <div class="w-full h-full row-start-1 row-span-1 col-start-6 col-span-1">
+    <LoginButton theme="white" />
+  </div>
+  <div class="col-start-4 col-end-5 row-start-2 w-full h-full text-sm my-auto ">
+    <Buton enable={false} theme="white">Plagiat</Buton>
+  </div>
+  <div class="col-start-5 col-end-6 row-start-2 w-full h-full text-sm my-auto">
+    <Buton enable={false} theme="white">Profesori</Buton>
+  </div>
+  <div class="col-span-1 col-start-6 row-span-1 row-start-3 place-self-center">
+    <UploadButton />
+  </div>
+  {#each types as t, i}
+    <div
+      class="col-start-{3 +
+        i} col-span-1 row-start-4 w-full h-full m-auto my-auto">
+      <button
+        class="w-full h-full font-sans text-sm antialiased capitalize"
+        class:underline={type === t}
+        on:click={() => (type = t)}
+        >{workTypeTranslation.ro[t].inarticulate.plural}</button>
+    </div>
+  {/each}
+  <Works {works} />
+</Layout>

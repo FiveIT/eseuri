@@ -1,23 +1,20 @@
-import defaults from 'windicss/defaultTheme'
 import { defineConfig } from 'vite-plugin-windicss'
+import defaults from 'windicss/defaultTheme'
 
-/**
- * @type {import('windicss/types/interfaces').Config}
- */
 export default defineConfig({
   theme: {
     colors: {
       orange: '#FF7F11',
       red: '#FF3F00',
-      blue: '#485696',
+      blue: 'var(--blue, #485696)',
       green: '#008148',
       current: 'currentColor',
       transparent: 'transparent',
-      white: '#FCFAF9',
-      black: '#000000',
+      white: 'var(--white, #FCFAF9)',
+      black: 'var(--black, #000000)',
       gray: {
-        light: '#DADADA',
-        DEFAULT: '#939393',
+        light: 'var(--light-gray, #DADADA)',
+        DEFAULT: 'var(--gray, #939393)',
         dark: '#4F4F4F',
       },
       facebook: '#3B5998',
@@ -43,17 +40,20 @@ export default defineConfig({
         },
       ],
       title: [
-        '2.625rem',
+        '3.5rem',
         {
           lineHeight: '100%',
           letterSpacing: '-0.225rem',
         },
       ],
+      workInfo: ['1.125rem', { letterSpacing: '-0.055rem', lineHeight: '90%' }],
     },
     spacing: {
-      sm: '0.625rem',
+      xs: 'calc(var(--row-gap) / 2)',
+      sm: 'var(--row-gap)',
       md: '1.25rem',
-      lg: '1.875rem',
+      lg: 'var(--essay-column-gap)',
+      xlg: '6.5vmin',
     },
     borderRadius: {
       DEFAULT: '0.625rem',
@@ -65,7 +65,40 @@ export default defineConfig({
       large: 'var(--shadow-large)',
       none: 'none',
     },
+    gridAutoRows: {
+      layout: 'minmax(var(--row-height), max-content)',
+      essays: 'var(--essay-row-heigth)',
+    },
+    gridTemplateColumns: {
+      layout: 'repeat(6, 1fr)',
+      essays: 'repeat(3, var(--essay-column-width))',
+    },
+    gridAutoColumns: {
+      layout: 'var(--column-width)',
+    },
+    maxWidth: {
+      layout: 'calc(6 * var(--column-width) + 5 * var(--essay-column-gap))',
+    },
   },
+  safelist: [
+    'underline',
+    [].concat(...['white', 'black'].map(v => [`text-${v}`, `border-${v}`])),
+    [2, 3].map(v => `border-${v}`),
+    Array.from({ length: 6 }, (_, i) => `col-start-${i + 1}`),
+    'bg-white-50',
+    'pointer-events-none',
+    'w-full',
+    'h-full',
+    ['lg', 'xl'].map(v => `text-${v}`),
+    'my-auto',
+    ['white', 'blue', 'google-docs', 'red'].map(v => `bg-${v}`),
+    'border',
+    'cursor-default',
+    'font-sans',
+    'antialiased',
+    'text-sm',
+    ['0.02', '1'].map(v => `pt-${v}`),
+  ],
   darkMode: false,
   preflight: true,
   transformCSS: 'post',

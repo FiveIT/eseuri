@@ -17,7 +17,7 @@ build-server:
 	-o .$(functions_base_path) ./cmd/index
 
 build-client:
-	cd web && npm i --no-optional && npm run build
+	cd web && npm run prebuild && npm run build
 
 build: build-server build-client
 
@@ -41,6 +41,11 @@ test-server:
 test: test-client test-server
 
 cypress:
-	cd web && pnpm e2e
+	pnpm cy:open
+	
+cypress-run:
+	pnpm cy:run	
 
 e2e: dev cypress
+
+e2e-run: dev cypress-run

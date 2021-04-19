@@ -1,17 +1,18 @@
 <script lang="ts">
+  import { Auth0Context } from '@tmaxmax/svelte-auth0'
   import { Router } from '@roxi/routify'
   import Window from '$/components/Window.svelte'
   import { routes } from '../.routify/routes'
-</script>
 
-<Router {routes} />
+  const domain = import.meta.env.VITE_AUTH0_DOMAIN as string
+  const client_id = import.meta.env.VITE_AUTH0_CLIENT_ID as string
+  const audience = import.meta.env.VITE_AUTH0_AUDIENCE as string
+  const callback_url = window.location.origin
+  const logout_url = window.location.origin
+</script>
 
 <Window />
 
-<style global>
-  :root {
-    --shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
-    --shadow-soft: 2px 2px 5px rgba(0, 0, 0, 0.25);
-    --shadow-large: 4px 4px 5px rgba(0, 0, 0, 0.25);
-  }
-</style>
+<Auth0Context {domain} {client_id} {audience} {callback_url} {logout_url}>
+  <Router {routes} />
+</Auth0Context>

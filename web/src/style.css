@@ -1,7 +1,54 @@
+:root {
+  --shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+  --shadow-soft: 2px 2px 5px rgba(0, 0, 0, 0.25);
+  --shadow-large: 4px 4px 5px rgba(0, 0, 0, 0.25);
+  --white: #fcfaf9;
+  --light-gray: #dadada;
+  --gray: #939393;
+  --black: #000000;
+  --blue: #485696;
+  --row-height: 4.133rem;
+  --row-gap: 0.625rem;
+  --column-width: 7.6rem;
+  --essay-column-gap: 1.875rem;
+  --essay-column-width: calc(var(--column-width) * 2 + var(--essay-column-gap));
+  --essay-row-heigth: calc(var(--row-height) * 2 + var(--row-gap));
+}
+
+html {
+  font-size: 18px;
+  min-height: 100vh;
+}
+
+body {
+  min-height: 100vh;
+  background-color: var(--white);
+}
+
+.scrollbar-window-padding {
+  padding-left: calc(100vw - 100%);
+}
+
 @supports (backdrop-filter: blur(100px)) or
   (-webkit-backdrop-filter: blur(100px)) {
   .blur {
     -webkit-backdrop-filter: blur(100px);
     backdrop-filter: blur(100px);
   }
+}
+
+.white-bg {
+  background-color: rgba(252, 250, 249, 0.5);
+}
+
+.filter-shadow {
+  filter: drop-shadow(var(--shadow));
+}
+
+.filter-shadow-soft {
+  filter: drop-shadow(var(--shadow-soft));
+}
+
+.filter-shadow-large {
+  filter: drop-shadow(var(--shadow-large));
 }

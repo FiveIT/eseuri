@@ -156,8 +156,8 @@ Este nevoie să specifici endpoint-ul și admin-secret-ul doar pentru alte insta
 [2]: https://code.visualstudio.com/
 [3]: https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers
 [4]: https://docs.microsoft.com/en-us/windows/wsl/install-win10
-[6]: https://www.jetbrains.com/datagrip/
 [5]: https://hasura.io/jwt-config
+[6]: https://www.jetbrains.com/datagrip/
 [7]: https://ngrok.com/
 [8]: http://localhost.run
 [9]: https://docs.gitlab.com/ee/ssh/#generate-an-ssh-key-pair
