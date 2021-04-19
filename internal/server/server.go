@@ -12,21 +12,32 @@ import (
 )
 
 type Eseu struct {
-	Titlu         string `form:"titlu"`
+	Titlu         int    `form:"titlu"`
 	TipLucrare    string `form:"tipul_lucrarii"`
-	Caracter      string `form:"caracter"`
+	Caracter      int    `form:"caracter"`
 	Creator       string
 	CorectorCerut string `form:"corector_cerut"`
 }
 
-// De restructurat response
+type Data struct {
+	Query struct {
+		ID int `json:"id"`
+	} `json:"insert_works_one"`
+	Errors []struct {
+		Extensions struct {
+			Code string `json:"code"`
+		} `json:"extensions"`
+	} `json:"errors"`
+}
 
 func New() *fiber.App {
 	app := fiber.New()
-	graphqlClient := graphql.NewClient(meta.HasuraEndpoint)
-	graphqlClient.Log = func(s string) {
-		log.Println(s)
-	}
+	graphqlClient := graphql.NewClient(meta.HasuraEndpoint + "/v1/graphql")
+	/*
+		graphqlClient.Log = func(s string) {
+			log.Println(s)
+		}
+	*/
 	client := tika.NewClient(nil, meta.TikaEndpoint)
 
 	var routes fiber.Router = app
@@ -43,8 +54,6 @@ func New() *fiber.App {
 	routes.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("sarmale cu ghimbir")
 	})
-
-	// De facut mesaje custom la erori si tokenul de auth la user primit pe header nu prin form
 
 	routes.Post("/upload", func(c *fiber.Ctx) (err error) {
 		infoLucrare := new(Eseu)
@@ -85,44 +94,47 @@ func New() *fiber.App {
 				"error":   "Tokenul de autentificare al utilizatorului nu a fost trimis.",
 			})
 		}
+
 		// Se face request la Hasura de inserare cu detaliile din form
-		authorizationtoken := infoLucrare.Creator
 
 		req := graphql.NewRequest(`
-		mutation insertWork ($content: String!, $requestedTeacherID: Int) {
-			insert_works_one (object: {content: $content, status: pending, teacher_id: $requestedTeacherID}){
+		mutation insertWork ($userID: Int!, $content: String!, $requestedTeacherID: Int) {
+			insert_works_one (object: {user_id:$userID, content: $content, status: pending, teacher_id: $requestedTeacherID}){
 				id
 			}
 		}
 		`)
 
+		// Decodez JWT
+
+		// Setez X-Hasura-user-id cu ce am decodat din JWT ca si user id
+
 		req.Var("content", body)
-		req.Var("requestedTeacherID", infoLucrare.CorectorCerut)
-		req.Header.Add("Authorization", authorizationtoken)
+		if infoLucrare.CorectorCerut != "" {
+			req.Var("requestedTeacherID", infoLucrare.CorectorCerut)
+		} else {
+			req.Var("requestedTeacherID", nil)
+		}
+
+		req.Var("userID", 1)
 		req.Header.Add("X-Hasura-Admin-Secret", meta.HasuraAdminSecret)
 		req.Header.Add("X-Hasura-Use-Backend-Only-Permissions", "true")
 
-		var resp struct {
-			Path  string `json:"path"`
-			Error string `json:"error"`
-			Code  string `json:"code"`
-		}
-
+		var resp Data
 		// Fixează erori la requesturile de GraphQL
 		if err := graphqlClient.Run(c.Context(), req, &resp); err != nil {
 			log.Println(err)
+			log.Println(resp)
+			// log.Println(resp.Query.ID)
 
 			return c.Status(http.StatusInternalServerError).JSON(&fiber.Map{
 				"success": false,
 				"error":   "Eroare de conectare la baza de date.",
 			})
 		}
-
-		log.Println(resp)
-		// log.Println(json.Marshal(resp))
-
 		var idLucrare int
-		// resp.id = idLucrare
+
+		idLucrare = resp.Query.ID
 
 		switch infoLucrare.TipLucrare {
 		case "essay":
@@ -149,22 +161,24 @@ func New() *fiber.App {
 		}
 
 		req.Var("workID", idLucrare)
-		req.Var("titleID", infoLucrare.Titlu)
-		req.Header.Add("Authorization", authorizationtoken)
+		if infoLucrare.TipLucrare == "essay" {
+			req.Var("titleID", infoLucrare.Titlu)
+		} else if infoLucrare.TipLucrare == "characterization" {
+			req.Var("characterID", infoLucrare.Caracter)
+		}
+
 		req.Header.Add("X-Hasura-Admin-Secret", meta.HasuraAdminSecret)
 		req.Header.Add("X-Hasura-Use-Backend-Only-Permissions", "true")
 
 		if err := graphqlClient.Run(c.Context(), req, &resp); err != nil {
 			log.Println(err)
+			log.Println(resp)
 
-			return c.JSON(&fiber.Map{
+			return c.Status(http.StatusInternalServerError).JSON(&fiber.Map{
 				"success": false,
 				"error":   "Eroare de conectare la baza de date.",
 			})
 		}
-
-		// log.Println(resp)
-		// log.Println(json.Marshal(resp))
 
 		return c.SendStatus(http.StatusOK)
 	})
