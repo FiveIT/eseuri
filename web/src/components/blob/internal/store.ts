@@ -5,17 +5,11 @@ import {
 import { tweened } from 'svelte/motion'
 import type { Writable } from 'svelte/store'
 
-export interface BlobFlipProps {
-  x: number
-  y: number
-}
-
 export interface BlobProps {
   x: number
   y: number
   scale: number
   rotate: number
-  flip: BlobFlipProps
   zIndex: number
 }
 
@@ -27,10 +21,6 @@ export function getBlobProps(overrides: BlobPropsInput = {}): BlobProps {
     y: 0,
     scale: 1.2,
     rotate: 0,
-    flip: {
-      x: 0,
-      y: 0,
-    },
     zIndex: -1,
     ...overrides,
   }
