@@ -3,12 +3,12 @@ on:
     branches:
       - master
     paths:
-      - web/**/*
+      - web/**
   pull_request:
     branches:
       - master
     paths:
-      - web/**/*
+      - web/**
 name: Frontend
 jobs:
   format:
