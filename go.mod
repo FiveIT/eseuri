@@ -10,6 +10,7 @@ require (
 	github.com/klauspost/compress v1.11.12 // indirect
 	github.com/machinebox/graphql v0.2.2
 	github.com/matryer/is v1.4.0 // indirect
+	github.com/pascaldekloe/jwt v1.10.0 // indirect
 	github.com/rs/zerolog v1.20.0
 	github.com/valyala/fasthttp v1.22.0 // indirect
 	github.com/valyala/tcplisten v1.0.0 // indirect

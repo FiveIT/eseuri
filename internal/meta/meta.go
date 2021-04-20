@@ -57,6 +57,10 @@ var (
 	HasuraEndpoint = os.Getenv("HASURA_GRAPHQL_ENDPOINT")
 	// HasuraAdminSecret is required to make requests to the Hasura GraphQL service.
 	HasuraAdminSecret = os.Getenv("HASURA_GRAPHQL_ADMIN_SECRET")
+	// HasuraGraphQLPubKey is required to verify Auth0 JWT tokens.
+	HasuraGraphQLJWTPubKey = os.Getenv("HASURA_GRAPHQL_JWT_PUB_KEY")
+	// Auht0Enpoint is required to verify tokens' issuer.
+	Auht0Enpoint = os.Getenv("AUTH0_ENDPOINT")
 )
 
 // URL returns the addres at which the client app exists.
