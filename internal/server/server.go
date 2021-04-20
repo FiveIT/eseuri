@@ -5,6 +5,8 @@ import (
 	"net/http"
 
 	"github.com/FiveIT/template/internal/meta"
+	"github.com/FiveIT/template/internal/response"
+	"github.com/FiveIT/template/internal/response/upload"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/google/go-tika/tika"
@@ -19,25 +21,14 @@ type Eseu struct {
 	CorectorCerut string `form:"corector_cerut"`
 }
 
-type Data struct {
-	Query struct {
-		ID int `json:"id"`
-	} `json:"insert_works_one"`
-	Errors []struct {
-		Extensions struct {
-			Code string `json:"code"`
-		} `json:"extensions"`
-	} `json:"errors"`
-}
-
 func New() *fiber.App {
 	app := fiber.New()
 	graphqlClient := graphql.NewClient(meta.HasuraEndpoint + "/v1/graphql")
-	/*
-		graphqlClient.Log = func(s string) {
-			log.Println(s)
-		}
-	*/
+
+	graphqlClient.Log = func(s string) {
+		log.Println(s)
+	}
+
 	client := tika.NewClient(nil, meta.TikaEndpoint)
 
 	var routes fiber.Router = app
@@ -120,21 +111,31 @@ func New() *fiber.App {
 		req.Header.Add("X-Hasura-Admin-Secret", meta.HasuraAdminSecret)
 		req.Header.Add("X-Hasura-Use-Backend-Only-Permissions", "true")
 
-		var resp Data
-		// Fixează erori la requesturile de GraphQL
-		if err := graphqlClient.Run(c.Context(), req, &resp); err != nil {
-			log.Println(err)
-			log.Println(resp)
-			// log.Println(resp.Query.ID)
+		var resp upload.WorkResponse
+
+		_ = graphqlClient.Run(c.Context(), req, &resp)
+
+		var idLucrare int
+		log.Printf("%T", resp.Response)
+		switch v := resp.Response.(type) {
+		case *upload.Work:
+			log.Println("String")
+			idLucrare = v.Query.ID
+		case response.QueryErrors:
+			log.Println(v[0])
+
+			return c.Status(http.StatusBadRequest).JSON(&fiber.Map{
+				"success": false,
+				"error":   "Eroare de inserare în baza de date.",
+			})
+		case *response.Error:
+			log.Println(v)
 
 			return c.Status(http.StatusInternalServerError).JSON(&fiber.Map{
 				"success": false,
-				"error":   "Eroare de conectare la baza de date.",
+				"error":   "Eroare internă.",
 			})
 		}
-		var idLucrare int
-
-		idLucrare = resp.Query.ID
 
 		switch infoLucrare.TipLucrare {
 		case "essay":
