@@ -498,6 +498,7 @@ create table bookmarks
     user_id int  not null,
     work_id int  not null,
     name    text not null,
+    created_at timestamp not null default (localtimestamp),
     primary key (user_id, work_id)
 );
 

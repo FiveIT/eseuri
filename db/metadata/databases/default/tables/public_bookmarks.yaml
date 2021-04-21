@@ -35,6 +35,7 @@ select_permissions:
 - permission:
     allow_aggregations: true
     columns:
+    - created_at
     - name
     - work_id
     filter:
@@ -45,6 +46,7 @@ select_permissions:
 - permission:
     allow_aggregations: true
     columns:
+    - created_at
     - name
     - work_id
     filter:
