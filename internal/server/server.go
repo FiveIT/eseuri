@@ -1,21 +1,19 @@
 package server
 
 import (
-	"crypto/rsa"
-	"crypto/x509"
-	"encoding/pem"
-	"fmt"
+	"encoding/json"
 	"log"
 	"net/http"
+	"strconv"
 	"strings"
-	"time"
 
 	"github.com/FiveIT/template/internal/meta"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/google/go-tika/tika"
 	"github.com/machinebox/graphql"
-	"github.com/pascaldekloe/jwt"
+	//"github.com/rs/zerolog/log"
 )
 
 type Eseu struct {
@@ -26,30 +24,85 @@ type Eseu struct {
 	CorectorCerut string `form:"corector_cerut"`
 }
 
-func SendError(c *fiber.Ctx, statusCode int, err error) error {
+func sendError(c *fiber.Ctx, statusCode int, message string) error {
 	return c.Status(statusCode).JSON(&fiber.Map{
-		"error": err.Error(),
+		"error": message,
 	})
 }
 
 func handleGraphQLError(c *fiber.Ctx, err error) error {
 	if errVal := err.Error(); strings.Contains(errVal, "graphql: ") {
 		if !strings.Contains(errVal, "server returned a non-200 status code") {
-			return SendError(c, http.StatusBadRequest, err)
+
+			return sendError(c, http.StatusBadRequest, "eroare la interogarea bazei de date: "+err.Error())
 		}
 	}
 
-	return SendError(c, http.StatusInternalServerError, err)
+	return sendError(c, http.StatusInternalServerError, "a aparut o eroare la conectarea cu baza de date")
+}
+
+type customClaims struct {
+	Role                     string
+	AllowedRoles             []string
+	UserID                   int
+	HasCompletedRegistration bool
+}
+
+const (
+	hasuraNamespace = "https://hasura.io/jwt/claims"
+	eseuriNamespace = "https://eseuri.com"
+)
+
+type jwtClaim map[string]interface{}
+
+func (j *jwtClaim) Valid() error {
+	ref := *j
+	
+	log.Printf("%+v", ref)
+
+	claims := jwt.StandardClaims{
+		Audience:  ref["aud"].([]interface{})[0].(string),
+		ExpiresAt: int64(ref["exp"].(float64)),
+		IssuedAt:  int64(ref["iat"].(float64)),
+		Issuer:    ref["iss"].(string),
+		Subject:   ref["sub"].(string),
+	}
+
+	return claims.Valid()
+}
+
+func (j *jwtClaim) getCustomClaims() *customClaims {
+	ref := *j
+
+	hasura := ref[hasuraNamespace].(map[string]interface{})
+	eseuri := ref[eseuriNamespace].(map[string]interface{})
+
+	//nolint:exhaustivestruct
+	claims := &customClaims{}
+
+	claims.Role = hasura["X-Hasura-Default-Role"].(string)
+
+	roles := []string{}
+
+	for _, r := range hasura["X-Hasura-Allowed-Roles"].([]interface{}) {
+		roles = append(roles, r.(string))
+	}
+
+	claims.AllowedRoles = roles
+	claims.UserID, _ = strconv.Atoi(hasura["X-Hasura-User-Id"].(string))
+	claims.HasCompletedRegistration = eseuri["hasCompletedRegistration"].(bool)
+
+	return claims
+}
+
+type jsonCert struct {
+	Alg         string `json:"type"`
+	Certificate string `json:"key"`
 }
 
 func New() *fiber.App {
 	app := fiber.New()
 	graphqlClient := graphql.NewClient(meta.HasuraEndpoint + "/v1/graphql")
-	/*
-		graphqlClient.Log = func(s string) {
-			log.Println(s)
-		}
-	*/
 	client := tika.NewClient(nil, meta.TikaEndpoint)
 
 	var routes fiber.Router = app
@@ -72,90 +125,73 @@ func New() *fiber.App {
 		// Va trece de eroarea asta chiar daca nu sunt oferite toate variabilele
 		// structurii Eseu
 		if err := c.BodyParser(infoLucrare); err != nil {
-			//nolint:stylecheck
-			return SendError(c, http.StatusBadRequest, fmt.Errorf("Nu s-a putut citi formularul: %w", err))
+			return sendError(c, http.StatusBadRequest, "nu s-a putut citi formularul")
 		}
 		fisierraw, err := c.FormFile("document")
 		if err != nil {
-			//nolint:stylecheck
-			return SendError(c, http.StatusBadRequest, fmt.Errorf("Nu s-a putut obtine documentul: %w", err))
+			return sendError(c, http.StatusBadRequest, "nu s-a putut obtine documentul")
 		}
 		fisierprocesat, err := fisierraw.Open()
 		if err != nil {
-			//nolint:stylecheck
-			return SendError(c, http.StatusBadRequest, fmt.Errorf("Nu s-a putut deschide documentul: %w", err))
+			log.Println(err)
+
+			return sendError(c, http.StatusBadRequest, "nu s-a putut deschide documentul")
 		}
 		// mime, err := client.Detect()
 		// fisierprocesat.Seek(0, io.SeekStart)
 		body, err := client.Parse(c.Context(), fisierprocesat)
 		if err != nil {
-			//nolint:stylecheck
-			return SendError(c, http.StatusInternalServerError, fmt.Errorf("Eroare interna: %w", err))
+			log.Println(err)
+
+			return sendError(c, http.StatusInternalServerError, "eroare internă")
 		}
 		// Verificam tokenul userului (Note: PENTRU FRONTEND, trimiteti fără "Bearer", doar tokenul în sine)
 		infoLucrare.Creator = c.Get("Authorization")
 		if infoLucrare.Creator == "" {
-			//nolint
-			return SendError(c, http.StatusUnauthorized, fmt.Errorf("Tokenul nu a fost primit."))
+			log.Println(err)
+
+			return sendError(c, http.StatusUnauthorized, "tokenul nu a fost primit")
 		}
 
 		// Se face request la Hasura de inserare cu detaliile din form
-		// FĂRĂ SPAȚII LA CERTIFICAT (LA STÂNGA)
 		// Certificatul se obține din Settings >> Signing Keys și este luat cel în folosire
 		// Decodez JWT
 
-		pubPEMData := []byte(`
------BEGIN CERTIFICATE-----
-MIIDFTCCAf2gAwIBAgIJTto6VzP80+XtMA0GCSqGSIb3DQEBCwUAMCgxJjAkBgNV
-BAMTHWVzZXVyaS1tYXRlaS1kZXYuZXUuYXV0aDAuY29tMB4XDTIxMDQxODE0NDAz
-OVoXDTM0MTIyNjE0NDAzOVowKDEmMCQGA1UEAxMdZXNldXJpLW1hdGVpLWRldi5l
-dS5hdXRoMC5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDInz6F
-1ujdyXEtriec3mQG+xfhB/Y/YAC3Uy4dYBTkRkKyG5BV4LFk7BNm/vsb3g3XIHGn
-DIEzRk6sCBalhwdr5G6JHsI0/NeJpXuJl0QxtPSzRAGWvDLc8wRNc1HQRXgbw1V0
-sKTb1R5OXs/3gUosDQP2QkzyY0iaX1Vf2yI5pdeWdCtJyNjsAef3/L/BVxGtgm6x
-F/joFvKPLOuvNU9t2NT29Ymbh0zrBQLyxFluG0xr7pFcEL7WCfprED1Hd1x8c+Ih
-PgqryLUpLFG1Nv9jSkA3G+h/7a53Yabus3uBn5RNh6gXqfdMW/KuYN1nAyn16A7Q
-9lYyVc+30EFqWjL5AgMBAAGjQjBAMA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0OBBYE
-FNvV6H2apF4OW/cbWbdwj5585plbMA4GA1UdDwEB/wQEAwIChDANBgkqhkiG9w0B
-AQsFAAOCAQEAl9aDXEL8mlPPCiLC5D2QyMDEhv/8AebV62I6DafdRUPW15BxtSz9
-J6tpdvlhduLRAT3xg0BscPw+ZP+wmi08O8b2pnMTiK30/jzGKOAarOQh8e9iTIXP
-0nhFBYPip95lVTvZSLffEZRh2nv5ifnQoLnpSNO2E5vhSGlM8daCD5tO0QL3lILx
-1iEjwuTwFcE6uiKe7em/BvmGV+A21PzhIyUPORuZmxbuSf/8xABhheqwA0cZ1tjM
-2aOaaf1ybDBjW3rKtdmjGZ+JCFpUIKNIGX5LOVTI8btFOa/GGSG9uGDFMmK5gO0E
-hok0CSJqAzVetz2/4g1zp5LWq9t+Mgp7lQ==
------END CERTIFICATE-----`)
+		var jsonCertificatAuth0 jsonCert
+		err = json.Unmarshal([]byte(meta.HasuraGraphQLJWTSecret), &jsonCertificatAuth0)
+		if err != nil || jsonCertificatAuth0.Alg != "RS512" {
+			log.Println(err)
 
-		block, _ := pem.Decode(pubPEMData)
-		var cert *x509.Certificate
-		cert, err = x509.ParseCertificate(block.Bytes)
-		if err != nil {
-			//nolint
-			return SendError(c, http.StatusInternalServerError, fmt.Errorf("Eroare procesare certificat Auth0: %w", err))
+			return sendError(c, http.StatusInternalServerError, "certificatul Auth0 nu e valid")
 		}
-		publicKey := cert.PublicKey.(*rsa.PublicKey)
-		claims, err := jwt.RSACheck([]byte(infoLucrare.Creator), publicKey)
+		rsaAuth0Key, err := jwt.ParseRSAPublicKeyFromPEM([]byte(jsonCertificatAuth0.Certificate))
+		if err != nil {
+			log.Println()
+
+			return sendError(c, http.StatusInternalServerError, "nu s-a putut obține cheia publică")
+		}
+
+		token, err := jwt.ParseWithClaims(infoLucrare.Creator, &jwtClaim{}, func(token *jwt.Token) (interface{}, error) {
+			// since we only use the one private key to sign the tokens,
+			// we also only use its public counter part to verify
+			return rsaAuth0Key, nil
+		})
 		if err != nil {
 			log.Println(err)
-			//nolint
-			return SendError(c, http.StatusUnauthorized, fmt.Errorf("Tokenul nu este valid."))
+
+			return sendError(c, http.StatusUnauthorized, "token invalid")
 		}
 
-		if !claims.Valid(time.Now()) {
-			//nolint
-			return SendError(c, http.StatusUnauthorized, fmt.Errorf("Tokenul a expirat."))
+		claims := token.Claims.(*jwtClaim)
+		custom := claims.getCustomClaims()
+		//aici se opreste
+		if !custom.HasCompletedRegistration {
+			return sendError(c, http.StatusUnauthorized, "nu ai finalizat înregistrarea")
 		}
-
-		if !(claims.Issuer == meta.Auht0Enpoint) {
-			//nolint
-			return SendError(c, http.StatusUnauthorized, fmt.Errorf("Tokenul nu este destinat domeniului eseuri.com."))
-		}
-
 		// Setez X-Hasura-user-id cu ce am decodat din JWT ca si user id
 
-		log.Println(string(claims.Raw))
-
 		req := graphql.NewRequest(`
-		mutation insertWork ($userID: Int!, $content: String!, $requestedTeacherID: Int) {
+		mutation insertWork ($content: String!, $requestedTeacherID: Int) {
 			insert_works_one (object: {user_id:$userID, content: $content, status: pending, teacher_id: $requestedTeacherID}){
 				id
 			}
@@ -169,7 +205,8 @@ hok0CSJqAzVetz2/4g1zp5LWq9t+Mgp7lQ==
 			req.Var("requestedTeacherID", nil)
 		}
 
-		req.Var("userID", 1)
+		req.Header.Add("X-Hasura-Role", custom.Role)
+		req.Header.Add("X-Hasura-User-Id", strconv.Itoa(custom.UserID))
 		req.Header.Add("X-Hasura-Admin-Secret", meta.HasuraAdminSecret)
 		req.Header.Add("X-Hasura-Use-Backend-Only-Permissions", "true")
 
@@ -206,8 +243,7 @@ hok0CSJqAzVetz2/4g1zp5LWq9t+Mgp7lQ==
 			}`)
 
 		default:
-			//nolint
-			return SendError(c, http.StatusUnauthorized, fmt.Errorf("Tipul lucrării nu este valid."))
+			return sendError(c, http.StatusUnauthorized, "tipul lucrării nu este valid")
 		}
 
 		req.Var("workID", idLucrare)
