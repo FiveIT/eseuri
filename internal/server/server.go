@@ -21,7 +21,7 @@ type Eseu struct {
 	TipLucrare    string `form:"tipul_lucrarii"`
 	Caracter      int    `form:"caracter"`
 	Creator       string
-	CorectorCerut string `form:"corector_cerut"`
+	CorectorCerut int `form:"corector_cerut"`
 }
 
 func sendError(c *fiber.Ctx, statusCode int, message string) error {
@@ -57,7 +57,7 @@ type jwtClaim map[string]interface{}
 
 func (j *jwtClaim) Valid() error {
 	ref := *j
-	
+
 	log.Printf("%+v", ref)
 
 	claims := jwt.StandardClaims{
@@ -184,27 +184,26 @@ func New() *fiber.App {
 
 		claims := token.Claims.(*jwtClaim)
 		custom := claims.getCustomClaims()
-		//aici se opreste
 		if !custom.HasCompletedRegistration {
 			return sendError(c, http.StatusUnauthorized, "nu ai finalizat înregistrarea")
 		}
-		// Setez X-Hasura-user-id cu ce am decodat din JWT ca si user id
 
 		req := graphql.NewRequest(`
 		mutation insertWork ($content: String!, $requestedTeacherID: Int) {
-			insert_works_one (object: {user_id:$userID, content: $content, status: pending, teacher_id: $requestedTeacherID}){
+			insert_works_one (object: {content: $content, status: pending, teacher_id: $requestedTeacherID}){
 				id
 			}
 		}
 		`)
 
 		req.Var("content", body)
-		if infoLucrare.CorectorCerut != "" {
+		if infoLucrare.CorectorCerut != 0 {
 			req.Var("requestedTeacherID", infoLucrare.CorectorCerut)
 		} else {
 			req.Var("requestedTeacherID", nil)
 		}
 
+		// Setez X-Hasura-user-id cu ce am decodat din JWT ca si user id
 		req.Header.Add("X-Hasura-Role", custom.Role)
 		req.Header.Add("X-Hasura-User-Id", strconv.Itoa(custom.UserID))
 		req.Header.Add("X-Hasura-Admin-Secret", meta.HasuraAdminSecret)
