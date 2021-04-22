@@ -28,6 +28,15 @@ select_permissions:
       user_id:
         _eq: X-Hasura-User-Id
   role: student
+- permission:
+    columns:
+    - created_at
+    - status
+    - updated_at
+    filter:
+      user_id:
+        _eq: X-Hasura-User-Id
+  role: teacher
 delete_permissions:
 - permission:
     filter:

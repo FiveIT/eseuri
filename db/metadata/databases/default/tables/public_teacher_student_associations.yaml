@@ -46,13 +46,6 @@ insert_permissions:
 select_permissions:
 - permission:
     allow_aggregations: true
-    columns: []
-    filter:
-      status:
-        _eq: approved
-  role: anonymous
-- permission:
-    allow_aggregations: true
     columns:
     - status
     filter:

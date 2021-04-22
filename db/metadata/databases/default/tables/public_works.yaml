@@ -76,6 +76,7 @@ select_permissions:
     columns:
     - content
     - created_at
+    - id
     - status
     - updated_at
     filter:
@@ -90,6 +91,7 @@ select_permissions:
     columns:
     - content
     - created_at
+    - id
     - status
     - updated_at
     filter:
