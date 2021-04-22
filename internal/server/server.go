@@ -2,12 +2,14 @@ package server
 
 import (
 	"encoding/json"
+	"io"
 	"log"
 	"net/http"
 	"strconv"
 	"strings"
 
 	"github.com/FiveIT/template/internal/meta"
+	"github.com/FiveIT/template/internal/mime"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -137,13 +139,31 @@ func New() *fiber.App {
 
 			return sendError(c, http.StatusBadRequest, "nu s-a putut deschide documentul")
 		}
-		// mime, err := client.Detect()
-		// fisierprocesat.Seek(0, io.SeekStart)
-		body, err := client.Parse(c.Context(), fisierprocesat)
+		m, err := client.Detect(c.Context(), fisierprocesat)
 		if err != nil {
 			log.Println(err)
 
 			return sendError(c, http.StatusInternalServerError, "eroare internă")
+		}
+		_, err = fisierprocesat.Seek(0, io.SeekStart)
+		if err != nil {
+			log.Println(err)
+
+			return sendError(c, http.StatusInternalServerError, "eroare internă")
+		}
+
+		var body string
+
+		switch m {
+		case mime.DOC, mime.DOCX, mime.RTF, mime.ODT:
+			body, err = client.Parse(c.Context(), fisierprocesat)
+			if err != nil {
+				log.Println(err)
+
+				return sendError(c, http.StatusInternalServerError, "eroare internă")
+			}
+		default:
+			return sendError(c, http.StatusBadRequest, "fișierul trimis nu este de un tip valid")
 		}
 		// Verificam tokenul userului (Note: PENTRU FRONTEND, trimiteti fără "Bearer", doar tokenul în sine)
 		infoLucrare.Creator = c.Get("Authorization")
