@@ -31,6 +31,7 @@ package meta
 import (
 	"os"
 
+	"github.com/FiveIT/template/internal/meta/auth0"
 	"github.com/rs/zerolog/log"
 )
 
@@ -57,9 +58,15 @@ var (
 	HasuraEndpoint = os.Getenv("HASURA_GRAPHQL_ENDPOINT")
 	// HasuraAdminSecret is required to make requests to the Hasura GraphQL service.
 	HasuraAdminSecret = os.Getenv("HASURA_GRAPHQL_ADMIN_SECRET")
-	HasuraGraphQLJWTSecret = os.Getenv("HASURA_GRAPHQL_JWT_SECRET")
-	// Auht0Enpoint is required to verify tokens' issuer.
-	Auht0Enpoint = os.Getenv("AUTH0_ENDPOINT")
+	// HasuraJWTSecret is required for verifying the tokens used to authorize to the service.
+	HasuraJWTSecret = os.Getenv("HASURA_GRAPHQL_JWT_SECRET")
+	// Auth0 holds the required credentials to use the Auth0 authentication service.
+	Auth0 = &auth0.Auth0{
+		Domain:       os.Getenv("VITE_AUTH0_DOMAIN"),
+		ClientID:     os.Getenv("VITE_AUTH0_CLIENT_ID"),
+		ClientSecret: os.Getenv("AUTH0_CLIENT_SECRET"),
+		Audience:     os.Getenv("VITE_AUTH0_AUDIENCE"),
+	}
 )
 
 // URL returns the addres at which the client app exists.
