@@ -117,6 +117,18 @@ select_permissions:
 update_permissions:
 - permission:
     check: null
+    columns: []
+    filter:
+      _and:
+      - user_id:
+          _eq: X-Hasura-User-Id
+      - status:
+          _eq: draft
+    set:
+      status: pending
+  role: student
+- permission:
+    check: null
     columns:
     - status
     filter:
@@ -125,4 +137,8 @@ update_permissions:
           _is_null: true
       - teacher_id:
           _eq: X-Hasura-User-Id
+      - status:
+          _in:
+          - pending
+          - inReview
   role: teacher
