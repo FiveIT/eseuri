@@ -88,7 +88,6 @@ select_permissions:
     - last_name
     - middle_name
     - role
-    - school_id
     - updated_at
     filter:
       _or:
@@ -107,7 +106,6 @@ select_permissions:
     - last_name
     - middle_name
     - role
-    - school_id
     - updated_at
     filter:
       _or:
