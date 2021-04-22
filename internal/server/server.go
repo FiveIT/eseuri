@@ -63,11 +63,17 @@ func (j *jwtClaim) Valid() error {
 	log.Printf("%+v", ref)
 
 	claims := jwt.StandardClaims{
-		Audience:  ref["aud"].([]interface{})[0].(string),
 		ExpiresAt: int64(ref["exp"].(float64)),
 		IssuedAt:  int64(ref["iat"].(float64)),
 		Issuer:    ref["iss"].(string),
 		Subject:   ref["sub"].(string),
+	}
+
+	aud, ok := ref["aud"].([]interface{})
+	if ok {
+		claims.Audience = aud[0].(string)
+	} else {
+		claims.Audience = ref["aud"].(string)
 	}
 
 	return claims.Valid()
@@ -103,7 +109,9 @@ type jsonCert struct {
 }
 
 func New() *fiber.App {
-	app := fiber.New()
+	app := fiber.New(fiber.Config{
+		ReadBufferSize: 8192,
+	})
 	graphqlClient := graphql.NewClient(meta.HasuraEndpoint + "/v1/graphql")
 	client := tika.NewClient(nil, meta.TikaEndpoint)
 
