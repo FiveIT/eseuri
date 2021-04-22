@@ -2,115 +2,127 @@ table:
   name: works
   schema: public
 object_relationships:
-  - name: characterization
-    using:
-      manual_configuration:
-        column_mapping:
-          id: work_id
-        insertion_order: null
-        remote_table:
-          name: characterizations
-          schema: public
-  - name: essay
-    using:
-      manual_configuration:
-        column_mapping:
-          id: work_id
-        insertion_order: null
-        remote_table:
-          name: essays
-          schema: public
-  - name: teacher
-    using:
-      foreign_key_constraint_on: teacher_id
-  - name: users_all
-    using:
-      foreign_key_constraint_on: user_id
-  - name: work_status
-    using:
-      foreign_key_constraint_on: status
+- name: characterization
+  using:
+    manual_configuration:
+      column_mapping:
+        id: work_id
+      insertion_order: null
+      remote_table:
+        name: characterizations
+        schema: public
+- name: essay
+  using:
+    manual_configuration:
+      column_mapping:
+        id: work_id
+      insertion_order: null
+      remote_table:
+        name: essays
+        schema: public
+- name: teacher
+  using:
+    foreign_key_constraint_on: teacher_id
+- name: users_all
+  using:
+    foreign_key_constraint_on: user_id
+- name: work_status
+  using:
+    foreign_key_constraint_on: status
 array_relationships:
-  - name: bookmarks
-    using:
-      foreign_key_constraint_on:
-        column: work_id
-        table:
-          name: bookmarks
-          schema: public
+- name: bookmarks
+  using:
+    foreign_key_constraint_on:
+      column: work_id
+      table:
+        name: bookmarks
+        schema: public
 insert_permissions:
-  - permission:
-      backend_only: true
-      check:
-        user_id:
-          _eq: X-Hasura-User-Id
-      columns:
-        - teacher_id
-        - content
-        - status
-      set:
-        user_id: x-hasura-User-Id
-    role: student
-  - permission:
-      backend_only: true
-      check:
-        user_id:
-          _eq: X-Hasura-User-Id
-      columns:
-        - teacher_id
-        - content
-        - status
-      set:
-        user_id: x-hasura-User-Id
-    role: teacher
+- permission:
+    backend_only: true
+    check:
+      user_id:
+        _eq: X-Hasura-User-Id
+    columns:
+    - teacher_id
+    - content
+    - status
+    set:
+      user_id: x-hasura-User-Id
+  role: student
+- permission:
+    backend_only: true
+    check:
+      user_id:
+        _eq: X-Hasura-User-Id
+    columns:
+    - teacher_id
+    - content
+    - status
+    set:
+      user_id: x-hasura-User-Id
+  role: teacher
 select_permissions:
-  - permission:
-      columns:
-        - content
-        - updated_at
-      filter:
-        status:
+- permission:
+    columns:
+    - content
+    - updated_at
+    filter:
+      status:
+        _eq: approved
+    limit: 50
+  role: anonymous
+- permission:
+    columns:
+    - content
+    - created_at
+    - status
+    - updated_at
+    filter:
+      _or:
+      - status:
           _eq: approved
-      limit: 50
-    role: anonymous
-  - permission:
-      columns:
-        - content
-        - created_at
-        - status
-        - updated_at
-      filter:
-        _or:
+      - user_id:
+          _eq: X-Hasura-User-Id
+    limit: 50
+  role: student
+- permission:
+    columns:
+    - content
+    - created_at
+    - status
+    - updated_at
+    filter:
+      _or:
+      - _or:
+        - status:
+            _in:
+            - pending
+            - approved
+        - _and:
           - status:
-              _eq: approved
-          - user_id:
-              _eq: X-Hasura-User-Id
-      limit: 50
-    role: student
-  - permission:
-      columns:
-        - content
-        - created_at
-        - status
-        - updated_at
-      filter:
-        _or:
-          - _or:
-              - status:
-                  _in:
-                    - pending
-                    - approved
-              - _and:
-                  - status:
-                      _eq: inReview
-                  - teacher_id:
-                      _eq: X-Hasura-User-Id
-          - user_id:
-              _eq: X-Hasura-User-Id
+              _eq: inReview
           - teacher_id:
               _eq: X-Hasura-User-Id
-          - users_all:
-              teacher_student_associations:
-                teacher_id:
-                  _eq: X-Hasura-User-Id
-      limit: 50
-    role: teacher
+      - user_id:
+          _eq: X-Hasura-User-Id
+      - teacher_id:
+          _eq: X-Hasura-User-Id
+      - users_all:
+          teacher_student_associations:
+            teacher_id:
+              _eq: X-Hasura-User-Id
+    limit: 50
+  role: teacher
+update_permissions:
+- permission:
+    check: null
+    columns:
+    - status
+    filter:
+      _and:
+      - teacher_id:
+          _is_null: true
+      - teacher_id:
+          _eq: X-Hasura-User-Id
+  role: teacher
