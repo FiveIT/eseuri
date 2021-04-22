@@ -58,5 +58,5 @@ func (a *Auth0) GetAuthorizationToken(ctx context.Context) (string, error) {
 		return "", prefixer("couldn't decode response", err)
 	}
 
-	return t.TokenType + " " + t.AccessToken, nil
+	return t.AccessToken, nil
 }
