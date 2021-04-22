@@ -178,7 +178,7 @@ func New() *fiber.App {
 		// Decodez JWT
 
 		var jsonCertificatAuth0 jsonCert
-		err = json.Unmarshal([]byte(meta.HasuraGraphQLJWTSecret), &jsonCertificatAuth0)
+		err = json.Unmarshal([]byte(meta.HasuraJWTSecret), &jsonCertificatAuth0)
 		if err != nil || jsonCertificatAuth0.Alg != "RS512" {
 			log.Println(err)
 
