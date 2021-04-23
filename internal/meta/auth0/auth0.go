@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
@@ -20,11 +21,11 @@ func (a *Auth0) oAuthURL() string {
 	return "https://" + a.Domain + "/oauth/token"
 }
 
-// TODO: Update documentation after removing automatic registration from hook
 // AuthorizationToken obtains a JWT token from Auth0 that
-// can be used to make requests to the API. The Auth0 rule also
-// creates an registered user, so the token can be used in server tests.
-func (a *Auth0) AuthorizationToken(ctx context.Context) (string, error) {
+// can be used to make requests to the API. You can create either a
+// registered or unregistered user based on the value of the regiserUser
+// parameter.
+func (a *Auth0) AuthorizationToken(ctx context.Context, registerUser bool) (string, error) {
 	prefixer := func(message string, err error) error {
 		return fmt.Errorf("auth0 OAuth token request: %s: %w", message, err)
 	}
@@ -34,6 +35,7 @@ func (a *Auth0) AuthorizationToken(ctx context.Context) (string, error) {
 	data.Set("client_secret", a.ClientSecret)
 	data.Set("audience", a.Audience)
 	data.Set("grant_type", "client_credentials")
+	data.Set("eseuriRegisterUser", strconv.FormatBool(registerUser))
 	b := strings.NewReader(data.Encode())
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, a.oAuthURL(), b)

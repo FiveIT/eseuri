@@ -42,8 +42,7 @@ module.exports = async (client, scope, audience, context, cb) => {
 
     const { id, role, updated_at } = body.data.insert_users_one
 
-    // TODO: Remove automatic user registration
-    if (updated_at === null) {
+    if (updated_at === null && context.body.registerUser) {
       const query = `
         mutation($firstName: Int!, $lastName: Int!, $schoolID: Int!) {
           update_users(where: {}, _set: {first_name: $firstName, last_name: $lastName, school_id: $schoolID}) {
@@ -77,7 +76,7 @@ module.exports = async (client, scope, audience, context, cb) => {
       'X-Hasura-User-Id': `${id}`,
     }
     accessToken['https://eseuri.com'] = {
-      hasCompletedRegistration: true,
+      hasCompletedRegistration: updated_at !== null || !!context.body.registerUser,
     }
     accessToken.scope.push('extra')
 
