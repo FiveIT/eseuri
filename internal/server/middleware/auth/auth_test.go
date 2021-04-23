@@ -44,7 +44,6 @@ func TestValidJWT(t *testing.T) {
 	t.Parallel()
 
 	app := App(t)
-	// jwt := testhelper.JWT(t)
 	jwt := testhelper.JWT(t)
 
 	req := testhelper.Request(t, http.MethodGet, nil)
