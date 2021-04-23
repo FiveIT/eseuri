@@ -10,8 +10,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/FiveIT/template/internal/meta"
-	"github.com/FiveIT/template/internal/server/config"
+	"github.com/FiveIT/eseuri/internal/meta"
+	"github.com/FiveIT/eseuri/internal/server/config"
 	"github.com/gofiber/fiber/v2"
 )
 

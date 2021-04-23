@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 
-	"github.com/FiveIT/template/internal/meta"
-	"github.com/FiveIT/template/internal/server"
+	"github.com/FiveIT/eseuri/internal/meta"
+	"github.com/FiveIT/eseuri/internal/server"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	fiberadapter "github.com/awslabs/aws-lambda-go-api-proxy/fiber"
@@ -13,11 +13,12 @@ import (
 )
 
 func main() {
-	debugLevel := zerolog.TraceLevel
+	logLevel := zerolog.TraceLevel
 	if meta.IsProduction {
-		debugLevel = zerolog.ErrorLevel
+		logLevel = zerolog.ErrorLevel
 	}
-	zerolog.SetGlobalLevel(debugLevel)
+
+	zerolog.SetGlobalLevel(logLevel)
 
 	app := server.New()
 
@@ -29,7 +30,7 @@ func main() {
 		})
 	} else {
 		if err := app.Listen(":4000"); err != nil {
-			log.Error().Err(err).Msg("Failed to start server!")
+			log.Err(err).Msg("Failed to start server!")
 		}
 	}
 }

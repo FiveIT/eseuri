@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/FiveIT/template/internal/meta"
+	"github.com/FiveIT/eseuri/internal/meta"
 )
 
 func TestGetAuthorizationToken(t *testing.T) {

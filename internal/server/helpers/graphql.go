@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/FiveIT/template/internal/meta"
+	"github.com/FiveIT/eseuri/internal/meta"
 	"github.com/gofiber/fiber/v2"
 	"github.com/machinebox/graphql"
 )

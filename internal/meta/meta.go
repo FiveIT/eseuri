@@ -31,7 +31,7 @@ package meta
 import (
 	"os"
 
-	"github.com/FiveIT/template/internal/meta/auth0"
+	"github.com/FiveIT/eseuri/internal/meta/auth0"
 	"github.com/rs/zerolog/log"
 )
 

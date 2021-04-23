@@ -1,4 +1,4 @@
-module github.com/FiveIT/template
+module github.com/FiveIT/eseuri
 
 go 1.16
 

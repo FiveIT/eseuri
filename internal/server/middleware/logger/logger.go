@@ -3,7 +3,7 @@ package logger
 import (
 	"os"
 
-	"github.com/FiveIT/template/internal/server/helpers"
+	"github.com/FiveIT/eseuri/internal/server/helpers"
 	"github.com/gofiber/fiber/v2"
 	"github.com/machinebox/graphql"
 	"github.com/rs/zerolog"

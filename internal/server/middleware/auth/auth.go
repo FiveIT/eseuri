@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/FiveIT/template/internal/meta"
-	"github.com/FiveIT/template/internal/server/helpers"
+	"github.com/FiveIT/eseuri/internal/meta"
+	"github.com/FiveIT/eseuri/internal/server/helpers"
 	jwt "github.com/form3tech-oss/jwt-go"
 	"github.com/gofiber/fiber/v2"
 	jwtware "github.com/gofiber/jwt/v2"

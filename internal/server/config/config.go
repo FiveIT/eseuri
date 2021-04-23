@@ -3,7 +3,7 @@ package config
 import (
 	"net/http"
 
-	"github.com/FiveIT/template/internal/server/helpers"
+	"github.com/FiveIT/eseuri/internal/server/helpers"
 	"github.com/gofiber/fiber/v2"
 )
 
