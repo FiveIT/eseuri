@@ -10,6 +10,7 @@ import (
 	"github.com/FiveIT/template/internal/meta"
 	"github.com/FiveIT/template/internal/meta/gqlqueries"
 	"github.com/FiveIT/template/internal/mime"
+	"github.com/FiveIT/template/internal/server/config"
 	"github.com/FiveIT/template/internal/server/helpers"
 	"github.com/FiveIT/template/internal/server/middleware/auth"
 	"github.com/FiveIT/template/internal/server/middleware/logger"
@@ -25,12 +26,7 @@ func New() *fiber.App {
 	graphqlClient := graphql.NewClient(meta.HasuraEndpoint + "/v1/graphql")
 	client := tika.NewClient(nil, meta.TikaEndpoint)
 
-	app := fiber.New(fiber.Config{
-		ReadBufferSize: 8192,
-		ErrorHandler: func(c *fiber.Ctx, e error) error {
-			return helpers.SendError(c, http.StatusInternalServerError, "internal error", e)
-		},
-	})
+	app := fiber.New(config.Config())
 
 	var routes fiber.Router = app
 	if meta.IsNetlify {
