@@ -2,7 +2,7 @@ package helpers
 
 import (
 	"context"
-	"log"
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -21,13 +21,6 @@ type GraphQLRequestOptions struct {
 	// Promote tells the function to add the specific Hasura headers
 	// containing the admin secret and the backend permissions toggle.
 	Promote bool
-	// Log tells the function to add a logger function to the client.
-	// By default it adds a simple log.Println:
-	//	c.Log = func (s string) { log.Println(s) }
-	// Specifying LogFn overrides this setting.
-	Log bool
-	// LogFn is the function used by the client to log to console.
-	LogFn func(string)
 }
 
 func (g GraphQLRequestOptions) process() GraphQLRequestOptions {
@@ -44,24 +37,7 @@ func (g GraphQLRequestOptions) process() GraphQLRequestOptions {
 		g.Headers["X-Hasura-Use-Backend-Only-Permissions"] = "true"
 	}
 
-	if g.LogFn == nil && g.Log {
-		g.LogFn = func(s string) {
-			log.Println(s)
-		}
-	}
-
 	return g
-}
-
-func (g *GraphQLRequestOptions) setLogFn(c *graphql.Client) (bool, func(string)) {
-	if g.LogFn != nil {
-		prevFn := c.Log
-		c.Log = g.LogFn
-
-		return true, prevFn
-	}
-
-	return false, nil
 }
 
 // GraphQLRequest does a GraphQL request with the given client. It unmarshals the response in the out parameter,
@@ -76,8 +52,6 @@ func GraphQLRequest(c *graphql.Client, query string, opts ...GraphQLRequestOptio
 
 	config = config.process()
 
-	hasCustomLog, prevLogFn := config.setLogFn(c)
-
 	req := graphql.NewRequest(query)
 
 	for k, v := range config.Headers {
@@ -88,24 +62,18 @@ func GraphQLRequest(c *graphql.Client, query string, opts ...GraphQLRequestOptio
 		req.Var(k, v)
 	}
 
-	err := c.Run(config.Context, req, config.Output)
-
-	if hasCustomLog {
-		c.Log = prevLogFn
-	}
-
-	//nolint:wrapcheck
-	return err
+	//nolint:wraperror
+	return c.Run(config.Context, req, config.Output)
 }
 
 func HandleGraphQLError(c *fiber.Ctx, err error) error {
-	if errVal := err.Error(); strings.Contains(errVal, "graphql: ") {
+	if errVal := err.Error(); strings.Contains(errVal, "graphql:") {
 		if !strings.Contains(errVal, "server returned a non-200 status code") {
-			return SendError(c, http.StatusBadRequest, "eroare la interogarea bazei de date: "+err.Error(), err)
+			return SendError(c, http.StatusBadRequest, "your request failed", err)
 		}
 	}
 
-	return SendError(c, http.StatusInternalServerError, "a aparut o eroare la conectarea cu baza de date", err)
+	return fmt.Errorf("failed to communicate with the database: %w", err)
 }
 
 const showGQLLogsHeaderKey = "X-Eseuri-Show-GraphQL-Logs"
