@@ -3,12 +3,18 @@ package auth0
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/rs/zerolog/log"
 )
+
+var ErrNonOKStatus = errors.New("failed to retrieve token, status code not OK")
 
 type Auth0 struct {
 	Domain       string
@@ -51,6 +57,19 @@ func (a *Auth0) AuthorizationToken(ctx context.Context, registerUser ...bool) (s
 		return "", prefixer("post failed", err)
 	}
 	defer res.Body.Close()
+
+	if res.StatusCode != http.StatusOK {
+		sb := &strings.Builder{}
+
+		_, err := io.Copy(sb, res.Body)
+		if err != nil {
+			return "", prefixer(fmt.Sprintf("status code %d, request body copying failed", res.StatusCode), err)
+		}
+
+		log.Debug().Int("code", res.StatusCode).Str("body", sb.String()).Msg("auth0 token retrieval")
+
+		return "", prefixer(fmt.Sprintf("status code %d", res.StatusCode), ErrNonOKStatus)
+	}
 
 	var t struct {
 		AccessToken string `json:"access_token"`
