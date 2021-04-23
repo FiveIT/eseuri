@@ -5,7 +5,6 @@ go 1.16
 require (
 	github.com/aws/aws-lambda-go v1.23.0
 	github.com/awslabs/aws-lambda-go-api-proxy v0.9.0
-	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/form3tech-oss/jwt-go v3.2.2+incompatible
 	github.com/gofiber/fiber/v2 v2.8.0
 	github.com/gofiber/jwt/v2 v2.2.1
