@@ -77,10 +77,18 @@ func JWT(tb testing.TB, registerUser ...bool) string {
 	return token
 }
 
-func Request(tb testing.TB, method string, body io.Reader) *http.Request {
+func Request(tb testing.TB, method string, body io.Reader, authorization ...string) *http.Request {
 	tb.Helper()
 
-	return httptest.NewRequest(method, "https://eseuri.com", body)
+	req := httptest.NewRequest(method, "https://eseuri.com", body)
+
+	for _, auth := range authorization {
+		req.Header.Set("Authorization", auth)
+
+		break
+	}
+
+	return req
 }
 
 // TODO: Helper functions for creating teachers
