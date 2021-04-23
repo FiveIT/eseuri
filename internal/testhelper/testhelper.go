@@ -13,6 +13,7 @@ import (
 	"github.com/FiveIT/eseuri/internal/meta"
 	"github.com/FiveIT/eseuri/internal/server/config"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/recover"
 )
 
 func DecodeJSON(tb testing.TB, r io.Reader, v interface{}) {
@@ -51,6 +52,11 @@ func App(tb testing.TB, middlewares ...interface{}) *fiber.App {
 	tb.Helper()
 
 	app := fiber.New(config.Config())
+
+	//nolint:exhaustivestruct
+	app.Use(recover.New(recover.Config{
+		EnableStackTrace: true,
+	}))
 
 	app.Use(middlewares...)
 
