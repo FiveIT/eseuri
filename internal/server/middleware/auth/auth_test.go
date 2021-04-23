@@ -2,7 +2,6 @@ package auth_test
 
 import (
 	"net/http"
-	"net/http/httptest"
 	"testing"
 	"time"
 
@@ -26,7 +25,7 @@ func TestInvalidJWT(t *testing.T) {
 
 	app := App(t)
 
-	req := httptest.NewRequest(http.MethodGet, "https://eseuri.com", nil)
+	req := testhelper.Request(t, http.MethodGet, nil)
 	req.Header.Set("Authorization", "Bearer amSarmale")
 
 	res := testhelper.DoTestRequest(t, app, req)
@@ -52,7 +51,7 @@ func TestValidJWT(t *testing.T) {
 	// Sleep to prevent JWT error "Token used before issued"
 	time.Sleep(time.Second)
 
-	req := httptest.NewRequest(http.MethodGet, "https://eseuri.com", nil)
+	req := testhelper.Request(t, http.MethodGet, nil)
 	req.Header.Set("Authorization", jwt)
 
 	res := testhelper.DoTestRequest(t, app, req)

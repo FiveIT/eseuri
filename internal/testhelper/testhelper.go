@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"net/http/httptest"
 	"strings"
 	"testing"
 
@@ -68,6 +69,12 @@ func JWT(tb testing.TB) string {
 	}
 
 	return token
+}
+
+func Request(tb testing.TB, method string, body io.Reader) *http.Request {
+	tb.Helper()
+
+	return httptest.NewRequest(method, "https://eseuri.com", body)
 }
 
 // TODO: Helper functions for registering users and creating teachers
