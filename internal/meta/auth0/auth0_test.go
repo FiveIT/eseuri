@@ -2,6 +2,7 @@ package auth0_test
 
 import (
 	"context"
+	"strings"
 	"testing"
 
 	"github.com/FiveIT/template/internal/meta"
@@ -16,4 +17,8 @@ func TestGetAuthorizationToken(t *testing.T) {
 	}
 
 	t.Logf(token)
+
+	if !strings.HasPrefix(token, "Bearer ") {
+		t.Fatal(`Expected "Bearer" prefix`)
+	}
 }
