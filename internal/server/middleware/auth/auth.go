@@ -73,13 +73,13 @@ func Middleware() func(*fiber.Ctx) error {
 
 			hasura := user[hasuraNamespace].(map[string]interface{})
 
-			custom := &CustomClaims{}
+			custom := CustomClaims{}
 			custom.Role = hasura["X-Hasura-Default-Role"].(string)
 			custom.UserID, _ = strconv.Atoi(hasura["X-Hasura-User-Id"].(string))
 
-			logger.Debug().EmbedObject(custom).Msg("unmarshaled custom claims")
+			logger.Debug().EmbedObject(&custom).Msg("unmarshaled custom claims")
 
-			c.Locals("claims", claims)
+			c.Locals("claims", custom)
 
 			return c.Next()
 		},
