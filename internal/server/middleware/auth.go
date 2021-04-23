@@ -21,16 +21,14 @@ type jwtCredentials struct {
 }
 
 type CustomClaims struct {
-	UserID                   int
-	Role                     string
-	HasCompletedRegistration bool
+	UserID int
+	Role   string
 }
 
 func (c *CustomClaims) MarshalZerologObject(z *zerolog.Event) {
 	z.
 		Int("userID", c.UserID).
-		Str("role", c.Role).
-		Bool("hasCompletedRegistration", c.HasCompletedRegistration)
+		Str("role", c.Role)
 }
 
 const (
@@ -59,20 +57,18 @@ func GetAuthMiddleware() (func(*fiber.Ctx) error, error) {
 
 			logger.Debug().Fields(user).Msg("claims")
 
-			hasura := user[hasuraNamespace].(map[string]interface{})
 			eseuri := user[eseuriNamespace].(map[string]interface{})
-
-			claims := CustomClaims{}
-
-			claims.Role = hasura["X-Hasura-Default-Role"].(string)
-			claims.UserID, _ = strconv.Atoi(hasura["X-Hasura-User-Id"].(string))
-			claims.HasCompletedRegistration = eseuri["hasCompletedRegistration"].(bool)
-
-			logger.Debug().EmbedObject(&claims).Msg("unmarshaled custom claims")
-
-			if !claims.HasCompletedRegistration {
+			if !eseuri["hasCompletedRegistration"].(bool) {
 				return helpers.SendError(c, http.StatusUnauthorized, "unregistered user", nil)
 			}
+
+			hasura := user[hasuraNamespace].(map[string]interface{})
+
+			claims := CustomClaims{}
+			claims.Role = hasura["X-Hasura-Default-Role"].(string)
+			claims.UserID, _ = strconv.Atoi(hasura["X-Hasura-User-Id"].(string))
+
+			logger.Debug().EmbedObject(&claims).Msg("unmarshaled custom claims")
 
 			c.Locals("claims", claims)
 
