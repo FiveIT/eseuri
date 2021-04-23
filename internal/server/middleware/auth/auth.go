@@ -46,7 +46,7 @@ func Middleware(secret string) func(*fiber.Ctx) error {
 		log.Fatal().Err(err).Msg("failed to get auth middleware due to JWT credentials unmarshal error")
 	}
 
-	mid := jwtware.New(jwtware.Config{
+	return jwtware.New(jwtware.Config{
 		SigningMethod: creds.Type,
 		SigningKey:    creds.Key,
 		SuccessHandler: func(c *fiber.Ctx) error {
@@ -77,6 +77,4 @@ func Middleware(secret string) func(*fiber.Ctx) error {
 			return helpers.SendError(c, http.StatusUnauthorized, "invalid or expired token", e)
 		},
 	})
-
-	return mid, nil
 }
