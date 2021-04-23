@@ -15,7 +15,7 @@ func Middleware(graphqlClient *graphql.Client) func(*fiber.Ctx) error {
 			New(os.Stderr).
 			With().
 			Timestamp().
-			Str("hostname", c.Hostname()).
+			Str("userAgent", string(c.Context().UserAgent())).
 			Strs("ips", c.IPs()).
 			Logger()
 
