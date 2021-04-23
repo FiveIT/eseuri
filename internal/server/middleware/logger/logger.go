@@ -21,12 +21,14 @@ func Middleware(graphqlClient *graphql.Client) func(*fiber.Ctx) error {
 
 		c.Locals("logger", logger)
 
-		if helpers.ShouldShowGraphQLClientLogs(c) {
-			graphqlClient.Log = func(s string) {
-				logger.Debug().Str("where", "graphql").Msg(s)
+		if graphqlClient != nil {
+			if helpers.ShouldShowGraphQLClientLogs(c) {
+				graphqlClient.Log = func(s string) {
+					logger.Debug().Str("where", "graphql").Msg(s)
+				}
+			} else {
+				graphqlClient.Log = func(string) {}
 			}
-		} else {
-			graphqlClient.Log = func(string) {}
 		}
 
 		return c.Next()
