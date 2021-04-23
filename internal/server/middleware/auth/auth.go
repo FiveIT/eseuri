@@ -57,12 +57,7 @@ func Middleware() func(*fiber.Ctx) error {
 		SuccessHandler: func(c *fiber.Ctx) error {
 			logger := c.Locals("logger").(zerolog.Logger)
 
-			claims := c.Locals("user").(*jwt.Token).Claims
-			if err := claims.Valid(); err != nil {
-				return helpers.SendError(c, http.StatusUnauthorized, "invalid claims", err)
-			}
-
-			user := claims.(jwt.MapClaims)
+			user := c.Locals("user").(*jwt.Token).Claims.(jwt.MapClaims)
 
 			logger.Debug().Fields(user).Msg("claims")
 
@@ -84,6 +79,9 @@ func Middleware() func(*fiber.Ctx) error {
 			return c.Next()
 		},
 		ErrorHandler: func(c *fiber.Ctx, e error) error {
+			if e.Error() == "Missing or malformed JWT" {
+				return helpers.SendError(c, http.StatusBadRequest, "missing or malformed JWT", e)
+			}
 			return helpers.SendError(c, http.StatusUnauthorized, "invalid or expired token", e)
 		},
 	})
