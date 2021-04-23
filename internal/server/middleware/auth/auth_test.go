@@ -13,42 +13,91 @@ import (
 
 // App returns a Fiber App with the auth middleware applied,
 // so it can be used for testing purposes.
-func App(tb testing.TB) *fiber.App {
+func App(tb testing.TB, customClaims ...chan auth.CustomClaims) *fiber.App {
 	tb.Helper()
 
-	return testhelper.App(tb, "hello", logger.Middleware(nil), auth.Middleware())
+	claimsMiddleware := func(c *fiber.Ctx) error {
+		for _, ch := range customClaims {
+			ch <- c.Locals("claims").(auth.CustomClaims)
+
+			break
+		}
+
+		return c.Next()
+	}
+
+	return testhelper.App(tb, "hello", logger.Middleware(nil), auth.Middleware(), claimsMiddleware)
 }
 
-func TestInvalidJWT(t *testing.T) {
+type testCase struct {
+	Name               string
+	Token              string
+	ExpectedStatusCode int
+	ExpectedResponse   string
+}
+
+func (c testCase) RunTest(t *testing.T, app *fiber.App) {
+	t.Helper()
+
+	t.Run(c.Name, func(t *testing.T) {
+		t.Parallel()
+
+		res := testhelper.DoTestRequest(t, app, testhelper.Request(t, http.MethodGet, nil, c.Token))
+		defer res.Body.Close()
+
+		var response struct {
+			Error string
+		}
+
+		testhelper.DecodeJSON(t, res.Body, &response)
+
+		utils.AssertEqual(t, c.ExpectedStatusCode, res.StatusCode)
+		utils.AssertEqual(t, c.ExpectedResponse, response.Error)
+	})
+}
+
+func TestInvalidJWTs(t *testing.T) {
 	t.Parallel()
 
 	app := App(t)
-	req := testhelper.Request(t, http.MethodGet, nil, "amSarmale")
-
-	res := testhelper.DoTestRequest(t, app, req)
-	defer res.Body.Close()
-
-	var response struct {
-		Error string
+	tests := []testCase{
+		{
+			Name:               "Missing",
+			Token:              "",
+			ExpectedStatusCode: http.StatusBadRequest,
+			ExpectedResponse:   "missing or malformed token",
+		},
+		{
+			Name:               "Malformed",
+			Token:              "amSarmale",
+			ExpectedStatusCode: http.StatusBadRequest,
+			ExpectedResponse:   "missing or malformed token",
+		},
+		// TODO: Add tokens that satisfy the conditions
+		{
+			Name:               "Expired",
+			Token:              ``,
+			ExpectedStatusCode: http.StatusUnauthorized,
+			ExpectedResponse:   "invalid or expired token",
+		},
+		{
+			Name:               "Invalid",
+			Token:              ``,
+			ExpectedStatusCode: http.StatusUnauthorized,
+			ExpectedResponse:   "invalid or expired token",
+		},
 	}
 
-	testhelper.DecodeJSON(t, res.Body, &response)
-
-	utils.AssertEqual(t, http.StatusUnauthorized, res.StatusCode)
-	utils.AssertEqual(t, "invalid or expired token", response.Error)
+	for _, test := range tests {
+		test.RunTest(t, app)
+	}
 }
 
 func TestValidJWT(t *testing.T) {
 	t.Parallel()
 
-	app := App(t)
 	ch := make(chan auth.CustomClaims)
-
-	app.Use(func(c *fiber.Ctx) error {
-		ch <- c.Locals("claims").(auth.CustomClaims)
-
-		return c.Next()
-	})
+	app := App(t, ch)
 
 	jwt := testhelper.JWT(t, true)
 	req := testhelper.Request(t, http.MethodGet, nil, jwt)
@@ -58,6 +107,7 @@ func TestValidJWT(t *testing.T) {
 
 	body := testhelper.ReadString(t, res.Body)
 
+	// TODO: Simplify success checking only to asserting the status code
 	utils.AssertEqual(t, http.StatusOK, res.StatusCode)
 	utils.AssertEqual(t, "hello", body)
 
