@@ -62,7 +62,7 @@ func App(tb testing.TB, successResponse string, middlewares ...interface{}) *fib
 func JWT(tb testing.TB) string {
 	tb.Helper()
 
-	token, err := meta.Auth0.GetAuthorizationToken(context.Background())
+	token, err := meta.Auth0.AuthorizationToken(context.Background())
 	if err != nil {
 		tb.Fatalf("Failed to get JWT: %v", token)
 	}

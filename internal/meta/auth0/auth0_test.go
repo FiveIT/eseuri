@@ -11,7 +11,7 @@ import (
 func TestGetAuthorizationToken(t *testing.T) {
 	t.Parallel()
 
-	token, err := meta.Auth0.GetAuthorizationToken(context.Background())
+	token, err := meta.Auth0.AuthorizationToken(context.Background())
 	if err != nil {
 		t.Fatalf("Failed to get token: %v", err)
 	}

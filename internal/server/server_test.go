@@ -22,7 +22,7 @@ var token string
 
 func TestMain(m *testing.M) {
 	var err error
-	token, err = meta.Auth0.GetAuthorizationToken(context.Background())
+	token, err = meta.Auth0.AuthorizationToken(context.Background())
 
 	if err != nil {
 		log.Fatalf("Couldn't get Auth0 access token: %v", err)

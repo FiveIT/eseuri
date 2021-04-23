@@ -20,10 +20,10 @@ func (a *Auth0) oAuthURL() string {
 	return "https://" + a.Domain + "/oauth/token"
 }
 
-// GetAuthorizationToken obtains a JWT token from Auth0 that
+// AuthorizationToken obtains a JWT token from Auth0 that
 // can be used to make requests to the API. The Auth0 rule also
 // creates an registered user, so the token can be used in server tests.
-func (a *Auth0) GetAuthorizationToken(ctx context.Context) (string, error) {
+func (a *Auth0) AuthorizationToken(ctx context.Context) (string, error) {
 	prefixer := func(message string, err error) error {
 		return fmt.Errorf("auth0 OAuth token request: %s: %w", message, err)
 	}
