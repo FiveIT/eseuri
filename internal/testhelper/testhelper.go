@@ -8,6 +8,7 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/FiveIT/template/internal/meta"
 	"github.com/FiveIT/template/internal/server/config"
@@ -67,6 +68,11 @@ func JWT(tb testing.TB) string {
 	if err != nil {
 		tb.Fatalf("Failed to get JWT: %v", token)
 	}
+
+	// Sleep to prevent JWT error "Token used before issued"
+	const seconds = 3
+
+	time.Sleep(time.Second * seconds)
 
 	return token
 }

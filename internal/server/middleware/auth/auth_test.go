@@ -3,7 +3,6 @@ package auth_test
 import (
 	"net/http"
 	"testing"
-	"time"
 
 	"github.com/FiveIT/template/internal/server/middleware/auth"
 	"github.com/FiveIT/template/internal/server/middleware/logger"
@@ -47,9 +46,6 @@ func TestValidJWT(t *testing.T) {
 	app := App(t)
 	// jwt := testhelper.JWT(t)
 	jwt := testhelper.JWT(t)
-
-	// Sleep to prevent JWT error "Token used before issued"
-	time.Sleep(time.Second)
 
 	req := testhelper.Request(t, http.MethodGet, nil)
 	req.Header.Set("Authorization", jwt)
