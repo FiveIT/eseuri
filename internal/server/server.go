@@ -50,11 +50,6 @@ func New() *fiber.App {
 	routes.Use(logger.Middleware(graphqlClient))
 	routes.Use(auth.Middleware(meta.HasuraJWTSecret))
 
-	// Routes go here
-	routes.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString("sarmale cu ghimbir")
-	})
-
 	//nolint:exhaustivestruct
 	routes.Post("/upload", func(c *fiber.Ctx) (err error) {
 		logger := c.Locals("logger").(zerolog.Logger)
@@ -64,6 +59,10 @@ func New() *fiber.App {
 		// Va trece de eroarea asta chiar daca nu sunt prezente toate campurile formularului
 		if err := c.BodyParser(workInput); err != nil {
 			return helpers.SendError(c, http.StatusBadRequest, "couldn't parse form", err)
+		}
+
+		if workInput.File == nil {
+			return helpers.SendError(c, http.StatusBadRequest, "file was not found in form", nil)
 		}
 
 		file, err := workInput.File.Open()
@@ -144,11 +143,6 @@ func New() *fiber.App {
 		}
 
 		return c.SendStatus(http.StatusCreated)
-	})
-
-	// 404 Not found handler
-	routes.Use(func(c *fiber.Ctx) error {
-		return c.Status(http.StatusNotFound).SendString("nu am gasit acest loc")
 	})
 
 	return app
