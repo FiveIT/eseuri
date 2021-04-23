@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/FiveIT/template/internal/meta"
 	"github.com/FiveIT/template/internal/server/helpers"
 	jwt "github.com/form3tech-oss/jwt-go"
 	"github.com/gofiber/fiber/v2"
@@ -36,13 +37,13 @@ const (
 )
 
 //nolint:exhaustivestruct
-func Middleware(secret string) func(*fiber.Ctx) error {
+func Middleware() func(*fiber.Ctx) error {
 	var (
 		creds jwtCredentials
 		err   error
 	)
 
-	if err = json.NewDecoder(strings.NewReader(secret)).Decode(&creds); err != nil {
+	if err = json.NewDecoder(strings.NewReader(meta.HasuraJWTSecret)).Decode(&creds); err != nil {
 		log.Fatal().Err(err).Msg("failed to get auth middleware due to JWT credentials unmarshal error")
 	}
 

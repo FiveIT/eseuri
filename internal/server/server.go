@@ -44,7 +44,7 @@ func New() *fiber.App {
 	}))
 
 	routes.Use(logger.Middleware(graphqlClient))
-	routes.Use(auth.Middleware(meta.HasuraJWTSecret))
+	routes.Use(auth.Middleware())
 
 	//nolint:exhaustivestruct
 	routes.Post("/upload", func(c *fiber.Ctx) (err error) {
