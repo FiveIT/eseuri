@@ -47,7 +47,7 @@ func DoTestRequest(tb testing.TB, app *fiber.App, req *http.Request) *http.Respo
 	return res
 }
 
-func App(tb testing.TB, successResponse string, middlewares ...interface{}) *fiber.App {
+func App(tb testing.TB, middlewares ...interface{}) *fiber.App {
 	tb.Helper()
 
 	app := fiber.New(config.Config())
@@ -55,7 +55,7 @@ func App(tb testing.TB, successResponse string, middlewares ...interface{}) *fib
 	app.Use(middlewares...)
 
 	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString(successResponse)
+		return c.SendStatus(http.StatusNoContent)
 	})
 
 	return app
