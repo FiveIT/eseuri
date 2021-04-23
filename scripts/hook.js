@@ -85,6 +85,6 @@ module.exports = async (client, scope, audience, context, cb) => {
     cb(null, accessToken)
   } catch (err) {
     console.error(err)
-    callback(err)
+    cb(err)
   }
 }
