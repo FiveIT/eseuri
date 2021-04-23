@@ -93,7 +93,7 @@
           Tip
         </Radio>
         <Text
-          name="name"
+          name="subject"
           placeholder="Scrie aici {currentWorkType === 'essay'
             ? 'titlul'
             : 'numele personajului'}..."
