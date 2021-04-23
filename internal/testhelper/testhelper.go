@@ -61,10 +61,10 @@ func App(tb testing.TB, successResponse string, middlewares ...interface{}) *fib
 	return app
 }
 
-func JWT(tb testing.TB) string {
+func JWT(tb testing.TB, registerUser ...bool) string {
 	tb.Helper()
 
-	token, err := meta.Auth0.AuthorizationToken(context.Background())
+	token, err := meta.Auth0.AuthorizationToken(context.Background(), registerUser...)
 	if err != nil {
 		tb.Fatalf("Failed to get JWT: %v", token)
 	}
@@ -83,4 +83,4 @@ func Request(tb testing.TB, method string, body io.Reader) *http.Request {
 	return httptest.NewRequest(method, "https://eseuri.com", body)
 }
 
-// TODO: Helper functions for registering users and creating teachers
+// TODO: Helper functions for creating teachers
