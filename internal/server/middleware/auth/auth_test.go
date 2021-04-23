@@ -19,6 +19,7 @@ func App(tb testing.TB, customClaims ...chan auth.CustomClaims) *fiber.App {
 	claimsMiddleware := func(c *fiber.Ctx) error {
 		for _, ch := range customClaims {
 			ch <- c.Locals("claims").(auth.CustomClaims)
+			close(ch)
 
 			break
 		}
@@ -62,7 +63,7 @@ func TestInvalidJWT(t *testing.T) {
 func TestValidJWT(t *testing.T) {
 	t.Parallel()
 
-	ch := make(chan auth.CustomClaims)
+	ch := make(chan auth.CustomClaims, 1)
 	app := App(t, ch)
 
 	jwt := testhelper.JWT(t, true)
