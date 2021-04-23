@@ -46,7 +46,7 @@ module.exports = async (client, scope, audience, context, cb) => {
 
     if (updated_at === null && context.body.registerUser) {
       const query = `
-        mutation($firstName: Int!, $lastName: Int!, $schoolID: Int!) {
+        mutation($firstName: String!, $lastName: String!, $schoolID: Int!) {
           update_users(where: {}, _set: {first_name: $firstName, last_name: $lastName, school_id: $schoolID}) {
             affected_rows
           }
