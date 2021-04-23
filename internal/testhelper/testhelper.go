@@ -69,3 +69,5 @@ func JWT(tb testing.TB) string {
 
 	return token
 }
+
+// TODO: Helper functions for registering users and creating teachers

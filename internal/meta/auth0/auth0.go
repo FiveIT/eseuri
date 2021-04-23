@@ -20,6 +20,7 @@ func (a *Auth0) oAuthURL() string {
 	return "https://" + a.Domain + "/oauth/token"
 }
 
+// TODO: Update documentation after removing automatic registration from hook
 // AuthorizationToken obtains a JWT token from Auth0 that
 // can be used to make requests to the API. The Auth0 rule also
 // creates an registered user, so the token can be used in server tests.

@@ -63,3 +63,5 @@ func TestValidJWT(t *testing.T) {
 	utils.AssertEqual(t, http.StatusOK, res.StatusCode)
 	utils.AssertEqual(t, "hello", body)
 }
+
+// TODO: Test unregistered user

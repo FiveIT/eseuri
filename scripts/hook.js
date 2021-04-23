@@ -42,6 +42,7 @@ module.exports = async (client, scope, audience, context, cb) => {
 
     const { id, role, updated_at } = body.data.insert_users_one
 
+    // TODO: Remove automatic user registration
     if (updated_at === null) {
       const query = `
         mutation($firstName: Int!, $lastName: Int!, $schoolID: Int!) {
