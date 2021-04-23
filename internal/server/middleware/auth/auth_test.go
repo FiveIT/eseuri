@@ -23,9 +23,7 @@ func TestInvalidJWT(t *testing.T) {
 	t.Parallel()
 
 	app := App(t)
-
-	req := testhelper.Request(t, http.MethodGet, nil)
-	req.Header.Set("Authorization", "Bearer amSarmale")
+	req := testhelper.Request(t, http.MethodGet, nil, "amSarmale")
 
 	res := testhelper.DoTestRequest(t, app, req)
 	defer res.Body.Close()
@@ -44,10 +42,16 @@ func TestValidJWT(t *testing.T) {
 	t.Parallel()
 
 	app := App(t)
-	jwt := testhelper.JWT(t)
+	ch := make(chan auth.CustomClaims)
 
-	req := testhelper.Request(t, http.MethodGet, nil)
-	req.Header.Set("Authorization", jwt)
+	app.Use(func(c *fiber.Ctx) error {
+		ch <- c.Locals("claims").(auth.CustomClaims)
+
+		return c.Next()
+	})
+
+	jwt := testhelper.JWT(t, true)
+	req := testhelper.Request(t, http.MethodGet, nil, jwt)
 
 	res := testhelper.DoTestRequest(t, app, req)
 	defer res.Body.Close()
@@ -56,6 +60,28 @@ func TestValidJWT(t *testing.T) {
 
 	utils.AssertEqual(t, http.StatusOK, res.StatusCode)
 	utils.AssertEqual(t, "hello", body)
+
+	if claims := <-ch; (claims.Role != "student" && claims.Role != "teacher") || claims.UserID == 0 {
+		t.Fatalf("Invalid custom claims: %+v", claims)
+	}
 }
 
-// TODO: Test unregistered user
+func TestValidJWTUnregisteredUser(t *testing.T) {
+	t.Parallel()
+
+	app := App(t)
+	jwt := testhelper.JWT(t)
+	req := testhelper.Request(t, http.MethodGet, nil, jwt)
+
+	res := testhelper.DoTestRequest(t, app, req)
+	defer res.Body.Close()
+
+	var response struct {
+		Error string
+	}
+
+	testhelper.DecodeJSON(t, res.Body, &response)
+
+	utils.AssertEqual(t, http.StatusUnauthorized, res.StatusCode)
+	utils.AssertEqual(t, "unregistered user", response.Error)
+}
