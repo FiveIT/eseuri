@@ -1,18 +1,17 @@
-package middleware
+package auth
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
 
-	"github.com/FiveIT/template/internal/meta"
 	"github.com/FiveIT/template/internal/server/helpers"
 	jwt "github.com/form3tech-oss/jwt-go"
 	"github.com/gofiber/fiber/v2"
 	jwtware "github.com/gofiber/jwt/v2"
 	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 )
 
 type jwtCredentials struct {
@@ -37,14 +36,14 @@ const (
 )
 
 //nolint:exhaustivestruct
-func GetAuthMiddleware() (func(*fiber.Ctx) error, error) {
+func Middleware(secret string) func(*fiber.Ctx) error {
 	var (
 		creds jwtCredentials
 		err   error
 	)
 
-	if err = json.NewDecoder(strings.NewReader(meta.HasuraJWTSecret)).Decode(&creds); err != nil {
-		return nil, fmt.Errorf("failed to unmarshal JWT credentials: %w", err)
+	if err = json.NewDecoder(strings.NewReader(secret)).Decode(&creds); err != nil {
+		log.Fatal().Err(err).Msg("failed to get auth middleware due to JWT credentials unmarshal error")
 	}
 
 	mid := jwtware.New(jwtware.Config{
