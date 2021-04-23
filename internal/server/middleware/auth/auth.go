@@ -16,8 +16,7 @@ import (
 )
 
 type jwtCredentials struct {
-	Type string `json:"type"`
-	Key  string `json:"key"`
+	Key string `json:"key"`
 }
 
 type CustomClaims struct {
@@ -47,13 +46,23 @@ func Middleware() func(*fiber.Ctx) error {
 		log.Fatal().Err(err).Msg("failed to get auth middleware due to JWT credentials unmarshal error")
 	}
 
+	key, err := jwt.ParseRSAPublicKeyFromPEM([]byte(creds.Key))
+	if err != nil {
+		log.Fatal().Err(err).Msg("failed to get auth middleware due to failure in parsing public key from PEM")
+	}
+
 	return jwtware.New(jwtware.Config{
-		SigningMethod: creds.Type,
-		SigningKey:    creds.Key,
+		SigningMethod: "RS256",
+		SigningKey:    key,
 		SuccessHandler: func(c *fiber.Ctx) error {
 			logger := c.Locals("logger").(zerolog.Logger)
 
-			user := c.Locals("user").(jwt.MapClaims)
+			claims := c.Locals("user").(*jwt.Token).Claims
+			if err := claims.Valid(); err != nil {
+				return helpers.SendError(c, http.StatusUnauthorized, "invalid claims", err)
+			}
+
+			user := claims.(jwt.MapClaims)
 
 			logger.Debug().Fields(user).Msg("claims")
 
@@ -64,11 +73,11 @@ func Middleware() func(*fiber.Ctx) error {
 
 			hasura := user[hasuraNamespace].(map[string]interface{})
 
-			claims := CustomClaims{}
-			claims.Role = hasura["X-Hasura-Default-Role"].(string)
-			claims.UserID, _ = strconv.Atoi(hasura["X-Hasura-User-Id"].(string))
+			custom := &CustomClaims{}
+			custom.Role = hasura["X-Hasura-Default-Role"].(string)
+			custom.UserID, _ = strconv.Atoi(hasura["X-Hasura-User-Id"].(string))
 
-			logger.Debug().EmbedObject(&claims).Msg("unmarshaled custom claims")
+			logger.Debug().EmbedObject(custom).Msg("unmarshaled custom claims")
 
 			c.Locals("claims", claims)
 
