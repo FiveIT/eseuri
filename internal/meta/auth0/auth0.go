@@ -35,7 +35,7 @@ func (a *Auth0) AuthorizationToken(ctx context.Context, registerUser bool) (stri
 	data.Set("client_secret", a.ClientSecret)
 	data.Set("audience", a.Audience)
 	data.Set("grant_type", "client_credentials")
-	data.Set("eseuriRegisterUser", strconv.FormatBool(registerUser))
+	data.Set("registerUser", strconv.FormatBool(registerUser))
 	b := strings.NewReader(data.Encode())
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, a.oAuthURL(), b)
