@@ -80,7 +80,7 @@ func Middleware() func(*fiber.Ctx) error {
 		},
 		ErrorHandler: func(c *fiber.Ctx, e error) error {
 			if e.Error() == "Missing or malformed JWT" {
-				return helpers.SendError(c, http.StatusBadRequest, "missing or malformed JWT", e)
+				return helpers.SendError(c, http.StatusBadRequest, "missing or malformed token", e)
 			}
 			return helpers.SendError(c, http.StatusUnauthorized, "invalid or expired token", e)
 		},
