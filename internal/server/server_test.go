@@ -20,6 +20,8 @@ import (
 //nolint:gochecknoglobals
 var token string
 
+// TODO: Fix tests
+
 func TestMain(m *testing.M) {
 	var err error
 	token, err = meta.Auth0.AuthorizationToken(context.Background())
