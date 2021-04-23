@@ -1,4 +1,6 @@
 module.exports = async (client, scope, audience, context, cb) => {
+  console.dir({ context }, { depth: null })
+
   const accessToken = { scope }
   const { HASURA_GRAPHQL_ENDPOINT, HASURA_GRAPHQL_ADMIN_SECRET } = context.webtask.secrets
   const util = require('util')
