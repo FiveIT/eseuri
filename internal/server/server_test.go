@@ -106,7 +106,10 @@ func TestFiles(t *testing.T) {
 		{Name: "ODT"},
 		{Name: "RTF"},
 		{Name: "TXT"},
-		{Name: ""},
+		{
+			Name:               "",
+			ExpectedStatusCode: fiber.StatusBadRequest,
+		},
 	}
 
 	//nolint:paralleltest
