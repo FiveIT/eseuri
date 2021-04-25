@@ -1,202 +1,182 @@
+//nolint:gochecknoglobals
 package server_test
 
 import (
-	"bytes"
 	"context"
-	"io"
-	"log"
-	"mime/multipart"
-	"net/http"
-	"net/http/httptest"
+	"embed"
+	"io/fs"
 	"os"
-	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/FiveIT/eseuri/internal/meta"
+	"github.com/FiveIT/eseuri/internal/meta/gqlqueries"
 	"github.com/FiveIT/eseuri/internal/server"
+	"github.com/FiveIT/eseuri/internal/server/helpers"
+	"github.com/FiveIT/eseuri/internal/testhelper"
+	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/utils"
+	"github.com/machinebox/graphql"
+	"github.com/rs/zerolog/log"
 )
 
-//nolint:gochecknoglobals
-var token string
+//go:embed testdata/*
+var files embed.FS
 
-// TODO: Fix tests
+var (
+	token string
+	gql   *graphql.Client
+)
 
 func TestMain(m *testing.M) {
-	var err error
-	token, err = meta.Auth0.AuthorizationToken(context.Background())
-
+	auth, err := meta.Auth0.AuthorizationToken(context.Background(), true)
 	if err != nil {
-		log.Fatalf("Couldn't get Auth0 access token: %v", err)
+		log.Fatal().Err(err).Msg("failed to get Auth0 token")
 	}
 
-	os.Exit(m.Run())
+	token = auth
+
+	code := m.Run()
+
+	gql = graphql.NewClient(meta.HasuraEndpoint)
+	//nolint:exhaustivestruct
+	if err = helpers.GraphQLRequest(gql, gqlqueries.Clear, helpers.GraphQLRequestOptions{
+		Promote: true,
+	}); err != nil {
+		log.Err(err).Msg("failed to clear up the database")
+	}
+
+	os.Exit(code)
 }
 
-func Test200Response(t *testing.T) {
+func file(tb testing.TB, name string) fs.File {
+	tb.Helper()
+
+	if !strings.Contains(name, ".") {
+		name = "file." + name
+	}
+
+	f, err := files.Open("testdata/" + name)
+	if err != nil {
+		tb.Fatalf("Couldn't open test file %q: %v", name, err)
+	}
+
+	return f
+}
+
+func createTeacher(tb testing.TB) int {
+	tb.Helper()
+
+	var resp gqlqueries.InsertTeacherOutput
+
+	//nolint:exhaustivestruct
+	if err := helpers.GraphQLRequest(gql, gqlqueries.InsertTeacher, helpers.GraphQLRequestOptions{
+		Output:  &resp,
+		Promote: true,
+	}); err != nil {
+		tb.Fatalf("failed to create new teacher: %v", err)
+	}
+
+	return resp.Query.ID
+}
+
+func TestFiles(t *testing.T) {
 	t.Parallel()
 
 	app := server.New()
 
-	req := httptest.NewRequest("GET", "/", nil)
-	res, err := app.Test(req)
-	res.Body.Close()
-	utils.AssertEqual(t, nil, err, "Test connection to /")
-	utils.AssertEqual(t, 200, res.StatusCode, "Get 200")
-}
-
-func newfileUploadRequest(token string, uri string, params map[string]string, paramName, path string) (*http.Request, error) {
-	file, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
-
-	body := &bytes.Buffer{}
-	writer := multipart.NewWriter(body)
-	part, err := writer.CreateFormFile(paramName, filepath.Base(path))
-
-	if err != nil {
-		return nil, err
+	type testCase struct {
+		Name               string
+		ExpectedStatusCode int
 	}
 
-	_, _ = io.Copy(part, file)
-
-	for key, val := range params {
-		_ = writer.WriteField(key, val)
+	tests := []testCase{
+		{
+			Name:               "PNG",
+			ExpectedStatusCode: fiber.StatusBadRequest,
+		},
+		{Name: "DOC"},
+		{Name: "DOCX"},
+		{Name: "ODT"},
+		{Name: "RTF"},
+		{Name: "TXT"},
+		{Name: ""},
 	}
 
-	err = writer.Close()
-	if err != nil {
-		return nil, err
-	}
+	//nolint:paralleltest
+	for _, test := range tests {
+		var f fs.File
 
-	req := httptest.NewRequest("POST", uri, body)
-	req.Header.Set("Content-Type", writer.FormDataContentType())
-	req.Header.Set("Authorization", token)
-
-	return req, err
-}
-
-func TestUploadGoodFile(t *testing.T) {
-	t.Parallel()
-
-	extraParams := map[string]string{
-		"titlu":          "1",
-		"tipul_lucrarii": "essay",
-	}
-	request, err := newfileUploadRequest(token, "https://google.com/upload", extraParams, "document", "./testOK.odt")
-
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	app := server.New()
-	resp, err := app.Test(request)
-
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	body := &bytes.Buffer{}
-	_, err = body.ReadFrom(resp.Body)
-
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	resp.Body.Close()
-	// log.Println(body)
-	utils.AssertEqual(t, 200, resp.StatusCode, "Get 200")
-}
-
-func TestUploadBadFile(t *testing.T) {
-	t.Parallel()
-
-	extraParams := map[string]string{
-		"titlu":          "1",
-		"tipul_lucrarii": "essay",
-	}
-	request, err := newfileUploadRequest(token, "https://google.com/upload", extraParams, "document", "./testBAD.txt")
-
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	app := server.New()
-	resp, err := app.Test(request)
-
-	if err != nil {
-		t.Fatal(err)
-	} else {
-		body := &bytes.Buffer{}
-		_, err := body.ReadFrom(resp.Body)
-		if err != nil {
-			t.Fatal(err)
+		name := test.Name
+		if name == "" {
+			name = "No"
+		} else {
+			f = file(t, strings.ToLower(name))
 		}
-		resp.Body.Close()
-		// log.Println(body)
-		utils.AssertEqual(t, 400, resp.StatusCode, "Get 400")
+
+		code := test.ExpectedStatusCode
+		if code == 0 {
+			code = fiber.StatusCreated
+		}
+
+		t.Run(name+" file", func(t *testing.T) {
+			t.Parallel()
+
+			res := testhelper.RequestMultipart(t, app, "/upload", token, map[string]interface{}{
+				"file":    f,
+				"type":    "essay",
+				"subject": 1,
+			})
+			defer res.Body.Close()
+
+			utils.AssertEqual(t, code, res.StatusCode)
+		})
 	}
 }
 
-func TestUploadBadOrExpiredToken(t *testing.T) {
+func TestNoFile(t *testing.T) {
 	t.Parallel()
 
-	extraParams := map[string]string{
-		"titlu":          "1",
-		"tipul_lucrarii": "essay",
-	}
-	request, err := newfileUploadRequest("lol", "https://google.com/upload", extraParams, "document", "./testOK.odt")
-
-	if err != nil {
-		t.Fatal(err)
-	}
-
 	app := server.New()
-	resp, err := app.Test(request)
 
-	if err != nil {
-		t.Fatal(err)
-	} else {
-		body := &bytes.Buffer{}
-		_, err := body.ReadFrom(resp.Body)
-		if err != nil {
-			t.Fatal(err)
-		}
-		resp.Body.Close()
-		// log.Println(body)
-		utils.AssertEqual(t, 401, resp.StatusCode, "Get 401")
-	}
+	res := testhelper.RequestMultipart(t, app, "/upload", token, map[string]interface{}{
+		"type":    "essay",
+		"subject": 1,
+	})
+	defer res.Body.Close()
+
+	utils.AssertEqual(t, fiber.StatusBadRequest, res.StatusCode)
 }
 
-func TestUploadGoodFileAndProfessor(t *testing.T) {
+func TestInvalidType(t *testing.T) {
 	t.Parallel()
 
-	extraParams := map[string]string{
-		"titlu":          "1",
-		"tipul_lucrarii": "essay",
-		"corector_cerut": "2",
-	}
-	request, err := newfileUploadRequest(token, "https://google.com/upload", extraParams, "document", "./testOK2.odt")
+	app := server.New()
 
-	if err != nil {
-		t.Fatal(err)
-	}
+	res := testhelper.RequestMultipart(t, app, "/upload", token, map[string]interface{}{
+		"file":    file(t, "txt"),
+		"type":    "lol",
+		"subject": 1,
+	})
+	defer res.Body.Close()
+
+	utils.AssertEqual(t, fiber.StatusBadRequest, res.StatusCode)
+}
+
+func TestRequestedTeacher(t *testing.T) {
+	t.Parallel()
+
+	teacherID := createTeacher(t)
 
 	app := server.New()
-	resp, err := app.Test(request)
 
-	if err != nil {
-		t.Fatal(err)
-	} else {
-		body := &bytes.Buffer{}
-		_, err := body.ReadFrom(resp.Body)
-		if err != nil {
-			t.Fatal(err)
-		}
-		resp.Body.Close()
-		log.Println(body)
-		utils.AssertEqual(t, 200, resp.StatusCode, "Get 200")
-	}
+	res := testhelper.RequestMultipart(t, app, "/upload", token, map[string]interface{}{
+		"file":             file(t, "teacher.docx"),
+		"type":             "characterization",
+		"subject":          1,
+		"requestedTeacher": teacherID,
+	})
+	defer res.Body.Close()
+
+	utils.AssertEqual(t, fiber.StatusCreated, res.StatusCode)
 }

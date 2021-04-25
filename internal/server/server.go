@@ -97,7 +97,7 @@ func New() *fiber.App {
 
 		claims := c.Locals("claims").(auth.CustomClaims)
 
-		var work gqlqueries.Work
+		var work gqlqueries.InsertWorkOutput
 		workOpts := helpers.GraphQLRequestOptions{
 			Output:  &work,
 			Context: c.Context(),

@@ -1,6 +1,13 @@
 package gqlqueries
 
 const (
+	WorksByPK = `query($id: Int!) {
+	works_by_pk(id: $id) {
+		id
+		teacher_id
+	}
+}`
+
 	InsertWork = `mutation($content: String!, $status: work_status_enum!, $requestedTeacherID: Int) {
 	insert_works_one(object: {content: $content, status: $status, teacher_id: $requestedTeacherID}) {
 		id
@@ -30,6 +37,21 @@ const (
   }
 }
 `
+
+	Clear = `mutation Clear {
+	delete_works(where: {}) {
+		affected_rows
+	}
+	delete_teachers(where: {}) {
+		affected_rows
+	}
+	delete_students(where: {}) {
+		affected_rows
+	}
+	delete_users_all(where: {}) {
+		affected_rows
+	}
+}`
 )
 
 //nolint:gochecknoglobals
@@ -40,8 +62,21 @@ var (
 	}
 )
 
-type Work struct {
+type InsertWorkOutput struct {
 	Query struct {
 		ID int `json:"id"`
 	} `json:"insert_works_one"`
+}
+
+type InsertTeacherOutput struct {
+	Query struct {
+		ID int `json:"id"`
+	} `json:"insert_users_one"`
+}
+
+type WorksByPKOutput struct {
+	Query struct {
+		ID        int `json:"id"`
+		TeacherID int `json:"teacher_id"`
+	} `json:"works_by_pk"`
 }

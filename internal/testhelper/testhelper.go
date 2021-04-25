@@ -120,5 +120,3 @@ func AssertSuccess(tb testing.TB, res *http.Response) {
 
 	utils.AssertEqual(tb, fiber.StatusNoContent, res.StatusCode)
 }
-
-// TODO: Helper functions for creating teachers
