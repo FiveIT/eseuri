@@ -25,7 +25,7 @@ var files embed.FS
 
 var (
 	token string
-	gql   = graphql.NewClient(meta.HasuraEndpoint)
+	gql   = graphql.NewClient(meta.HasuraEndpoint + "/v1/graphql")
 )
 
 func TestMain(m *testing.M) {
@@ -70,7 +70,11 @@ func createTeacher(tb testing.TB) int {
 
 	//nolint:exhaustivestruct
 	if err := helpers.GraphQLRequest(gql, gqlqueries.InsertTeacher, helpers.GraphQLRequestOptions{
-		Output:  &resp,
+		Output: &resp,
+		Vars: map[string]interface{}{
+			"email":   "teacher@example.com",
+			"auth0ID": "auth0|0123456789",
+		},
 		Promote: true,
 	}); err != nil {
 		tb.Fatalf("failed to create new teacher: %v", err)
