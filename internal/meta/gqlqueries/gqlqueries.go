@@ -23,13 +23,12 @@ const (
 	insert_characterizations_one(object: {work_id: $workID, character_id: $subjectID}) {
 		__typename
 	}
-`
-	InsertTeacher = `mutation($email: citext!, $auth0ID: String!){
+}`
+	InsertTeacher = `mutation($email: citext!, $auth0ID: String!) {
   insert_users_one(object: {email: $email, auth0_id: $auth0ID, role: "teacher"}) {
     id
   }
-}
-`
+}`
 	//nolint:lll
 	RegisterUser = `mutation($userID: Int!, $firstName: String!, $middleName: String, $lastName: String!, $schoolID: Int!) {
   update_users(where: {id: {_eq: $userID}}, _set: {first_name: $firstName, middle_name: $middleName, last_name: $lastName, school_id: $schoolID}) {
