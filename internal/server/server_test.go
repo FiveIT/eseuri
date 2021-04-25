@@ -25,7 +25,7 @@ var files embed.FS
 
 var (
 	token string
-	gql   *graphql.Client
+	gql   = graphql.NewClient(meta.HasuraEndpoint)
 )
 
 func TestMain(m *testing.M) {
@@ -38,7 +38,6 @@ func TestMain(m *testing.M) {
 
 	code := m.Run()
 
-	gql = graphql.NewClient(meta.HasuraEndpoint)
 	//nolint:exhaustivestruct
 	if err = helpers.GraphQLRequest(gql, gqlqueries.Clear, helpers.GraphQLRequestOptions{
 		Promote: true,
