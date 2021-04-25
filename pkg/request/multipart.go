@@ -1,9 +1,9 @@
 package request
 
 import (
+	"bytes"
 	"context"
 	"fmt"
-	"io"
 	"mime/multipart"
 	"net/http"
 	"testing"
@@ -26,8 +26,17 @@ func Multipart(ctx context.Context, method string, target string, data Multipart
 		data.Test.Helper()
 	}
 
-	body, w := io.Pipe()
+	w := &bytes.Buffer{}
 	m := multipart.NewWriter(w)
+
+	for fieldname, value := range data.Fields {
+		if err := multiparthelpers.Write(m, fieldname, value); err != nil {
+			//nolint:wrapcheck
+			return nil, err
+		}
+	}
+
+	m.Close()
 
 	req, err := internal.NewRequest(internal.Data{
 		Context:       ctx,
@@ -35,7 +44,7 @@ func Multipart(ctx context.Context, method string, target string, data Multipart
 		Target:        target,
 		ContentType:   m.FormDataContentType(),
 		Authorization: data.Authorization,
-		Body:          body,
+		Body:          w,
 		Header:        data.Header,
 		Test:          data.Test,
 	})
@@ -43,22 +52,6 @@ func Multipart(ctx context.Context, method string, target string, data Multipart
 		//nolint:wrapcheck
 		return nil, err
 	}
-
-	errch := make(chan error)
-
-	go func() {
-		defer close(errch)
-		defer internal.HandleClose(w, errch)
-		defer internal.HandleClose(m, errch)
-
-		for fieldname, value := range data.Fields {
-			if err := multiparthelpers.Write(m, fieldname, value); err != nil {
-				errch <- err
-
-				return
-			}
-		}
-	}()
 
 	var res *http.Response
 	if data.TestFn != nil {
@@ -73,10 +66,6 @@ func Multipart(ctx context.Context, method string, target string, data Multipart
 
 	if err != nil {
 		return nil, fmt.Errorf("request: failed: %w", err)
-	}
-
-	if err = <-errch; err != nil {
-		return nil, err
 	}
 
 	return res, nil
