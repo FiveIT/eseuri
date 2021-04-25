@@ -1,7 +1,3 @@
-/*
-Package multipart provides an utility for
-easily creating a multipart form.
-*/
 package request
 
 import (
