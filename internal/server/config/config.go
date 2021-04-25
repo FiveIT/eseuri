@@ -1,8 +1,6 @@
 package config
 
 import (
-	"net/http"
-
 	"github.com/FiveIT/eseuri/internal/server/helpers"
 	"github.com/gofiber/fiber/v2"
 )
@@ -10,7 +8,11 @@ import (
 const bufferSize = 8192
 
 func errorHandler(c *fiber.Ctx, e error) error {
-	return helpers.SendError(c, http.StatusInternalServerError, "internal error", e)
+	if e.Error() == "Bad Request" {
+		return helpers.SendError(c, fiber.StatusBadRequest, "invalid request body", nil)
+	}
+
+	return helpers.SendError(c, fiber.StatusInternalServerError, "internal error", e)
 }
 
 // Config returns the default server configuration.
