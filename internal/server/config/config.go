@@ -9,7 +9,7 @@ import (
 
 const bufferSize = 8192
 
-var errorHandler = func(c *fiber.Ctx, e error) error {
+func errorHandler(c *fiber.Ctx, e error) error {
 	return helpers.SendError(c, http.StatusInternalServerError, "internal error", e)
 }
 
