@@ -77,10 +77,10 @@ func JWT(tb testing.TB, registerUser ...bool) string {
 	return token
 }
 
-func Request(tb testing.TB, method string, body io.Reader, authorization ...string) *http.Request {
+func Request(tb testing.TB, method string, path string, body io.Reader, authorization ...string) *http.Request {
 	tb.Helper()
 
-	req := httptest.NewRequest(method, "https://eseuri.com", body)
+	req := httptest.NewRequest(method, "https://eseuri.com"+path, body)
 
 	for _, auth := range authorization {
 		if auth != "" {

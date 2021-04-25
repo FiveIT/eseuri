@@ -47,7 +47,7 @@ func (c testCase) RunTest(t *testing.T, app *fiber.App) {
 func TestInvalidJWT(t *testing.T) {
 	t.Parallel()
 
-	res := testhelper.DoTestRequest(t, App(t), testhelper.Request(t, http.MethodGet, nil, "amSarmale"))
+	res := testhelper.DoTestRequest(t, App(t), testhelper.Request(t, http.MethodGet, "/", nil, "amSarmale"))
 	defer res.Body.Close()
 
 	var response struct {
@@ -67,7 +67,7 @@ func TestValidJWT(t *testing.T) {
 	app := App(t, ch)
 
 	jwt := testhelper.JWT(t, true)
-	req := testhelper.Request(t, http.MethodGet, nil, jwt)
+	req := testhelper.Request(t, http.MethodGet, "/", nil, jwt)
 
 	res := testhelper.DoTestRequest(t, app, req)
 	defer res.Body.Close()
@@ -84,7 +84,7 @@ func TestValidJWTUnregisteredUser(t *testing.T) {
 
 	app := App(t)
 	jwt := testhelper.JWT(t)
-	req := testhelper.Request(t, http.MethodGet, nil, jwt)
+	req := testhelper.Request(t, http.MethodGet, "/", nil, jwt)
 
 	res := testhelper.DoTestRequest(t, app, req)
 	defer res.Body.Close()
