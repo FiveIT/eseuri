@@ -30,20 +30,6 @@ func App(tb testing.TB, customClaims ...chan auth.CustomClaims) *fiber.App {
 	return testhelper.App(tb, logger.Middleware(nil), auth.Middleware(), claimsMiddleware)
 }
 
-type testCase struct {
-	Name               string
-	Token              string
-	ExpectedStatusCode int
-	ExpectedResponse   string
-}
-
-func (c testCase) RunTest(t *testing.T, app *fiber.App) {
-	t.Helper()
-
-	t.Run(c.Name, func(t *testing.T) {
-	})
-}
-
 func TestInvalidJWT(t *testing.T) {
 	t.Parallel()
 
