@@ -41,7 +41,6 @@ type ResponseInsert = Response<'insert_users_one', User>
 async function callback(user: IAuth0RuleUser<{}, {}>, context: IAuth0RuleContext, callback: IAuth0RuleCallback<{}, {}>) {
   const { HASURA_GRAPHQL_ENDPOINT, HASURA_GRAPHQL_ADMIN_SECRET } = configuration as any
   const post = util.promisify(request.post)
-  const namespace = 'https://hasura.io/jwt/claims'
   const insertUserQuery = `
     mutation insertUser($firstName: String, $lastName: String, $email: citext!, $auth0ID: String!) {
       insert_users_one(object: {first_name: $firstName, last_name: $lastName, email: $email, auth0_id: $auth0ID}) {
@@ -85,7 +84,7 @@ async function callback(user: IAuth0RuleUser<{}, {}>, context: IAuth0RuleContext
 
     const { id, role, updated_at } = body.data.insert_users_one
 
-    context.accessToken[namespace] = {
+    context.accessToken['https://hasura.io/jwt/claims'] = {
       'X-Hasura-Default-Role': role,
       'X-Hasura-Allowed-Roles': ['anonymous', role],
       'X-Hasura-User-Id': `${id}`,

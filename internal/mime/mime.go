@@ -1,5 +1,5 @@
 /*
-Package mime contains common MIME types constants.
+Package mime contains common MIME-types.
 */
 package mime
 

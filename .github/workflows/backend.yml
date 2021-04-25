@@ -31,6 +31,11 @@ jobs:
       TIKA_URL: http://tika:9998
       HASURA_GRAPHQL_ADMIN_SECRET: ${{ secrets.HASURA_GRAPHQL_ADMIN_SECRET }}
       HASURA_GRAPHQL_ENDPOINT: ${{ secrets.HASURA_GRAPHQL_ENDPOINT }}
+      HASURA_GRAPHQL_JWT_SECRET: ${{ secrets.HASURA_GRAPHQL_JWT_SECRET }}
+      VITE_AUTH0_DOMAIN: ${{ secrets.AUTH0_DOMAIN }}
+      VITE_AUTH0_CLIENT_ID: ${{ secrets.AUTH0_CLIENT_ID }}
+      AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
+      VITE_AUTH0_AUDIENCE: ${{ secrets.AUTH0_AUDIENCE }}
       CGO_ENABLED: 0
     steps:
       - uses: actions/checkout@v2
