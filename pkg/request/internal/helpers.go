@@ -61,6 +61,8 @@ func HandleClose(c io.Closer, ch chan error) {
 	case cerr := <-ch:
 		ch <- cerr
 	default:
-		ch <- err
+		if err != nil {
+			ch <- err
+		}
 	}
 }
