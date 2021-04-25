@@ -12,8 +12,8 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/FiveIT/template/internal/meta"
-	"github.com/FiveIT/template/internal/server"
+	"github.com/FiveIT/eseuri/internal/meta"
+	"github.com/FiveIT/eseuri/internal/server"
 	"github.com/gofiber/fiber/v2/utils"
 )
 
