@@ -12,6 +12,7 @@ import (
 
 	"github.com/FiveIT/eseuri/internal/meta"
 	"github.com/FiveIT/eseuri/internal/server/config"
+	"github.com/FiveIT/eseuri/pkg/request"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/utils"
 )
@@ -92,6 +93,26 @@ func Request(tb testing.TB, method string, path string, body io.Reader, authoriz
 	}
 
 	return req
+}
+
+//nolint:lll
+func RequestMultipart(tb testing.TB, app *fiber.App, path string, authorization string, fields map[string]interface{}) *http.Response {
+	tb.Helper()
+
+	//nolint:exhaustivestruct
+	res, err := request.Multipart(context.Background(), http.MethodPost, "https://eseuri.com"+path, request.MultipartData{
+		Authorization: authorization,
+		Fields:        fields,
+		Test:          tb,
+		TestFn: func(r *http.Request) (*http.Response, error) {
+			return app.Test(r)
+		},
+	})
+	if err != nil {
+		tb.Fatalf("failed multipart form request: %v", err)
+	}
+
+	return res
 }
 
 func AssertSuccess(tb testing.TB, res *http.Response) {
