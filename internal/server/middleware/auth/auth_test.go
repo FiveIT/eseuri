@@ -58,7 +58,7 @@ func TestValidJWT(t *testing.T) {
 	res := testhelper.DoTestRequest(t, app, req)
 	defer res.Body.Close()
 
-	utils.AssertEqual(t, http.StatusNoContent, res.StatusCode)
+	testhelper.AssertSuccess(t, res)
 
 	if claims := <-ch; (claims.Role != "student" && claims.Role != "teacher") || claims.UserID == 0 {
 		t.Fatalf("Invalid custom claims: %+v", claims)

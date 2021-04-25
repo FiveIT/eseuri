@@ -13,6 +13,7 @@ import (
 	"github.com/FiveIT/eseuri/internal/meta"
 	"github.com/FiveIT/eseuri/internal/server/config"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/utils"
 )
 
 func DecodeJSON(tb testing.TB, r io.Reader, v interface{}) {
@@ -55,7 +56,7 @@ func App(tb testing.TB, middlewares ...interface{}) *fiber.App {
 	app.Use(middlewares...)
 
 	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendStatus(http.StatusNoContent)
+		return c.SendStatus(fiber.StatusNoContent)
 	})
 
 	return app
@@ -91,6 +92,12 @@ func Request(tb testing.TB, method string, path string, body io.Reader, authoriz
 	}
 
 	return req
+}
+
+func AssertSuccess(tb testing.TB, res *http.Response) {
+	tb.Helper()
+
+	utils.AssertEqual(tb, fiber.StatusNoContent, res.StatusCode)
 }
 
 // TODO: Helper functions for creating teachers
