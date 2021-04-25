@@ -17,6 +17,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/utils"
 	"github.com/machinebox/graphql"
+	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
 
@@ -29,6 +30,8 @@ var (
 )
 
 func TestMain(m *testing.M) {
+	zerolog.SetGlobalLevel(zerolog.InfoLevel)
+
 	auth, err := meta.Auth0.AuthorizationToken(context.Background(), true)
 	if err != nil {
 		log.Fatal().Err(err).Msg("failed to get Auth0 token")
@@ -135,20 +138,6 @@ func TestFiles(t *testing.T) {
 			utils.AssertEqual(t, code, res.StatusCode)
 		})
 	}
-}
-
-func TestNoFile(t *testing.T) {
-	t.Parallel()
-
-	app := server.New()
-
-	res := testhelper.RequestMultipart(t, app, "/upload", token, map[string]interface{}{
-		"type":    "essay",
-		"subject": 1,
-	})
-	defer res.Body.Close()
-
-	utils.AssertEqual(t, fiber.StatusBadRequest, res.StatusCode)
 }
 
 func TestInvalidType(t *testing.T) {
