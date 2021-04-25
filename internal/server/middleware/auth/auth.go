@@ -36,6 +36,7 @@ const (
 )
 
 //nolint:exhaustivestruct
+// Middleware creates a fiber middleware that checks if the request is authorized.
 func Middleware() func(*fiber.Ctx) error {
 	var (
 		creds jwtCredentials
