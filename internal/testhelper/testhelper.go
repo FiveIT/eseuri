@@ -105,7 +105,7 @@ func RequestMultipart(tb testing.TB, app *fiber.App, path string, authorization 
 		Fields:        fields,
 		Test:          tb,
 		TestFn: func(r *http.Request) (*http.Response, error) {
-			return app.Test(r)
+			return app.Test(r, -1)
 		},
 	})
 	if err != nil {
