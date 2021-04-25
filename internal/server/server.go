@@ -1,6 +1,7 @@
 package server
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -20,6 +21,7 @@ import (
 	"github.com/google/go-tika/tika"
 	"github.com/machinebox/graphql"
 	"github.com/rs/zerolog"
+	"github.com/valyala/fasthttp"
 )
 
 func New() *fiber.App {
@@ -57,13 +59,18 @@ func New() *fiber.App {
 			return helpers.SendError(c, http.StatusBadRequest, "couldn't parse form", err)
 		}
 
-		if workInput.File == nil {
-			return helpers.SendError(c, http.StatusBadRequest, "file was not found in form", nil)
+		formFile, err := c.FormFile("file")
+		if err != nil {
+			if errors.Is(err, fasthttp.ErrMissingFile) {
+				return helpers.SendError(c, fiber.StatusBadRequest, "missing file", err)
+			}
+
+			return fmt.Errorf("failed to get form file: %w", err)
 		}
 
-		file, err := workInput.File.Open()
+		file, err := formFile.Open()
 		if err != nil {
-			return helpers.SendError(c, http.StatusBadRequest, "couldn't open form content file", err)
+			return fmt.Errorf("failed to open form file: %w", err)
 		}
 
 		m, err := client.Detect(c.Context(), file)
@@ -106,6 +113,7 @@ func New() *fiber.App {
 				"X-Hasura-User-Id": strconv.Itoa(claims.UserID),
 			},
 			Vars: map[string]interface{}{
+				"status":             "pending",
 				"content":            body,
 				"requestedTeacherID": nil,
 			},
@@ -113,6 +121,9 @@ func New() *fiber.App {
 		}
 		if workInput.RequestedTeacherID != 0 {
 			workOpts.Vars["requestedTeacherID"] = workInput.RequestedTeacherID
+		}
+		if claims.Role == "teacher" {
+			workOpts.Vars["status"] = "approved"
 		}
 
 		if err = helpers.GraphQLRequest(graphqlClient, gqlqueries.InsertWork, workOpts); err != nil {

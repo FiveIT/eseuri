@@ -13,6 +13,7 @@ require (
 	github.com/machinebox/graphql v0.2.2
 	github.com/matryer/is v1.4.0 // indirect
 	github.com/rs/zerolog v1.20.0
+	github.com/valyala/fasthttp v1.23.0
 	github.com/valyala/tcplisten v1.0.0 // indirect
 	golang.org/x/sys v0.0.0-20210421221651-33663a62ff08 // indirect
 )
