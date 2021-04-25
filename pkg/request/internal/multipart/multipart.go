@@ -37,7 +37,7 @@ func getWritableValue(value interface{}) (interface{}, error) {
 	return bytes.NewReader(b), nil
 }
 
-func writeToForm(m *multipart.Writer, fieldname string, value interface{}) (err error) {
+func writeToForm(m *multipart.Writer, fieldname string, value interface{}) error {
 	switch v := value.(type) {
 	case string:
 		if err := m.WriteField(fieldname, v); err != nil {
@@ -46,13 +46,10 @@ func writeToForm(m *multipart.Writer, fieldname string, value interface{}) (err 
 
 		return nil
 	case io.Reader:
-		if c, ok := v.(io.Closer); ok {
-			defer handleClose(c, fieldname, &err)
-		}
-
 		var (
-			w io.Writer
-			n int64
+			w   io.Writer
+			n   int64
+			err error
 		)
 
 		if f, ok := v.(fs.File); ok {

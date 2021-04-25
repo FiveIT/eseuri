@@ -2,7 +2,6 @@ package multipart
 
 import (
 	"fmt"
-	"io"
 	"io/fs"
 	"os"
 )
@@ -15,16 +14,6 @@ var (
 func errorf(format string, args ...interface{}) error {
 	//nolint:goerr113
 	return fmt.Errorf("request: multipart: "+format, args...)
-}
-
-func handleClose(c io.Closer, fieldname string, err *error) {
-	if *err != nil {
-		return
-	}
-
-	if e := c.Close(); e != nil {
-		*err = errorf("failed to close reader at field %q: %w", fieldname, e)
-	}
 }
 
 func getFilename(f fs.File) (string, error) {
