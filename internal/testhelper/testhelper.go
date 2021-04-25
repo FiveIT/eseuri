@@ -84,12 +84,8 @@ func Request(tb testing.TB, method string, path string, body io.Reader, authoriz
 
 	req := httptest.NewRequest(method, "https://eseuri.com"+path, body)
 
-	for _, auth := range authorization {
-		if auth != "" {
-			req.Header.Set("Authorization", auth)
-		}
-
-		break
+	if len(authorization) > 0 && authorization[0] != "" {
+		req.Header.Set("Authorization", authorization[0])
 	}
 
 	return req
