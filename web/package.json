@@ -59,12 +59,10 @@
     "windicss": "^2.5.14"
   },
   "dependencies": {
-    "@apollo/client": "^3.3.15",
     "@tmaxmax/renderless-svelte": "^1.5.0",
     "@tmaxmax/svelte-auth0": "^1.0.2",
+    "@urql/svelte": "^1.2.1",
     "graphql": "^15.5.0",
-    "subscriptions-transport-ws": "^0.9.18",
-    "svelte-apollo": "^0.4.0",
     "svelte-material-icons": "^1.0.3"
   },
   "type": "module",
