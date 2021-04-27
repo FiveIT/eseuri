@@ -1,8 +1,8 @@
-import { gql } from '@apollo/client'
+import { gql } from '@apollo/client/core'
 
 export const WORK_SUMMARIES = gql`
-  query getWorkSummaries {
-    work_summaries {
+  query getWorkSummaries($type: String!) {
+    work_summaries(where: { type: { _eq: $type } }) {
       name
       creator
       type
