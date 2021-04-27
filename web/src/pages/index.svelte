@@ -10,9 +10,13 @@
   import UploadButton from '$/components/UploadButton.svelte'
   import { store as window } from '$/components/Window.svelte'
   import Works from '$/components/Works.svelte'
-  import content, { workTypeTranslation } from '$/content'
+  import { workTypeTranslation } from '$/content'
   import type { BlobPropsInput, WorkType } from '$/types'
   import { metatags } from '@roxi/routify'
+  import { WORK_SUMMARIES } from '$/graphql/queries'
+  import type { WorkSummaries } from '$/graphql/types'
+  import type { ReadableQuery } from 'svelte-apollo'
+  import { query } from 'svelte-apollo'
 
   metatags.title = 'Eseuri'
 
@@ -40,7 +44,14 @@
 
   let type: WorkType = 'essay'
   const types: WorkType[] = ['essay', 'characterization']
-  $: works = content.filter(work => work.type === type)
+
+  const content: ReadableQuery<WorkSummaries> = query(WORK_SUMMARIES, {
+    variables: {
+      type,
+    },
+  })
+
+  $: content.refetch({ type })
 </script>
 
 <Layout
@@ -78,5 +89,5 @@
         >{workTypeTranslation.ro[t].inarticulate.plural}</button>
     </div>
   {/each}
-  <Works {works} />
+  <Works works={$content.data} />
 </Layout>
