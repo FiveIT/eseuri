@@ -15,7 +15,7 @@
   import { metatags } from '@roxi/routify'
   import { WORK_SUMMARIES } from '$/graphql/queries'
   import type { WorkSummaries, Data, Vars } from '$/graphql/types'
-  import { query } from 'svelte-apollo'
+  import { operationStore, query } from '@urql/svelte'
 
   metatags.title = 'Eseuri'
 
@@ -44,16 +44,14 @@
   let type: WorkType = 'essay'
   const types: WorkType[] = ['essay', 'characterization']
 
-  const content = query<Data<WorkSummaries>, Vars<WorkSummaries>>(
+  const content = operationStore<Data<WorkSummaries>, Vars<WorkSummaries>>(
     WORK_SUMMARIES,
-    {
-      variables: {
-        type,
-      },
-    }
+    { type }
   )
 
-  $: content.refetch({ type })
+  query(content)
+
+  $: $content.variables!.type = type
 </script>
 
 <Layout

@@ -17,7 +17,7 @@ type Query<Name extends string, Data, Vars> = {
 }
 
 interface WorkSummariesVars {
-  readonly type: WorkType
+  type: WorkType
 }
 
 export type Data<T> = T extends Query<infer Name, infer Data, unknown>

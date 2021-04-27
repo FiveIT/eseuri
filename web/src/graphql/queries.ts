@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client/core'
+import { gql } from '@urql/svelte'
 
 export const WORK_SUMMARIES = gql`
   query getWorkSummaries($type: String!) {
