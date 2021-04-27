@@ -1,6 +1,11 @@
-import { ApolloClient, split, HttpLink, InMemoryCache } from '@apollo/client'
-import { getMainDefinition } from '@apollo/client/utilities'
+import {
+  ApolloClient,
+  split,
+  InMemoryCache,
+  HttpLink,
+} from '@apollo/client/core'
 import { WebSocketLink } from '@apollo/client/link/ws'
+import { getMainDefinition } from '@apollo/client/utilities'
 import { get } from 'svelte/store'
 import { isAuthenticated, authToken } from '@tmaxmax/svelte-auth0'
 
