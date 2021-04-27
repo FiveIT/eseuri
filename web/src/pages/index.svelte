@@ -14,8 +14,7 @@
   import type { BlobPropsInput, WorkType } from '$/types'
   import { metatags } from '@roxi/routify'
   import { WORK_SUMMARIES } from '$/graphql/queries'
-  import type { WorkSummaries } from '$/graphql/types'
-  import type { ReadableQuery } from 'svelte-apollo'
+  import type { WorkSummaries, Data, Vars } from '$/graphql/types'
   import { query } from 'svelte-apollo'
 
   metatags.title = 'Eseuri'
@@ -45,11 +44,14 @@
   let type: WorkType = 'essay'
   const types: WorkType[] = ['essay', 'characterization']
 
-  const content: ReadableQuery<WorkSummaries> = query(WORK_SUMMARIES, {
-    variables: {
-      type,
-    },
-  })
+  const content = query<Data<WorkSummaries>, Vars<WorkSummaries>>(
+    WORK_SUMMARIES,
+    {
+      variables: {
+        type,
+      },
+    }
+  )
 
   $: content.refetch({ type })
 </script>
