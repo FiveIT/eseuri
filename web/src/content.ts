@@ -1,4 +1,4 @@
-import type { Work, WorkType, Role } from './types'
+import type { WorkSummary, WorkType, Role } from './types'
 
 interface TranslationArticulation {
   singular: string
@@ -546,7 +546,7 @@ export default (JSON.parse(`[
     "type": "essay",
     "work_count": 0
   }
-]`) as Work[]).map(work => ({
+]`) as WorkSummary[]).map(work => ({
   ...work,
   work_count: (Math.random() * 10000) | 0,
 }))

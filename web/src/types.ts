@@ -13,7 +13,7 @@ export function isWorkType(s: string): s is WorkType {
   return s === 'essay' || s === 'characterization'
 }
 
-export interface Work {
+export interface WorkSummary {
   readonly name: string
   readonly creator: string
   readonly type: WorkType
