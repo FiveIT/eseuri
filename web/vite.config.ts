@@ -25,6 +25,7 @@ export default defineConfig(({ mode }) => {
       exclude: ['@roxi/routify', 'pug'],
     },
     resolve: {
+      dedupe: ['@roxi/routify'],
       alias: {
         svelte: path.resolve(process.cwd(), 'node_modules/svelte'),
         $: path.resolve(process.cwd(), 'src'),
