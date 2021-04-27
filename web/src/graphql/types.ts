@@ -2,4 +2,6 @@ import type { WorkType, WorkSummary } from '../types'
 
 export type { WorkType, WorkSummary }
 
-export type WorkSummaries = WorkSummary[]
+type Nullable<T> = T | null | undefined
+
+export type WorkSummaries = Nullable<{ work_summaries: WorkSummary[] }>
