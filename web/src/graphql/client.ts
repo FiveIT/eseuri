@@ -15,7 +15,15 @@ const getWSEndpoint = () => {
   return `ws://${endpoint}`
 }
 
-const getHeaders = () => ({ headers: { Authorization: get(authToken) } })
+const getHeaders = () => {
+  const token = get(authToken)
+
+  if (token !== '') {
+    return { headers: { Authorization: token } }
+  }
+
+  return {}
+}
 
 const subscriptionClient = new SubscriptionClient(getWSEndpoint(), {
   reconnect: true,
