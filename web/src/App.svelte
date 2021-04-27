@@ -3,10 +3,10 @@
   import { Router } from '@roxi/routify'
   import Window from '$/components/Window.svelte'
   import { routes } from '../.routify/routes'
-  import opts from '$/graphql/client'
-  import { initClient } from '@urql/svelte'
+  import client from '$/graphql/client'
+  import { setClient } from '@urql/svelte'
 
-  initClient(opts)
+  setClient(client)
 
   const domain = import.meta.env.VITE_AUTH0_DOMAIN as string
   const client_id = import.meta.env.VITE_AUTH0_CLIENT_ID as string
