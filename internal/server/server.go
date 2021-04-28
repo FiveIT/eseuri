@@ -19,8 +19,6 @@ func New() *fiber.App {
 
 	app := fiber.New(config.Config())
 
-	app.Use()
-
 	var r fiber.Router = app
 	if meta.IsNetlify {
 		r = app.Group(meta.FunctionsBasePath)
@@ -38,8 +36,6 @@ func New() *fiber.App {
 
 	r.Use(logger.Middleware(graphQLClient))
 	r.Use(auth.Middleware())
-
-	r.Use()
 
 	r.Post("/upload", auth.AssertRegistration, routes.Upload(tikaClient, graphQLClient))
 	r.Get("/isregistered", routes.IsRegistered)
