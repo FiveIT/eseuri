@@ -14,6 +14,7 @@
   import { SEARCH_WORK_SUMMARIES } from '$/graphql/queries'
   import type { SearchWorkSummaries, Data, Vars } from '$/graphql/types'
   import TypeSelector from '$/components/TypeSelector.svelte'
+  import debounce from 'lodash.debounce'
 
   let q: string = $params.query?.trim() || ''
   let type: WorkType = isWorkType($params.type) ? $params.type : 'essay'
@@ -44,15 +45,15 @@
     .sort((a, b) => b.matchesOnName - a.matchesOnName)
     .map(v => v.value)
 
-  $: {
-    const query = q.trim()
-
+  const navigate = debounce((query: string) => {
     if (query === '') {
-      $goto('/search', { type })
+      $goto('/search', { type }, { redirect: true })
     } else {
       $goto('/search', { query, type })
     }
-  }
+  }, 1000)
+
+  $: navigate(q.trim())
 
   let orangeBlobProps: BlobPropsInput
   $: orangeBlobProps = {
