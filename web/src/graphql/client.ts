@@ -19,8 +19,8 @@ const getWSEndpoint = () => {
 const getHeaders = () => {
   const token = get(authToken)
 
-  if (token !== '') {
-    return { headers: { Authorization: token } }
+  if (token) {
+    return { headers: { Authorization: `Bearer ${token}` } }
   }
 
   return {}
