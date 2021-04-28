@@ -7,20 +7,22 @@
     TRANSITION_EASING as easing,
   } from '$/globals'
   import type { BlobPropsInput, Theme } from '$/types'
-  import { onDestroy, onMount, setContext } from 'svelte'
+  import { onMount, setContext, getContext } from 'svelte'
   import type { Readable, Writable } from 'svelte/store'
   import { writable } from 'svelte/store'
   import type { FlyParams } from 'svelte/transition'
   import { fly } from 'svelte/transition'
 
-  export const contextKey = {}
+  const contextKey = {}
 
   interface Context {
     alive: Writable<boolean>
     theme: Readable<Theme>
   }
 
-  export type { Context }
+  export function getLayout(): Context {
+    return getContext(contextKey)
+  }
 </script>
 
 <script lang="ts">
@@ -73,9 +75,9 @@
       mounted = true
       afterMount()
     }, duration)
-  })
 
-  onDestroy(beforeDestroy)
+    return beforeDestroy
+  })
 
   $: if (mounted) {
     $orange.x = orangeBlobProps.x ?? $orange.x
