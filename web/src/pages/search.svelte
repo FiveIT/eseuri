@@ -77,7 +77,7 @@
   $: blueBlobProps = {
     x: ($window.width - blue.width * 0.8) / 2,
     y: -blue.height * 0.635 + $window.height * 0.17,
-    scale: 13,
+    scale: 15,
   }
 
   let once = false
