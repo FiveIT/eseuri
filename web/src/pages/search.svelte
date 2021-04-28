@@ -7,19 +7,17 @@
   import SlimNav from '$/components/SlimNav.svelte'
   import { store as window } from '$/components/Window.svelte'
   import Works from '$/components/Works.svelte'
-  import { workTypeTranslation } from '$/content'
   import type { BlobPropsInput, WorkType } from '$/types'
   import { isWorkType } from '$/types'
   import { afterPageLoad, goto, params } from '@roxi/routify'
   import { operationStore, query } from '@urql/svelte'
   import { SEARCH_WORK_SUMMARIES } from '$/graphql/queries'
   import type { SearchWorkSummaries, Data, Vars } from '$/graphql/types'
+  import TypeSelector from '$/components/TypeSelector.svelte'
 
-  let q: string = $params.query || ''
+  let q: string = $params.query?.trim() || ''
   let type: WorkType = isWorkType($params.type) ? $params.type : 'essay'
-  let workTypes: WorkType[] = ['essay', 'characterization']
   let focusInput = () => {}
-  $: q = q.trimStart()
 
   const content = operationStore<
     Data<SearchWorkSummaries>,
@@ -35,7 +33,6 @@
     query: `${q}%` as const,
     type,
   }
-  $: console.log({ works: $content })
 
   $: works = $content.data?.work_summaries
     .map(value => ({
@@ -46,6 +43,16 @@
     }))
     .sort((a, b) => b.matchesOnName - a.matchesOnName)
     .map(v => v.value)
+
+  $: {
+    const query = q.trim()
+
+    if (query === '') {
+      $goto('/search', { type })
+    } else {
+      $goto('/search', { query, type })
+    }
+  }
 
   let orangeBlobProps: BlobPropsInput
   $: orangeBlobProps = {
@@ -68,7 +75,13 @@
     scale: 13,
   }
 
-  $afterPageLoad(() => focusInput())
+  let once = false
+  $afterPageLoad(() => {
+    if (!once) {
+      focusInput()
+      once = true
+    }
+  })
 </script>
 
 <Layout
@@ -82,13 +95,6 @@
   <div class="col-start-1 row-span-1 row-start-3 col-end-4 my-auto">
     <Search bind:query={q} bind:type bind:focusInput />
   </div>
-  {#each workTypes as t, i}
-    <button
-      class="bg-opacity-0 row-span-1 row-start-3 text-white col-start-{5 +
-        i} col-span-1 text-sm font-sans antialiased filter-shadow capitalize"
-      class:underline={type === t}
-      on:click={() => ((type = t), $goto('/search', { query: q, type }))}
-      >{workTypeTranslation.ro[t].inarticulate.plural}</button>
-  {/each}
+  <TypeSelector bind:type rowStart={3} colStart={5} />
   <Works {works} />
 </Layout>
