@@ -44,7 +44,7 @@ export const REGISTER_USER = gql`
     $schoolID: Int!
   ) {
     update_users(
-      where: { id: { _eq: $userID } }
+      where: {}
       _set: {
         first_name: $firstName
         middle_name: $middleName
