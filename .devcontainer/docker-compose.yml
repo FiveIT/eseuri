@@ -17,8 +17,8 @@ services:
       - FUNCTIONS_URL=http://localhost:4000
       - VITE_FUNCTIONS_URL=http://localhost:4000
       - TIKA_URL=http://tika:9998
-      - HASURA_GRAPHQL_ENDPOINT=http://localhost:8080
-      - VITE_HASURA_GRAPHQL_ENDPOINT=http://hasura:8080
+      - HASURA_GRAPHQL_ENDPOINT=http://hasura:8080
+      - VITE_HASURA_GRAPHQL_ENDPOINT=http://localhost:8080
       - GOOGLE_APPLICATION_CREDENTIALS=/root/.config/gcloud/application_default_credentials.json
       - CGO_ENABLED=0
       - DISPLAY=${DISPLAY:-host.docker.internal:0.0}
