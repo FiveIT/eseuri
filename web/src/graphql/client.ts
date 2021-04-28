@@ -1,4 +1,5 @@
 import { Client, defaultExchanges, subscriptionExchange } from '@urql/svelte'
+import { devtoolsExchange } from '@urql/devtools'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
 import { get } from 'svelte/store'
 import { authToken } from '@tmaxmax/svelte-auth0'
@@ -31,15 +32,21 @@ const subscriptionClient = new SubscriptionClient(getWSEndpoint(), {
   connectionParams: getHeaders,
 })
 
+const exchanges = [
+  ...defaultExchanges,
+  subscriptionExchange({
+    forwardSubscription(operation) {
+      return subscriptionClient.request(operation)
+    },
+  }),
+]
+
+if (import.meta.env.DEV) {
+  exchanges.push(devtoolsExchange)
+}
+
 export default new Client({
   url,
   fetchOptions: getHeaders,
-  exchanges: [
-    ...defaultExchanges,
-    subscriptionExchange({
-      forwardSubscription(operation) {
-        return subscriptionClient.request(operation)
-      },
-    }),
-  ],
+  exchanges,
 })
