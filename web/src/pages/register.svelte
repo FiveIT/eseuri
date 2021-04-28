@@ -63,7 +63,13 @@
 
       console.log({ vars })
 
-      await client.mutation(REGISTER_USER, vars).toPromise()
+      const res = await client.mutation(REGISTER_USER, vars).toPromise()
+
+      if (res.error) {
+        throw res.error
+      }
+
+      console.log(res.data)
 
       go('/', alive, $goto)
     } catch (err) {
