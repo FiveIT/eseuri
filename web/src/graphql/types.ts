@@ -33,3 +33,13 @@ export type WorkSummaries = Query<
   WorkSummary[],
   WorkSummariesVars
 >
+
+interface SearchWorkSummariesVars extends WorkSummariesVars {
+  query: `${string}%`
+}
+
+export type SearchWorkSummaries = Query<
+  'work_summaries',
+  WorkSummary[],
+  SearchWorkSummariesVars
+>
