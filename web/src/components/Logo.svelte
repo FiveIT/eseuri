@@ -7,12 +7,12 @@
 </script>
 
 <LayoutContext let:theme>
-  <Link href="/" on:navigate let:enable>
+  <Link href="/" on:navigate let:disable>
     <h1
       class="font-serif text-{big ? 'xl' : 'lg'} font-bold {text[
         theme
       ]} antialiased"
-      class:cursor-default={!enable}>
+      class:cursor-default={disable}>
       Eseuri<span class="text-orange">.</span>
     </h1>
   </Link>
