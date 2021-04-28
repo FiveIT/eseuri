@@ -4,7 +4,7 @@ export const WORK_SUMMARIES = gql`
   query getWorkSummaries($type: String!) {
     work_summaries(
       where: { type: { _eq: $type } }
-      order_by: { work_count: desc }
+      order_by: { work_count: desc, name: asc }
     ) {
       name
       creator
@@ -21,7 +21,7 @@ export const SEARCH_WORK_SUMMARIES = gql`
         _or: [{ name: { _ilike: $query } }, { creator: { _ilike: $query } }]
         type: { _eq: $type }
       }
-      order_by: { work_count: desc }
+      order_by: { work_count: desc, name: asc }
     ) {
       name
       creator
