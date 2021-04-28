@@ -15,7 +15,7 @@
   import { metatags } from '@roxi/routify'
   import { WORK_SUMMARIES } from '$/graphql/queries'
   import type { WorkSummaries, Data, Vars } from '$/graphql/types'
-  import { operationStore, query } from '@urql/svelte'
+  import { operationStore, subscription } from '@urql/svelte'
 
   metatags.title = 'Eseuri'
 
@@ -48,7 +48,7 @@
     { type }
   )
 
-  query(content)
+  subscription(content, (_, newData) => newData)
 
   $: $content.variables!.type = type
 </script>
