@@ -16,7 +16,6 @@
   import { roleTranslation } from '$/content'
   import type { Writable } from 'svelte/store'
   import { go } from '$/components/Link.svelte'
-  import { text } from 'svelte/internal'
 
   let orangeBlobProps: BlobPropsInput
   $: orangeBlobProps = {
