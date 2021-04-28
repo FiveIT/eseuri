@@ -89,5 +89,5 @@
         >{workTypeTranslation.ro[t].inarticulate.plural}</button>
     </div>
   {/each}
-  <Works works={$content.data} />
+  <Works works={$content.data?.work_summaries} />
 </Layout>

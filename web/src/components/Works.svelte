@@ -1,19 +1,19 @@
 <script lang="ts">
-  import type { WorkSummaries, Data } from '$/graphql/types'
+  import type { WorkSummary } from '$/types'
 
   import LayoutContext from './LayoutContext.svelte'
   import W from './Work.svelte'
 
   import { placeholderText, filterShadow } from '$/theme'
 
-  export let works: Data<WorkSummaries>
+  export let works: WorkSummary[] | undefined
 </script>
 
 <LayoutContext let:theme>
   <div
     class="grid w-full h-full grid-cols-essays auto-rows-essays gap-x-lg gap-y-sm col-start-1 col-end-7">
-    {#if works?.work_summaries?.length}
-      {#each works.work_summaries as work (work.name)}
+    {#if works?.length}
+      {#each works as work (work.name)}
         <W {work} />
       {/each}
     {:else}
