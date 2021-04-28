@@ -62,7 +62,8 @@
       ".pnpm-debug.log": true,
       "pnpm-lock.yaml": true,
       ".idea": true,
-      ".gitmodules": true
+      ".gitmodules": true,
+      ".editorconfig": true
     }
   },
   "extensions": [
