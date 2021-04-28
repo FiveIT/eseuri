@@ -17,6 +17,10 @@
   import type { Writable } from 'svelte/store'
   import { go } from '$/components/Link.svelte'
 
+  import { REGISTER_USER } from '$/graphql/queries'
+  import type { RegisterUser, Vars } from '$/graphql/types'
+  import client from '$/graphql/client'
+
   let orangeBlobProps: BlobPropsInput
   $: orangeBlobProps = {
     x: 0,
@@ -46,38 +50,55 @@
   const action = import.meta.env.FUNCTIONS_URL as string
   let formElement: HTMLFormElement
 
-  function onSubmit(alive: Writable<boolean>) {
+  async function onSubmit(alive: Writable<boolean>) {
     const form = new FormData(formElement)
-    form.forEach((v, k) => console.log({ [k]: v }))
-    go('/', alive, $goto)
+
+    try {
+      const vars: Vars<RegisterUser> = {
+        firstName: form.get('first_name')!.toString(),
+        middleName: form.get('middle_name')!.toString() || null,
+        lastName: form.get('last_name')!.toString(),
+        schoolID: parseInt(form.get('school')!.toString() || ''),
+      }
+
+      console.log({ vars })
+
+      await client.mutation(REGISTER_USER, vars).toPromise()
+
+      go('/', alive, $goto)
+    } catch (err) {
+      console.error(err)
+    }
   }
 </script>
 
 <Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} blurBackground>
   <LayoutContext let:alive>
-    <SlimNav logoOnly={true} />
+    <SlimNav logoOnly />
     <Form
       name="register"
       {action}
       bind:formElement
       on:submit={() => onSubmit(alive)}>
       <span slot="legend">Completează-ți profilul</span>
-      <Text name="last_name" placeholder="Scrie-ți aici numele de familie...">
+      <Text
+        name="last_name"
+        placeholder="Scrie-ți aici numele de familie..."
+        required>
         Numele tău
       </Text>
-      <Text name="first_name" placeholder="Scrie-l aici...">
+      <Text name="first_name" placeholder="Scrie-l aici..." required>
         Primul prenume
       </Text>
       <Text name="middle_name" placeholder="Scrie-l aici...">
         Al doilea prenume
       </Text>
-      <Text name="county" placeholder="Scrie aici judetul scolii...">
+      <Text name="county" placeholder="Scrie aici judetul scolii..." required>
         Județul școlii tale
       </Text>
-      <Text name="school" placeholder="Scrie aici numele școlii...">
+      <Text name="school" placeholder="Scrie aici numele școlii..." required>
         Școala ta
       </Text>
-
       <Radio name="role" options={roles} displayModifier={translateRole}>
         Ocupația ta
       </Radio>

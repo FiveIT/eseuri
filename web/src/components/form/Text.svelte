@@ -3,6 +3,7 @@
 
   export let name: string
   export let placeholder = ''
+  export let required = false
   export let suggestions: string[] = []
 
   export let value = ''
@@ -17,6 +18,7 @@
     id={name}
     {name}
     {placeholder}
+    {required}
     bind:value
     type="text"
     class="col-span-2 placeholder-gray text-sm bg-transparent" />
