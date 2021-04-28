@@ -1,21 +1,13 @@
 <script lang="ts">
   import Cross from 'svelte-material-icons/Plus.svelte'
-  import Link from './Link.svelte'
-
   import { isActive } from '@roxi/routify'
-
+  import Link from './Link.svelte'
   import { px } from '$/util'
 
-  $: isUploadConfigure = $isActive('/upload_configure', undefined, {
-    strict: false,
-  })
+  $: disable = $isActive('/upload_configure')
 </script>
 
-<Link
-  href="/upload"
-  enable={!isUploadConfigure}
-  hideIfDisabled={isUploadConfigure}
-  on:navigate>
+<Link href="/upload" on:navigate {disable} hideIfDisabled>
   <div class="bg-orange p-md rounded-full w-min filter-shadow">
     <Cross size={px(2)} color="var(--white)" />
   </div>
