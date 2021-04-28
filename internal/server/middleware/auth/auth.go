@@ -20,14 +20,16 @@ type jwtCredentials struct {
 }
 
 type CustomClaims struct {
-	UserID int
-	Role   string
+	IsRegistered bool
+	UserID       int
+	Role         string
 }
 
 func (c *CustomClaims) MarshalZerologObject(z *zerolog.Event) {
-	z.
+	z.Dict("claims", zerolog.Dict().
+		Bool("isRegistered", c.IsRegistered).
 		Int("userID", c.UserID).
-		Str("role", c.Role)
+		Str("role", c.Role))
 }
 
 const (
@@ -63,15 +65,12 @@ func Middleware() func(*fiber.Ctx) error {
 			logger.Debug().Fields(user).Msg("claims")
 
 			eseuri := user[eseuriNamespace].(map[string]interface{})
-			if !eseuri["hasCompletedRegistration"].(bool) {
-				return helpers.SendError(c, http.StatusUnauthorized, "unregistered user", nil)
-			}
-
 			hasura := user[hasuraNamespace].(map[string]interface{})
 
 			custom := CustomClaims{}
 			custom.Role = hasura["X-Hasura-Default-Role"].(string)
 			custom.UserID, _ = strconv.Atoi(hasura["X-Hasura-User-Id"].(string))
+			custom.IsRegistered = eseuri["hasCompletedRegistration"].(bool)
 
 			logger.Debug().EmbedObject(&custom).Msg("unmarshaled custom claims")
 
