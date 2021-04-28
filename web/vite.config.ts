@@ -22,7 +22,12 @@ export default defineConfig(({ mode }) => {
   return {
     extensions: ['ts', 'html', 'js', 'css', 'svg', 'json'],
     optimizeDeps: {
-      exclude: ['@roxi/routify', 'pug', '@urql/svelte'],
+      exclude: [
+        '@roxi/routify',
+        'pug',
+        '@urql/svelte',
+        '@tmaxmax/svelte-auth0',
+      ],
     },
     resolve: {
       dedupe: ['@roxi/routify'],
