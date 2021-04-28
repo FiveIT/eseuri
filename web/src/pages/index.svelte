@@ -15,7 +15,7 @@
   import { metatags } from '@roxi/routify'
   import { WORK_SUMMARIES } from '$/graphql/queries'
   import type { WorkSummaries, Data, Vars } from '$/graphql/types'
-  import { operationStore, subscription } from '@urql/svelte'
+  import { operationStore, query } from '@urql/svelte'
 
   metatags.title = 'Eseuri'
 
@@ -48,7 +48,7 @@
     { type }
   )
 
-  subscription(content, (_, newData) => newData)
+  query(content)
 
   $: $content.variables!.type = type
 </script>
@@ -78,5 +78,11 @@
     <UploadButton />
   </div>
   <TypeSelector bind:type rowStart={4} colStart={3} />
-  <Works works={$content.data?.work_summaries} />
+  {#if $content.error}
+    <p class="col-span-6 font-sans text-sm antialiased text-red text-center">
+      {$content.error.name}: {$content.error.message}
+    </p>
+  {:else if $content.data}
+    <Works works={$content.data.work_summaries} />
+  {/if}
 </Layout>
