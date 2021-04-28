@@ -16,6 +16,7 @@
   import { roleTranslation } from '$/content'
   import type { Writable } from 'svelte/store'
   import { go } from '$/components/Link.svelte'
+  import { text } from 'svelte/internal'
 
   let orangeBlobProps: BlobPropsInput
   $: orangeBlobProps = {
@@ -65,12 +66,19 @@
       <Text name="last_name" placeholder="Scrie-ți aici numele de familie...">
         Numele tău
       </Text>
-      <Text name="first_name" placeholder="Scrie-ți aici prenumele...">
-        Prenumele tău
+      <Text name="first_name" placeholder="Scrie-l aici...">
+        Primul prenume
       </Text>
-      <Text name="school" placeholder="Scrie-ți aici numele școlii...">
+      <Text name="middle_name" placeholder="Scrie-l aici...">
+        Al doilea prenume
+      </Text>
+      <Text name="county" placeholder="Scrie aici judetul scolii...">
+        Județul școlii tale
+      </Text>
+      <Text name="school" placeholder="Scrie aici numele școlii...">
         Școala ta
       </Text>
+
       <Radio name="role" options={roles} displayModifier={translateRole}>
         Ocupația ta
       </Radio>
