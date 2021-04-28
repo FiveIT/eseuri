@@ -4,7 +4,7 @@
   import Link from './Link.svelte'
   import LayoutContext from './LayoutContext.svelte'
 
-  import type { Work } from '$/types'
+  import type { WorkSummary } from '$/types'
 
   import { text, border, filterShadow } from '$/theme'
   import { workTypeTranslation } from '$/content'
@@ -34,7 +34,7 @@
     fixFontSize(creatorParent, creatorChild)
   })
 
-  export let work: Work
+  export let work: WorkSummary
 </script>
 
 <LayoutContext let:theme>

@@ -7,30 +7,57 @@
   import SlimNav from '$/components/SlimNav.svelte'
   import { store as window } from '$/components/Window.svelte'
   import Works from '$/components/Works.svelte'
-  import content, { workTypeTranslation } from '$/content'
-  import type { BlobPropsInput, Work, WorkType } from '$/types'
+  import type { BlobPropsInput, WorkType } from '$/types'
   import { isWorkType } from '$/types'
   import { afterPageLoad, goto, params } from '@roxi/routify'
+  import { operationStore, query } from '@urql/svelte'
+  import { SEARCH_WORK_SUMMARIES } from '$/graphql/queries'
+  import type { SearchWorkSummaries, Data, Vars } from '$/graphql/types'
+  import TypeSelector from '$/components/TypeSelector.svelte'
+  import debounce from 'lodash.debounce'
 
-  let query: string = $params.query || ''
+  let q: string = $params.query?.trim() || ''
   let type: WorkType = isWorkType($params.type) ? $params.type : 'essay'
-  let workTypes: WorkType[] = ['essay', 'characterization']
-  let works: Work[]
   let focusInput = () => {}
-  $: query = query.trimStart()
 
-  const isValidEntry = (query: string, type: WorkType) => ({
-    type: t,
-    name: n,
-    creator: c,
-  }: Work) => {
-    return (
-      t === type &&
-      [n, c].some(v => v.toLowerCase().includes(query.toLowerCase()))
-    )
+  const content = operationStore<
+    Data<SearchWorkSummaries>,
+    Vars<SearchWorkSummaries>
+  >(SEARCH_WORK_SUMMARIES, {
+    query: `${q}%` as const,
+    type,
+  })
+
+  query(content)
+
+  $: $content.variables = {
+    query: `${q}%` as const,
+    type,
   }
 
-  $: works = content.filter(isValidEntry(query, type))
+  $: works = $content.data?.work_summaries
+    .map(value => ({
+      value,
+      matchesOnName: +value.name
+        .toLocaleLowerCase('ro-RO')
+        .startsWith(q.toLocaleLowerCase('ro-RO')),
+    }))
+    .sort((a, b) => b.matchesOnName - a.matchesOnName)
+    .map(v => v.value)
+
+  const navigate = debounce(
+    (query: string, type: string) => {
+      if (query === '') {
+        $goto('/search', { type }, { redirect: true })
+      } else {
+        $goto('/search', { query, type })
+      }
+    },
+    1000,
+    { leading: true }
+  )
+
+  $: navigate(q.trim(), type)
 
   let orangeBlobProps: BlobPropsInput
   $: orangeBlobProps = {
@@ -50,10 +77,16 @@
   $: blueBlobProps = {
     x: ($window.width - blue.width * 0.8) / 2,
     y: -blue.height * 0.635 + $window.height * 0.17,
-    scale: 13,
+    scale: 15,
   }
 
-  $afterPageLoad(() => focusInput())
+  let once = false
+  $afterPageLoad(() => {
+    if (!once) {
+      focusInput()
+      once = true
+    }
+  })
 </script>
 
 <Layout
@@ -65,15 +98,8 @@
   beforeDestroy={() => (document.body.style.backgroundColor = '')}>
   <SlimNav />
   <div class="col-start-1 row-span-1 row-start-3 col-end-4 my-auto">
-    <Search bind:query bind:type bind:focusInput />
+    <Search bind:query={q} bind:type bind:focusInput />
   </div>
-  {#each workTypes as t, i}
-    <button
-      class="bg-opacity-0 row-span-1 row-start-3 text-white col-start-{5 +
-        i} col-span-1 text-sm font-sans antialiased filter-shadow capitalize"
-      class:underline={type === t}
-      on:click={() => ((type = t), $goto('/search', { query, type }))}
-      >{workTypeTranslation.ro[t].inarticulate.plural}</button>
-  {/each}
+  <TypeSelector bind:type rowStart={3} colStart={5} />
   <Works {works} />
 </Layout>

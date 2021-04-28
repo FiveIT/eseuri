@@ -18,8 +18,8 @@
       <div class="ml-auto grid grid-flow-col gap-x-md auto-cols-layout">
         <span />
         <NavButton href="/search" hideIfDisabled on:navigate>Caută</NavButton>
-        <NavButton enable={false} on:navigate>Plagiat</NavButton>
-        <NavButton enable={false} on:navigate>Profesori</NavButton>
+        <NavButton disable on:navigate>Plagiat</NavButton>
+        <NavButton disable on:navigate>Profesori</NavButton>
         <LoginButton />
       </div>
     </div>

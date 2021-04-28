@@ -22,9 +22,10 @@ export default defineConfig(({ mode }) => {
   return {
     extensions: ['ts', 'html', 'js', 'css', 'svg', 'json'],
     optimizeDeps: {
-      exclude: ['@roxi/routify', 'pug'],
+      exclude: ['@roxi/routify', 'pug', '@urql/svelte'],
     },
     resolve: {
+      dedupe: ['@roxi/routify'],
       alias: {
         svelte: path.resolve(process.cwd(), 'node_modules/svelte'),
         $: path.resolve(process.cwd(), 'src'),

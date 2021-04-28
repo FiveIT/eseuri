@@ -1,10 +1,7 @@
 <script lang="ts">
-  import { getContext } from 'svelte'
+  import { getLayout } from './Layout.svelte'
 
-  import { contextKey } from './Layout.svelte'
-  import type { Context } from './Layout.svelte'
-
-  const { theme, alive } = getContext<Context>(contextKey)
+  const { theme, alive } = getLayout()
 </script>
 
 <slot theme={$theme} {alive} />

@@ -8,11 +8,14 @@
   import Buton from '$/components/NavButton.svelte'
   import Search from '$/components/SearchBar.svelte'
   import UploadButton from '$/components/UploadButton.svelte'
+  import TypeSelector from '$/components/TypeSelector.svelte'
   import { store as window } from '$/components/Window.svelte'
   import Works from '$/components/Works.svelte'
-  import content, { workTypeTranslation } from '$/content'
   import type { BlobPropsInput, WorkType } from '$/types'
   import { metatags } from '@roxi/routify'
+  import { WORK_SUMMARIES } from '$/graphql/queries'
+  import type { WorkSummaries, Data, Vars } from '$/graphql/types'
+  import { operationStore, subscription } from '@urql/svelte'
 
   metatags.title = 'Eseuri'
 
@@ -39,8 +42,15 @@
   }
 
   let type: WorkType = 'essay'
-  const types: WorkType[] = ['essay', 'characterization']
-  $: works = content.filter(work => work.type === type)
+
+  const content = operationStore<Data<WorkSummaries>, Vars<WorkSummaries>>(
+    WORK_SUMMARIES,
+    { type }
+  )
+
+  subscription(content, (_, newData) => newData)
+
+  $: $content.variables!.type = type
 </script>
 
 <Layout
@@ -59,24 +69,14 @@
     <LoginButton theme="white" />
   </div>
   <div class="col-start-4 col-end-5 row-start-2 w-full h-full text-sm my-auto ">
-    <Buton enable={false} theme="white">Plagiat</Buton>
+    <Buton disable theme="white">Plagiat</Buton>
   </div>
   <div class="col-start-5 col-end-6 row-start-2 w-full h-full text-sm my-auto">
-    <Buton enable={false} theme="white">Profesori</Buton>
+    <Buton disable theme="white">Profesori</Buton>
   </div>
   <div class="col-span-1 col-start-6 row-span-1 row-start-3 place-self-center">
     <UploadButton />
   </div>
-  {#each types as t, i}
-    <div
-      class="col-start-{3 +
-        i} col-span-1 row-start-4 w-full h-full m-auto my-auto">
-      <button
-        class="w-full h-full font-sans text-sm antialiased capitalize"
-        class:underline={type === t}
-        on:click={() => (type = t)}
-        >{workTypeTranslation.ro[t].inarticulate.plural}</button>
-    </div>
-  {/each}
-  <Works {works} />
+  <TypeSelector bind:type rowStart={4} colStart={3} />
+  <Works works={$content.data?.work_summaries} />
 </Layout>

@@ -1,29 +1,23 @@
 <script lang="ts">
-  import { getContext } from 'svelte'
-
   import Link from './Link.svelte'
-
-  import type { Context } from './Layout.svelte'
-  import { contextKey } from './Layout.svelte'
-
-  const { theme: themeStore } = getContext<Context>(contextKey)
-
+  import { getLayout } from './Layout.svelte'
   import { isActive } from '@roxi/routify'
-
   import { text, filterShadow } from '$/theme'
 
+  const { theme: themeStore } = getLayout()
+
   export let href = '/'
-  export let enable = !$isActive(href)
+  export let disable = $isActive(href, undefined, { strict: false })
   export let hideIfDisabled = false
   export let theme = $themeStore
 </script>
 
-<Link {href} {enable} {hideIfDisabled} on:navigate>
+<Link {href} {disable} {hideIfDisabled} on:navigate>
   <div
     class="w-full h-full flex justify-center items-center font-sans no-underline text-sm antialiased select-none {text[
       theme
     ]} {filterShadow[theme]}"
-    class:cursor-default={!enable}>
+    class:cursor-default={disable}>
     <slot />
   </div>
 </Link>

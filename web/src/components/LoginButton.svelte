@@ -4,15 +4,11 @@
     Auth0LogoutButton,
     isAuthenticated,
   } from '@tmaxmax/svelte-auth0'
-  import { getContext } from 'svelte'
-
   import type { Theme } from '$/types'
   import { text, filterShadow } from '$/theme'
+  import { getLayout } from './Layout.svelte'
 
-  import type { Context } from './Layout.svelte'
-  import { contextKey } from './Layout.svelte'
-
-  const { theme: themeStore } = getContext<Context>(contextKey)
+  const { theme: themeStore } = getLayout()
 
   export let theme: Theme = $themeStore
 
