@@ -101,5 +101,11 @@
     <Search bind:query={q} bind:type bind:focusInput />
   </div>
   <TypeSelector bind:type rowStart={3} colStart={5} />
-  <Works {works} />
+  {#if $content.error}
+    <p class="col-span-6 text-red text-sm font-sans antialiased text-center">
+      {$content.error.name}: {$content.error.message}
+    </p>
+  {:else if $content.data}
+    <Works {works} />
+  {/if}
 </Layout>
