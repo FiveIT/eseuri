@@ -60,8 +60,8 @@
     "windicss": "^2.5.14"
   },
   "dependencies": {
+    "@auth0/auth0-spa-js": "^1.14.0",
     "@tmaxmax/renderless-svelte": "^1.5.0",
-    "@tmaxmax/svelte-auth0": "^1.0.2",
     "@urql/devtools": "^2.0.3",
     "@urql/svelte": "^1.2.1",
     "graphql": "^15.5.0",
