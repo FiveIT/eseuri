@@ -45,15 +45,19 @@
     .sort((a, b) => b.matchesOnName - a.matchesOnName)
     .map(v => v.value)
 
-  const navigate = debounce((query: string) => {
-    if (query === '') {
-      $goto('/search', { type }, { redirect: true })
-    } else {
-      $goto('/search', { query, type })
-    }
-  }, 1000)
+  const navigate = debounce(
+    (query: string, type: string) => {
+      if (query === '') {
+        $goto('/search', { type }, { redirect: true })
+      } else {
+        $goto('/search', { query, type })
+      }
+    },
+    1000,
+    { leading: true }
+  )
 
-  $: navigate(q.trim())
+  $: navigate(q.trim(), type)
 
   let orangeBlobProps: BlobPropsInput
   $: orangeBlobProps = {
