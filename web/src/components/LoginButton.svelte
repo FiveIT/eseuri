@@ -20,6 +20,6 @@
   class="w-full h-full font-sans text-sm antialiased {text[
     theme
   ]} {filterShadow[theme]}"
-  preserveRoute={!auth}>
+  preserveRoute={false}>
   {auth ? 'Ieși din cont' : 'Intră în cont'}
 </svelte:component>
