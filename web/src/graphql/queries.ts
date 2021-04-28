@@ -11,7 +11,7 @@ const WORK_SUMMARY = gql`
 
 export const WORK_SUMMARIES = gql`
   ${WORK_SUMMARY}
-  subscription getWorkSummaries($type: String!) {
+  query getWorkSummaries($type: String!) {
     work_summaries(
       where: { type: { _eq: $type } }
       order_by: [{ work_count: desc }, { name: asc }]
@@ -32,6 +32,27 @@ export const SEARCH_WORK_SUMMARIES = gql`
       order_by: [{ work_count: desc }, { name: asc }]
     ) {
       ...WorkSummary
+    }
+  }
+`
+
+export const REGISTER_USER = gql`
+  mutation registerUser(
+    $firstName: String!
+    $middleName: String
+    $lastName: String!
+    $schoolID: Int!
+  ) {
+    update_users(
+      where: { id: { _eq: $userID } }
+      _set: {
+        first_name: $firstName
+        middle_name: $middleName
+        last_name: $lastName
+        school_id: $schoolID
+      }
+    ) {
+      affected_rows
     }
   }
 `

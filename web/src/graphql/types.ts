@@ -43,3 +43,16 @@ export type SearchWorkSummaries = Query<
   WorkSummary[],
   SearchWorkSummariesVars
 >
+
+interface RegisterUserVars {
+  firstName: string
+  middleName: string | null
+  lastName: string
+  schoolID: number
+}
+
+export type RegisterUser = Query<
+  'update_users',
+  { affected_rows: number },
+  RegisterUserVars
+>
