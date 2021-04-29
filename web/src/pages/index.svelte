@@ -17,6 +17,11 @@
   import { WORK_SUMMARIES } from '$/graphql/queries'
   import type { WorkSummaries, Data, Vars } from '$/graphql/types'
   import { operationStore, subscription } from '@urql/svelte'
+  import {
+    default as Notifications,
+    notifications,
+  } from '@tmaxmax/renderless-svelte/src/Notifications.svelte'
+  import { onMount } from 'svelte'
 
   metatags.title = 'Eseuri'
 
@@ -51,6 +56,25 @@
 
   subscription(content, (_, newData) => newData)
 
+  onMount(() => {
+    const notifs = [
+      {
+        type: 'error',
+        message: 'Eroare deosebit de importanta, nu am sa te mint.',
+        explanation:
+          'Imi lipsesc sarmalele. Mi-ai face o favoare deosebita daca mi le-ai aduce!',
+      },
+      {
+        type: 'good',
+        message: 'Iti multumesc!',
+        explanation:
+          'Esti un dulce, mi-ai adus sarmalele la timp si iti sunt profund recunoscator.',
+      },
+    ]
+
+    notifs.forEach(n => notifications.push(n))
+  })
+
   $: $content.variables!.type = type
 </script>
 
@@ -63,10 +87,9 @@
     class="row-start-1 row-span-1 col-start-1  col-span-1 my-auto select-none">
     <Logo />
   </div>
-  <Notification
-    type="error"
-    message="Eroare"
-    explanation="Am sarmale si ma mandresc cu acest lucru. Iti doresc o zi faina!" />
+  <Notifications let:payload duration={10000}>
+    <Notification {...payload} />
+  </Notifications>
   <div class=" row-start-1 row-span-1 col-start-3 col-end-6 text-sm my-auto">
     <Search />
   </div>
