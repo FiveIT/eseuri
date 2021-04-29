@@ -20,9 +20,9 @@
   import Notification from './Notification.svelte'
 
   /**
-   * The duration notifications will be kept on-screen.
+   * The duration the notifications will be kept on-screen, in milliseconds.
    */
-  export let duration = 5000
+  export let duration = 10000
 </script>
 
 <Notifications let:payload {duration}>
