@@ -58,11 +58,11 @@
     info: {
       default: {
         icon: Information,
-        color: 'grey',
+        color: 'gray',
       },
       white: {
         icon: InformationBlue,
-        color: 'grey',
+        color: 'light-gray',
       },
     },
   }
