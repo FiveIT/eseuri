@@ -12,8 +12,8 @@
   import { store as red } from '$/components/blob/Red.svelte'
   import { store as window } from '$/components/Window.svelte'
 
-  import type { BlobPropsInput, Role } from '$/types'
-  import { roleTranslation } from '$/content'
+  import type { BlobPropsInput, Role } from '$/lib/types'
+  import { roleTranslation } from '$/lib/content'
   import type { Writable } from 'svelte/store'
   import { go } from '$/components/Link.svelte'
 
