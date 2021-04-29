@@ -55,8 +55,6 @@ export default defineConfig({
       md: '1.25rem',
       lg: 'var(--essay-column-gap)',
       xlg: '6.5vmin',
-      notification_width: ' var(--essay-column-width)',
-      notification_height: 'var(--row-height)',
     },
     borderRadius: {
       DEFAULT: '0.625rem',
@@ -79,8 +77,19 @@ export default defineConfig({
     gridAutoColumns: {
       layout: 'var(--column-width)',
     },
-    maxWidth: {
-      layout: 'calc(6 * var(--column-width) + 5 * var(--essay-column-gap))',
+    extend: {
+      maxWidth: {
+        layout: 'calc(6 * var(--column-width) + 5 * var(--essay-column-gap))',
+      },
+      width: {
+        notification: ' var(--essay-column-width)',
+      },
+      height: {
+        notification: 'var(--row-height)',
+      },
+      minHeight: {
+        notification: 'var(--row-height)',
+      },
     },
   },
   safelist: [
