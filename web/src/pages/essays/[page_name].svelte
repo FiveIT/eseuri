@@ -1,7 +1,7 @@
 <script context="module" lang="ts">
   import type { Readable } from 'svelte/store'
   import { writable } from 'svelte/store'
-  import Notification from '$/components/Notification.svelte'
+
   /**
    * The key used to retrieve the context from children components.
    */
