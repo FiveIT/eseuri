@@ -51,6 +51,12 @@ const (
 		affected_rows
 	}
 }`
+
+	User = `query getUser {
+	users(where: {}) {
+		updated_at
+	}
+}`
 )
 
 //nolint:gochecknoglobals
@@ -78,4 +84,10 @@ type WorksByPKOutput struct {
 		ID        int `json:"id"`
 		TeacherID int `json:"teacher_id"`
 	} `json:"works_by_pk"`
+}
+
+type UserOutput struct {
+	Query []struct {
+		UpdatedAt *string `json:"updated_at"`
+	} `json:"users"`
 }
