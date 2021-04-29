@@ -6,6 +6,7 @@
   import Text from '$/components/form/Text.svelte'
   import Radio from '$/components/form/Radio.svelte'
   import Actions from '$/components/form/Actions.svelte'
+  import Allow, { AUTHENTICATED } from '$/components/Allow.svelte'
 
   import { goto, metatags } from '@roxi/routify'
   import { store as orange } from '$/components/blob/Orange.svelte'
@@ -78,37 +79,39 @@
   }
 </script>
 
-<Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} blurBackground>
-  <LayoutContext let:alive>
-    <SlimNav logoOnly />
-    <Form
-      name="register"
-      {action}
-      bind:formElement
-      on:submit={() => onSubmit(alive)}>
-      <span slot="legend">Completează-ți profilul</span>
-      <Text
-        name="last_name"
-        placeholder="Scrie-ți aici numele de familie..."
-        required>
-        Numele tău
-      </Text>
-      <Text name="first_name" placeholder="Scrie-l aici..." required>
-        Primul prenume
-      </Text>
-      <Text name="middle_name" placeholder="Scrie-l aici...">
-        Al doilea prenume
-      </Text>
-      <Text name="county" placeholder="Scrie aici judetul scolii..." required>
-        Județul școlii tale
-      </Text>
-      <Text name="school" placeholder="Scrie aici numele școlii..." required>
-        Școala ta
-      </Text>
-      <Radio name="role" options={roles} displayModifier={translateRole}>
-        Ocupația ta
-      </Radio>
-      <Actions slot="actions" submitValue="Sunt gata" />
-    </Form>
-  </LayoutContext>
-</Layout>
+<Allow when={AUTHENTICATED} redirect="/">
+  <Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} blurBackground>
+    <LayoutContext let:alive>
+      <SlimNav logoOnly />
+      <Form
+        name="register"
+        {action}
+        bind:formElement
+        on:submit={() => onSubmit(alive)}>
+        <span slot="legend">Completează-ți profilul</span>
+        <Text
+          name="last_name"
+          placeholder="Scrie-ți aici numele de familie..."
+          required>
+          Numele tău
+        </Text>
+        <Text name="first_name" placeholder="Scrie-l aici..." required>
+          Primul prenume
+        </Text>
+        <Text name="middle_name" placeholder="Scrie-l aici...">
+          Al doilea prenume
+        </Text>
+        <Text name="county" placeholder="Scrie aici judetul scolii..." required>
+          Județul școlii tale
+        </Text>
+        <Text name="school" placeholder="Scrie aici numele școlii..." required>
+          Școala ta
+        </Text>
+        <Radio name="role" options={roles} displayModifier={translateRole}>
+          Ocupația ta
+        </Radio>
+        <Actions slot="actions" submitValue="Sunt gata" />
+      </Form>
+    </LayoutContext>
+  </Layout>
+</Allow>
