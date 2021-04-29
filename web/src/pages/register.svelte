@@ -7,7 +7,7 @@
   import Radio from '$/components/form/Radio.svelte'
   import Actions from '$/components/form/Actions.svelte'
   import Allow, { AUTHENTICATED } from '$/components/Allow.svelte'
-  import Notifications from '$/components/Notifications.svelte'
+  import Notifications, { notify } from '$/components/Notifications.svelte'
 
   import { goto, metatags } from '@roxi/routify'
   import { store as orange } from '$/components/blob/Orange.svelte'
@@ -74,6 +74,11 @@
       console.log(res.data)
 
       go('/', alive, $goto)
+
+      notify({
+        status: 'success',
+        message: 'Te-ai înregistrat cu succes!',
+      })
     } catch (err) {
       console.error(err)
     }
