@@ -21,7 +21,10 @@ export class RequestError extends Error {
 }
 
 export const isRegistered = async (): Promise<boolean> => {
-  const res = await fetch(`${endpoint}/isregistered`, getHeaders())
+  const res = await fetch(`${endpoint}/isregistered`, {
+    ...getHeaders(),
+    cache: 'no-store',
+  })
 
   if (!res.ok) {
     if (res.status === 400 || res.status === 401) {
