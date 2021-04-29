@@ -1,5 +1,4 @@
 <script lang="ts">
-  import Notification from '$/components/Notification.svelte'
   import { store as blue } from '$/components/blob/Blue.svelte'
   import { store as orange } from '$/components/blob/Orange.svelte'
   import { store as red } from '$/components/blob/Red.svelte'
@@ -17,11 +16,7 @@
   import { WORK_SUMMARIES } from '$/graphql/queries'
   import type { WorkSummaries, Data, Vars } from '$/graphql/types'
   import { operationStore, subscription } from '@urql/svelte'
-  import {
-    default as Notifications,
-    notifications,
-  } from '@tmaxmax/renderless-svelte/src/Notifications.svelte'
-  import { onMount } from 'svelte'
+  import Notifications, { notify } from '$/components/Notifications.svelte'
 
   metatags.title = 'Eseuri'
 
@@ -56,26 +51,14 @@
 
   subscription(content, (_, newData) => newData)
 
-  onMount(() => {
-    const notifs = [
-      {
-        type: 'error',
-        message: 'Eroare deosebit de importanta, nu am sa te mint.',
-        explanation:
-          'Imi lipsesc sarmalele. Mi-ai facea o favoare deosebita daca mi le-ai aduce!',
-      },
-      {
-        type: 'good',
-        message: 'Iti multumesc!',
-        explanation:
-          'Esti un dulce, mi-ai adus sarmalele la timp si iti sunt profund recunoscator.',
-      },
-    ]
-
-    notifs.forEach(n => notifications.push(n))
-  })
-
   $: $content.variables!.type = type
+  $: if ($content.error) {
+    notify({
+      status: 'error',
+      message: 'Nu am putut obține lucrările.',
+      explanation: `A apărut o eroare internă. Reîmprospătează pagina iar dacă apoi nu funcționează revino mai târziu, căci problema va fi în scurt timp rezolvată!`,
+    })
+  }
 </script>
 
 <Layout
@@ -87,9 +70,6 @@
     class="row-start-1 row-span-1 col-start-1  col-span-1 my-auto select-none">
     <Logo />
   </div>
-  <Notifications let:payload duration={10000}>
-    <Notification {...payload} />
-  </Notifications>
   <div class=" row-start-1 row-span-1 col-start-3 col-end-6 text-sm my-auto">
     <Search />
   </div>
@@ -107,4 +87,5 @@
   </div>
   <TypeSelector bind:type rowStart={4} colStart={3} />
   <Works works={$content.data?.work_summaries} />
+  <Notifications />
 </Layout>
