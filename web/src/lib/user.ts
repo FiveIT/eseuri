@@ -13,14 +13,27 @@ export const getHeaders = () => {
   return {}
 }
 
+export class RequestError extends Error {
+  // eslint-disable-next-line no-unused-vars
+  constructor(public status: number, public message: string) {
+    super(message)
+  }
+}
+
 export const isRegistered = async (): Promise<boolean> => {
   const res = await fetch(`${endpoint}/isregistered`, getHeaders())
 
   if (!res.ok) {
-    return false
+    if (res.status === 400 || res.status === 401) {
+      return false
+    }
+
+    const { error } = await res.json()
+
+    throw new RequestError(res.status, error)
   }
 
-  const info: { isRegistered: boolean } = await res.json()
+  const { isRegistered } = await res.json()
 
-  return info.isRegistered
+  return isRegistered
 }
