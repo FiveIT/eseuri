@@ -18,10 +18,24 @@
     color: string
   }
 
-  type Status = 'good' | 'error' | 'info'
+  type Status = 'success' | 'error' | 'info'
+
+  export interface Payload {
+    status: Status
+    /**
+     * The headline of the notification. It is a short summary
+     * of the reason the notification appeared.
+     */
+    message: string
+    /**
+     * More details about the cause of the notification. It is
+     * shown when the notification box is hovered over.
+     */
+    explanation?: string
+  }
 
   const assets: Record<Status, Record<Theme, Assets>> = {
-    good: {
+    success: {
       default: {
         icon: Check,
         color: 'dark-green',
@@ -72,9 +86,9 @@
 
   const { theme: themeStore } = getLayout()
 
-  export let type: Status
+  export let status: Status
   export let message: string
-  export let explanation = ''
+  export let explanation: string | undefined = undefined
 
   let detailsHeight: number
   let parent: HTMLDivElement
@@ -96,7 +110,7 @@
   }
 
   $: theme = $themeStore
-  $: currentAssets = assets[type][theme]
+  $: currentAssets = assets[status][theme]
 </script>
 
 <div
@@ -123,7 +137,7 @@
       {message}
     </p>
   </div>
-  {#if show && explanation !== ''}
+  {#if show && explanation}
     <p
       class="mx-sm mb-sm {filterShadow[theme]}"
       bind:offsetHeight={detailsHeight}
