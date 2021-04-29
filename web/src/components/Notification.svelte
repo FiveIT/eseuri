@@ -148,7 +148,7 @@
       class="mx-sm mb-sm {filterShadow[theme]}"
       bind:offsetHeight={detailsHeight}
       transition:slide={{ easing, duration: 50 }}>
-      {explanation}
+      {@html explanation}
     </p>
   {/if}
 </div>
