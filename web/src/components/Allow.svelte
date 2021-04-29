@@ -32,8 +32,10 @@
       message: 'A apărut o eroare la autentificare',
       explanation: 'Încearcă să revii mai târziu, este o problemă de moment.',
     })
-  } else if ($isAuthenticated) {
-    current |= AUTHENTICATED
+  } else {
+    if ($isAuthenticated) {
+      current |= AUTHENTICATED
+    }
 
     user
       .isRegistered()
