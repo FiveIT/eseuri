@@ -1,7 +1,7 @@
 <script context="module" lang="ts">
   import type { Readable } from 'svelte/store'
   import { writable } from 'svelte/store'
-
+  import Notification from '$/components/Notification.svelte'
   /**
    * The key used to retrieve the context from children components.
    */
@@ -115,6 +115,7 @@
 
 <Layout {orangeBlobProps} {redBlobProps} {blueBlobProps}>
   <SlimNav />
+  <Notification type="good" />
   <div class="col-start-1 col-span-1 row-start-3 row-span-1">
     <button class="fixed mt-40">
       <Back size="4rem" color="var(--light-gray)" />

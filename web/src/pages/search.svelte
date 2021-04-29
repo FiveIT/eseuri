@@ -15,7 +15,7 @@
   import type { SearchWorkSummaries, Data, Vars } from '$/graphql/types'
   import TypeSelector from '$/components/TypeSelector.svelte'
   import debounce from 'lodash.debounce'
-
+  import Notification from '$/components/Notification.svelte'
   let q: string = $params.query?.trim() || ''
   let type: WorkType = isWorkType($params.type) ? $params.type : 'essay'
   let focusInput = () => {}
@@ -97,6 +97,7 @@
   afterMount={() => (document.body.style.backgroundColor = 'var(--blue)')}
   beforeDestroy={() => (document.body.style.backgroundColor = '')}>
   <SlimNav />
+  <Notification type="good" message="Eroare" explanation="Nu stiu" />
   <div class="col-start-1 row-span-1 row-start-3 col-end-4 my-auto">
     <Search bind:query={q} bind:type bind:focusInput />
   </div>

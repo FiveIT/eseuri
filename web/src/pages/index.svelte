@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Notification from '$/components/Notification.svelte'
   import { store as blue } from '$/components/blob/Blue.svelte'
   import { store as orange } from '$/components/blob/Orange.svelte'
   import { store as red } from '$/components/blob/Red.svelte'
@@ -62,6 +63,11 @@
     class="row-start-1 row-span-1 col-start-1  col-span-1 my-auto select-none">
     <Logo />
   </div>
+  <Notification
+    white={true}
+    type="error"
+    message="Eroare"
+    explanation="Nu stiu" />
   <div class=" row-start-1 row-span-1 col-start-3 col-end-6 text-sm my-auto">
     <Search />
   </div>
