@@ -22,7 +22,7 @@
   /**
    * The duration the notifications will be kept on-screen, in milliseconds.
    */
-  export let duration = 10000
+  export let duration = 5000
 </script>
 
 <Notifications let:payload {duration}>
