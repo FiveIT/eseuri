@@ -15,7 +15,7 @@
   import type { SearchWorkSummaries, Data, Vars } from '$/graphql/types'
   import TypeSelector from '$/components/TypeSelector.svelte'
   import debounce from 'lodash.debounce'
-
+  import Notifications, { notify } from '$/components/Notifications.svelte'
   let q: string = $params.query?.trim() || ''
   let type: WorkType = isWorkType($params.type) ? $params.type : 'essay'
   let focusInput = () => {}
@@ -44,6 +44,15 @@
     }))
     .sort((a, b) => b.matchesOnName - a.matchesOnName)
     .map(v => v.value)
+
+  $: if ($content.error) {
+    notify({
+      status: 'error',
+      message: 'Căutarea a eșuat',
+      explanation:
+        'Este o eroare internă, revino mai târziu - va fi rezolvată până atunci!',
+    })
+  }
 
   const navigate = debounce(
     (query: string, type: string) => {
@@ -102,4 +111,5 @@
   </div>
   <TypeSelector bind:type rowStart={3} colStart={5} />
   <Works {works} />
+  <Notifications />
 </Layout>

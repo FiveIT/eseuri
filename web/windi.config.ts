@@ -5,9 +5,10 @@ export default defineConfig({
   theme: {
     colors: {
       orange: '#FF7F11',
-      red: '#FF3F00',
-      blue: 'var(--blue, #485696)',
+      red: 'var(--red, #FF3F00)',
+      blue: 'var(--darkblue,#485696)',
       green: '#008148',
+      lightgreen: 'var(--light-green, #00e781)',
       current: 'currentColor',
       transparent: 'transparent',
       white: 'var(--white, #FCFAF9)',
@@ -61,8 +62,11 @@ export default defineConfig({
     },
     boxShadow: {
       soft: 'var(--shadow-soft)',
+      'inner-soft': 'inset var(--shadow-soft)',
       DEFAULT: 'var(--shadow)',
+      inner: 'inset var(--shadow)',
       large: 'var(--shadow-large)',
+      'inner-large': 'inset var(--shadow-large)',
       none: 'none',
     },
     gridAutoRows: {
@@ -76,30 +80,48 @@ export default defineConfig({
     gridAutoColumns: {
       layout: 'var(--column-width)',
     },
-    maxWidth: {
-      layout: 'calc(6 * var(--column-width) + 5 * var(--essay-column-gap))',
+    extend: {
+      maxWidth: {
+        layout: 'calc(6 * var(--column-width) + 5 * var(--essay-column-gap))',
+      },
+      width: {
+        notification: ' var(--essay-column-width)',
+      },
+      height: {
+        notification: 'var(--row-height)',
+      },
+      minHeight: {
+        notification: 'var(--row-height)',
+      },
     },
   },
   safelist: [
     'underline',
-    [].concat(...['white', 'black'].map((v) => [`text-${v}`, `border-${v}`])),
-    [2, 3].map((v) => `border-${v}`),
-    ...Array.from({ length: 6 }, (_, i) => ['row', 'col'].map((v) => `${v}-start-${i + 1}`)),
+    [].concat(...['white', 'black'].map(v => [`text-${v}`, `border-${v}`])),
+    [2, 3].map(v => `border-${v}`),
+    ...Array.from({ length: 6 }, (_, i) =>
+      ['row', 'col'].map(v => `${v}-start-${i + 1}`)
+    ),
     'bg-white-50',
     'pointer-events-none',
     'w-full',
     'h-full',
-    ['lg', 'xl'].map((v) => `text-${v}`),
+    ['lg', 'xl'].map(v => `text-${v}`),
     'my-auto',
-    ['white', 'blue', 'google-docs', 'red'].map((v) => `bg-${v}`),
+    ['white', 'blue', 'google-docs', 'red'].map(v => `bg-${v}`),
     'border',
     'cursor-default',
     'font-sans',
     'antialiased',
     'text-sm',
-    ['0.02', '1'].map((v) => `pt-${v}`),
+    ['0.02', '1'].map(v => `pt-${v}`),
     'px-sm',
     'py-xs',
+    'shadow',
+    'shadow-inner',
+    [].concat(
+      ...'soft,large'.split(',').map(v => [`shadow-${v}`, `shadow-inner-${v}`])
+    ),
   ],
   darkMode: false,
   preflight: true,

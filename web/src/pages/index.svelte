@@ -16,6 +16,7 @@
   import { WORK_SUMMARIES } from '$/graphql/queries'
   import type { WorkSummaries, Data, Vars } from '$/graphql/types'
   import { operationStore, subscription } from '@urql/svelte'
+  import Notifications, { notify } from '$/components/Notifications.svelte'
 
   metatags.title = 'Eseuri'
 
@@ -51,6 +52,13 @@
   subscription(content, (_, newData) => newData)
 
   $: $content.variables!.type = type
+  $: if ($content.error) {
+    notify({
+      status: 'error',
+      message: 'Nu am putut obține lucrările.',
+      explanation: `A apărut o eroare internă. Reîmprospătează pagina iar dacă apoi nu funcționează revino mai târziu, căci problema va fi în scurt timp rezolvată!`,
+    })
+  }
 </script>
 
 <Layout
@@ -79,4 +87,5 @@
   </div>
   <TypeSelector bind:type rowStart={4} colStart={3} />
   <Works works={$content.data?.work_summaries} />
+  <Notifications />
 </Layout>

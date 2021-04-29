@@ -35,3 +35,25 @@ export const SEARCH_WORK_SUMMARIES = gql`
     }
   }
 `
+
+export const REGISTER_USER = gql`
+  mutation registerUser(
+    $userID: Int!
+    $firstName: String!
+    $middleName: String
+    $lastName: String!
+    $schoolID: Int!
+  ) {
+    update_users(
+      where: { id: { _eq: $userID } }
+      _set: {
+        first_name: $firstName
+        middle_name: $middleName
+        last_name: $lastName
+        school_id: $schoolID
+      }
+    ) {
+      affected_rows
+    }
+  }
+`

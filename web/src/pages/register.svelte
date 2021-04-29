@@ -17,6 +17,10 @@
   import type { Writable } from 'svelte/store'
   import { go } from '$/components/Link.svelte'
 
+  import { REGISTER_USER } from '$/graphql/queries'
+  import type { RegisterUser, Data, Vars } from '$/graphql/types'
+  import client from '$/graphql/client'
+
   let orangeBlobProps: BlobPropsInput
   $: orangeBlobProps = {
     x: 0,
@@ -46,10 +50,25 @@
   const action = import.meta.env.FUNCTIONS_URL as string
   let formElement: HTMLFormElement
 
-  function onSubmit(alive: Writable<boolean>) {
+  async function onSubmit(alive: Writable<boolean>) {
     const form = new FormData(formElement)
     form.forEach((v, k) => console.log({ [k]: v }))
-    go('/', alive, $goto)
+
+    try {
+      await client
+        .mutation<Data<RegisterUser>, Vars<RegisterUser>>(REGISTER_USER, {
+          userID: 1,
+          firstName: form.get('first_name')!.toString(),
+          middleName: null,
+          lastName: form.get('last_name')!.toString(),
+          schoolID: parseInt(form.get('school')!.toString()),
+        })
+        .toPromise()
+    } catch (err) {
+      console.error(err)
+    } finally {
+      go('/', alive, $goto)
+    }
   }
 </script>
 
