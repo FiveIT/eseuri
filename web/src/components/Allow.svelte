@@ -15,7 +15,7 @@
   let current: number
 
   function check(what: number): boolean {
-    return (current & what) === (when & what)
+    return (current & what) >= (when & what)
   }
 
   $: if ($isLoading) {
@@ -28,6 +28,8 @@
       message: 'A apărut o eroare la autentificare',
       explanation: 'Încearcă să revii mai târziu, este o problemă de moment.',
     })
+
+    $goto(redirect)
   } else {
     if ($isAuthenticated) {
       current |= AUTHENTICATED
@@ -75,7 +77,6 @@
           $goto(redirect)
         }
       })
-      .catch(console.error)
   }
 </script>
 
