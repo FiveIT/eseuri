@@ -24,11 +24,11 @@
 
 <LayoutContext let:theme>
   <div
-    class="w-notification_width bg-white  min-h-notification_height z-10 rounded border-2 fixed top-3/4 left-3/4 notification {text[
+    class="w-notification_width bg-white min-h-notification_height z-10 rounded fixed top-3/4 left-3/4 transition duration-50 ease-out {text[
       theme
     ]} {border.color[theme]} {border.size[theme]} {filterShadow[
       theme
-    ]} {background[theme]}"
+    ]} {background[theme]} text-sm font-sans antialiased"
     on:mouseenter={handleMouseOver}
     on:mouseleave={handleMouseOut}>
     {#if type === 'error'}
@@ -84,9 +84,3 @@
     {/if}
   </div>
 </LayoutContext>
-
-<style>
-  .notification {
-    transition: all 1s ease-in-out;
-  }
-</style>

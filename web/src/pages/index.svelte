@@ -64,10 +64,9 @@
     <Logo />
   </div>
   <Notification
-    white={true}
     type="error"
     message="Eroare"
-    explanation="Nu stiu" />
+    explanation="Am sarmale si ma mandresc cu acest lucru. Iti doresc o zi faina!" />
   <div class=" row-start-1 row-span-1 col-start-3 col-end-6 text-sm my-auto">
     <Search />
   </div>
