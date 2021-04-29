@@ -55,22 +55,31 @@
   import { text, border, filterShadow, background } from '$/theme'
   import { getLayout } from './Layout.svelte'
   import { px } from '$/util'
+  import { tick } from 'svelte'
 
   const { theme: themeStore } = getLayout()
 
   export let type: Status
-  export let message: string = 'Eroare'
-  export let explanation: string = ''
+  export let message = 'Eroare'
+  export let explanation = ''
 
-  let show: boolean = false
+  let detailsHeight: number
+  let parent: HTMLDivElement
 
-  function handleMouseOver() {
-    console.log('lala')
+  let show = false
+
+  async function handleMouseOver() {
     show = true
+
+    await tick()
+
+    parent.style.marginTop = `-${detailsHeight}px`
   }
 
   function handleMouseOut() {
     show = false
+
+    parent.style.marginTop = ''
   }
 
   $: theme = $themeStore
@@ -78,13 +87,14 @@
 </script>
 
 <div
-  class="w-notification_width bg-white min-h-notification_height z-10 rounded fixed top-3/4 left-3/4 transition duration-50 ease-out {text[
+  class="w-notification_width bg-white min-h-notification_height z-10 rounded fixed top-4/5 left-3/4 transition-all duration-50 ease-out {text[
     theme
   ]} {border.color[theme]} {border.size[theme]} {filterShadow[
     theme
   ]} {background[theme]} text-sm font-sans antialiased leading-none"
   on:mouseenter={handleMouseOver}
-  on:mouseleave={handleMouseOut}>
+  on:mouseleave={handleMouseOut}
+  bind:this={parent}>
   <div class="flex align-middle items-center flex-col">
     <div class="flex w-full flex-row my-sm px-sm">
       <svelte:component
@@ -96,7 +106,10 @@
       </p>
     </div>
     {#if show}
-      <p class="mx-sm mb-sm" transition:slide|local={{ easing, duration: 50 }}>
+      <p
+        class="mx-sm mb-sm origin-bottom"
+        bind:offsetHeight={detailsHeight}
+        transition:slide|local={{ easing, duration: 50 }}>
         {explanation}
       </p>
     {/if}
