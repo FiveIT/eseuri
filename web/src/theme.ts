@@ -27,3 +27,8 @@ export const filterShadow: ThemeEntry = {
   default: '',
   white: 'filter-shadow',
 }
+
+export const background: ThemeEntry = {
+  default: 'bg-white',
+  white: 'bg-blue',
+}

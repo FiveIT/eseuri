@@ -6,8 +6,13 @@
   --light-gray: #dadada;
   --gray: #939393;
   --black: #000000;
-  --blue: #485696;
+  --blue: #656d94;
+  --darkblue: #485696;
+  --red: #ff3f00;
+  --dark-green: #008148;
+  --light-green: #00e781;
   --row-height: 4.133rem;
+  --two-row-height: 6.266rem;
   --row-gap: 0.625rem;
   --column-width: 7.6rem;
   --essay-column-gap: 1.875rem;
