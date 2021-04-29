@@ -55,61 +55,63 @@
   import { text, border, filterShadow, background } from '$/theme'
   import { getLayout } from './Layout.svelte'
   import { px } from '$/util'
+  import { tick } from 'svelte'
 
   const { theme: themeStore } = getLayout()
 
   export let type: Status
-  export let message: string = 'Eroare'
-  export let explanation: string = ''
+  export let message = 'Eroare'
+  export let explanation = ''
 
-  let show: boolean = false
-  let hide: boolean = false
-  function handleMouseOver() {
+  let detailsHeight: number
+  let parent: HTMLDivElement
+
+  let show = false
+
+  async function handleMouseOver() {
     show = true
-    hide = true
+
+    await tick()
+
+    parent.style.marginTop = `-${detailsHeight}px`
   }
 
   function handleMouseOut() {
     show = false
+
+    parent.style.marginTop = ''
   }
 
   $: theme = $themeStore
   $: currentAssets = assets[type][theme]
 </script>
 
-{#if (!hide && !show) || show}
-  {setTimeout(function () {
-    if (type !== 'error') {
-      hide = true
-      show = false
-    }
-  }, 5000)}}
-  <div
-    class="w-notification_width bg-white min-h-notification_height z-10 rounded fixed top-3/4 left-3/4 transition duration-50 ease-out {text[
-      theme
-    ]} {border.color[theme]} {border.size[theme]} {filterShadow[
-      theme
-    ]} {background[theme]} text-sm font-sans antialiased leading-none"
-    transition:fade={{ duration: 500 }}
-    on:mouseenter={handleMouseOver}
-    on:mouseleave={handleMouseOut}>
-    <div class="flex align-middle items-center flex-col">
-      <div class="flex w-full flex-row my-sm px-sm">
-        <svelte:component
-          this={currentAssets.icon}
-          color="var(--{currentAssets.color})"
-          size={px(2.5)} />
-        <p class="mx-sm my-auto">
-          {message}
-        </p>
-      </div>
-      {#if show && explanation !== ''}
-        <p
-          class="mx-sm mb-sm"
-          transition:slide|local={{ easing, duration: 50 }}>
-          {explanation}
-        </p>
-      {/if}
+<div
+  class="w-notification_width bg-white min-h-notification_height z-10 rounded fixed top-4/5 left-3/4 transition-all duration-50 ease-out {text[
+    theme
+  ]} {border.color[theme]} {border.size[theme]} {filterShadow[
+    theme
+  ]} {background[theme]} text-sm font-sans antialiased leading-none"
+  on:mouseenter={handleMouseOver}
+  on:mouseleave={handleMouseOut}
+  bind:this={parent}>
+  <div class="flex align-middle items-center flex-col">
+    <div class="flex w-full flex-row my-sm px-sm">
+      <svelte:component
+        this={currentAssets.icon}
+        color="var(--{currentAssets.color})"
+        size={px(2.5)} />
+      <p class="mx-sm my-auto">
+        {message}
+      </p>
     </div>
+    {#if show}
+      <p
+        class="mx-sm mb-sm origin-bottom"
+        bind:offsetHeight={detailsHeight}
+        transition:slide|local={{ easing, duration: 50 }}>
+        {explanation}
+      </p>
+    {/if}
   </div>
 {/if}
