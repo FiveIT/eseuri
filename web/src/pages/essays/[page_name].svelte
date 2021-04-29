@@ -115,7 +115,6 @@
 
 <Layout {orangeBlobProps} {redBlobProps} {blueBlobProps}>
   <SlimNav />
-  <Notification type="good" />
   <div class="col-start-1 col-span-1 row-start-3 row-span-1">
     <button class="fixed mt-40">
       <Back size="4rem" color="var(--light-gray)" />
