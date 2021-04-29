@@ -7,6 +7,7 @@
   import Radio from '$/components/form/Radio.svelte'
   import Actions from '$/components/form/Actions.svelte'
   import Allow, { AUTHENTICATED } from '$/components/Allow.svelte'
+  import Notifications from '$/components/Notifications.svelte'
 
   import { goto, metatags } from '@roxi/routify'
   import { store as orange } from '$/components/blob/Orange.svelte'
@@ -112,6 +113,7 @@
         </Radio>
         <Actions slot="actions" submitValue="Sunt gata" />
       </Form>
+      <Notifications />
     </LayoutContext>
   </Layout>
 </Allow>
