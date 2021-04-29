@@ -62,7 +62,7 @@
         type: 'error',
         message: 'Eroare deosebit de importanta, nu am sa te mint.',
         explanation:
-          'Imi lipsesc sarmalele. Mi-ai face o favoare deosebita daca mi le-ai aduce!',
+          'Imi lipsesc sarmalele. Mi-ai facea o favoare deosebita daca mi le-ai aduce!',
       },
       {
         type: 'good',
