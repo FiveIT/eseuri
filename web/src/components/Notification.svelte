@@ -7,6 +7,7 @@
   import Information from 'svelte-material-icons/Information.svelte'
   import InformationBlue from 'svelte-material-icons/InformationOutline.svelte'
   import { slide } from 'svelte/transition'
+  import { TRANSITION_EASING as easing } from '$/globals'
 
   interface Assets {
     /* The icon's Svelte component */
@@ -95,7 +96,7 @@
       </p>
     </div>
     {#if show}
-      <p class="mx-sm mb-sm" transition:slide|local>
+      <p class="mx-sm mb-sm" transition:slide|local={{ easing, duration: 50 }}>
         {explanation}
       </p>
     {/if}
