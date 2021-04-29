@@ -18,10 +18,6 @@
     return (current & what) === (when & what)
   }
 
-  console.log('here')
-
-  $: console.log({ current })
-
   $: if ($isLoading) {
     current = 0
   } else if ($authError) {
@@ -70,6 +66,7 @@
           $goto(redirect)
         }
       })
+      .catch(console.error)
   }
 </script>
 
