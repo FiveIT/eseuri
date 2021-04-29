@@ -21,8 +21,11 @@
   import { go } from '$/components/Link.svelte'
 
   import type { BlobPropsInput, WorkType } from '$/types'
-  import content, { workTypeTranslation } from '$/content'
+  import { workTypeTranslation } from '$/lib/content'
   import type { Writable } from 'svelte/store'
+  import type { WorkSummary } from '$/graphql/types'
+
+  const content: WorkSummary[] = []
 
   let orangeBlobProps: BlobPropsInput
   $: orangeBlobProps = {

@@ -2,7 +2,7 @@
   import Cross from 'svelte-material-icons/Plus.svelte'
   import { isActive } from '@roxi/routify'
   import Link from './Link.svelte'
-  import { px } from '$/util'
+  import { px } from '$/lib/util'
 
   $: disable = $isActive('/upload_configure')
 </script>

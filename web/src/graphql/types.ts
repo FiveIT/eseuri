@@ -1,4 +1,4 @@
-import type { WorkType, WorkSummary } from '../types'
+import type { WorkType, WorkSummary } from '$/lib/types'
 
 export type { WorkType, WorkSummary }
 

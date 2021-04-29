@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { WorkType } from '$/types'
-  import { workTypeTranslation } from '$/content'
-  import { text, filterShadow } from '$/theme'
+  import type { WorkType } from '$/lib/types'
+  import { workTypeTranslation } from '$/lib/content'
+  import { text, filterShadow } from '$/lib/theme'
 
   import { getLayout } from './Layout.svelte'
 

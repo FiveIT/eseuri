@@ -5,8 +5,8 @@
   import {
     TRANSITION_DURATION as duration,
     TRANSITION_EASING as easing,
-  } from '$/globals'
-  import type { BlobPropsInput, Theme } from '$/types'
+  } from '$/lib/globals'
+  import type { BlobPropsInput, Theme } from '$/lib/types'
   import { onMount, setContext, getContext } from 'svelte'
   import type { Readable, Writable } from 'svelte/store'
   import { writable } from 'svelte/store'

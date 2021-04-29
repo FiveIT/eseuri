@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { text } from '$/theme'
+  import { text } from '$/lib/theme'
   import LayoutContext from './LayoutContext.svelte'
   import Link from './Link.svelte'
 

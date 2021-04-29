@@ -2,7 +2,7 @@
   import Link from './Link.svelte'
   import { getLayout } from './Layout.svelte'
   import { isActive } from '@roxi/routify'
-  import { text, filterShadow } from '$/theme'
+  import { text, filterShadow } from '$/lib/theme'
 
   const { theme: themeStore } = getLayout()
 

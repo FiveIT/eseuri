@@ -18,7 +18,7 @@
   import UploadVariantPlaceholder from '$/components/UploadVariantPlaceholder.svelte'
   import { store as window } from '$/components/Window.svelte'
   import type { BlobPropsInput } from '$/types'
-  import { px } from '$/util'
+  import { px } from '$/lib/util'
   import { goto } from '@roxi/routify'
   import { getContext } from 'svelte'
   import Docs from 'svelte-material-icons/FileDocumentBoxMultiple.svelte'

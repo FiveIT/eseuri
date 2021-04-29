@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { WorkType } from '$/types'
-  import { px } from '$/util'
+  import type { WorkType } from '$/lib/types'
+  import { px } from '$/lib/util'
   import { goto, isActive } from '@roxi/routify'
   import Search from 'svelte-material-icons/Magnify.svelte'
   import { go } from './Link.svelte'

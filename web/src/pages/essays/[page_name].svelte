@@ -83,7 +83,7 @@
   import { store as window } from '$/components/Window.svelte'
   import { setContext } from 'svelte'
 
-  import type { BlobPropsInput } from '$/types'
+  import type { BlobPropsInput } from '$/lib/types'
 
   export let page_name: string
 

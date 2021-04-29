@@ -4,7 +4,7 @@
   import {
     TRANSITION_EASING as easing,
     TRANSITION_DURATION as duration,
-  } from '$/globals'
+  } from '$/lib/globals'
   import type { BlobPropsInput } from './store'
 
   export let props: BlobPropsInput = {}

@@ -4,7 +4,7 @@
   import Bookmark from 'svelte-material-icons/Bookmark.svelte'
   import BookmarkOutline from 'svelte-material-icons/BookmarkOutline.svelte'
   import { contextKey } from '$/pages/essays/[page_name].svelte'
-  import { px } from '$/util'
+  import { px } from '$/lib/util'
 
   const ctx = getContext<Context>(contextKey)
   console.log(ctx)

@@ -4,10 +4,10 @@
   import Link from './Link.svelte'
   import LayoutContext from './LayoutContext.svelte'
 
-  import type { WorkSummary } from '$/types'
+  import type { WorkSummary } from '$/lib/types'
 
-  import { text, border, filterShadow } from '$/theme'
-  import { workTypeTranslation } from '$/content'
+  import { text, border, filterShadow } from '$/lib/theme'
+  import { workTypeTranslation } from '$/lib/content'
 
   let titleParent: HTMLElement
   let titleChild: HTMLElement

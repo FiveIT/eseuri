@@ -4,8 +4,8 @@
     Auth0LogoutButton,
     isAuthenticated,
   } from '@tmaxmax/svelte-auth0'
-  import type { Theme } from '$/types'
-  import { text, filterShadow } from '$/theme'
+  import type { Theme } from '$/lib/types'
+  import { text, filterShadow } from '$/lib/theme'
   import { getLayout } from './Layout.svelte'
 
   const { theme: themeStore } = getLayout()

@@ -1,8 +1,7 @@
 import { Client, defaultExchanges, subscriptionExchange } from '@urql/svelte'
 import { devtoolsExchange } from '@urql/devtools'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
-import { get } from 'svelte/store'
-import { authToken } from '@tmaxmax/svelte-auth0'
+import { getHeaders } from '$/lib/user'
 
 const url = `${import.meta.env.VITE_HASURA_GRAPHQL_ENDPOINT}/v1/graphql`
 
@@ -14,16 +13,6 @@ const getWSEndpoint = () => {
   }
 
   return `ws://${endpoint}`
-}
-
-const getHeaders = () => {
-  const token = get(authToken)
-
-  if (token) {
-    return { headers: { Authorization: `Bearer ${token}` } }
-  }
-
-  return {}
 }
 
 const subscriptionClient = new SubscriptionClient(getWSEndpoint(), {

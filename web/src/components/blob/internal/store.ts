@@ -1,7 +1,7 @@
 import {
   TRANSITION_DURATION as duration,
   TRANSITION_EASING as easing,
-} from '$/globals'
+} from '$/lib/globals'
 import { tweened } from 'svelte/motion'
 import type { Writable } from 'svelte/store'
 

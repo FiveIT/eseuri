@@ -11,7 +11,7 @@
   import TypeSelector from '$/components/TypeSelector.svelte'
   import { store as window } from '$/components/Window.svelte'
   import Works from '$/components/Works.svelte'
-  import type { BlobPropsInput, WorkType } from '$/types'
+  import type { BlobPropsInput, WorkType } from '$/lib/types'
   import { metatags } from '@roxi/routify'
   import { WORK_SUMMARIES } from '$/graphql/queries'
   import type { WorkSummaries, Data, Vars } from '$/graphql/types'
