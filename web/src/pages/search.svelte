@@ -16,6 +16,7 @@
   import TypeSelector from '$/components/TypeSelector.svelte'
   import debounce from 'lodash.debounce'
   import Notifications, { notify } from '$/components/Notifications.svelte'
+
   let q: string = $params.query?.trim() || ''
   let type: WorkType = isWorkType($params.type) ? $params.type : 'essay'
   let focusInput = () => {}

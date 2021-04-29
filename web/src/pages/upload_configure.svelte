@@ -20,7 +20,7 @@
   import { contextKey } from './upload.svelte'
   import { go } from '$/components/Link.svelte'
 
-  import type { BlobPropsInput, WorkType } from '$/types'
+  import type { BlobPropsInput, WorkType } from '$/lib/types'
   import { workTypeTranslation } from '$/lib/content'
   import type { Writable } from 'svelte/store'
   import type { WorkSummary } from '$/graphql/types'

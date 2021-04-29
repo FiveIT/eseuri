@@ -1,5 +1,5 @@
 <script context="module" lang="ts">
-  import type { Theme } from '$/types'
+  import type { Theme } from '$/lib/types'
   import Error from 'svelte-material-icons/AlertCircle.svelte'
   import ErrorBlue from 'svelte-material-icons/AlertCircleOutline.svelte'
   import Check from 'svelte-material-icons/CheckCircle.svelte'
@@ -9,7 +9,7 @@
   import {
     TRANSITION_EASING as easing,
     TRANSITION_DURATION as duration,
-  } from '$/globals'
+  } from '$/lib/globals'
   import { slide, fade } from 'svelte/transition'
 
   interface Assets {
@@ -79,9 +79,15 @@
 </script>
 
 <script lang="ts">
-  import { text, border, filterShadow, background, innerShadow } from '$/theme'
+  import {
+    text,
+    border,
+    filterShadow,
+    background,
+    innerShadow,
+  } from '$/lib/theme'
   import { getLayout } from './Layout.svelte'
-  import { px } from '$/util'
+  import { px } from '$/lib/util'
   import { tick } from 'svelte'
 
   const { theme: themeStore } = getLayout()

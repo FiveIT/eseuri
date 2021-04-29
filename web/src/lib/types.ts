@@ -1,7 +1,4 @@
-export type {
-  BlobPropsInput,
-  BlobFlipProps,
-} from './components/blob/internal/store'
+export type { BlobPropsInput } from '$/components/blob/internal/store'
 
 export type Role = 'student' | 'teacher'
 

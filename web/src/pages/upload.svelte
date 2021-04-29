@@ -17,7 +17,7 @@
   import Logo from '$/components/Logo.svelte'
   import UploadVariantPlaceholder from '$/components/UploadVariantPlaceholder.svelte'
   import { store as window } from '$/components/Window.svelte'
-  import type { BlobPropsInput } from '$/types'
+  import type { BlobPropsInput } from '$/lib/types'
   import { px } from '$/lib/util'
   import { goto } from '@roxi/routify'
   import { getContext } from 'svelte'
