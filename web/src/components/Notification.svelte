@@ -6,7 +6,10 @@
   import CheckBlue from 'svelte-material-icons/CheckCircleOutline.svelte'
   import Information from 'svelte-material-icons/Information.svelte'
   import InformationBlue from 'svelte-material-icons/InformationOutline.svelte'
-  import { TRANSITION_EASING as easing } from '$/globals'
+  import {
+    TRANSITION_EASING as easing,
+    TRANSITION_DURATION as duration,
+  } from '$/globals'
   import { slide, fade } from 'svelte/transition'
 
   interface Assets {
@@ -60,7 +63,7 @@
   const { theme: themeStore } = getLayout()
 
   export let type: Status
-  export let message = 'Eroare'
+  export let message: string
   export let explanation = ''
 
   let detailsHeight: number
@@ -87,31 +90,32 @@
 </script>
 
 <div
-  class="w-notification_width bg-white min-h-notification_height z-10 rounded fixed top-4/5 left-3/4 transition-all duration-50 ease-out {text[
+  class="w-notification bg-white min-h-notification z-10 rounded fixed top-4/5 left-3/4 transition-all duration-50 ease-out {text[
     theme
   ]} {border.color[theme]} {border.size[theme]} {filterShadow[
     theme
-  ]} {background[theme]} text-sm font-sans antialiased leading-none"
+  ]} {background[
+    theme
+  ]} text-sm font-sans antialiased leading-none flex flex-col"
   on:mouseenter={handleMouseOver}
   on:mouseleave={handleMouseOut}
-  bind:this={parent}>
-  <div class="flex align-middle items-center flex-col">
-    <div class="flex w-full flex-row my-sm px-sm">
-      <svelte:component
-        this={currentAssets.icon}
-        color="var(--{currentAssets.color})"
-        size={px(2.5)} />
-      <p class="mx-sm my-auto">
-        {message}
-      </p>
-    </div>
-    {#if show}
-      <p
-        class="mx-sm mb-sm origin-bottom"
-        bind:offsetHeight={detailsHeight}
-        transition:slide|local={{ easing, duration: 50 }}>
-        {explanation}
-      </p>
-    {/if}
+  bind:this={parent}
+  transition:fade={{ easing, duration }}>
+  <div class="flex w-full h-notification flex-row items-center px-sm">
+    <svelte:component
+      this={currentAssets.icon}
+      color="var(--{currentAssets.color})"
+      size={px(2.5)} />
+    <p class="mx-sm">
+      {message}
+    </p>
   </div>
-{/if}
+  {#if show && explanation !== ''}
+    <p
+      class="mx-sm mb-sm"
+      bind:offsetHeight={detailsHeight}
+      transition:slide={{ easing, duration: 50 }}>
+      {explanation}
+    </p>
+  {/if}
+</div>
