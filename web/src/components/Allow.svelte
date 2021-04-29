@@ -39,6 +39,8 @@
         if (status) {
           current |= REGISTERED
         }
+
+        return false
       })
       .catch(err => {
         console.error(err)
@@ -47,8 +49,15 @@
           status: 'error',
           message: 'A apărut o eroare internă, încearcă mai târziu.',
         })
+
+        $goto(redirect)
+
+        return true
       })
-      .finally(() => {
+      .then(redirected => {
+        if (redirected) {
+          return
+        }
         if (current !== when) {
           if (!check(AUTHENTICATED)) {
             notify({
