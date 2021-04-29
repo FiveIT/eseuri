@@ -62,8 +62,11 @@ export default defineConfig({
     },
     boxShadow: {
       soft: 'var(--shadow-soft)',
+      'inner-soft': 'inset var(--shadow-soft)',
       DEFAULT: 'var(--shadow)',
+      inner: 'inset var(--shadow)',
       large: 'var(--shadow-large)',
+      'inner-large': 'inset var(--shadow-large)',
       none: 'none',
     },
     gridAutoRows: {
@@ -114,6 +117,11 @@ export default defineConfig({
     ['0.02', '1'].map(v => `pt-${v}`),
     'px-sm',
     'py-xs',
+    'shadow',
+    'shadow-inner',
+    [].concat(
+      ...'soft,large'.split(',').map(v => [`shadow-${v}`, `shadow-inner-${v}`])
+    ),
   ],
   darkMode: false,
   preflight: true,
