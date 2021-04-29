@@ -28,6 +28,11 @@ export const filterShadow: ThemeEntry = {
   white: 'filter-shadow',
 }
 
+export const innerShadow: ThemeEntry = {
+  default: '',
+  white: 'shadow-inner-large',
+}
+
 export const background: ThemeEntry = {
   default: 'bg-white',
   white: 'bg-blue',
