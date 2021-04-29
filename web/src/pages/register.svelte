@@ -55,7 +55,7 @@
     form.forEach((v, k) => console.log({ [k]: v }))
 
     try {
-      const resp = await client
+      await client
         .mutation<Data<RegisterUser>, Vars<RegisterUser>>(REGISTER_USER, {
           userID: 1,
           firstName: form.get('first_name')!.toString(),
