@@ -21,6 +21,17 @@ export class RequestError extends Error {
 }
 
 export const isRegistered = async (): Promise<boolean> => {
+  await new Promise<void>(resolve => {
+    const handle = setTimeout(resolve, 5000)
+    const unsubscribe = authToken.subscribe(token => {
+      if (token) {
+        resolve()
+        clearTimeout(handle)
+        unsubscribe()
+      }
+    })
+  })
+
   const res = await fetch(`${endpoint}/isregistered`, {
     ...getHeaders(),
     cache: 'no-store',
