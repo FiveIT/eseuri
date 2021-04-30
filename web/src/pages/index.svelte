@@ -9,6 +9,7 @@
   import Search from '$/components/SearchBar.svelte'
   import UploadButton from '$/components/UploadButton.svelte'
   import TypeSelector from '$/components/TypeSelector.svelte'
+  import Spinner from '$/components/Spinner.svelte'
   import { store as window } from '$/components/Window.svelte'
   import Works from '$/components/Works.svelte'
   import type { BlobPropsInput, WorkType } from '$/lib/types'
@@ -85,6 +86,10 @@
   <TypeSelector bind:type rowStart={4} colStart={3} />
   {#if $content.data}
     <Works works={$content.data.work_summaries} />
+  {:else if $content.fetching}
+    <div class="row-start-5">
+      <Spinner />
+    </div>
   {/if}
   <Notifications />
 </Layout>
