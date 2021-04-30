@@ -2,7 +2,7 @@
   import Base from './internal/Base.svelte'
 
   export let name: string
-  export let options: any[] = []
+  export let options: readonly any[] = []
   // eslint-disable-next-line no-unused-vars
   export let displayModifier = (option: any, index: number) => option
 
