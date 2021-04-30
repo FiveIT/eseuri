@@ -3,7 +3,7 @@
   import { notify } from '$/components/Notifications.svelte'
   import Spinner from '$/components/Spinner.svelte'
   import * as user from '$/lib/user'
-  import { goto } from '@roxi/routify'
+  import { redirect as goto } from '@roxi/routify'
 
   import { fade } from 'svelte/transition'
   import {
@@ -96,7 +96,9 @@
             })
           }
         })
-        .catch(() => {
+        .catch(err => {
+          console.error(err)
+
           bail({
             status: 'error',
             message: 'A apărut o eroare internă, încearcă mai târziu.',
