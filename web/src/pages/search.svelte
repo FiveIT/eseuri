@@ -7,6 +7,7 @@
   import SlimNav from '$/components/SlimNav.svelte'
   import { store as window } from '$/components/Window.svelte'
   import Works from '$/components/Works.svelte'
+  import Spinner from '$/components/Spinner.svelte'
   import type { BlobPropsInput, WorkType } from '$/lib/types'
   import { isWorkType } from '$/lib/types'
   import { afterPageLoad, goto, params } from '@roxi/routify'
@@ -112,6 +113,10 @@
   <TypeSelector bind:type rowStart={3} colStart={5} />
   {#if $content.data}
     <Works {works} />
+  {:else if $content.fetching || $content.stale}
+    <div class="row-start-4 col-span-6 flex justify-center">
+      <Spinner />
+    </div>
   {/if}
   <Notifications />
 </Layout>

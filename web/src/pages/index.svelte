@@ -86,8 +86,8 @@
   <TypeSelector bind:type rowStart={4} colStart={3} />
   {#if $content.data}
     <Works works={$content.data.work_summaries} />
-  {:else if $content.fetching}
-    <div class="row-start-5">
+  {:else if $content.fetching || $content.stale}
+    <div class="row-start-5 col-span-6 flex justify-center">
       <Spinner />
     </div>
   {/if}
