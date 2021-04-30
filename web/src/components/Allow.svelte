@@ -1,8 +1,7 @@
 <script lang="ts">
-  import Loading from 'svelte-material-icons/Loading.svelte'
-
   import { isAuthenticated, authError, isLoading } from '@tmaxmax/svelte-auth0'
   import { notify } from '$/components/Notifications.svelte'
+  import Spinner from '$/components/Spinner.svelte'
   import * as user from '$/lib/user'
   import { goto } from '@roxi/routify'
 
@@ -11,6 +10,7 @@
     TRANSITION_EASING as easing,
     TRANSITION_DURATION as duration,
   } from '$/lib/globals'
+  import { onDestroy } from 'svelte'
 
   export let redirect: string
 
@@ -30,24 +30,26 @@
     }
   }
 
+  type Timeout = ReturnType<typeof setTimeout>
+
   let showSlot = false
   let showLoading = unregistered
-  let showLoadingHandle: ReturnType<typeof setTimeout> | undefined
+  let showLoadingHandle: Timeout | undefined
 
   if (!showLoading) {
     showLoadingHandle = setTimeout(() => (showLoading = true), 500)
   }
 
-  function clearLoading() {
+  function clear() {
     if (showLoadingHandle) {
       clearTimeout(showLoadingHandle)
     }
   }
 
-  function bail(notif: Parameters<typeof notify>[0]) {
-    clearLoading()
+  onDestroy(clear)
 
-    if (!dontNotify) {
+  function bail(notif: Parameters<typeof notify>[0] & { force?: boolean }) {
+    if (!dontNotify || notif.force) {
       notify(notif)
     }
 
@@ -55,8 +57,6 @@
   }
 
   function show() {
-    clearLoading()
-
     showSlot = true
   }
 
@@ -65,6 +65,7 @@
       status: 'error',
       message: 'A apărut o eroare la autentificare',
       explanation: 'Încearcă să revii mai târziu, este o problemă de moment.',
+      force: true,
     })
   } else if (!$isLoading) {
     if (!$isAuthenticated && authenticated) {
@@ -99,6 +100,7 @@
           bail({
             status: 'error',
             message: 'A apărut o eroare internă, încearcă mai târziu.',
+            force: true,
           })
         })
     } else {
@@ -113,15 +115,6 @@
   <div
     class="flex flex-col space-md w-screen h-screen justify-center items-center bg-white"
     transition:fade={{ duration, easing }}>
-    <p class="font-sans text-md antialiased text-gray">
-      Te rugăm să aștepți...
-    </p>
-
-    <div class="animate-spin-a w-4em h-4em">
-      <Loading color="var(--light-gray)" size="100%" />
-    </div>
-    <div class="animate-spin-b w-4em h-4em relative -top-4em">
-      <Loading color="var(--gray)" size="100%" />
-    </div>
+    <Spinner message="Te rugăm să aștepți..." />
   </div>
 {/if}
