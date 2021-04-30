@@ -16,23 +16,17 @@ export const getHeaders = () => {
   return {}
 }
 
-export class RequestError extends Error {
-  // eslint-disable-next-line no-unused-vars
-  constructor(public status: number, public message: string) {
-    super(message)
-  }
-}
-
 export const isRegistered = async (): Promise<boolean> => {
   const resp = await client
-    .query<Data<UserUpdatedAt>, Vars<UserUpdatedAt>>(USER_UPDATED_AT)
+    .query<Data<UserUpdatedAt>, Vars<UserUpdatedAt>>(
+      USER_UPDATED_AT,
+      undefined,
+      { requestPolicy: 'network-only' }
+    )
     .toPromise()
 
   if (resp.error) {
-    throw new RequestError(
-      500,
-      'A apărut o eroare internă.\nÎncearcă mai târziu, se va rezolva până atunci!'
-    )
+    throw resp.error
   }
 
   return resp.data!.users[0].updated_at !== null
