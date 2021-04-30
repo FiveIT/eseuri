@@ -85,7 +85,7 @@
   }
 </script>
 
-<Allow authenticated redirect="/">
+<Allow unregistered redirect="/" dontNotify>
   <Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} blurBackground>
     <LayoutContext let:alive>
       <SlimNav logoOnly />
