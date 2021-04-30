@@ -37,8 +37,7 @@ func New() *fiber.App {
 	r.Use(logger.Middleware(graphQLClient))
 	r.Use(auth.Middleware())
 
-	r.Post("/upload", auth.AssertRegistration, routes.Upload(tikaClient, graphQLClient))
-	r.Get("/isregistered", routes.IsRegistered(graphQLClient))
+	r.Post("/upload", auth.AssertRegistration(graphQLClient), routes.Upload(tikaClient, graphQLClient))
 
 	return app
 }
