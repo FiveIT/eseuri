@@ -23,7 +23,12 @@ type GraphQLRequestOptions struct {
 	Promote bool
 }
 
-func (g GraphQLRequestOptions) process() GraphQLRequestOptions {
+func (g *GraphQLRequestOptions) process() {
+	if g == nil {
+		//nolint:exhaustivestruct
+		*g = GraphQLRequestOptions{}
+	}
+
 	if g.Context == nil {
 		g.Context = context.Background()
 	}
@@ -36,21 +41,18 @@ func (g GraphQLRequestOptions) process() GraphQLRequestOptions {
 		g.Headers["X-Hasura-Admin-Secret"] = meta.HasuraAdminSecret
 		g.Headers["X-Hasura-Use-Backend-Only-Permissions"] = "true"
 	}
-
-	return g
 }
 
 // GraphQLRequest does a GraphQL request with the given client. It unmarshals the response in the out parameter,
 // and using the optional opts parameter it can also take a context, additional headers, and variables.
 // Only the first options object is used!
 func GraphQLRequest(c *graphql.Client, query string, opts ...GraphQLRequestOptions) error {
-	//nolint:exhaustivestruct
-	config := GraphQLRequestOptions{}
+	var config *GraphQLRequestOptions
 	if len(opts) != 0 {
-		config = opts[0]
+		config = &opts[0]
 	}
 
-	config = config.process()
+	config.process()
 
 	req := graphql.NewRequest(query)
 
@@ -69,23 +71,23 @@ func GraphQLRequest(c *graphql.Client, query string, opts ...GraphQLRequestOptio
 func HandleGraphQLError(c *fiber.Ctx, err error) error {
 	if errVal := err.Error(); strings.Contains(errVal, "graphql:") {
 		if !strings.Contains(errVal, "server returned a non-200 status code") {
-			return SendError(c, http.StatusBadRequest, "your request failed", err)
+			return SendError(c, fiber.StatusBadRequest, "interogare invalidă a bazei de date", err)
 		}
 	}
 
 	return fmt.Errorf("failed to communicate with the database: %w", err)
 }
 
-const showGQLLogsHeaderKey = "X-Eseuri-Show-GraphQL-Logs"
+const headerShowGraphQLLogs = "X-Eseuri-Show-GraphQL-Logs"
 
 // ShowGraphQLClientLogs sets a request header that will
 // tell the application to enable logs for the GraphQL client.
 func ShowGraphQLClientLogs(req *http.Request) {
-	req.Header.Set(showGQLLogsHeaderKey, "true")
+	req.Header.Set(headerShowGraphQLLogs, "true")
 }
 
 // ShouldShowGraphQLClientLogs returns true if GraphQL
 // logs should be enabled in the current context.
 func ShouldShowGraphQLClientLogs(c *fiber.Ctx) bool {
-	return c.Get(showGQLLogsHeaderKey, "") == "true"
+	return c.Get(headerShowGraphQLLogs, "") == "true"
 }
