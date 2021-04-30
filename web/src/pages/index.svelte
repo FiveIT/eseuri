@@ -66,23 +66,20 @@
   {redBlobProps}
   {blueBlobProps}
   transition={{ y: 1000 }}>
-  <div
-    class="row-start-1 row-span-1 col-start-1  col-span-1 my-auto select-none">
-    <Logo />
-  </div>
-  <div class=" row-start-1 row-span-1 col-start-3 col-end-6 text-sm my-auto">
+  <Logo />
+  <div class="col-start-3 col-end-6 my-auto">
     <Search />
   </div>
-  <div class="w-full h-full row-start-1 row-span-1 col-start-6 col-span-1">
+  <div class="col-start-6">
     <LoginButton theme="white" />
   </div>
-  <div class="col-start-4 col-end-5 row-start-2 w-full h-full text-sm my-auto ">
+  <div class="col-start-4 my-auto">
     <Buton disable theme="white">Plagiat</Buton>
   </div>
-  <div class="col-start-5 col-end-6 row-start-2 w-full h-full text-sm my-auto">
+  <div class="col-start-5 my-auto">
     <Buton disable theme="white">Profesori</Buton>
   </div>
-  <div class="col-span-1 col-start-6 row-span-1 row-start-3 place-self-center">
+  <div class="col-start-6 row-start-3 place-self-center">
     <UploadButton />
   </div>
   <TypeSelector bind:type rowStart={4} colStart={3} />
