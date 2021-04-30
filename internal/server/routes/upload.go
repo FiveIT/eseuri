@@ -20,7 +20,7 @@ import (
 
 func handleFormFileError(c *fiber.Ctx, err error) error {
 	if errors.Is(err, fasthttp.ErrMissingFile) {
-		return helpers.SendError(c, fiber.StatusBadRequest, "missing file", err)
+		return helpers.SendError(c, fiber.StatusBadRequest, "nu ai încărcat un fișier", err)
 	}
 
 	return fmt.Errorf("failed to get form file: %w", err)
@@ -29,7 +29,7 @@ func handleFormFileError(c *fiber.Ctx, err error) error {
 func getWorkSupertypeQuery(c *fiber.Ctx, workType string) (string, error) {
 	query, ok := gqlqueries.InsertWorkSupertype[workType]
 	if !ok {
-		return "", helpers.SendError(c, http.StatusBadRequest, fmt.Sprintf("invalid work type %q", workType), nil)
+		return "", helpers.SendError(c, fiber.StatusBadRequest, "tipul lucrării selectat este invalid", nil)
 	}
 
 	return query, nil
@@ -72,7 +72,7 @@ func parseFormFile(c *fiber.Ctx, client *tika.Client) (string, error) {
 
 		body = s.String()
 	default:
-		return "", helpers.SendError(c, http.StatusBadRequest, "invalid form content file type", nil)
+		return "", helpers.SendError(c, http.StatusBadRequest, "tipul fișierului încărcat nu este suportat", nil)
 	}
 
 	return body, nil
@@ -133,7 +133,7 @@ func Upload(tikaClient *tika.Client, graphQLClient *graphql.Client) fiber.Handle
 
 		// Va trece de eroarea asta chiar daca nu sunt prezente toate campurile formularului
 		if err := c.BodyParser(&workInput); err != nil {
-			return helpers.SendError(c, http.StatusBadRequest, "couldn't parse form", err)
+			return helpers.SendError(c, http.StatusBadRequest, "formularul de încărcare este invalid", err)
 		}
 
 		supertypeQuery, err := getWorkSupertypeQuery(c, workInput.Type)
