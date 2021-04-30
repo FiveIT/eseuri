@@ -93,6 +93,10 @@ export default defineConfig({
       minHeight: {
         notification: 'var(--row-height)',
       },
+      animation: {
+        'spin-a': 'spin 1s ease-in-out infinite',
+        'spin-b': 'spin 1s cubic-bezier(.36,.14,.5,1) infinite',
+      },
     },
   },
   safelist: [
