@@ -10,7 +10,7 @@ import { devtoolsExchange } from '@urql/devtools'
 import { retryExchange } from '@urql/exchange-retry'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
 import { getHeaders } from '$/lib/user'
-import type { OperationDefinitionNode } from 'graphql'
+import type { OperationDefinitionNode, FieldNode } from 'graphql'
 
 const url = `${import.meta.env.VITE_HASURA_GRAPHQL_ENDPOINT}/v1/graphql`
 
@@ -63,7 +63,9 @@ const exchanges = [
           def.kind === 'OperationDefinition'
       )!
       const name =
-        query.name?.value || query.directives?.[0].name.value || 'unknown'
+        query.name?.value ||
+        (query.selectionSet.selections[0] as FieldNode).name?.value ||
+        'unknown'
 
       console.error(`Encountered GraphQL error on operation "${name}":`, {
         error,
