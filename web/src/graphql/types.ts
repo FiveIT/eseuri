@@ -11,7 +11,11 @@ type QueryData<Name extends string, Data> = Nullable<
   }
 >
 
-type Query<Name extends string, Data, Vars> = {
+interface Typename {
+  __typename: string
+}
+
+type Query<Name extends string, Data = Typename, Vars = object> = {
   vars: Vars
   data: QueryData<Name, Data>
 }
@@ -56,3 +60,5 @@ export type RegisterUser = Query<
   { affected_rows: number },
   RegisterUserVars
 >
+
+export type UserUpdatedAt = Query<'users', [{ updated_at: string | null }]>

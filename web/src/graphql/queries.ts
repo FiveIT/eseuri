@@ -56,3 +56,11 @@ export const REGISTER_USER = gql`
     }
   }
 `
+
+export const USER_UPDATED_AT = gql`
+  query userUpdatedAt {
+    users(where: {}) {
+      updated_at
+    }
+  }
+`

@@ -1,7 +1,10 @@
 import { authToken } from '@tmaxmax/svelte-auth0'
 import { get } from 'svelte/store'
+import client from '$/graphql/client'
+import type { Data, UserUpdatedAt, Vars } from '$/graphql/types'
+import { USER_UPDATED_AT } from '$/graphql/queries'
 
-const endpoint = import.meta.env.VITE_FUNCTIONS_URL as string
+// const endpoint = import.meta.env.VITE_FUNCTIONS_URL as string
 
 export const getHeaders = () => {
   const token = get(authToken)
@@ -21,33 +24,16 @@ export class RequestError extends Error {
 }
 
 export const isRegistered = async (): Promise<boolean> => {
-  await new Promise<void>(resolve => {
-    const handle = setTimeout(resolve, 5000)
-    const unsubscribe = authToken.subscribe(token => {
-      if (token) {
-        resolve()
-        clearTimeout(handle)
-        unsubscribe()
-      }
-    })
-  })
+  const resp = await client
+    .query<Data<UserUpdatedAt>, Vars<UserUpdatedAt>>(USER_UPDATED_AT)
+    .toPromise()
 
-  const res = await fetch(`${endpoint}/isregistered`, {
-    ...getHeaders(),
-    cache: 'no-store',
-  })
-
-  if (!res.ok) {
-    if (res.status === 400 || res.status === 401) {
-      return false
-    }
-
-    const { error } = await res.json()
-
-    throw new RequestError(res.status, error)
+  if (resp.error) {
+    throw new RequestError(
+      500,
+      'A apărut o eroare internă.\nÎncearcă mai târziu, se va rezolva până atunci!'
+    )
   }
 
-  const { isRegistered } = await res.json()
-
-  return isRegistered
+  return resp.data!.users[0].updated_at !== null
 }
