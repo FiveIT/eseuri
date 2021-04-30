@@ -50,8 +50,7 @@
     notify({
       status: 'error',
       message: 'Căutarea a eșuat',
-      explanation:
-        'Este o eroare internă, revino mai târziu - va fi rezolvată până atunci!',
+      explanation: `Este o eroare internă, revino mai târziu - va fi rezolvată până atunci!`,
     })
   }
 
