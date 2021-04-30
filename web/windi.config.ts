@@ -123,7 +123,4 @@ export default defineConfig({
       ...'soft,large'.split(',').map(v => [`shadow-${v}`, `shadow-inner-${v}`])
     ),
   ],
-  darkMode: false,
-  preflight: true,
-  transformCSS: 'post',
 })
