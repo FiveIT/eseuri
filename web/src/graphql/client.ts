@@ -1,7 +1,16 @@
-import { Client, defaultExchanges, subscriptionExchange } from '@urql/svelte'
+import {
+  Client,
+  dedupExchange,
+  cacheExchange,
+  fetchExchange,
+  errorExchange,
+  subscriptionExchange,
+} from '@urql/svelte'
 import { devtoolsExchange } from '@urql/devtools'
+import { retryExchange } from '@urql/exchange-retry'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
 import { getHeaders } from '$/lib/user'
+import type { OperationDefinitionNode } from 'graphql'
 
 const url = `${import.meta.env.VITE_HASURA_GRAPHQL_ENDPOINT}/v1/graphql`
 
@@ -22,10 +31,43 @@ const subscriptionClient = new SubscriptionClient(getWSEndpoint(), {
 })
 
 const exchanges = [
-  ...defaultExchanges,
+  dedupExchange,
+  cacheExchange,
+  retryExchange({
+    retryIf(errors) {
+      if (errors.networkError) {
+        return true
+      }
+
+      const [err] = errors.graphQLErrors
+      const code = err.extensions?.code || ''
+
+      switch (code) {
+        case 'invalid-jwt':
+          return true
+      }
+
+      return false
+    },
+  }),
+  fetchExchange,
   subscriptionExchange({
     forwardSubscription(operation) {
       return subscriptionClient.request(operation)
+    },
+  }),
+  errorExchange({
+    onError(error, operation) {
+      const query = operation.query.definitions.find(
+        (def): def is OperationDefinitionNode =>
+          def.kind === 'OperationDefinition'
+      )!
+      const name =
+        query.name?.value || query.directives?.[0].name.value || 'unknown'
+
+      console.error(`Encountered GraphQL error on operation "${name}":`, {
+        error,
+      })
     },
   }),
 ]
