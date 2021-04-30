@@ -1,6 +1,6 @@
 import type { Theme } from './types'
 
-type ThemeEntry = Record<Theme, string>
+export type ThemeEntry = Record<Theme, string>
 
 export const text: ThemeEntry = {
   default: 'text-black',
