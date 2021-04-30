@@ -6,7 +6,7 @@
   import Text from '$/components/form/Text.svelte'
   import Radio from '$/components/form/Radio.svelte'
   import Actions from '$/components/form/Actions.svelte'
-  import Allow, { AUTHENTICATED } from '$/components/Allow.svelte'
+  import Allow from '$/components/Allow.svelte'
   import Notifications, { notify } from '$/components/Notifications.svelte'
 
   import { goto, metatags } from '@roxi/routify'
@@ -85,7 +85,7 @@
   }
 </script>
 
-<Allow when={AUTHENTICATED} redirect="/">
+<Allow authenticated redirect="/">
   <Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} blurBackground>
     <LayoutContext let:alive>
       <SlimNav logoOnly />

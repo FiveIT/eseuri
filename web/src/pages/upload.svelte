@@ -21,7 +21,7 @@
   import { px } from '$/lib/util'
   import { goto } from '@roxi/routify'
   import { getContext } from 'svelte'
-  import Allow, { AUTHENTICATED, REGISTERED } from '$/components/Allow.svelte'
+  import Allow from '$/components/Allow.svelte'
   import Docs from 'svelte-material-icons/FileDocumentBoxMultiple.svelte'
   import GoogleDocs from 'svelte-material-icons/FileDocumentOutline.svelte'
   import Doodle from 'svelte-material-icons/Gesture.svelte'
@@ -53,7 +53,7 @@
   const ctx = getContext<Context>(contextKey)
 </script>
 
-<Allow when={AUTHENTICATED | REGISTERED} redirect="/">
+<Allow registered redirect="/">
   <Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} center>
     <LayoutContext let:alive>
       <div
