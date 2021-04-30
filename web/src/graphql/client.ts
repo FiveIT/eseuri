@@ -34,17 +34,21 @@ const exchanges = [
   dedupExchange,
   cacheExchange,
   retryExchange({
-    retryIf(errors) {
-      if (errors.networkError) {
+    retryIf(error) {
+      if (error.networkError) {
         return true
       }
 
-      const [err] = errors.graphQLErrors
+      const [err] = error.graphQLErrors
       const code = err.extensions?.code || ''
 
       switch (code) {
         case 'invalid-jwt':
           return true
+        case 'validation-failed':
+          return error.message.includes(
+            `field "updated_at" not found in type: 'users'`
+          )
       }
 
       return false
