@@ -64,3 +64,21 @@ export const USER_UPDATED_AT = gql`
     }
   }
 `
+
+export const TITLES = gql`
+  query getTitles {
+    titles {
+      id
+      name
+    }
+  }
+`
+
+export const CHARACTERS = gql`
+  query getCharacters {
+    characters {
+      id
+      name
+    }
+  }
+`

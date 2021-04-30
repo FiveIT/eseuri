@@ -62,3 +62,16 @@ export type RegisterUser = Query<
 >
 
 export type UserUpdatedAt = Query<'users', [{ updated_at: string | null }]>
+
+interface ID {
+  id: number
+}
+
+interface Namer {
+  name: string
+}
+
+type Subject = ID & Namer
+
+export type Characters = Query<'characters', Subject[]>
+export type Titles = Query<'titles', Subject[]>
