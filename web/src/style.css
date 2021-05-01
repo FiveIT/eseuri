@@ -17,6 +17,9 @@
     var(--column-width) * 3 + var(--essay-column-gap) * 2
   );
   --association-box-height: calc(var(--row-height) * 5 + var(--row-gap) * 4);
+  --delete-box-width: calc(
+    var(--column-width) * 4 + var(--essay-column-gap) * 4
+  );
 }
 
 html {

@@ -56,6 +56,7 @@ export default defineConfig({
       xlg: '6.5vmin',
       associationboxwidth: 'var(--association-box-width)',
       associationboxheight: 'var(--association-box-height)',
+      deleteboxwidth: 'var(--delete-box-width)',
     },
     borderRadius: {
       DEFAULT: '0.625rem',
