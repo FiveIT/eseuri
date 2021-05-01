@@ -23,40 +23,29 @@
 
   import type { BlobPropsInput, WorkType } from '$/lib/types'
   import { workTypeTranslation } from '$/lib/content'
+  import { uploadWork, RequestError } from '$/lib/user'
   import type { Writable } from 'svelte/store'
 
-  import client from '$/graphql/client'
-
-  import { pipe, map, toArray, fromArray, mergeAll } from 'wonka'
-
+  import { operationStore, query } from '@urql/svelte'
   import { TITLES, CHARACTERS } from '$/graphql/queries'
   import type { Titles, Characters, Data } from '$/graphql/types'
 
-  const titles = pipe(
-    client.query<Data<Titles>>(TITLES),
-    map(res => fromArray(res.error ? [] : res.data!.titles)),
-    mergeAll,
-    toArray
-  )
+  const titles = operationStore<Data<Titles>>(TITLES)
+  query(titles)
 
-  const characters = pipe(
-    client.query<Data<Characters>>(CHARACTERS),
-    map(res => fromArray(res.error ? [] : res.data!.characters)),
-    mergeAll,
-    toArray
-  )
+  const characters = operationStore<Data<Characters>>(CHARACTERS)
+  query(characters)
 
-  const subjects = {
-    essay: titles,
-    characterization: characters,
-  } as const
+  $: subjects = {
+    essay: $titles.data?.titles || [],
+    characterization: $characters.data?.characters || [],
+  }
 
-  const failedSubjectQuery = Object.values(subjects).some(s => s.length === 0)
-  if (failedSubjectQuery) {
+  $: if ($titles.error || $characters.error) {
     notify({
       status: 'error',
-      message: 'Nu s-au putut obține subiectele pentru lucrări',
-      explanation: `Reîmprospătează pagina și dacă tot nu merge încearcă mai târziu`,
+      message: 'Nu s-au putut obține subiectele pentru lucrări.',
+      explanation: `Reîncearcă mai târziu să încarci o lucrare, problema va fi în curând rezolvată!`,
     })
   }
 
@@ -96,10 +85,35 @@
     ctx.file = null
   }
 
-  function onSubmit(alive: Writable<boolean>) {
-    const form = new FormData(formElement)
-    form.append('file', ctx.file!)
-    form.forEach((v, k) => console.log({ [k]: v }))
+  async function onSubmit(alive: Writable<boolean>) {
+    try {
+      const form = new FormData(formElement)
+      form.append('file', ctx.file!)
+
+      await uploadWork(form)
+
+      notify({
+        status: 'success',
+        message: 'Lucrarea ta a fost încărcată cu succes!',
+        explanation: `Va fi publică în scurt timp, după ce a fost revizuită de un profesor.`,
+      })
+    } catch (err) {
+      if (err instanceof RequestError) {
+        notify({
+          status: 'error',
+          message: err.message,
+          explanation: err.explanation,
+        })
+      } else {
+        console.error(err)
+
+        notify({
+          status: 'error',
+          message: 'Ceva neașteptat s-a întâmplat, încearcă mai târziu.',
+        })
+      }
+    }
+
     removeFile()
     go('/', alive, $goto)
   }
@@ -129,7 +143,9 @@
           placeholder="Alege {currentWorkType === 'essay'
             ? 'titlul'
             : 'numele personajului'}..."
-          options={subjects[currentWorkType]}
+          options={subjects[currentWorkType] || []}
+          mapper={v => v.id}
+          display={v => v.name}
           required>
           {currentWorkType === 'essay' ? 'Titlu' : 'Caracter'}
         </Select>
