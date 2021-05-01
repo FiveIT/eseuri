@@ -101,7 +101,9 @@ export default defineConfig({
   },
   safelist: [
     'underline',
-    [].concat(...['white', 'black'].map(v => [`text-${v}`, `border-${v}`])),
+    [].concat(
+      ...['white', 'black', 'gray'].map(v => [`text-${v}`, `border-${v}`])
+    ),
     [2, 3].map(v => `border-${v}`),
     ...Array.from({ length: 6 }, (_, i) =>
       ['row', 'col'].map(v => `${v}-start-${i + 1}`)
