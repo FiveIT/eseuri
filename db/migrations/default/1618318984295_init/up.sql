@@ -3747,7 +3747,7 @@ VALUES (34, 11, 'Act venețian');
 INSERT INTO "titles" ("id", "author_id", "name")
 VALUES (35, 12, 'Enigma Otiliei');
 INSERT INTO "titles" ("id", "author_id", "name")
-VALUES (36, 12, 'Beitul Ioanide');
+VALUES (36, 12, 'Bietul Ioanide');
 INSERT INTO "titles" ("id", "author_id", "name")
 VALUES (37, 13, 'Moromeții');
 INSERT INTO "titles" ("id", "author_id", "name")
