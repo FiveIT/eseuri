@@ -13,6 +13,10 @@
   --essay-column-gap: 1.875rem;
   --essay-column-width: calc(var(--column-width) * 2 + var(--essay-column-gap));
   --essay-row-heigth: calc(var(--row-height) * 2 + var(--row-gap));
+  --association-box-width: calc(
+    var(--column-width) * 3 + var(--essay-column-gap) * 2
+  );
+  --association-box-height: calc(var(--row-height) * 5 + var(--row-gap) * 4);
 }
 
 html {
