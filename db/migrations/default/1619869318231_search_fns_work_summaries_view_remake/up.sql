@@ -39,13 +39,13 @@ $$ language plpgsql;
 
 drop view work_summaries;
 create view work_summaries as
-select name, to_url(name) url, creator, type, count(work_id) work_count, id
+select name, to_url(name) url, creator, type, count(work_id) filter (where status = 'approved') work_count, id
 from (
          select t.id                                               as id,
                 t.name                                             as name,
                 get_name(a.first_name, a.middle_name, a.last_name) as creator,
                 e.work_id                                          as work_id,
-                w.status as status,
+                w.status                                           as status,
                 'essay'                                            as type
          from titles t
                   left join authors a on t.author_id = a.id
@@ -63,7 +63,6 @@ from (
                   left join characterizations c2 on c.id = c2.character_id
                   left join works w2 on c2.work_id = w2.id
      ) as q
-where status = 'approved'
 group by id, name, creator, type
 order by work_count, name, creator, type;
 
@@ -73,7 +72,12 @@ $$
 begin
     return query
         select name, url, creator, type, work_count, id
-        from (select *,
+        from (select w.name,
+                     url,
+                     creator,
+                     type,
+                     work_count,
+                     w.id,
                      match_text(query, w.name, fuzziness)                                             mn,
                      match_text(query, w.creator, fuzziness)                                          mc,
                      match_text(query, get_name(a.first_name, a.middle_name, a.last_name), fuzziness) ma
@@ -94,6 +98,8 @@ create function find_schools(query text, countyCode varchar(2), fuzziness int de
     stable strict as
 $$
 begin
+    countyCode := upper(countyCode);
+
     return query
         select id, name, short_name, county_id
         from (select *,
