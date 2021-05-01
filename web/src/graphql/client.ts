@@ -33,6 +33,22 @@ const subscriptionClient = new SubscriptionClient(getWSEndpoint(), {
 const exchanges = [
   dedupExchange,
   cacheExchange,
+  errorExchange({
+    onError(error, operation) {
+      const query = operation.query.definitions.find(
+        (def): def is OperationDefinitionNode =>
+          def.kind === 'OperationDefinition'
+      )!
+      const name =
+        query.name?.value ||
+        (query.selectionSet.selections[0] as FieldNode).name?.value ||
+        'unknown'
+
+      console.error(`Encountered GraphQL error on operation "${name}":\n`, {
+        error,
+      })
+    },
+  }),
   retryExchange({
     retryIf(error) {
       if (error.networkError) {
@@ -58,22 +74,6 @@ const exchanges = [
   subscriptionExchange({
     forwardSubscription(operation) {
       return subscriptionClient.request(operation)
-    },
-  }),
-  errorExchange({
-    onError(error, operation) {
-      const query = operation.query.definitions.find(
-        (def): def is OperationDefinitionNode =>
-          def.kind === 'OperationDefinition'
-      )!
-      const name =
-        query.name?.value ||
-        (query.selectionSet.selections[0] as FieldNode).name?.value ||
-        'unknown'
-
-      console.error(`Encountered GraphQL error on operation "${name}":`, {
-        error,
-      })
     },
   }),
 ]
