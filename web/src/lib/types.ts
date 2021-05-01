@@ -12,6 +12,7 @@ export function isWorkType(s: string): s is WorkType {
 
 export interface WorkSummary {
   readonly name: string
+  readonly url: string
   readonly creator: string
   readonly type: WorkType
   readonly work_count: number
