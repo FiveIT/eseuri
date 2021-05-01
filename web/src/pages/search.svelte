@@ -13,7 +13,6 @@
   import { afterPageLoad, goto, params } from '@roxi/routify'
   import { operationStore, query } from '@urql/svelte'
   import { SEARCH_WORK_SUMMARIES } from '$/graphql/queries'
-  import type { SearchWorkSummaries, Data, Vars } from '$/graphql/types'
   import TypeSelector from '$/components/TypeSelector.svelte'
   import debounce from 'lodash.debounce'
   import Notifications, { notify } from '$/components/Notifications.svelte'
@@ -22,30 +21,17 @@
   let type: WorkType = isWorkType($params.type) ? $params.type : 'essay'
   let focusInput = () => {}
 
-  const content = operationStore<
-    Data<SearchWorkSummaries>,
-    Vars<SearchWorkSummaries>
-  >(SEARCH_WORK_SUMMARIES, {
-    query: `${q}%` as const,
-    type,
-  })
-
-  query(content)
+  const content = query(
+    operationStore(SEARCH_WORK_SUMMARIES, {
+      query: q,
+      type,
+    })
+  )
 
   $: $content.variables = {
-    query: `${q}%` as const,
+    query: q,
     type,
   }
-
-  $: works = $content.data?.work_summaries
-    .map(value => ({
-      value,
-      matchesOnName: +value.name
-        .toLocaleLowerCase('ro-RO')
-        .startsWith(q.toLocaleLowerCase('ro-RO')),
-    }))
-    .sort((a, b) => b.matchesOnName - a.matchesOnName)
-    .map(v => v.value)
 
   $: if ($content.error) {
     notify({
@@ -112,7 +98,7 @@
   </div>
   <TypeSelector bind:type rowStart={3} colStart={5} />
   {#if $content.data}
-    <Works {works} />
+    <Works works={$content.data.find_work_summaries} />
   {:else if $content.fetching || $content.stale}
     <div class="row-start-4 col-span-6 flex justify-center">
       <Spinner />
