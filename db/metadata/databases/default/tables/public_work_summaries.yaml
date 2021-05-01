@@ -14,25 +14,28 @@ object_relationships:
 select_permissions:
 - permission:
     columns:
-    - work_count
     - creator
     - name
     - type
+    - url
+    - work_count
     filter: {}
   role: anonymous
 - permission:
     columns:
-    - work_count
     - creator
     - name
     - type
+    - url
+    - work_count
     filter: {}
   role: student
 - permission:
     columns:
-    - name
     - creator
+    - name
     - type
+    - url
     - work_count
     filter: {}
   role: teacher
