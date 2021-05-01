@@ -2,6 +2,15 @@ table:
   name: teacher_student_associations
   schema: public
 object_relationships:
+- name: initiator
+  using:
+    manual_configuration:
+      column_mapping:
+        initiator_id: id
+      insertion_order: null
+      remote_table:
+        name: users
+        schema: public
 - name: student
   using:
     foreign_key_constraint_on: student_id
