@@ -39,11 +39,11 @@ export type WorkSummaries = Query<
 >
 
 interface SearchWorkSummariesVars extends WorkSummariesVars {
-  query: `${string}%`
+  query: string
 }
 
 export type SearchWorkSummaries = Query<
-  'work_summaries',
+  'find_work_summaries',
   WorkSummary[],
   SearchWorkSummariesVars
 >
