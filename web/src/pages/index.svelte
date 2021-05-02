@@ -15,7 +15,6 @@
   import type { BlobPropsInput, WorkType } from '$/lib/types'
   import { metatags } from '@roxi/routify'
   import { WORK_SUMMARIES } from '$/graphql/queries'
-  import type { WorkSummaries, Data, Vars } from '$/graphql/types'
   import { operationStore, query } from '@urql/svelte'
   import Notifications, { notify } from '$/components/Notifications.svelte'
 
@@ -45,12 +44,7 @@
 
   let type: WorkType = 'essay'
 
-  const content = operationStore<Data<WorkSummaries>, Vars<WorkSummaries>>(
-    WORK_SUMMARIES,
-    { type }
-  )
-
-  query(content)
+  const content = query(operationStore(WORK_SUMMARIES, { type }))
 
   $: $content.variables!.type = type
   $: if ($content.error) {

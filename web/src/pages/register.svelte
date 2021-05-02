@@ -20,7 +20,6 @@
   import { go } from '$/components/Link.svelte'
 
   import { REGISTER_USER } from '$/graphql/queries'
-  import type { RegisterUser, Vars } from '$/graphql/types'
   import client from '$/graphql/client'
 
   let orangeBlobProps: BlobPropsInput
@@ -56,22 +55,18 @@
     const form = new FormData(formElement)
 
     try {
-      const vars: Vars<RegisterUser> = {
-        firstName: form.get('first_name')!.toString(),
-        middleName: form.get('middle_name')!.toString() || null,
-        lastName: form.get('last_name')!.toString(),
-        schoolID: parseInt(form.get('school')!.toString() || ''),
-      }
-
-      console.log({ vars })
-
-      const res = await client.mutation(REGISTER_USER, vars).toPromise()
+      const res = await client
+        .mutation(REGISTER_USER, {
+          firstName: form.get('first_name')!.toString(),
+          middleName: form.get('middle_name')!.toString() || null,
+          lastName: form.get('last_name')!.toString(),
+          schoolID: parseInt(form.get('school')!.toString() || ''),
+        })
+        .toPromise()
 
       if (res.error) {
         throw res.error
       }
-
-      console.log(res.data)
 
       go('/', alive, $goto)
 

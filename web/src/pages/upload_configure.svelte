@@ -28,13 +28,9 @@
 
   import { operationStore, query } from '@urql/svelte'
   import { TITLES, CHARACTERS } from '$/graphql/queries'
-  import type { Titles, Characters, Data } from '$/graphql/types'
 
-  const titles = operationStore<Data<Titles>>(TITLES)
-  query(titles)
-
-  const characters = operationStore<Data<Characters>>(CHARACTERS)
-  query(characters)
+  const titles = query(operationStore(TITLES))
+  const characters = query(operationStore(CHARACTERS))
 
   $: subjects = {
     essay: $titles.data?.titles || [],
