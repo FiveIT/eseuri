@@ -60,6 +60,7 @@ export default defineConfig({
       deleteboxwidth: 'var(--delete-box-width)',
       configureloginwidth: 'var(--configure-login-width)',
       columnwidth: 'var(--column-width)',
+      rowheight: 'var(--row-height)',
     },
     borderRadius: {
       DEFAULT: '0.625rem',

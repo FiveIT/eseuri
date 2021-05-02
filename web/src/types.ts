@@ -19,3 +19,9 @@ export interface Work {
   readonly type: WorkType
   readonly work_count: number
 }
+export interface Bookmark {
+  readonly type: string
+  readonly bookmarkname: string
+  readonly subject: string
+  readonly time: string
+}
