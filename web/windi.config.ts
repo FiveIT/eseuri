@@ -126,7 +126,7 @@ export default defineConfig({
     'shadow',
     'shadow-inner',
     [].concat(
-      ...'soft,large'.split(',').map(v => [`shadow-${v}`, `shadow-inner-${v}`])
+      ...['soft', 'large'].map(v => [`shadow-${v}`, `shadow-inner-${v}`])
     ),
   ],
 })
