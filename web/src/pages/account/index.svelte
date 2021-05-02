@@ -7,7 +7,8 @@
   import type { BlobPropsInput, WorkType } from '$/types'
   import SlimNav from '$/components/SlimNav.svelte'
   import Configure from '$/components/Configure.svelte'
-
+  import Bookmark from '$/components/Bookmark.svelte'
+  import { bounceIn } from 'svelte/easing'
   type Choosen = 'Lucrari' | 'Marcaje' | 'Profesori' | 'Configurare'
 
   let selected: Choosen
@@ -45,7 +46,7 @@
   transition={{ y: 1000 }}>
   {#if selected == 'Configurare'}
     <Configure />
-  {:else if selected == 'Lucrari'}{:else if selected == 'Marcaje'}{:else}{/if}
+  {:else if selected == 'Lucrari'}{:else if selected == 'Marcaje'}<Bookmark />{:else}{/if}
 
   <SlimNav />
   <div
