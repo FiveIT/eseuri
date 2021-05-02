@@ -158,7 +158,7 @@ export const CHARACTERS = gql<Data<Characters>, Vars<Characters>>`
   }
 `
 
-type WorkContent = Query<'works_by_pk', { content: string } | null, ID>
+type WorkContent = Query<'works_by_pk', { content: string }, ID>
 
 export const WORK_CONTENT = gql<Data<WorkContent>, Vars<WorkContent>>`
   query getWork($id: Int!) {
