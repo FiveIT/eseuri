@@ -119,10 +119,6 @@ select_permissions:
           _eq: X-Hasura-User-Id
       - teacher_id:
           _eq: X-Hasura-User-Id
-      - users_all:
-          teacher_student_associations:
-            teacher_id:
-              _eq: X-Hasura-User-Id
     limit: 50
   role: teacher
 update_permissions:
