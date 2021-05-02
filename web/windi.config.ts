@@ -41,7 +41,7 @@ export default defineConfig({
         },
       ],
       title: [
-        '3.5rem',
+        '3em',
         {
           lineHeight: '100%',
           letterSpacing: '-0.225rem',
