@@ -13,6 +13,7 @@ import { getHeaders } from '$/lib/user'
 import type { OperationDefinitionNode, FieldNode } from 'graphql'
 
 const url = `${import.meta.env.VITE_HASURA_GRAPHQL_ENDPOINT}/v1/graphql`
+const relayURL = `${import.meta.env.VITE_HASURA_GRAPHQL_ENDPOINT}/v1beta1/relay`
 
 const getWSEndpoint = () => {
   const endpoint = url.slice(7)
@@ -83,4 +84,10 @@ export default new Client({
   url,
   fetchOptions: getHeaders,
   exchanges,
+})
+
+export const relay = new Client({
+  url: relayURL,
+  fetchOptions: getHeaders,
+  exchanges: exchanges.slice(-1),
 })
