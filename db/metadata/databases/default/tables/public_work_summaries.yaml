@@ -2,40 +2,43 @@ table:
   name: work_summaries
   schema: public
 object_relationships:
-- name: work_type
-  using:
-    manual_configuration:
-      column_mapping:
-        type: value
-      insertion_order: null
-      remote_table:
-        name: work_type
-        schema: public
+  - name: work_type
+    using:
+      manual_configuration:
+        column_mapping:
+          type: value
+        insertion_order: null
+        remote_table:
+          name: work_type
+          schema: public
 select_permissions:
-- permission:
-    columns:
-    - creator
-    - name
-    - type
-    - url
-    - work_count
-    filter: {}
-  role: anonymous
-- permission:
-    columns:
-    - creator
-    - name
-    - type
-    - url
-    - work_count
-    filter: {}
-  role: student
-- permission:
-    columns:
-    - creator
-    - name
-    - type
-    - url
-    - work_count
-    filter: {}
-  role: teacher
+  - permission:
+      columns:
+        - creator
+        - id
+        - name
+        - type
+        - url
+        - work_count
+      filter: {}
+    role: anonymous
+  - permission:
+      columns:
+        - creator
+        - id
+        - name
+        - type
+        - url
+        - work_count
+      filter: {}
+    role: student
+  - permission:
+      columns:
+        - creator
+        - id
+        - name
+        - type
+        - url
+        - work_count
+      filter: {}
+    role: teacher
