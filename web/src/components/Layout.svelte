@@ -18,6 +18,15 @@
   interface Context {
     alive: Writable<boolean>
     theme: Readable<Theme>
+    blobs: {
+      // eslint-disable-next-line no-unused-vars
+      orange(set: BlobPropsInput): void
+      // eslint-disable-next-line no-unused-vars
+      red(set: BlobPropsInput): void
+      // eslint-disable-next-line no-unused-vars
+      blue(set: BlobPropsInput): void
+      autoSet: Writable<boolean>
+    }
   }
 
   export function getLayout(): Context {
@@ -53,12 +62,25 @@
 
   const alive = writable(true)
   const themeStore = writable<Theme>(theme)
+  const autoSet = writable(true)
   // eslint-disable-next-line no-unused-vars
   $: $themeStore = theme
 
   setContext<Context>(contextKey, {
     alive,
     theme: themeStore,
+    blobs: {
+      orange(v) {
+        orangeBlobProps = v
+      },
+      red(v) {
+        redBlobProps = v
+      },
+      blue(v) {
+        blueBlobProps = v
+      },
+      autoSet,
+    },
   })
 
   let mounted = false
@@ -80,14 +102,20 @@
   })
 
   $: if (mounted) {
-    $orange.x = orangeBlobProps.x ?? $orange.x
-    $orange.y = orangeBlobProps.y ?? $orange.y
+    if ($autoSet) {
+      $orange.x = orangeBlobProps.x ?? $orange.x
+      $orange.y = orangeBlobProps.y ?? $orange.y
 
-    $red.x = redBlobProps.x ?? $red.x
-    $red.y = redBlobProps.y ?? $red.y
+      $red.x = redBlobProps.x ?? $red.x
+      $red.y = redBlobProps.y ?? $red.y
 
-    $blue.x = blueBlobProps.x ?? $blue.x
-    $blue.y = blueBlobProps.y ?? $blue.y
+      $blue.x = blueBlobProps.x ?? $blue.x
+      $blue.y = blueBlobProps.y ?? $blue.y
+    } else {
+      $orange = orangeBlobProps
+      $red = redBlobProps
+      $blue = blueBlobProps
+    }
   }
 </script>
 
@@ -99,7 +127,7 @@
     class:bg-opacity-50={blurBackground}
     transition:fly={finalTransition}>
     <div
-      class="min-h-full mx-auto max-w-layout grid grid-cols-layout auto-rows-layout gap-x-md gap-y-sm py-xlg"
+      class="min-h-full mx-auto max-w-layout grid grid-cols-layout auto-rows-layout gap-x-md gap-y-sm py-xlg relative"
       class:my-auto={center}>
       <slot />
     </div>
