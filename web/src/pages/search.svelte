@@ -90,8 +90,8 @@
   {redBlobProps}
   {blueBlobProps}
   theme="white"
-  afterMount={() => (document.body.style.backgroundColor = 'var(--blue)')}
-  beforeDestroy={() => (document.body.style.backgroundColor = '')}>
+  afterMount={() => document.body.classList.add('bg-blue')}
+  beforeDestroy={() => document.body.classList.remove('bg-blue')}>
   <SlimNav />
   <div class="col-start-1 row-span-1 row-start-3 col-end-4 my-auto">
     <Search bind:query={q} bind:type bind:focusInput />
