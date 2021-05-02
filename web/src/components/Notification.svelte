@@ -6,7 +6,10 @@
   import CheckBlue from 'svelte-material-icons/CheckCircleOutline.svelte'
   import Information from 'svelte-material-icons/Information.svelte'
   import InformationBlue from 'svelte-material-icons/InformationOutline.svelte'
-  import { TRANSITION_EASING as easing, TRANSITION_DURATION as duration } from '$/lib/globals'
+  import {
+    TRANSITION_EASING as easing,
+    TRANSITION_DURATION as duration,
+  } from '$/lib/globals'
   import { slide, fade } from 'svelte/transition'
 
   interface Assets {
@@ -35,11 +38,11 @@
     success: {
       default: {
         icon: Check,
-        color: 'dark-green',
+        color: 'green',
       },
       white: {
         icon: CheckBlue,
-        color: 'light-green',
+        color: 'green-light',
       },
     },
     error: {
@@ -59,7 +62,7 @@
       },
       white: {
         icon: InformationBlue,
-        color: 'light-gray',
+        color: 'gray-light',
       },
     },
   }
@@ -76,7 +79,13 @@
 </script>
 
 <script lang="ts">
-  import { text, border, filterShadow, background, innerShadow } from '$/lib/theme'
+  import {
+    text,
+    border,
+    filterShadow,
+    background,
+    innerShadow,
+  } from '$/lib/theme'
   import { getLayout } from './Layout.svelte'
   import { px } from '$/lib/util'
   import { tick } from 'svelte'
@@ -113,10 +122,12 @@
 <div
   class="w-notification min-h-notification z-10 rounded fixed top-4/5 left-3/4 transition-all duration-50 ease-out {text[
     theme
-  ]} {border.color[theme]} {border.size[theme]} {baseShadow[theme]}
-  {background[
+  ]} {border.color[theme]} {border.size[theme]} {baseShadow[
     theme
-  ]} {innerShadow[theme]} text-sm font-sans antialiased leading-none flex flex-col"
+  ]}
+  {background[theme]} {innerShadow[
+    theme
+  ]} text-sm font-sans antialiased leading-none flex flex-col"
   on:mouseenter={handleMouseOver}
   on:mouseleave={handleMouseOut}
   bind:this={parent}

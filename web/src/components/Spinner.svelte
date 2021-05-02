@@ -2,7 +2,10 @@
   import type { Theme } from '$/lib/types'
   import type { ThemeEntry } from '$/lib/theme'
   import { placeholderText } from '$/lib/theme'
-  import { TRANSITION_DURATION as duration, TRANSITION_EASING as easing } from '$/lib/globals'
+  import {
+    TRANSITION_DURATION as duration,
+    TRANSITION_EASING as easing,
+  } from '$/lib/globals'
 
   interface LongDurationOptions {
     after: number
@@ -16,8 +19,8 @@
 
   const spinnerColor: Record<'main' | 'accent', ThemeEntry> = {
     accent: {
-      default: 'light-gray',
-      white: 'light-gray',
+      default: 'gray-light',
+      white: 'gray-light',
     },
     main: {
       default: 'gray',
@@ -79,7 +82,9 @@
     </div>
   </div>
   {#if showLongDurationNotice}
-    <p class="font-sans text-sm mt-md {placeholderText[t]}" transition:slide={{ duration, easing }}>
+    <p
+      class="font-sans text-sm mt-md {placeholderText[t]}"
+      transition:slide={{ duration, easing }}>
       {longDuration.message}
     </p>
   {/if}

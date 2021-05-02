@@ -4,24 +4,21 @@ import defaults from 'windicss/defaultTheme'
 export default defineConfig({
   theme: {
     colors: {
-      orange: '#FF7F11',
+      orange: 'var(--orange, #FF7F11)',
       red: 'var(--red, #FF3F00)',
-      blue: 'var(--darkblue,#485696)',
-      green: '#008148',
-      lightgreen: 'var(--light-green, #00e781)',
+      blue: 'var(--blue, #485696)',
+      green: {
+        DEFAULT: 'var(--green, #008148)',
+        light: 'var(--green-light, #00E781)',
+      },
       current: 'currentColor',
       transparent: 'transparent',
       white: 'var(--white, #FCFAF9)',
       black: 'var(--black, #000000)',
       gray: {
-        light: 'var(--light-gray, #DADADA)',
+        light: 'var(--gray-light, #DADADA)',
         DEFAULT: 'var(--gray, #939393)',
-        dark: '#4F4F4F',
-      },
-      facebook: '#3B5998',
-      google: {
-        DEFAULT: '#DE5246',
-        docs: '#337DFA',
+        dark: 'var(--gray-dark, #4F4F4F)',
       },
     },
     fontFamily: {
@@ -101,13 +98,9 @@ export default defineConfig({
   },
   safelist: [
     'underline',
-    [].concat(
-      ...['white', 'black', 'gray'].map(v => [`text-${v}`, `border-${v}`])
-    ),
+    [].concat(...['white', 'black', 'gray'].map(v => [`text-${v}`, `border-${v}`])),
     [2, 3].map(v => `border-${v}`),
-    ...Array.from({ length: 6 }, (_, i) =>
-      ['row', 'col'].map(v => `${v}-start-${i + 1}`)
-    ),
+    ...Array.from({ length: 6 }, (_, i) => ['row', 'col'].map(v => `${v}-start-${i + 1}`)),
     'bg-white-50',
     'pointer-events-none',
     'w-full',
@@ -125,8 +118,6 @@ export default defineConfig({
     'py-xs',
     'shadow',
     'shadow-inner',
-    [].concat(
-      ...['soft', 'large'].map(v => [`shadow-${v}`, `shadow-inner-${v}`])
-    ),
+    [].concat(...['soft', 'large'].map(v => [`shadow-${v}`, `shadow-inner-${v}`])),
   ],
 })

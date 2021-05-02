@@ -79,7 +79,7 @@
             }}
             bind:this={input} />
         </label>
-        <UploadVariantPlaceholder icon={GoogleDocs} bg="google-docs"
+        <UploadVariantPlaceholder icon={GoogleDocs} bg="#DE5246"
           >Încarcă din Google Docs</UploadVariantPlaceholder>
         <h3 class="m-auto">Ai scris de mână?</h3>
         <UploadVariantPlaceholder icon={Doodle} bg="red"
