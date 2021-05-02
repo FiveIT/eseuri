@@ -11,7 +11,7 @@
     <h1
       class="font-serif text-{big ? 'xl' : 'lg'} font-bold {text[
         theme
-      ]} antialiased"
+      ]} antialiased select-none"
       class:cursor-default={disable}>
       Eseuri<span class="text-orange">.</span>
     </h1>
