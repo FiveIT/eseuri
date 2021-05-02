@@ -86,10 +86,12 @@
       <SlimNav logoOnly />
       <Form name="register" {action} bind:formElement on:submit={() => onSubmit(alive)}>
         <span slot="legend">Completează-ți profilul</span>
-        <Text name="last_name" placeholder="Scrie-ți aici numele de familie..." required>Numele tău</Text>
+        <Text name="last_name" placeholder="Scrie-ți aici numele de familie..." required
+          >Numele tău</Text>
         <Text name="first_name" placeholder="Scrie-l aici..." required>Primul prenume</Text>
         <Text name="middle_name" placeholder="Scrie-l aici...">Al doilea prenume</Text>
-        <Text name="county" placeholder="Scrie aici judetul scolii..." required>Județul școlii tale</Text>
+        <Text name="county" placeholder="Scrie aici judetul scolii..." required
+          >Județul școlii tale</Text>
         <Text name="school" placeholder="Scrie aici numele școlii..." required>Școala ta</Text>
         <Radio name="role" options={roles} displayModifier={translateRole}>Ocupația ta</Radio>
         <Actions slot="actions" submitValue="Sunt gata" />

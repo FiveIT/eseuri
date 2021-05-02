@@ -18,7 +18,9 @@ export const getHeaders = () => {
 
 export const isRegistered = async (): Promise<boolean> => {
   const resp = await client
-    .query<Data<UserUpdatedAt>, Vars<UserUpdatedAt>>(USER_UPDATED_AT, undefined, { requestPolicy: 'network-only' })
+    .query<Data<UserUpdatedAt>, Vars<UserUpdatedAt>>(USER_UPDATED_AT, undefined, {
+      requestPolicy: 'network-only',
+    })
     .toPromise()
 
   if (resp.error) {

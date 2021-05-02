@@ -18,7 +18,9 @@ type Query<Name extends string, Data = Typename, Vars = object> = {
   data: QueryData<Name, Data>
 }
 
-export type Data<T> = T extends Query<infer Name, infer Data, unknown> ? QueryData<Name, Data> : never
+export type Data<T> = T extends Query<infer Name, infer Data, unknown>
+  ? QueryData<Name, Data>
+  : never
 
 export type Vars<T> = T extends Query<string, unknown, infer Vars> ? Vars : never
 
@@ -41,7 +43,10 @@ export type WorkSummaries = Query<'work_summaries', WorkSummary[], WorkSummaries
 export const WORK_SUMMARIES = gql<Data<WorkSummaries>, Vars<WorkSummaries>>`
   ${WORK_SUMMARY}
   query getWorkSummaries($type: String!) {
-    work_summaries(where: { type: { _eq: $type } }, order_by: [{ work_count: desc }, { name: asc }]) {
+    work_summaries(
+      where: { type: { _eq: $type } }
+      order_by: [{ work_count: desc }, { name: asc }]
+    ) {
       ...WorkSummary
     }
   }
@@ -51,7 +56,11 @@ interface SearchWorkSummariesVars extends WorkSummariesVars {
   query: string
 }
 
-export type SearchWorkSummaries = Query<'find_work_summaries', WorkSummary[], SearchWorkSummariesVars>
+export type SearchWorkSummaries = Query<
+  'find_work_summaries',
+  WorkSummary[],
+  SearchWorkSummariesVars
+>
 
 export const SEARCH_WORK_SUMMARIES = gql<Data<SearchWorkSummaries>, Vars<SearchWorkSummaries>>`
   ${WORK_SUMMARY}
@@ -72,10 +81,20 @@ interface RegisterUserVars {
 export type RegisterUser = Query<'update_users', { affected_rows: number }, RegisterUserVars>
 
 export const REGISTER_USER = gql<Data<RegisterUser>, Vars<RegisterUser>>`
-  mutation registerUser($firstName: String!, $middleName: String, $lastName: String!, $schoolID: Int!) {
+  mutation registerUser(
+    $firstName: String!
+    $middleName: String
+    $lastName: String!
+    $schoolID: Int!
+  ) {
     update_users(
       where: {}
-      _set: { first_name: $firstName, middle_name: $middleName, last_name: $lastName, school_id: $schoolID }
+      _set: {
+        first_name: $firstName
+        middle_name: $middleName
+        last_name: $lastName
+        school_id: $schoolID
+      }
     ) {
       affected_rows
     }

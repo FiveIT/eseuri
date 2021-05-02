@@ -17,7 +17,9 @@
 </script>
 
 {#each types as t, i}
-  <div class="col-start-{colStart + i} col-span-1 row-start-{rowStart} w-full h-full m-auto my-auto {filterShadow[theme]}">
+  <div
+    class="col-start-{colStart +
+      i} col-span-1 row-start-{rowStart} w-full h-full m-auto my-auto {filterShadow[theme]}">
     <button
       class="w-full h-full font-sans text-sm antialiased capitalize {text[theme]}"
       class:underline={type === t}

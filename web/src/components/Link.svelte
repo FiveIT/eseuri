@@ -5,7 +5,12 @@
   import type { Writable } from 'svelte/store'
   import { getLayout } from './Layout.svelte'
 
-  export function go(href: string, alive: Writable<boolean>, gotoFn: GotoHelper, param?: Parameters<GotoHelper>[1]) {
+  export function go(
+    href: string,
+    alive: Writable<boolean>,
+    gotoFn: GotoHelper,
+    param?: Parameters<GotoHelper>[1]
+  ) {
     alive.set(false)
     tick().then(() => gotoFn(href, param))
   }

@@ -43,7 +43,10 @@
   }
 
   let showLongDurationNotice = false
-  const showLongDurationNoticeHandle = setTimeout(() => (showLongDurationNotice = true), longDuration.after)
+  const showLongDurationNoticeHandle = setTimeout(
+    () => (showLongDurationNotice = true),
+    longDuration.after
+  )
 
   const layout = getLayout()
   let themeStore: typeof layout.theme | undefined

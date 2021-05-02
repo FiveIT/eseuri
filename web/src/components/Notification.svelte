@@ -114,23 +114,29 @@
   class="w-notification min-h-notification z-10 rounded fixed top-4/5 left-3/4 transition-all duration-50 ease-out {text[
     theme
   ]} {border.color[theme]} {border.size[theme]} {baseShadow[theme]}
-  {background[theme]} {innerShadow[
+  {background[
     theme
-  ]} text-sm font-sans antialiased leading-none flex flex-col"
+  ]} {innerShadow[theme]} text-sm font-sans antialiased leading-none flex flex-col"
   on:mouseenter={handleMouseOver}
   on:mouseleave={handleMouseOut}
   bind:this={parent}
   transition:fade={{ easing, duration }}>
   <div class="flex w-full h-notification flex-row items-center px-sm">
     <div class={iconShadow[theme]}>
-      <svelte:component this={currentAssets.icon} color="var(--{currentAssets.color})" size={px(2.5)} />
+      <svelte:component
+        this={currentAssets.icon}
+        color="var(--{currentAssets.color})"
+        size={px(2.5)} />
     </div>
     <p class="mx-sm {filterShadow[theme]}">
       {message}
     </p>
   </div>
   {#if show && explanation}
-    <p class="mx-sm mb-sm {filterShadow[theme]}" bind:offsetHeight={detailsHeight} transition:slide={{ easing, duration: 50 }}>
+    <p
+      class="mx-sm mb-sm {filterShadow[theme]}"
+      bind:offsetHeight={detailsHeight}
+      transition:slide={{ easing, duration: 50 }}>
       {@html explanation}
     </p>
   {/if}

@@ -13,7 +13,8 @@
   bind:this={formElement}
   on:submit|preventDefault>
   <fieldset class="col-span-6 row-span-4">
-    <div class="grid grid-cols-2 grid-rows-4 gap-x-md gap-y-sm w-full h-full grid-flow-col font-sans antialiased">
+    <div
+      class="grid grid-cols-2 grid-rows-4 gap-x-md gap-y-sm w-full h-full grid-flow-col font-sans antialiased">
       <legend class="col-span-2 text-md self-center">
         <slot name="legend" />
       </legend>

@@ -122,7 +122,11 @@
       <SlimNav on:navigate={removeFile} />
       <Form name="work" {action} bind:formElement on:submit={() => onSubmit(alive)}>
         <span slot="legend">Despre lucrare</span>
-        <Radio name="type" options={workTypes} displayModifier={translateWorkType} bind:selected={currentWorkType}>Tip</Radio>
+        <Radio
+          name="type"
+          options={workTypes}
+          displayModifier={translateWorkType}
+          bind:selected={currentWorkType}>Tip</Radio>
         <Select
           name="subject"
           placeholder="Alege {currentWorkType === 'essay' ? 'titlul' : 'numele personajului'}..."
@@ -132,7 +136,11 @@
           required>
           {currentWorkType === 'essay' ? 'Titlu' : 'Caracter'}
         </Select>
-        <Actions slot="actions" formenctype="multipart/form-data" submitValue="Publică" on:navigate={removeFile} />
+        <Actions
+          slot="actions"
+          formenctype="multipart/form-data"
+          submitValue="Publică"
+          on:navigate={removeFile} />
       </Form>
     {/if}
     <Notifications />

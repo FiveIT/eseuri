@@ -34,7 +34,10 @@
   const [type, title, id] = $leftover.split('/')
 
   if (!type || !title || !isWorkType(type)) {
-    notFoundParagraphs = ['Această pagină nu există!', 'Folosește bara de navigare pentru a ieși de aici.']
+    notFoundParagraphs = [
+      'Această pagină nu există!',
+      'Folosește bara de navigare pentru a ieși de aici.',
+    ]
 
     notFound = true
   } else {

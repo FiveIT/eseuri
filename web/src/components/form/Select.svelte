@@ -23,7 +23,9 @@
     {placeholder}
     {required}
     bind:value
-    class="col-span-2 font-sans text-sm placeholder-{placeholderText[theme]} {text[theme]} bg-transparent">
+    class="col-span-2 font-sans text-sm placeholder-{placeholderText[theme]} {text[
+      theme
+    ]} bg-transparent">
     {#each options as opt}
       <option value={mapper(opt)}>{display(opt)}</option>
     {/each}
