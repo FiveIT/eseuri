@@ -8,6 +8,10 @@
   import SlimNav from '$/components/SlimNav.svelte'
   import Configure from '$/components/Configure.svelte'
 
+  type Choosen = 'Lucrari' | 'Marcaje' | 'Profesori' | 'Configurare'
+
+  let selected: Choosen
+  selected = 'Configurare'
   let orangeBlobProps: BlobPropsInput = { scale: 1.8 }
   $: orangeBlobProps = {
     x: -orange.width * 1.4,
@@ -39,27 +43,34 @@
   {redBlobProps}
   {blueBlobProps}
   transition={{ y: 1000 }}>
-  <Configure />
+  {#if selected == 'Configurare'}
+    <Configure />
+  {:else if selected == 'Lucrari'}{:else if selected == 'Marcaje'}{:else}{/if}
+
   <SlimNav />
   <div
     class="row-start-4 row-span-1 col-start-1 col-span-2 my-auto text-white text-md font-sans">
     Contul meu
   </div>
-  <div
-    class="row-start-4 row-span-1 col-start-3 col-span-1 my-auto text-center text-white text-sm font-sans">
+  <button
+    class="row-start-4 h-full row-span-1 col-start-3 col-span-1 my-auto text-center text-white text-sm font-sans"
+    on:click={() => (selected = 'Lucrari')}>
     Lucrări
-  </div>
-  <div
-    class="row-start-4 row-span-1 col-start-4 col-span-1 my-auto text-center text-white text-sm font-sans">
+  </button>
+  <button
+    class="row-start-4 h-full row-span-1 col-start-4 col-span-1 my-auto text-center text-white text-sm font-sans"
+    on:click={() => (selected = 'Marcaje')}>
     Marcaje
-  </div>
-  <div
-    class="row-start-4 row-span-1 col-start-5 col-span-1 my-auto text-center text-white text-sm font-sans">
+  </button>
+  <button
+    class="row-start-4 h-full row-span-1 col-start-5 col-span-1 my-auto text-center text-white text-sm font-sans"
+    on:click={() => (selected = 'Profesori')}>
     Profesori
-  </div>
-  <div
-    class="row-start-4 row-span-1 col-start-6 col-span-1 my-auto text-center text-white text-sm font-sans">
+  </button>
+  <button
+    class="row-start-4 h-full row-span-1 col-start-6 col-span-1 my-auto text-center text-white text-sm font-sans"
+    on:click={() => (selected = 'Configurare')}>
     Configurare/<wbr />Ieșire din cont
-  </div>
+  </button>
   <hr class="text-white col-start-1 col-span-6 border-3px row-start-5 shadow" />
 </Layout>
