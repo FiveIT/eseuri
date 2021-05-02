@@ -4,9 +4,10 @@
   import { store as red } from '$/components/blob/Red.svelte'
   import Layout from '$/components/Layout.svelte'
   import { store as window } from '$/components/Window.svelte'
-  import type { BlobPropsInput, WorkType } from '$/types'
+  import type { BlobPropsInput } from '$/types'
   import SlimNav from '$/components/SlimNav.svelte'
   import Configure from '$/components/Configure.svelte'
+  import Lucrari from '$/components/Lucrari.svelte'
 
   type Choosen = 'Lucrari' | 'Marcaje' | 'Profesori' | 'Configurare'
 
@@ -45,11 +46,11 @@
   transition={{ y: 1000 }}>
   {#if selected == 'Configurare'}
     <Configure />
-  {:else if selected == 'Lucrari'}{:else if selected == 'Marcaje'}{:else}{/if}
+  {:else if selected == 'Lucrari'}<Lucrari />{:else if selected == 'Marcaje'}{:else}{/if}
 
   <SlimNav />
   <div
-    class="row-start-4 row-span-1 col-start-1 col-span-2 my-auto text-white text-md font-sans">
+    class="row-start-4 border row-span-1 col-start-1 col-span-2 my-auto text-white text-md font-sans">
     Contul meu
   </div>
   <button
