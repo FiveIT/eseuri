@@ -37,5 +37,5 @@
     <slot {disable} {href} />
   </a>
 {:else if !hideIfDisabled}
-  <slot enable={false} href="" />
+  <slot {disable} {href} />
 {/if}
