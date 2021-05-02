@@ -17,6 +17,7 @@
      */
     readonly work: string
   }
+
   export interface Context extends Readable<Store> {
     /**
      * Bookmarks the work, if not already.
@@ -90,22 +91,22 @@
   // Create the current work's context
   setContext<Context>(contextKey, createContext(page_name))
 
-  let orangeBlobProps: BlobPropsInput = { scale: 1.8 }
+  let orangeBlobProps: BlobPropsInput
   $: orangeBlobProps = {
     x: -orange.width * 1.4,
     y: $window.height - orange.height,
+    scale: 1.8,
   }
 
-  let redBlobProps: BlobPropsInput = {
+  let redBlobProps: BlobPropsInput
+  $: redBlobProps = {
     scale: 2,
     rotate: 180 + 26.7,
-  }
-  $: redBlobProps = {
     x: $window.width + red.width * 0.6,
     y: $window.height - red.height * 0.45,
   }
 
-  let blueBlobProps: BlobPropsInput = { scale: 1.4 }
+  let blueBlobProps: BlobPropsInput
   $: blueBlobProps = {
     x: ($window.width - blue.width * 1) / 2,
     y: -blue.height * 1 - $window.height * 0.1,
