@@ -23,7 +23,7 @@
         <LoginButton />
       </div>
     </div>
-    <div class="ml-auto w-min mr-md">
+    <div class="ml-auto w-min mr-1.4em">
       <UploadButton on:navigate />
     </div>
   </nav>
