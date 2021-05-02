@@ -56,8 +56,7 @@
   </div>
   <div
     class="row-start-4 row-span-1 col-start-6 col-span-1 my-auto text-center text-white text-sm font-sans">
-    Configurare/ Ieșire din cont
+    Configurare/<wbr />Ieșire din cont
   </div>
-  <hr
-    class="text-white col-start-1 col-span-6 border-3px row-start-5 shadow 0 20px 20px -20px rgba(0, 0, 0, 0.5);" />
+  <hr class="text-white col-start-1 col-span-6 border-3px row-start-5 shadow" />
 </Layout>
