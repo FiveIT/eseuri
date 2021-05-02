@@ -8,6 +8,7 @@ export default defineConfig({
       red: '#FF3F00',
       blue: 'var(--blue, #485696)',
       green: '#008148',
+      neongreen: '#00E781',
       current: 'currentColor',
       transparent: 'transparent',
       white: 'var(--white, #FCFAF9)',
@@ -57,6 +58,8 @@ export default defineConfig({
       associationboxwidth: 'var(--association-box-width)',
       associationboxheight: 'var(--association-box-height)',
       deleteboxwidth: 'var(--delete-box-width)',
+      configureloginwidth: 'var(--configure-login-width)',
+      columnwidth: 'var(--column-width)',
     },
     borderRadius: {
       DEFAULT: '0.625rem',

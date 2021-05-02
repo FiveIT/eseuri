@@ -20,6 +20,9 @@
   --delete-box-width: calc(
     var(--column-width) * 4 + var(--essay-column-gap) * 4
   );
+  --configure-login-width: calc(
+    var(--essay-column-gap) +var(--essay-column-gap) + var(--column-width)
+  );
 }
 
 html {
