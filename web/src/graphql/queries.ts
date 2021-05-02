@@ -143,12 +143,140 @@ export const CHARACTERS = gql<Data<Characters>, Vars<Characters>>`
   }
 `
 
-type WorkContent = Query<'works_by_pk', { content: string }, ID>
+type SubjectIDFromURL = Query<'work_summaries', [ID], { url: string }>
+
+export const SUBJECT_ID_FROM_URL = gql<Data<SubjectIDFromURL>, Vars<SubjectIDFromURL>>`
+  query getSubjectIDFromURL($url: String!) {
+    work_summaries(where: { url: { _eq: $url } }) {
+      id
+    }
+  }
+`
+
+namespace Relay {
+  export type ID = string
+
+  type Cursor = string | null
+
+  interface PageInfo {
+    startCursor: Cursor
+    endCursor: Cursor
+    hasNextPage: boolean
+    hasPreviousPage: boolean
+  }
+
+  type Edge<Data, hasCursor> = (hasCursor extends true
+    ? {
+        cursor: Cursor
+      }
+    : never) & {
+    node: Data
+  }
+
+  export type Data<T, hasCursor> = {
+    pageInfo: PageInfo
+    edges: Edge<T, hasCursor>
+  }
+
+  export interface CursorVars {
+    before?: Cursor
+    after?: Cursor
+    first?: number
+    last?: number
+  }
+}
+
+// eslint-disable-next-line no-redeclare
+type Relay<
+  Name extends string,
+  Data = Typename,
+  Vars = object,
+  hasCursor extends boolean = false
+> = Query<Name, Relay.Data<Data, hasCursor>, Vars>
+
+// eslint-disable-next-line no-redeclare
+namespace Relay {
+  export type Node<Data = Typename, Vars = object> = Relay<'node', Data, Vars>
+}
+
+interface ListSubjectsVars extends Relay.CursorVars {
+  subjectID: number
+  seed: `${number}`
+}
+
+type ListSubjects<Name extends `${WorkType}s`> = Relay<`list_${Name}`, ID, ListSubjectsVars>
+type ListEssays = ListSubjects<'essays'>
+type ListCharacterizations = ListSubjects<'characterizations'>
+
+export const LIST_ESSAYS = gql<Data<ListEssays>, Vars<ListEssays>>`
+  query listEssays($subjectID: Int!, $seed: seed!, $before: String, $after: String, $limit: Int) {
+    list_essays_connection(
+      args: { characterid: $subjectID, seed: $seed }
+      before: $before
+      after: $after
+      first: $limit
+    ) {
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+        hasPreviousPage
+      }
+      edges {
+        cursor
+        node {
+          id
+        }
+      }
+    }
+  }
+`
+
+export const LIST_CHARACTERIZATIONS = gql<Data<ListCharacterizations>, Vars<ListCharacterizations>>`
+  query listCharacterizations(
+    $subjectID: Int!
+    $seed: seed!
+    $before: String
+    $after: String
+    $limit: Int
+  ) {
+    list_characterizations_connection(
+      args: { titleid: $subjectID, seed: $seed }
+      before: $before
+      after: $after
+      first: $limit
+    ) {
+      pageInfo {
+        startCursor
+        endCursor
+        hasNextPage
+        hasPreviousPage
+      }
+      edges {
+        cursor
+        node {
+          id
+        }
+      }
+    }
+  }
+`
+
+type WorkContent = Relay.Node<{ work: { content: string } }, Relay.ID>
 
 export const WORK_CONTENT = gql<Data<WorkContent>, Vars<WorkContent>>`
-  query getWork($id: Int!) {
-    works_by_pk(id: $id) {
-      content
+  query workContent($id: ID!) {
+    node(id: $id) {
+      ... on essays {
+        work {
+          content
+        }
+      }
+      ... on characterizations {
+        work {
+          content
+        }
+      }
     }
   }
 `
