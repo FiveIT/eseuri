@@ -5,10 +5,7 @@
   import Layout from '$/components/Layout.svelte'
   import { store as window } from '$/components/Window.svelte'
   import type { BlobPropsInput } from '$/lib/types'
-  import { metatags } from '@roxi/routify'
   import SlimNav from '$/components/SlimNav.svelte'
-
-  metatags.title = 'Eseuri'
 
   let orangeBlobProps: BlobPropsInput
   $: orangeBlobProps = {
@@ -21,7 +18,7 @@
   $: redBlobProps = {
     rotate: 47,
     scale: 2,
-    x: $window.width - red.width * 2,
+    x: $window.width + red.width / 2.5,
     y: $window.height + 40,
   }
 
@@ -31,12 +28,6 @@
     y: -blue.height * 1 - $window.height * 0.1,
     scale: 1.4,
   }
-
-  const paragraphs = [
-    'Subiectul căutat de tine nu este la noi pe platformă.',
-    'Dacă ai ajuns aici din greșeală, folosește bara de navigare pentru a ieși de aici.',
-    'Dacă ai căutat intenționat acest subiect și crezi că ar trebui să existe pe platformă, <a class="underline" href="mailto:tmaxmax@outlook.com">scrie-ne un email</a>!',
-  ]
 </script>
 
 <Layout
@@ -45,15 +36,5 @@
   {blueBlobProps}
   transition={{ y: 1000 }}>
   <SlimNav />
-  <div class="flex flex-col col-start-2 col-span-4 text-center">
-    <h2 class="font-serif text-title antialiased mb-md">
-      Ups! Această lucrare nu există.
-    </h2>
-    {#each paragraphs as text}
-      <p
-        class="text-sm font-sans mt-sm antialiased leading-none mx-auto max-w-1/2">
-        {@html text}
-      </p>
-    {/each}
-  </div>
+  <slot />
 </Layout>
