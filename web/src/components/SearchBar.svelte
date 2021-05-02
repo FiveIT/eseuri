@@ -45,9 +45,7 @@
 </script>
 
 <div class="flex flex-row items-center">
-  <button
-    class="my-auto pt-{isHome ? '0.02' : 1} h-full ml-sm"
-    on:click={doSearch}>
+  <button class="my-auto pt-{isHome ? '0.02' : 1} h-full ml-sm" on:click={doSearch}>
     <Search color="var(--white)" {size} />
   </button>
   <input

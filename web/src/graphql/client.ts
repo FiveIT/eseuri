@@ -1,11 +1,4 @@
-import {
-  Client,
-  dedupExchange,
-  cacheExchange,
-  fetchExchange,
-  errorExchange,
-  subscriptionExchange,
-} from '@urql/svelte'
+import { Client, dedupExchange, cacheExchange, fetchExchange, errorExchange, subscriptionExchange } from '@urql/svelte'
 import { devtoolsExchange } from '@urql/devtools'
 import { retryExchange } from '@urql/exchange-retry'
 import { SubscriptionClient } from 'subscriptions-transport-ws'
@@ -35,14 +28,8 @@ const exchanges = [
   cacheExchange,
   errorExchange({
     onError(error, operation) {
-      const query = operation.query.definitions.find(
-        (def): def is OperationDefinitionNode =>
-          def.kind === 'OperationDefinition'
-      )!
-      const name =
-        query.name?.value ||
-        (query.selectionSet.selections[0] as FieldNode).name?.value ||
-        'unknown'
+      const query = operation.query.definitions.find((def): def is OperationDefinitionNode => def.kind === 'OperationDefinition')!
+      const name = query.name?.value || (query.selectionSet.selections[0] as FieldNode).name?.value || 'unknown'
 
       console.error(`Encountered GraphQL error on operation "${name}":\n`, {
         error,
@@ -62,9 +49,7 @@ const exchanges = [
         case 'invalid-jwt':
           return true
         case 'validation-failed':
-          return error.message.includes(
-            `field "updated_at" not found in type: 'users'`
-          )
+          return error.message.includes(`field "updated_at" not found in type: 'users'`)
       }
 
       return false

@@ -14,11 +14,7 @@
   let creatorParent: HTMLElement
   let creatorChild: HTMLElement
 
-  function fixFontSize(
-    parent: HTMLElement,
-    child: HTMLElement,
-    compensation = 1
-  ) {
+  function fixFontSize(parent: HTMLElement, child: HTMLElement, compensation = 1) {
     const { height: parentHeight } = parent.getBoundingClientRect()
     const { height: childHeight } = child.getBoundingClientRect()
 
@@ -51,15 +47,11 @@
         </h2>
       </dt>
       <dt class="self-center h-full flex flex-col" bind:this={creatorParent}>
-        <span
-          class="text-workInfo leading-none my-auto"
-          bind:this={creatorChild}>{work.creator}</span>
+        <span class="text-workInfo leading-none my-auto" bind:this={creatorChild}>{work.creator}</span>
       </dt>
       <dt class="text-workInfo">
         {work.work_count}{work.work_count > 19 ? ' de' : ''}
-        {workTypeTranslation.ro[work.type].inarticulate[
-          work.work_count === 1 ? 'singular' : 'plural'
-        ]}
+        {workTypeTranslation.ro[work.type].inarticulate[work.work_count === 1 ? 'singular' : 'plural']}
       </dt>
     </dl>
   </Link>

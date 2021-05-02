@@ -18,11 +18,7 @@ export const getHeaders = () => {
 
 export const isRegistered = async (): Promise<boolean> => {
   const resp = await client
-    .query<Data<UserUpdatedAt>, Vars<UserUpdatedAt>>(
-      USER_UPDATED_AT,
-      undefined,
-      { requestPolicy: 'network-only' }
-    )
+    .query<Data<UserUpdatedAt>, Vars<UserUpdatedAt>>(USER_UPDATED_AT, undefined, { requestPolicy: 'network-only' })
     .toPromise()
 
   if (resp.error) {
@@ -34,10 +30,7 @@ export const isRegistered = async (): Promise<boolean> => {
 
 export class RequestError extends Error {
   // eslint-disable-next-line no-unused-vars
-  constructor(
-    public readonly message: string,
-    public readonly explanation: string
-  ) {
+  constructor(public readonly message: string, public readonly explanation: string) {
     super(message)
   }
 }
@@ -59,10 +52,7 @@ export async function uploadWork(form: FormData): Promise<number> {
   if (!res.ok) {
     const { error } = await res.json()
 
-    throw new RequestError(
-      messages[res.status] || 'Încărcarea lucrării a eșuat.',
-      error
-    )
+    throw new RequestError(messages[res.status] || 'Încărcarea lucrării a eșuat.', error)
   }
 
   const { id } = await res.json()

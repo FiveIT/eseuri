@@ -34,10 +34,7 @@
   const [type, title, id] = $leftover.split('/')
 
   if (!type || !title || !isWorkType(type)) {
-    notFoundParagraphs = [
-      'Această pagină nu există!',
-      'Folosește bara de navigare pentru a ieși de aici.',
-    ]
+    notFoundParagraphs = ['Această pagină nu există!', 'Folosește bara de navigare pentru a ieși de aici.']
 
     notFound = true
   } else {
@@ -53,12 +50,9 @@
   <Reader {...work} />
 {:else if notFound}
   <div class="flex flex-col col-start-2 col-span-4 text-center">
-    <h2 class="font-serif text-title antialiased mb-md">
-      Ups! Această lucrare nu există.
-    </h2>
+    <h2 class="font-serif text-title antialiased mb-md">Ups! Această lucrare nu există.</h2>
     {#each notFoundParagraphs as text}
-      <p
-        class="text-sm font-sans mt-sm antialiased leading-none mx-auto max-w-1/2">
+      <p class="text-sm font-sans mt-sm antialiased leading-none mx-auto max-w-1/2">
         {@html text}
       </p>
     {/each}

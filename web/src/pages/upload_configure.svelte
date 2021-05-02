@@ -68,8 +68,7 @@
 
   const action = import.meta.env.FUNCTIONS_URL as string
   const workTypes = ['essay', 'characterization'] as const
-  const translateWorkType = (w: WorkType) =>
-    workTypeTranslation.ro[w].inarticulate.singular
+  const translateWorkType = (w: WorkType) => workTypeTranslation.ro[w].inarticulate.singular
 
   let currentWorkType: WorkType
 
@@ -121,35 +120,19 @@
       {go('/upload', alive, $goto)}
     {:else}
       <SlimNav on:navigate={removeFile} />
-      <Form
-        name="work"
-        {action}
-        bind:formElement
-        on:submit={() => onSubmit(alive)}>
+      <Form name="work" {action} bind:formElement on:submit={() => onSubmit(alive)}>
         <span slot="legend">Despre lucrare</span>
-        <Radio
-          name="type"
-          options={workTypes}
-          displayModifier={translateWorkType}
-          bind:selected={currentWorkType}>
-          Tip
-        </Radio>
+        <Radio name="type" options={workTypes} displayModifier={translateWorkType} bind:selected={currentWorkType}>Tip</Radio>
         <Select
           name="subject"
-          placeholder="Alege {currentWorkType === 'essay'
-            ? 'titlul'
-            : 'numele personajului'}..."
+          placeholder="Alege {currentWorkType === 'essay' ? 'titlul' : 'numele personajului'}..."
           options={subjects[currentWorkType] || []}
           mapper={v => v.id}
           display={v => v.name}
           required>
           {currentWorkType === 'essay' ? 'Titlu' : 'Caracter'}
         </Select>
-        <Actions
-          slot="actions"
-          formenctype="multipart/form-data"
-          submitValue="Publică"
-          on:navigate={removeFile} />
+        <Actions slot="actions" formenctype="multipart/form-data" submitValue="Publică" on:navigate={removeFile} />
       </Form>
     {/if}
     <Notifications />

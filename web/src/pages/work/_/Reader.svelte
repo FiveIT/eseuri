@@ -7,8 +7,7 @@
   export let prev: () => void
 </script>
 
-<div
-  class="col-start-2 col-end-6 row-start-3 flex flex-col space-y-sm justify-between">
+<div class="col-start-2 col-end-6 row-start-3 flex flex-col space-y-sm justify-between">
   <h2 class="text-title font-serif antialiased">
     {title}
   </h2>

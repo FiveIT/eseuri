@@ -10,10 +10,7 @@ interface Translation {
   inarticulate: TranslationArticulation
 }
 
-type TranslationRecord<T extends string> = Record<
-  string,
-  Record<T, Translation>
->
+type TranslationRecord<T extends string> = Record<string, Record<T, Translation>>
 
 export const workTypeTranslation: TranslationRecord<WorkType> = {
   ro: {

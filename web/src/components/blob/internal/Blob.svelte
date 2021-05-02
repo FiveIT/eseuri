@@ -1,10 +1,7 @@
 <script lang="ts">
   import { fade } from 'svelte/transition'
 
-  import {
-    TRANSITION_EASING as easing,
-    TRANSITION_DURATION as duration,
-  } from '$/lib/globals'
+  import { TRANSITION_EASING as easing, TRANSITION_DURATION as duration } from '$/lib/globals'
   import type { BlobPropsInput } from './store'
 
   export let props: BlobPropsInput = {}

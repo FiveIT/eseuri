@@ -30,11 +30,7 @@
   }
 </script>
 
-<Layout
-  {orangeBlobProps}
-  {redBlobProps}
-  {blueBlobProps}
-  transition={{ y: 1000 }}>
+<Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} transition={{ y: 1000 }}>
   <SlimNav />
   <slot />
 </Layout>

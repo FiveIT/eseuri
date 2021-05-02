@@ -6,10 +6,7 @@
   import CheckBlue from 'svelte-material-icons/CheckCircleOutline.svelte'
   import Information from 'svelte-material-icons/Information.svelte'
   import InformationBlue from 'svelte-material-icons/InformationOutline.svelte'
-  import {
-    TRANSITION_EASING as easing,
-    TRANSITION_DURATION as duration,
-  } from '$/lib/globals'
+  import { TRANSITION_EASING as easing, TRANSITION_DURATION as duration } from '$/lib/globals'
   import { slide, fade } from 'svelte/transition'
 
   interface Assets {
@@ -79,13 +76,7 @@
 </script>
 
 <script lang="ts">
-  import {
-    text,
-    border,
-    filterShadow,
-    background,
-    innerShadow,
-  } from '$/lib/theme'
+  import { text, border, filterShadow, background, innerShadow } from '$/lib/theme'
   import { getLayout } from './Layout.svelte'
   import { px } from '$/lib/util'
   import { tick } from 'svelte'
@@ -122,9 +113,7 @@
 <div
   class="w-notification min-h-notification z-10 rounded fixed top-4/5 left-3/4 transition-all duration-50 ease-out {text[
     theme
-  ]} {border.color[theme]} {border.size[theme]} {baseShadow[
-    theme
-  ]}
+  ]} {border.color[theme]} {border.size[theme]} {baseShadow[theme]}
   {background[theme]} {innerShadow[
     theme
   ]} text-sm font-sans antialiased leading-none flex flex-col"
@@ -134,20 +123,14 @@
   transition:fade={{ easing, duration }}>
   <div class="flex w-full h-notification flex-row items-center px-sm">
     <div class={iconShadow[theme]}>
-      <svelte:component
-        this={currentAssets.icon}
-        color="var(--{currentAssets.color})"
-        size={px(2.5)} />
+      <svelte:component this={currentAssets.icon} color="var(--{currentAssets.color})" size={px(2.5)} />
     </div>
     <p class="mx-sm {filterShadow[theme]}">
       {message}
     </p>
   </div>
   {#if show && explanation}
-    <p
-      class="mx-sm mb-sm {filterShadow[theme]}"
-      bind:offsetHeight={detailsHeight}
-      transition:slide={{ easing, duration: 50 }}>
+    <p class="mx-sm mb-sm {filterShadow[theme]}" bind:offsetHeight={detailsHeight} transition:slide={{ easing, duration: 50 }}>
       {@html explanation}
     </p>
   {/if}

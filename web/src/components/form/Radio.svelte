@@ -20,9 +20,7 @@
       {value}
       checked={selected === value}
       class="absolute opacity-0 w-0 h-0" />
-    <label
-      for={`${name}_${value}`}
-      class="cursor-pointer capitalize place-self-center select-none">
+    <label for={`${name}_${value}`} class="cursor-pointer capitalize place-self-center select-none">
       {displayModifier(value, i)}
     </label>
   {/each}

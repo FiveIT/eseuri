@@ -6,10 +6,7 @@
   import { redirect as goto } from '@roxi/routify'
 
   import { fade } from 'svelte/transition'
-  import {
-    TRANSITION_EASING as easing,
-    TRANSITION_DURATION as duration,
-  } from '$/lib/globals'
+  import { TRANSITION_EASING as easing, TRANSITION_DURATION as duration } from '$/lib/globals'
   import { onDestroy } from 'svelte'
 
   export let redirect: string
@@ -24,9 +21,7 @@
     authenticated = true
 
     if (registered === true && registered === unregistered) {
-      throw new Error(
-        'True values for both registered and unregistered flags are not allowed'
-      )
+      throw new Error('True values for both registered and unregistered flags are not allowed')
     }
   }
 

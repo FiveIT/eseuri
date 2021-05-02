@@ -56,11 +56,7 @@
   }
 </script>
 
-<Layout
-  {orangeBlobProps}
-  {redBlobProps}
-  {blueBlobProps}
-  transition={{ y: 1000 }}>
+<Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} transition={{ y: 1000 }}>
   <Logo />
   <div class="col-start-3 col-end-6 my-auto">
     <Search />
