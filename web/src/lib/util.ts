@@ -16,3 +16,7 @@ export function handleGraphQLResponse<Data, T>(
     return getter(response.data!)
   }
 }
+
+export function graphQLSeed(): `${number}` {
+  return `${Math.random()}` as const
+}
