@@ -89,5 +89,5 @@ export default new Client({
 export const relay = new Client({
   url: relayURL,
   fetchOptions: getHeaders,
-  exchanges: exchanges.slice(-1),
+  exchanges: exchanges.slice(0, exchanges.length - 1),
 })
