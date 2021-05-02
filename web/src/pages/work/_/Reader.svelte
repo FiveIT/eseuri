@@ -1,26 +1,101 @@
-<script lang="ts">
-  import { Next, Back, Bookmark } from '.'
-
-  export let title: string
-  export let content: string
-  export let next: () => void
-  export let prev: () => void
+<script lang="ts" context="module">
+  const keys: Record<'prev' | 'next', Record<string, boolean>> = {
+    prev: {
+      ArrowLeft: true,
+      ArrowUp: true,
+      KeyH: true,
+      KeyK: true,
+    },
+    next: {
+      ArrowRight: true,
+      ArrowDown: true,
+      KeyL: true,
+      KeyJ: true,
+    },
+  }
 </script>
 
-<div class="col-start-2 col-end-6 row-start-3 flex flex-col space-y-sm justify-between">
+<script lang="ts">
+  import {
+    Next,
+    Back,
+    Bookmark,
+    Spinner,
+    notify,
+    internalErrorNotification,
+  } from '.'
+  import type { Work } from '.'
+  import {
+    TRANSITION_EASING as easing,
+    TRANSITION_DURATION as duration,
+  } from '$/lib/globals'
+  import { fade } from 'svelte/transition'
+
+  export let work: Work
+
+  let prevDisabled = true
+
+  $: p = work.content.catch(err => {
+    console.error(err)
+
+    notify(internalErrorNotification)
+  })
+
+  const update = () => {
+    work = work
+  }
+
+  let direction = 0
+
+  const next = () => {
+    direction = 0
+    work.next()
+    prevDisabled = false
+    update()
+  }
+
+  // TODO: Fix extra previous navigation required to reach the beginning.
+  const prev = () => {
+    if (prevDisabled) {
+      return
+    }
+    direction = -1
+    prevDisabled = !work.prev()
+    update()
+  }
+
+  function onKey({ code }: KeyboardEvent) {
+    if (keys.prev[code]) {
+      prev()
+    } else if (keys.next[code]) {
+      next()
+    }
+  }
+</script>
+
+<div
+  class="col-start-2 col-end-6 row-start-3 flex flex-col space-y-sm justify-between">
   <h2 class="text-title font-serif antialiased">
-    {title}
+    {work.title}
   </h2>
   <div class="flex justify-between align-middle">
     <div class="w-min text-sm font-sans antialiased">Eseu</div>
     <div class="w-min"><Bookmark /></div>
   </div>
-  <p class="text-prose font-serif antialiased">
-    {content}
-  </p>
+  {#await p}
+    <div class="col-span-6 flex justify-center items-center">
+      <Spinner />
+    </div>
+  {:then text}
+    <p class="text-prose font-serif antialiased" in:fade={{ duration, easing }}>
+      {text}
+    </p>
+  {/await}
 </div>
-<Back on:click={prev} />
+<Back disabled={prevDisabled} on:click={prev} />
 <Next on:click={next} />
 <div class="col-start-2">
   <Bookmark />
 </div>
+
+<svelte:window on:keydown={onKey} />
