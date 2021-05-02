@@ -17,3 +17,5 @@ export interface WorkSummary {
   readonly type: WorkType
   readonly work_count: number
 }
+
+export type Nullable<T> = T | null | undefined
