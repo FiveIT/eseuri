@@ -143,39 +143,47 @@ export const CHARACTERS = gql<Data<Characters>, Vars<Characters>>`
   }
 `
 
-type SubjectIDFromURL = Query<'work_summaries', [ID], { url: string }>
+type SubjectIDFromURL = Query<
+  'work_summaries',
+  [ID & Namer & { work_count: number }] | [],
+  { url: string }
+>
 
 export const SUBJECT_ID_FROM_URL = gql<Data<SubjectIDFromURL>, Vars<SubjectIDFromURL>>`
   query getSubjectIDFromURL($url: String!) {
     work_summaries(where: { url: { _eq: $url } }) {
+      name
       id
+      work_count
     }
   }
 `
 
-namespace Relay {
+export namespace Relay {
   export type ID = string
+  export type IDObject = { id: ID }
 
-  type Cursor = string | null
+  export type Cursor = string | null
 
-  interface PageInfo {
+  export interface PageInfo {
     startCursor: Cursor
     endCursor: Cursor
     hasNextPage: boolean
     hasPreviousPage: boolean
   }
 
-  type Edge<Data, hasCursor> = (hasCursor extends true
+  type Edge<Data, hasCursor> = hasCursor extends true
     ? {
         cursor: Cursor
+        node: Data
       }
-    : never) & {
-    node: Data
-  }
+    : {
+        node: Data
+      }
 
   export type Data<T, hasCursor> = {
     pageInfo: PageInfo
-    edges: Edge<T, hasCursor>
+    edges: Edge<T, hasCursor>[]
   }
 
   export interface CursorVars {
@@ -187,16 +195,21 @@ namespace Relay {
 }
 
 // eslint-disable-next-line no-redeclare
-type Relay<
+export type Relay<
   Name extends string,
   Data = Typename,
   Vars = object,
   hasCursor extends boolean = false
-> = Query<Name, Relay.Data<Data, hasCursor>, Vars>
+> = Query<`${Name}_connection`, Relay.Data<Data, hasCursor>, Vars>
 
 // eslint-disable-next-line no-redeclare
-namespace Relay {
-  export type Node<Data = Typename, Vars = object> = Relay<'node', Data, Vars>
+export namespace Relay {
+  export type Node<Name extends string, Data = Typename, Vars = object> = Query<
+    'node',
+    // eslint-disable-next-line no-unused-vars
+    { [key in Name]: Data },
+    Vars
+  >
 }
 
 interface ListSubjectsVars extends Relay.CursorVars {
@@ -204,17 +217,21 @@ interface ListSubjectsVars extends Relay.CursorVars {
   seed: `${number}`
 }
 
-type ListSubjects<Name extends `${WorkType}s`> = Relay<`list_${Name}`, ID, ListSubjectsVars>
+export type ListSubjects<Name extends `${WorkType}s`> = Relay<
+  `list_${Name}`,
+  Relay.IDObject,
+  ListSubjectsVars,
+  true
+>
 type ListEssays = ListSubjects<'essays'>
 type ListCharacterizations = ListSubjects<'characterizations'>
 
 export const LIST_ESSAYS = gql<Data<ListEssays>, Vars<ListEssays>>`
-  query listEssays($subjectID: Int!, $seed: seed!, $before: String, $after: String, $limit: Int) {
+  query listEssays($subjectID: Int!, $seed: seed!, $after: String, $first: Int) {
     list_essays_connection(
-      args: { characterid: $subjectID, seed: $seed }
-      before: $before
+      args: { titleid: $subjectID, seed: $seed }
       after: $after
-      first: $limit
+      first: $first
     ) {
       pageInfo {
         startCursor
@@ -233,18 +250,12 @@ export const LIST_ESSAYS = gql<Data<ListEssays>, Vars<ListEssays>>`
 `
 
 export const LIST_CHARACTERIZATIONS = gql<Data<ListCharacterizations>, Vars<ListCharacterizations>>`
-  query listCharacterizations(
-    $subjectID: Int!
-    $seed: seed!
-    $before: String
-    $after: String
-    $limit: Int
-  ) {
+  query listCharacterizations($subjectID: Int!, $seed: seed!, $after: String, $first: Int) {
     list_characterizations_connection(
-      args: { titleid: $subjectID, seed: $seed }
+      args: { characterid: $subjectID, seed: $seed }
       before: $before
       after: $after
-      first: $limit
+      first: $first
     ) {
       pageInfo {
         startCursor
@@ -262,7 +273,7 @@ export const LIST_CHARACTERIZATIONS = gql<Data<ListCharacterizations>, Vars<List
   }
 `
 
-type WorkContent = Relay.Node<{ work: { content: string } }, Relay.ID>
+type WorkContent = Relay.Node<'work', { content: string }, Relay.IDObject>
 
 export const WORK_CONTENT = gql<Data<WorkContent>, Vars<WorkContent>>`
   query workContent($id: ID!) {
