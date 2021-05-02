@@ -68,8 +68,7 @@
     "graphql": "^15.5.0",
     "lodash.debounce": "^4.0.8",
     "subscriptions-transport-ws": "^0.9.18",
-    "svelte-material-icons": "^1.0.3",
-    "wonka": "^4.0.15"
+    "svelte-material-icons": "^1.0.3"
   },
   "type": "module",
   "babel": {
