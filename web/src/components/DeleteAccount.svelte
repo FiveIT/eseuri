@@ -12,7 +12,7 @@
   let button1Child: HTMLElement
   let button2Parent: HTMLElement
   let button2Child: HTMLElement
-  let show: boolean = true
+  export let show: boolean = true
   function fixFontSize(
     parent: HTMLElement,
     child: HTMLElement,
@@ -39,7 +39,7 @@
 <LayoutContext let:theme>
   {#if show}
     <div
-      class="w-screen h-screen  fixed top-0 left-0 flex justify-center items-center z-1"
+      class="fixed flex justify-center items-center z-20 w-full h-full"
       class:blur={theme === 'default'}>
       <div
         class=" w-deleteboxwidth  h-associationboxheight rounded z-20  grid grid-rows-5 grid-cols-4 gap-x-md gap-y-sm p-sm    {text[

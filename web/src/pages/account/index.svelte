@@ -6,6 +6,8 @@
   import { store as window } from '$/components/Window.svelte'
   import type { BlobPropsInput, WorkType } from '$/types'
   import SlimNav from '$/components/SlimNav.svelte'
+  import Configure from '$/components/Configure.svelte'
+
   let orangeBlobProps: BlobPropsInput = { scale: 1.8 }
   $: orangeBlobProps = {
     x: -orange.width * 1.4,
@@ -37,6 +39,7 @@
   {redBlobProps}
   {blueBlobProps}
   transition={{ y: 1000 }}>
+  <Configure />
   <SlimNav />
   <div
     class="row-start-4 row-span-1 col-start-1 col-span-2 my-auto text-white text-md font-sans">
