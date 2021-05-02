@@ -2,10 +2,7 @@
   import type { Theme } from '$/lib/types'
   import type { ThemeEntry } from '$/lib/theme'
   import { placeholderText } from '$/lib/theme'
-  import {
-    TRANSITION_DURATION as duration,
-    TRANSITION_EASING as easing,
-  } from '$/lib/globals'
+  import { TRANSITION_DURATION as duration, TRANSITION_EASING as easing } from '$/lib/globals'
 
   interface LongDurationOptions {
     after: number
@@ -82,9 +79,7 @@
     </div>
   </div>
   {#if showLongDurationNotice}
-    <p
-      class="font-sans text-sm mt-md {placeholderText[t]}"
-      transition:slide={{ duration, easing }}>
+    <p class="font-sans text-sm mt-md {placeholderText[t]}" transition:slide={{ duration, easing }}>
       {longDuration.message}
     </p>
   {/if}
