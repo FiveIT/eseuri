@@ -1,4 +1,12 @@
-import type { Work, WorkType, Role, Bookmark, Lucrari } from './types'
+import type {
+  Work,
+  WorkType,
+  Role,
+  Bookmark,
+  Lucrari,
+  UnrevisedWork,
+  UserRevision,
+} from './types'
 
 interface TranslationArticulation {
   singular: string
@@ -39,7 +47,30 @@ export const workTypeTranslation: TranslationRecord<WorkType> = {
     },
   },
 }
-
+export const UnrevTypeTranslation: TranslationRecord<UserRevision> = {
+  ro: {
+    yours: {
+      articulate: {
+        singular: 'lucrare așteaptă revizuirea ta',
+        plural: 'lucrări așteaptă revizuirea ta',
+      },
+      inarticulate: {
+        singular: 'lucrare așteaptă revizuirea ta',
+        plural: 'lucrări așteaptă revizuirea ta',
+      },
+    },
+    anybody: {
+      articulate: {
+        singular: 'lucrare așteaptă o revizuire',
+        plural: 'lucrări așteaptă o revizuire',
+      },
+      inarticulate: {
+        singular: 'lucrare așteaptă o revizuire',
+        plural: 'lucrări așteaptă o revizuire',
+      },
+    },
+  },
+}
 export const roleTranslation: TranslationRecord<Role> = {
   ro: {
     student: {
@@ -64,6 +95,81 @@ export const roleTranslation: TranslationRecord<Role> = {
     },
   },
 }
+
+export const unrevisedWorks: UnrevisedWork[] = JSON.parse(`[
+  {
+    "users_all":{
+       "first_name":"Matei",
+       "middle_name":"-",
+       "last_name":"-"
+    },
+    "teacher":"Adia ha",
+    "essay":{
+       "title":{
+          "name":"Baltag",
+          "author":{
+             "first_name":"Prost",
+             "middle_name":"Necreativ",
+             "last_name":"orientat"
+          }
+       }
+    },
+    "characterization": null
+ },
+ {
+  "users_all":{
+     "first_name":"Jul",
+     "middle_name":"-",
+     "last_name":"-"
+  },
+  "teacher":"Adia ha",
+  "essay":{
+     "title":{
+        "name":"Baltag",
+        "author":{
+           "first_name":"Prost",
+           "middle_name":"Necreativ",
+           "last_name":"orientat"
+        }
+     }
+  },
+  "characterization": null
+},
+  {
+  "users_all":{
+     "first_name":"pupix",
+     "middle_name":"-",
+     "last_name":"mai"
+  },
+  "teacher": null,
+  "essay": null,
+  "characterization": {
+    "character": {
+      "name": "Victoria Lipie",
+      "title": {
+        "name": "Beteag"
+      }
+    }
+  }
+},
+  {
+    "users_all":{
+       "first_name":"",
+       "middle_name":"-",
+       "last_name":"mai"
+    },
+    "teacher": null,
+    "essay": null,
+    "characterization": {
+      "character": {
+        "name": " Lipie",
+        "title": {
+          "name": "Beteag"
+        }
+      }
+    }
+  }
+]`) as UnrevisedWork[]
 
 export default (JSON.parse(`[
   {
@@ -172,7 +278,8 @@ export default (JSON.parse(`[
     "name": "Ghită Pristanda",
     "creator": "O scrisoare pierdută",
     "type": "characterization",
-    "work_count": 0
+    "work_count": 0,
+    "revised": 0
   },
   {
     "name": "Nae Cațavencu",
@@ -184,7 +291,8 @@ export default (JSON.parse(`[
     "name": "Ștefan Tipătescu",
     "creator": "O scrisoare pierdută",
     "type": "characterization",
-    "work_count": 0
+    "work_count": 0,
+    "revised": 0
   },
   {
     "name": "Zoe Trahanache",
@@ -417,8 +525,7 @@ export default (JSON.parse(`[
   {
     "name": "Odă",
     "creator": "Mihai Eminescu",
-    "type": "essay",
-    "work_count": 0
+    "type": "essay"
   },
   {
     "name": "Sărmanul Dionis",

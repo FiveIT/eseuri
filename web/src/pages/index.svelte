@@ -62,7 +62,7 @@
     <Buton enable={false} theme="white">Plagiat</Buton>
   </div>
   <div class="col-start-5 col-end-6 row-start-2 w-full h-full text-sm my-auto">
-    <Buton enable={false} theme="white">Profesori</Buton>
+    <Buton href="./indexteacher" enable={true} theme="white">Profesori</Buton>
   </div>
   <div class="col-span-1 col-start-6 row-span-1 row-start-3 place-self-center">
     <UploadButton />
