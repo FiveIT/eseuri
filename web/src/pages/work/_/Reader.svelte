@@ -35,22 +35,17 @@
     work = work
   }
 
-  let direction = 0
-
   const next = () => {
-    direction = 0
     work.next()
     prevDisabled = false
     update()
   }
 
   const prev = () => {
-    if (prevDisabled) {
-      return
+    if (!prevDisabled) {
+      prevDisabled = !work.prev()
+      update()
     }
-    direction = -1
-    prevDisabled = !work.prev()
-    update()
   }
 
   function onKey({ code }: KeyboardEvent) {
@@ -75,7 +70,7 @@
       <Spinner />
     </div>
   {:then text}
-    <p class="text-prose font-serif antialiased" in:fade={{ duration, easing }}>
+    <p class="text-prose font-serif antialiased whitespace-pre-line" in:fade={{ duration, easing }}>
       {text}
     </p>
   {/await}
