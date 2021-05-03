@@ -1,4 +1,4 @@
-import type { Work, WorkType, Role, Bookmark } from './types'
+import type { Work, WorkType, Role, Bookmark, Lucrari } from './types'
 
 interface TranslationArticulation {
   singular: string
@@ -577,3 +577,34 @@ export const bookmarks: Bookmark[] = JSON.parse(`[
     "time": "12:55 21 Aprilie 2021"
   }
 ]`) as Bookmark[]
+
+export const lucrari: Lucrari[] = JSON.parse(`[
+  {
+    "status": "InLucru",
+    "type": "Eseu",
+    "teacher": "Mos Martin",
+    "subject": "Ion",
+    "time": "12:55 21 Aprilie 2021"
+  },
+  {
+    "status": "Aprobate",
+    "type": "Eseu",
+    "teacher": "Mos Martin",
+    "subject": "Ion",
+    "time": "12:55 21 Aprilie 2021"
+  },
+  {
+    "status": "Respinse",
+    "type": "Eseu",
+    "teacher": "Mos Martin",
+    "subject": "Ion",
+    "time": "12:55 21 Aprilie 2021"
+  },
+  {
+    "status": "Respinse",
+    "type": "Eseu",
+    "teacher": "Mos Martin",
+    "subject": "vav",
+    "time": "12:55 21 Aprilie 2021"
+  }
+]`) as Lucrari[]

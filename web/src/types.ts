@@ -13,6 +13,13 @@ export function isWorkType(s: string): s is WorkType {
   return s === 'essay' || s === 'characterization'
 }
 
+export type Status =
+  | 'InLucru'
+  | 'InAsteptare'
+  | 'Aprobate'
+  | 'Respinse'
+  | 'InRevizuire'
+
 export interface Work {
   readonly name: string
   readonly creator: string
@@ -22,6 +29,13 @@ export interface Work {
 export interface Bookmark {
   readonly type: string
   readonly bookmarkname: string
+  readonly subject: string
+  readonly time: string
+}
+export interface Lucrari {
+  readonly status: Status
+  readonly type: string
+  readonly teacher: string
   readonly subject: string
   readonly time: string
 }

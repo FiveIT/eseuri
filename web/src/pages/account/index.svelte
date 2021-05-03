@@ -8,6 +8,7 @@
   import SlimNav from '$/components/SlimNav.svelte'
   import Configure from '$/components/Configure.svelte'
   import Bookmark from '$/components/Bookmark.svelte'
+  import Lucrari from '$/components/Lucrari.svelte'
   type Choosen = 'Lucrari' | 'Marcaje' | 'Profesori' | 'Configurare'
 
   let selected: Choosen
@@ -25,7 +26,7 @@
     scale: 6,
     x: $window.width - red.width * 3,
     y: $window.height - 1500,
-    zIndex: -2,
+    zIndex: -1,
   }
 
   let blueBlobProps: BlobPropsInput
@@ -46,11 +47,13 @@
   transition={{ y: 1000 }}>
   {#if selected == 'Configurare'}
     <Configure />
-  {:else if selected == 'Lucrari'}{:else if selected == 'Marcaje'}<Bookmark />{:else}{/if}
+  {:else if selected == 'Lucrari'}
+    <Lucrari />
+  {:else if selected == 'Marcaje'}<Bookmark />{:else}{/if}
 
   <SlimNav />
   <div
-    class="row-start-4  row-span-1 col-start-1 col-span-2 my-auto text-white text-md font-sans">
+    class="bg-transparent row-start-4  row-span-1 col-start-1 col-span-2 my-auto text-white text-md font-sans">
     Contul meu
   </div>
   <button
