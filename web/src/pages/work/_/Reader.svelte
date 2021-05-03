@@ -16,19 +16,9 @@
 </script>
 
 <script lang="ts">
-  import {
-    Next,
-    Back,
-    Bookmark,
-    Spinner,
-    notify,
-    internalErrorNotification,
-  } from '.'
+  import { Next, Back, Bookmark, Spinner, notify, internalErrorNotification } from '.'
   import type { Work } from '.'
-  import {
-    TRANSITION_EASING as easing,
-    TRANSITION_DURATION as duration,
-  } from '$/lib/globals'
+  import { TRANSITION_EASING as easing, TRANSITION_DURATION as duration } from '$/lib/globals'
   import { fade } from 'svelte/transition'
 
   export let work: Work
@@ -54,7 +44,6 @@
     update()
   }
 
-  // TODO: Fix extra previous navigation required to reach the beginning.
   const prev = () => {
     if (prevDisabled) {
       return
@@ -73,8 +62,7 @@
   }
 </script>
 
-<div
-  class="col-start-2 col-end-6 row-start-3 flex flex-col space-y-sm justify-between">
+<div class="col-start-2 col-end-6 row-start-3 flex flex-col space-y-sm justify-between">
   <h2 class="text-title font-serif antialiased">
     {work.title}
   </h2>

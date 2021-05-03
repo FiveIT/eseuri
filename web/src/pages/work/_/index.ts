@@ -124,13 +124,10 @@ export const works = async (url: string, type: WorkType) => {
           return { value }
         },
         prev() {
-          console.log({ current })
-
-          if (current <= 1) {
+          if (--current <= 1) {
             return { value: undefined, done: true }
           }
 
-          current--
           return { value: fromCache()! }
         },
       }
