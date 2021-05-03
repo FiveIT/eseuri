@@ -18,6 +18,8 @@ export type Status =
   | 'Aprobate'
   | 'Respinse'
   | 'InRevizuire'
+
+export type AssociateStatus = 'Incoming' | 'Accepted' | 'Rejected' | 'Pending'
 export function whoseUnrevWork(s: string): s is UserRevision {
   return s === 'yours' || s === 'anybody'
 }
@@ -40,6 +42,12 @@ export interface Lucrari {
   readonly teacher: string
   readonly subject: string
   readonly time: string
+}
+export interface Associate {
+  readonly status: AssociateStatus
+  readonly name: string
+  readonly email: string
+  readonly school: string
 }
 export interface UnrevisedWork {
   readonly users_all: {

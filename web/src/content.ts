@@ -6,6 +6,7 @@ import type {
   Lucrari,
   UnrevisedWork,
   UserRevision,
+  Associate,
 } from './types'
 
 interface TranslationArticulation {
@@ -685,9 +686,37 @@ export const bookmarks: Bookmark[] = JSON.parse(`[
   }
 ]`) as Bookmark[]
 
+export const asociates: Associate[] = JSON.parse(`[
+  {
+    "status": "Pending",
+    "name": "Mircea Ioan Andreescu",
+    "email": "mioan.a@gmail.com",
+    "school": "Col Nat „M. Eminescu” Iasi"
+  },
+  {
+    "status": "Incoming",
+    "name": "Mircea Ioan Andreescu",
+    "email": "mioan.a@gmail.com",
+    "school": "Col Nat „M. Eminescu” Iasi"
+  },
+  {
+    "status": "Rejected",
+    "name": "Mircea Ioan Andreescu",
+    "email": "mioan.a@gmail.com",
+    "school": "Col Nat „M. Eminescu” Iasi"
+  },
+  {
+    "status": "Accepted",
+    "name": "Mircea Ioan Andreescu",
+    "email": "mioan.a@gmail.com",
+    "school": "Col Nat „M. Eminescu” Iasi"
+  }
+
+]`) as Associate[]
+
 export const lucrari: Lucrari[] = JSON.parse(`[
   {
-    "status": "InLucru",
+    "status": "Respinse",
     "type": "Eseu",
     "teacher": "Mos Martin",
     "subject": "Ion",

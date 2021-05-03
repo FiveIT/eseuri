@@ -1,8 +1,14 @@
 <script>
   import AssociateButton from './AssociateButton.svelte'
-  import Association from './Association.svelte'
+  import AssociateCard from './AssociateCard.svelte'
+
+  import { asociates } from '$/content'
 </script>
 
-<div class="row-start-5 col-start-1 col-span-2 row-span-2">
+<div
+  class="row-start-5 col-span-6 col-start-1 grid grid-cols-essays auto-rows-essays gap-x-md gap-y-sm ">
   <AssociateButton />
+  {#each asociates as associate}
+    <AssociateCard work={associate} />
+  {/each}
 </div>
