@@ -61,6 +61,7 @@ export default defineConfig({
       configureloginwidth: 'var(--configure-login-width)',
       columnwidth: 'var(--column-width)',
       rowheight: 'var(--row-height)',
+      buttonleft: '13vmin',
     },
     borderRadius: {
       DEFAULT: '0.625rem',
@@ -109,6 +110,9 @@ export default defineConfig({
     ['0.02', '1'].map(v => `pt-${v}`),
     'px-sm',
     'py-xs',
+    'grid-cols-3',
+    'w-associationboxwidth',
+    'h-associationboxheight',
   ],
   darkMode: false,
   preflight: true,

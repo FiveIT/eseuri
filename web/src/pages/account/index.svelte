@@ -9,6 +9,7 @@
   import Configure from '$/components/Configure.svelte'
   import Bookmark from '$/components/Bookmark.svelte'
   import Lucrari from '$/components/Lucrari.svelte'
+  import Teachers from '$/components/Teachers.svelte'
   type Choosen = 'Lucrari' | 'Marcaje' | 'Profesori' | 'Configurare'
 
   let selected: Choosen
@@ -49,7 +50,7 @@
     <Configure />
   {:else if selected == 'Lucrari'}
     <Lucrari />
-  {:else if selected == 'Marcaje'}<Bookmark />{:else}{/if}
+  {:else if selected == 'Marcaje'}<Bookmark />{:else if selected == 'Profesori'}<Teachers />{/if}
 
   <SlimNav />
   <div

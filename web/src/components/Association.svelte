@@ -14,7 +14,7 @@
   let button1Child: HTMLElement
   let button2Parent: HTMLElement
   let button2Child: HTMLElement
-  let show: boolean = true
+  export let show: boolean
   function fixFontSize(
     parent: HTMLElement,
     child: HTMLElement,
@@ -47,13 +47,13 @@
       class="w-screen h-screen  fixed top-0 left-0 flex justify-center items-center z-1"
       class:blur={theme === 'default'}>
       <div
-        class=" w-associationboxwidth h-associationboxheight rounded z-20  grid grid-rows-5 grid-cols-3 gap-x-md gap-y-sm p-sm    {text[
+        class=" w-associationboxwidth h-associationboxheight grid-cols-3 rounded z-20  grid grid-rows-5   gap-x-md gap-y-sm p-sm    {text[
           theme
         ]} {border.color[theme]} {border.size[theme]} {filterShadow[
           theme
         ]} {background[theme]}">
         <div
-          class="col-start-1 row-start-1 col-end-3   row-span-1 w-full h-full flex flex-col"
+          class="col-start-1 row-start-1 col-span-3   row-span-1 w-full h-full flex flex-col"
           bind:this={titleParent}>
           <span bind:this={titleChild} class="text-lg my-auto "
             >Inițiază o asociere</span>
