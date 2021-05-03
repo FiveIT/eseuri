@@ -253,7 +253,6 @@ export const LIST_CHARACTERIZATIONS = gql<Data<ListCharacterizations>, Vars<List
   query listCharacterizations($subjectID: Int!, $seed: seed!, $after: String, $first: Int) {
     list_characterizations_connection(
       args: { characterid: $subjectID, seed: $seed }
-      before: $before
       after: $after
       first: $first
     ) {
