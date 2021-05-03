@@ -22,18 +22,23 @@
       theme
     ]}   col-start-1 col-span-6 row-start-5 row-span-6 grid grid-cols-6 grid-rows-6 gap-x-md gap-y-sm mt-sm ">
     <button
+      class:underline={selected == 'InLucru'}
       class="col-start-1 row-start-2 w-full h-full "
       on:click={() => (selected = 'InLucru')}>În lucru</button>
     <button
+      class:underline={selected == 'InAsteptare'}
       class="col-start-1 row-start-3 w-full h-full "
       on:click={() => (selected = 'InAsteptare')}>În așteptare</button>
     <button
+      class:underline={selected == 'InRevizuire'}
       class="col-start-1 row-start-4 w-full h-full "
       on:click={() => (selected = 'InRevizuire')}>În revizuire acum</button>
     <button
+      class:underline={selected == 'Aprobate'}
       class="col-start-1 row-start-5 w-full h-full "
       on:click={() => (selected = 'Aprobate')}>Aprobate</button>
     <button
+      class:underline={selected == 'Respinse'}
       class="col-start-1 row-start-6 w-full h-full "
       on:click={() => (selected = 'Respinse')}>Respinse</button>
     <div class="col-start-2 row-start-1 my-auto text-center">Tip</div>

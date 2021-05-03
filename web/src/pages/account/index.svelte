@@ -13,7 +13,7 @@
   type Choosen = 'Lucrari' | 'Marcaje' | 'Profesori' | 'Configurare'
 
   let selected: Choosen
-  selected = 'Configurare'
+  selected = 'Lucrari'
   let orangeBlobProps: BlobPropsInput = { scale: 1.8 }
   $: orangeBlobProps = {
     x: -orange.width * 1.4,
@@ -58,21 +58,25 @@
     Contul meu
   </div>
   <button
+    class:underline={selected == 'Lucrari'}
     class="row-start-4 h-full row-span-1 col-start-3 col-span-1 my-auto text-center text-white text-sm font-sans"
     on:click={() => (selected = 'Lucrari')}>
     Lucrări
   </button>
   <button
+    class:underline={selected == 'Marcaje'}
     class="row-start-4 h-full row-span-1 col-start-4 col-span-1 my-auto text-center text-white text-sm font-sans"
     on:click={() => (selected = 'Marcaje')}>
     Marcaje
   </button>
   <button
+    class:underline={selected == 'Profesori'}
     class="row-start-4 h-full row-span-1 col-start-5 col-span-1 my-auto text-center text-white text-sm font-sans"
     on:click={() => (selected = 'Profesori')}>
     Profesori
   </button>
   <button
+    class:underline={selected == 'Configurare'}
     class="row-start-4 h-full row-span-1 col-start-6 col-span-1 my-auto text-center text-white text-sm font-sans"
     on:click={() => (selected = 'Configurare')}>
     Configurare/<wbr />Ieșire din cont
