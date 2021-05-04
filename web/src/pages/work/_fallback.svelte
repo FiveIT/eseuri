@@ -2,13 +2,21 @@
   import { getLayout } from '$/components/Layout.svelte'
   import { store as window } from '$/components/Window.svelte'
   import { store as red } from '$/components/blob/Red.svelte'
-  import { Reader, Notifications, Spinner, works, notify, internalErrorNotification } from './_'
+  import {
+    Reader,
+    Notifications,
+    Spinner,
+    works,
+    notify,
+    internalErrorNotification,
+    defaultWorkData,
+  } from './_'
   import type { Work } from './_'
 
   import { isWorkType } from '$/lib/types'
 
   import { onDestroy } from 'svelte'
-  import { leftover } from '@roxi/routify'
+  import { goto, leftover } from '@roxi/routify'
 
   const { red: setRedBlob, autoSet } = getLayout().blobs
   let work: Work
@@ -31,12 +39,12 @@
 
   onDestroy(() => ($autoSet = true))
 
-  const [type, title] = $leftover.split('/')
+  const [type, title, workID] = $leftover.split('/')
 
   if (!type || !title || !isWorkType(type)) {
     done = true
   } else {
-    works(title, type)
+    works(title, type, workID)
       .then(works => {
         if (!works) {
           notFoundParagraphs = [
@@ -64,13 +72,25 @@
 
         work = {
           title: name,
-          content: Promise.resolve(''),
+          data: defaultWorkData,
           next() {
-            this.content = it.next().then(v => v.value)
+            this.data = it.next().then(v => {
+              const data = v.value
+
+              $goto(`/work/${type}/${title}/${data.id}`)
+
+              return data
+            })
           },
           prev() {
             const res = it.prev()
-            this.content = res.then(r => r.value)
+            this.data = res.then(r => {
+              const data = r.value!
+
+              $goto(`/work/${type}/${title}/${data.id}`)
+
+              return data
+            })
 
             return res.then(r => !!r.done)
           },
