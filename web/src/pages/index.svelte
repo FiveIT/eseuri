@@ -44,7 +44,6 @@
 
   let type: WorkType = 'essay'
 
-  // TODO: Maybe subscription?
   const content = query(operationStore(WORK_SUMMARIES, { type }, { requestPolicy: 'network-only' }))
 
   $: $content.variables!.type = type
