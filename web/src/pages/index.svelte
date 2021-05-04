@@ -16,7 +16,7 @@
   import { metatags } from '@roxi/routify'
   import { WORK_SUMMARIES } from '$/graphql/queries'
   import { operationStore, query } from '@urql/svelte'
-  import Notifications, { notify } from '$/components/Notifications.svelte'
+  import { notify } from '$/components/Notifications.svelte'
 
   metatags.title = 'Eseuri'
 

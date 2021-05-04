@@ -14,7 +14,7 @@
   import { store as orange } from '$/components/blob/Orange.svelte'
   import { store as red } from '$/components/blob/Red.svelte'
   import { store as window } from '$/components/Window.svelte'
-  import Notifications, { notify } from '$/components/Notifications.svelte'
+  import { notify } from '$/components/Notifications.svelte'
 
   import { getContext } from 'svelte'
   import { from } from 'rxjs'

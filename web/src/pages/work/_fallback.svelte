@@ -2,15 +2,7 @@
   import { getLayout } from '$/components/Layout.svelte'
   import { store as window } from '$/components/Window.svelte'
   import { store as red } from '$/components/blob/Red.svelte'
-  import {
-    Reader,
-    Notifications,
-    Spinner,
-    works,
-    notify,
-    internalErrorNotification,
-    defaultWorkData,
-  } from './_'
+  import { Reader, Spinner, works, notify, internalErrorNotification, defaultWorkData } from './_'
   import type { Work } from './_'
 
   import { isWorkType } from '$/lib/types'

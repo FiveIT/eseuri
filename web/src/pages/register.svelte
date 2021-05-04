@@ -15,7 +15,6 @@
   import Radio from '$/components/form/Radio.svelte'
   import Actions from '$/components/form/Actions.svelte'
   import Allow from '$/components/Allow.svelte'
-  import Notifications from '$/components/Notifications.svelte'
 
   import { goto, metatags } from '@roxi/routify'
   import { from, of } from 'rxjs'
@@ -89,12 +88,14 @@
       <SlimNav logoOnly />
       <Form name="register" onSubmit={args => onSubmit(alive, args)}>
         <span slot="legend">Completează-ți profilul</span>
-        <Text name="last_name" placeholder="Scrie-ți aici numele de familie..." required
-          >Numele tău</Text>
+        <Text name="last_name" placeholder="Scrie-ți aici numele de familie..." required>
+          Numele tău
+        </Text>
         <Text name="first_name" placeholder="Scrie-l aici..." required>Primul prenume</Text>
         <Text name="middle_name" placeholder="Scrie-l aici...">Al doilea prenume</Text>
-        <Text name="county" placeholder="Scrie aici judetul scolii..." required
-          >Județul școlii tale</Text>
+        <Text name="county" placeholder="Scrie aici judetul scolii..." required>
+          Județul școlii tale
+        </Text>
         <Text name="school" placeholder="Scrie aici numele școlii..." required>Școala ta</Text>
         <Radio name="role" options={roles} displayModifier={translateRole}>Ocupația ta</Radio>
         <Actions slot="actions" submitValue="Sunt gata" />

@@ -5,8 +5,8 @@ export { default as Reader } from './Reader.svelte'
 export { default as Spinner } from '$/components/Spinner.svelte'
 
 // @ts-expect-error
-import Notifications, { notify } from '$/components/Notifications.svelte'
-export { Notifications, notify }
+import { notify } from '$/components/Notifications.svelte'
+export { notify }
 
 import client, { relay } from '$/graphql/client'
 import {
