@@ -95,7 +95,7 @@
   <div class="flex flex-col col-start-2 col-span-4 text-center">
     <h2 class="font-serif text-title antialiased mb-md">Ups!</h2>
     {#each notFoundParagraphs as text}
-      <p class="text-sm font-sans mt-sm antialiased leading-none mx-auto max-w-1/2">
+      <p class="text-sm font-sans mt-sm antialiased leading-tight mx-auto max-w-1/2">
         {@html text}
       </p>
     {/each}

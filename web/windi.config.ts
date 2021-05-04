@@ -22,12 +22,12 @@ export default defineConfig({
       },
     },
     fontFamily: {
-      sans: ['Carme', ...defaults.fontFamily.sans],
+      sans: ['Sora', ...defaults.fontFamily.sans],
       serif: ['Cardo', ...defaults.fontFamily.serif],
     },
     fontSize: {
-      sm: ['1rem', { letterSpacing: '-0.055rem' }],
-      md: ['1.75rem', { letterSpacing: '-0.125rem' }],
+      sm: ['1rem', { letterSpacing: '-0.06rem' }],
+      md: ['1.75rem', { letterSpacing: '-0.15rem' }],
       lg: ['2.5rem', { letterSpacing: '-0.1rem' }],
       xl: ['6rem', { letterSpacing: '-0.2rem' }],
       prose: [
@@ -44,7 +44,7 @@ export default defineConfig({
           letterSpacing: '-0.225rem',
         },
       ],
-      workInfo: ['1.125rem', { letterSpacing: '-0.055rem', lineHeight: '90%' }],
+      workInfo: ['1.125rem', { letterSpacing: '-0.07rem', lineHeight: '90%' }],
     },
     spacing: {
       xs: 'calc(var(--row-gap) / 2)',
@@ -118,6 +118,7 @@ export default defineConfig({
     'py-xs',
     'shadow',
     'shadow-inner',
+    'font-light',
     [].concat(...['soft', 'large'].map(v => [`shadow-${v}`, `shadow-inner-${v}`])),
   ],
 })

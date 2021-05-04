@@ -37,3 +37,8 @@ export const background: ThemeEntry = {
   default: 'bg-white',
   white: 'bg-blue',
 }
+
+export const fontWeight: ThemeEntry = {
+  default: 'font-light',
+  white: '',
+}

@@ -6,7 +6,7 @@
 
   import type { WorkSummary } from '$/lib/types'
 
-  import { text, border, filterShadow } from '$/lib/theme'
+  import { text, border, filterShadow, fontWeight } from '$/lib/theme'
   import { workTypeTranslation } from '$/lib/content'
 
   let titleParent: HTMLElement
@@ -26,7 +26,7 @@
   }
 
   onMount(() => {
-    fixFontSize(titleParent, titleChild, 1.15)
+    fixFontSize(titleParent, titleChild, 1.1)
     fixFontSize(creatorParent, creatorChild)
   })
 
@@ -36,9 +36,9 @@
 <LayoutContext let:theme>
   <Link href={`/work/${work.type}/${work.url}`}>
     <dl
-      class="grid w-full grid-flow-row h-full grid-rows-4 gap-y-xs px-sm py-xs font-sans antialiased rounded leading-none {text[
+      class="group grid w-full grid-flow-row h-full grid-rows-4 gap-y-xs px-sm py-xs font-sans antialiased rounded leading-none {text[
         theme
-      ]} {border.color[theme]} {border.size[theme]} {filterShadow[theme]}"
+      ]} {border.color[theme]} {border.size[theme]} {filterShadow[theme]} {fontWeight[theme]}"
       class:white-bg={theme === 'default'}
       class:blur={theme === 'default'}>
       <dt class="row-span-2 h-full flex flex-col" bind:this={titleParent}>
