@@ -290,3 +290,13 @@ export const WORK_CONTENT = gql<Data<WorkContent>, Vars<WorkContent>>`
     }
   }
 `
+
+type TeacherRequest = Query<'insert_teacher_requests_one'>
+
+export const TEACHER_REQUEST = gql<Data<TeacherRequest>, Vars<TeacherRequest>>`
+  mutation teacherRequest {
+    insert_teacher_requests_one(object: {}) {
+      status
+    }
+  }
+`

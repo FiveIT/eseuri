@@ -5,7 +5,7 @@ export const px = (v: number) => `${rem * v}`
 
 export function handleGraphQLResponse<Data, T>(
   // eslint-disable-next-line no-unused-vars
-  getter: (resp: Data) => T
+  getter: (resp: Data) => T = (): T => undefined as any
   // eslint-disable-next-line no-unused-vars
 ): (resp: OperationResult<Data>) => T {
   return response => {

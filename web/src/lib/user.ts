@@ -1,10 +1,12 @@
 import { authToken } from '@tmaxmax/svelte-auth0'
 import { get } from 'svelte/store'
 import client from '$/graphql/client'
-import type { Data, UserUpdatedAt, Vars } from '$/graphql/types'
 import { USER_UPDATED_AT } from '$/graphql/queries'
+import type { CombinedError } from '@urql/svelte'
 
-const endpoint = import.meta.env.VITE_FUNCTIONS_URL as string
+import { from, firstValueFrom } from 'rxjs'
+import { map } from 'rxjs/operators'
+import { handleGraphQLResponse } from './util'
 
 export const getHeaders = () => {
   const token = get(authToken)
@@ -16,48 +18,55 @@ export const getHeaders = () => {
   return {}
 }
 
-export const isRegistered = async (): Promise<boolean> => {
-  const resp = await client
-    .query<Data<UserUpdatedAt>, Vars<UserUpdatedAt>>(USER_UPDATED_AT, undefined, {
-      requestPolicy: 'network-only',
-    })
-    .toPromise()
+export const isRegistered = () =>
+  firstValueFrom(
+    from(
+      client.query(USER_UPDATED_AT, undefined, { requestPolicy: 'network-only' }).toPromise()
+    ).pipe(map(handleGraphQLResponse(v => v!.users[0].updated_at !== null)))
+  )
 
-  if (resp.error) {
-    throw resp.error
-  }
-
-  return resp.data!.users[0].updated_at !== null
-}
+export const internalErrorNotification = {
+  status: 'error',
+  message: 'Ceva neașteptat s-a întâmplat.',
+  explanation: `Este o eroare internă, revino mai târziu - o vom rezolva în curând!`,
+} as const
 
 export class RequestError extends Error {
+  public readonly message: string
+  public readonly explanation?: string
+
   // eslint-disable-next-line no-unused-vars
-  constructor(public readonly message: string, public readonly explanation: string) {
-    super(message)
+  constructor(graphQLError: CombinedError)
+  // eslint-disable-next-line no-unused-vars
+  constructor(message: string, explanation?: string)
+  constructor(arg: CombinedError | string, explanation?: string) {
+    if (typeof arg === 'string') {
+      super(arg)
+
+      this.message = arg
+      this.explanation = explanation
+    } else {
+      super(arg.message)
+
+      const [err] = arg.graphQLErrors
+
+      switch (err.extensions?.code) {
+        case 'permission-error':
+        case 'constraint-violation':
+          var [match] = err.message.match(/(?<=")[^"]*(?="[^"]*$)/)!
+          this.message = 'Datele trimise sunt incorecte!'
+          this.explanation = match
+          break
+        case 'invalid-jwt':
+          this.message = 'Datele tale de autentificare sunt invalide sau expirate.'
+          this.explanation = 'Încearcă să reîmprospătezi pagina sau să te reconectezi.'
+          break
+        default:
+          console.error({ graphQLError: arg, err })
+
+          this.message = internalErrorNotification.message
+          this.explanation = internalErrorNotification.status
+      }
+    }
   }
-}
-
-const messages: Record<number, string> = {
-  '400': 'Formularul trimis este invalid.',
-  '401': 'Nu ești autorizat pentru a încărca o lucrare.',
-  '500': 'A apărut o eroare internă, încearcă mai târziu.',
-}
-
-export async function uploadWork(form: FormData): Promise<number> {
-  const res = await fetch(`${endpoint}/upload`, {
-    body: form,
-    method: 'POST',
-    ...getHeaders(),
-    cache: 'no-cache',
-  })
-
-  if (!res.ok) {
-    const { error } = await res.json()
-
-    throw new RequestError(messages[res.status] || 'Încărcarea lucrării a eșuat.', error)
-  }
-
-  const { id } = await res.json()
-
-  return id
 }

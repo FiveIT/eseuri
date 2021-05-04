@@ -10,6 +10,10 @@ export function isWorkType(s: string): s is WorkType {
   return s === 'essay' || s === 'characterization'
 }
 
+export function isNonNullable<T>(v: T): v is NonNullable<T> {
+  return v != null
+}
+
 export interface WorkSummary {
   readonly name: string
   readonly url: string

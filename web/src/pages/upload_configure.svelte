@@ -3,7 +3,8 @@
   import LayoutContext from '$/components/LayoutContext.svelte'
   import SlimNav from '$/components/SlimNav.svelte'
 
-  import Form from '$/components/form/Form.svelte'
+  import Form, { defaultSubmitFn } from '$/components/form/Form.svelte'
+  import type { SubmitArgs } from '$/components/form/Form.svelte'
   import Radio from '$/components/form/Radio.svelte'
   import Select from '$/components/form/Select.svelte'
   import Actions from '$/components/form/Actions.svelte'
@@ -16,6 +17,8 @@
   import Notifications, { notify } from '$/components/Notifications.svelte'
 
   import { getContext } from 'svelte'
+  import { from } from 'rxjs'
+  import { tap } from 'rxjs/operators'
 
   import type { Context } from './upload.svelte'
   import { contextKey } from './upload.svelte'
@@ -23,7 +26,6 @@
 
   import type { BlobPropsInput, WorkType } from '$/lib/types'
   import { workTypeTranslation } from '$/lib/content'
-  import { uploadWork, RequestError } from '$/lib/user'
   import type { Writable } from 'svelte/store'
 
   import { operationStore, query } from '@urql/svelte'
@@ -66,13 +68,11 @@
     scale: 1.5,
   }
 
-  const action = import.meta.env.FUNCTIONS_URL as string
+  const action = `${import.meta.env.VITE_FUNCTIONS_URL}/upload`
   const workTypes = ['essay', 'characterization'] as const
   const translateWorkType = (w: WorkType) => workTypeTranslation.ro[w].inarticulate.singular
 
   let currentWorkType: WorkType
-
-  let formElement: HTMLFormElement
 
   const ctx = getContext<Context>(contextKey)
 
@@ -80,38 +80,19 @@
     ctx.file = null
   }
 
-  async function onSubmit(alive: Writable<boolean>) {
-    try {
-      const form = new FormData(formElement)
-      form.append('file', ctx.file!)
+  const submit = (alive: Writable<boolean>, args: SubmitArgs) => {
+    args.body.append('file', ctx.file!)
 
-      await uploadWork(form)
-
-      notify({
-        status: 'success',
-        message: 'Lucrarea ta a fost încărcată cu succes!',
-        explanation: `Va fi publică în scurt timp, după ce a fost revizuită de un profesor.`,
+    return from(defaultSubmitFn(args)).pipe(
+      tap(() => {
+        removeFile()
+        go('/', alive, $goto)
       })
-    } catch (err) {
-      if (err instanceof RequestError) {
-        notify({
-          status: 'error',
-          message: err.message,
-          explanation: err.explanation,
-        })
-      } else {
-        console.error(err)
-
-        notify({
-          status: 'error',
-          message: 'Ceva neașteptat s-a întâmplat, încearcă mai târziu.',
-        })
-      }
-    }
-
-    removeFile()
-    go('/', alive, $goto)
+    )
   }
+
+  const message = 'Lucrarea ta a fost încărcată cu succes!'
+  const explanation = `Va fi publică în scurt timp, după ce a fost revizuită de un profesor.`
 </script>
 
 <Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} blurBackground>
@@ -120,7 +101,13 @@
       {go('/upload', alive, $goto)}
     {:else}
       <SlimNav on:navigate={removeFile} />
-      <Form name="work" {action} bind:formElement on:submit={() => onSubmit(alive)}>
+      <Form
+        name="work"
+        {action}
+        {message}
+        {explanation}
+        formenctype="multipart/form-data"
+        onSubmit={args => submit(alive, args)}>
         <span slot="legend">Despre lucrare</span>
         <Radio
           name="type"
@@ -136,11 +123,7 @@
           required>
           {currentWorkType === 'essay' ? 'Titlu' : 'Caracter'}
         </Select>
-        <Actions
-          slot="actions"
-          formenctype="multipart/form-data"
-          submitValue="Publică"
-          on:navigate={removeFile} />
+        <Actions slot="actions" submitValue="Publică" on:navigate={removeFile} />
       </Form>
     {/if}
     <Notifications />

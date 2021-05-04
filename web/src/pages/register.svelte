@@ -1,25 +1,37 @@
+<script lang="ts" context="module">
+  const notification = {
+    status: 'success',
+    message: 'Te-ai înregistrat cu succes!',
+  } as const
+</script>
+
 <script lang="ts">
   import SlimNav from '$/components/SlimNav.svelte'
   import Layout from '$/components/Layout.svelte'
   import LayoutContext from '$/components/LayoutContext.svelte'
   import Form from '$/components/form/Form.svelte'
+  import type { SubmitArgs } from '$/components/form/Form.svelte'
   import Text from '$/components/form/Text.svelte'
   import Radio from '$/components/form/Radio.svelte'
   import Actions from '$/components/form/Actions.svelte'
   import Allow from '$/components/Allow.svelte'
-  import Notifications, { notify } from '$/components/Notifications.svelte'
+  import Notifications from '$/components/Notifications.svelte'
 
   import { goto, metatags } from '@roxi/routify'
+  import { from, of } from 'rxjs'
+  import { map, mergeMap, tap } from 'rxjs/operators'
+
   import { store as orange } from '$/components/blob/Orange.svelte'
   import { store as red } from '$/components/blob/Red.svelte'
   import { store as window } from '$/components/Window.svelte'
 
   import type { BlobPropsInput, Role } from '$/lib/types'
   import { roleTranslation } from '$/lib/content'
+  import { handleGraphQLResponse } from '$/lib/util'
   import type { Writable } from 'svelte/store'
   import { go } from '$/components/Link.svelte'
 
-  import { REGISTER_USER } from '$/graphql/queries'
+  import { REGISTER_USER, TEACHER_REQUEST } from '$/graphql/queries'
   import client from '$/graphql/client'
 
   let orangeBlobProps: BlobPropsInput
@@ -48,35 +60,25 @@
   const roles: Role[] = ['student', 'teacher']
   const translateRole = (r: Role) => roleTranslation.ro[r].inarticulate.singular
 
-  const action = import.meta.env.FUNCTIONS_URL as string
-  let formElement: HTMLFormElement
+  function onSubmit(alive: Writable<boolean>, { body: form }: SubmitArgs) {
+    const role = form.get('role')!.toString()
+    const vars = {
+      firstName: form.get('first_name')!.toString(),
+      middleName: form.get('middle_name')!.toString() || null,
+      lastName: form.get('last_name')!.toString(),
+      schoolID: parseInt(form.get('school')!.toString() || ''),
+    } as const
 
-  async function onSubmit(alive: Writable<boolean>) {
-    const form = new FormData(formElement)
-
-    try {
-      const res = await client
-        .mutation(REGISTER_USER, {
-          firstName: form.get('first_name')!.toString(),
-          middleName: form.get('middle_name')!.toString() || null,
-          lastName: form.get('last_name')!.toString(),
-          schoolID: parseInt(form.get('school')!.toString() || ''),
-        })
-        .toPromise()
-
-      if (res.error) {
-        throw res.error
-      }
-
-      go('/', alive, $goto)
-
-      notify({
-        status: 'success',
-        message: 'Te-ai înregistrat cu succes!',
-      })
-    } catch (err) {
-      console.error(err)
-    }
+    return from(client.mutation(REGISTER_USER, vars).toPromise()).pipe(
+      map(handleGraphQLResponse()),
+      mergeMap(() =>
+        role === 'teacher'
+          ? from(client.mutation(TEACHER_REQUEST).toPromise()).pipe(map(handleGraphQLResponse()))
+          : of(undefined)
+      ),
+      map(() => notification),
+      tap(() => go('/', alive, $goto))
+    )
   }
 </script>
 
@@ -84,7 +86,7 @@
   <Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} blurBackground>
     <LayoutContext let:alive>
       <SlimNav logoOnly />
-      <Form name="register" {action} bind:formElement on:submit={() => onSubmit(alive)}>
+      <Form name="register" onSubmit={args => onSubmit(alive, args)}>
         <span slot="legend">Completează-ți profilul</span>
         <Text name="last_name" placeholder="Scrie-ți aici numele de familie..." required
           >Numele tău</Text>
