@@ -18,7 +18,7 @@
   import { operationStore, query } from '@urql/svelte'
   import { notify } from '$/components/Notifications.svelte'
 
-  metatags.title = 'Eseuri'
+  metatags.title = 'Acasă - Eseuri'
 
   let orangeBlobProps: BlobPropsInput
   $: orangeBlobProps = {

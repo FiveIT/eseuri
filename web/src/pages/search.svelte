@@ -10,7 +10,7 @@
   import Spinner from '$/components/Spinner.svelte'
   import type { BlobPropsInput, WorkType } from '$/lib/types'
   import { isWorkType } from '$/lib/types'
-  import { afterPageLoad, goto, params } from '@roxi/routify'
+  import { afterPageLoad, goto, params, metatags } from '@roxi/routify'
   import { operationStore, query } from '@urql/svelte'
   import { SEARCH_WORK_SUMMARIES } from '$/graphql/queries'
   import TypeSelector from '$/components/TypeSelector.svelte'
@@ -20,6 +20,8 @@
   let q: string = $params.query?.trim() || ''
   let type: WorkType = isWorkType($params.type) ? $params.type : 'essay'
   let focusInput = () => {}
+
+  $: metatags.title = `${q ? `"${q}" - ` : ''}Căutare - Eseuri`
 
   const content = query(
     operationStore(SEARCH_WORK_SUMMARIES, {

@@ -33,6 +33,8 @@
   import { REGISTER_USER, TEACHER_REQUEST } from '$/graphql/queries'
   import client from '$/graphql/client'
 
+  metatags.title = 'Înregistrare - Eseuri'
+
   let orangeBlobProps: BlobPropsInput
   $: orangeBlobProps = {
     x: 0,

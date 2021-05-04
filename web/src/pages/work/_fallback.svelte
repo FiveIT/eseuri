@@ -8,7 +8,7 @@
   import { isWorkType } from '$/lib/types'
 
   import { onDestroy } from 'svelte'
-  import { goto, leftover } from '@roxi/routify'
+  import { goto, leftover, metatags } from '@roxi/routify'
 
   const { red: setRedBlob, autoSet } = getLayout().blobs
   let work: Work
@@ -32,6 +32,10 @@
   onDestroy(() => ($autoSet = true))
 
   const [type, title, workID] = $leftover.split('/')
+
+  let pageTitle = 'Lucrări - Eseuri'
+
+  $: metatags.title = pageTitle
 
   if (!type || !title || !isWorkType(type)) {
     done = true
@@ -71,6 +75,8 @@
 
               $goto(`/work/${type}/${title}/${data.id}`)
 
+              pageTitle = `${name} - Lucrări - Eseuri`
+
               return data
             })
           },
@@ -80,6 +86,8 @@
               const data = r.value!
 
               $goto(`/work/${type}/${title}/${data.id}`)
+
+              pageTitle = `${name} - Lucrări - Eseuri`
 
               return data
             })
