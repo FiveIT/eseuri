@@ -9,7 +9,7 @@
   import Select from '$/components/form/Select.svelte'
   import Actions from '$/components/form/Actions.svelte'
 
-  import { goto } from '@roxi/routify'
+  import { goto, metatags, params, redirect } from '@roxi/routify'
 
   import { store as orange } from '$/components/blob/Orange.svelte'
   import { store as red } from '$/components/blob/Red.svelte'
@@ -30,6 +30,8 @@
 
   import { operationStore, query } from '@urql/svelte'
   import { TITLES, CHARACTERS } from '$/graphql/queries'
+
+  metatags.title = 'Încarcă o lucrare - Eseuri'
 
   const titles = query(operationStore(TITLES))
   const characters = query(operationStore(CHARACTERS))
@@ -72,7 +74,8 @@
   const workTypes = ['essay', 'characterization'] as const
   const translateWorkType = (w: WorkType) => workTypeTranslation.ro[w].inarticulate.singular
 
-  let currentWorkType: WorkType
+  let currentWorkType: WorkType = $params.type
+  let currentWorkID = parseInt($params.id) || undefined
 
   const ctx = getContext<Context>(contextKey)
 
@@ -98,7 +101,7 @@
 <Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} blurBackground>
   <LayoutContext let:alive>
     {#if !ctx || ctx.file === null}
-      {go('/upload', alive, $goto)}
+      {go('/upload', alive, $redirect)}
     {:else}
       <SlimNav on:navigate={removeFile} />
       <Form
@@ -120,6 +123,7 @@
           options={subjects[currentWorkType] || []}
           mapper={v => v.id}
           display={v => v.name}
+          bind:value={currentWorkID}
           required>
           {currentWorkType === 'essay' ? 'Titlu' : 'Caracter'}
         </Select>

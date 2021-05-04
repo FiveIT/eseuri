@@ -19,13 +19,15 @@
   import { store as window } from '$/components/Window.svelte'
   import type { BlobPropsInput } from '$/lib/types'
   import { px } from '$/lib/util'
-  import { goto } from '@roxi/routify'
+  import { goto, metatags, params } from '@roxi/routify'
   import { getContext } from 'svelte'
   import Allow from '$/components/Allow.svelte'
   import Docs from 'svelte-material-icons/FileDocumentBoxMultiple.svelte'
   import GoogleDocs from 'svelte-material-icons/FileDocumentOutline.svelte'
   import Doodle from 'svelte-material-icons/Gesture.svelte'
   import ScrieAici from 'svelte-material-icons/TextSubject.svelte'
+
+  metatags.title = 'Încarcă o lucrare - Eseuri'
 
   let orangeBlobProps: BlobPropsInput
   $: orangeBlobProps = {
@@ -75,11 +77,11 @@
                 return
               }
               ctx.file = input.files[0]
-              go('/upload_configure', alive, $goto)
+              go('/upload_configure', alive, $goto, $params)
             }}
             bind:this={input} />
         </label>
-        <UploadVariantPlaceholder icon={GoogleDocs} bg="#DE5246"
+        <UploadVariantPlaceholder icon={GoogleDocs} bg="google-docs"
           >Încarcă din Google Docs</UploadVariantPlaceholder>
         <h3 class="m-auto">Ai scris de mână?</h3>
         <UploadVariantPlaceholder icon={Doodle} bg="red"
