@@ -61,7 +61,7 @@
         if (!works.found) {
           notFoundParagraphs = [
             'Nu există lucrări încărcate pentru acest subiect.',
-            `Însă poți tu să ai primul inițiativa! Încărcând lucrări, îți dezvolți abilitățile pentru subiectul al III-lea de la bacalaureat și îi ajuți pe ceilalți colegi, lucrând împreună la un scop comun!`,
+            'Însă poți tu să ai primul inițiativa! Încărcând lucrări, îți dezvolți abilitățile pentru subiectul al III-lea de la bacalaureat și îi ajuți pe ceilalți colegi, lucrând împreună la un scop comun!',
             `<a class="underline" href="/upload?id=${id}&type=${type}">Încarcă o lucrare cu subiectul "${name}"</a>.`,
           ]
 
