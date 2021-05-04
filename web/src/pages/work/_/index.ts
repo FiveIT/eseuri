@@ -20,11 +20,18 @@ import {
 import type { WorkType } from '$/lib/types'
 import { handleGraphQLResponse, graphQLSeed } from '$/lib/util'
 
-const fetchWork = (id: Relay.ID): Promise<string | undefined> =>
+export interface WorkData {
+  content: string
+  id: Relay.ID
+}
+
+export const defaultWorkData = Promise.resolve({ id: '', content: '' })
+
+const fetchWork = (id: Relay.ID): Promise<WorkData | undefined> =>
   relay
     .query(WORK_CONTENT, { id })
     .toPromise()
-    .then(handleGraphQLResponse(resp => resp!.node.work?.content))
+    .then(handleGraphQLResponse(resp => ({ id, content: resp!.node.work.content })))
 
 const WORK_LIMIT = 50
 const defaultPageInfo: Relay.PageInfo = {
@@ -34,12 +41,12 @@ const defaultPageInfo: Relay.PageInfo = {
   hasPreviousPage: false,
 }
 
-type WorksIterable = AsyncIterator<string> & {
-  prev(): Promise<IteratorResult<string>>
-  fetchCurrent(): Promise<string>
+type WorksIterable = AsyncIterator<WorkData, WorkData> & {
+  prev(): Promise<IteratorResult<WorkData, WorkData | undefined>>
+  fetchCurrent(): Promise<WorkData>
 }
 
-export const works = async (url: string, type: WorkType) => {
+export const works = async (url: string, type: WorkType, beginWith?: Relay.ID) => {
   const res = await client.query(SUBJECT_ID_FROM_URL, { url }).toPromise()
 
   if (res.error) {
@@ -75,18 +82,23 @@ export const works = async (url: string, type: WorkType) => {
 
       const ids: Relay.ID[] = []
 
-      let current = 0
+      let current = -1
       let pageInfo = defaultPageInfo
+
+      if (beginWith) {
+        ids.push(beginWith)
+      }
 
       return {
         fetchCurrent: () => fetchWork(ids[current]).then(w => w!),
         async next() {
           const { hasNextPage, endCursor } = pageInfo
 
-          if (current === ids.length) {
+          if (++current === ids.length) {
             if (!hasNextPage && endCursor !== null) {
               seed = graphQLSeed()
               pageInfo = defaultPageInfo
+              --current
 
               return this.next()
             }
@@ -107,16 +119,14 @@ export const works = async (url: string, type: WorkType) => {
 
           const value = await this.fetchCurrent()
 
-          current++
-
           return { value }
         },
         async prev() {
-          if (--current <= 0) {
+          if (current-- === -1) {
             return { value: undefined, done: true }
           }
 
-          return { value: await this.fetchCurrent() }
+          return { value: await this.fetchCurrent(), done: current !== 0 }
         },
       }
     },
@@ -131,7 +141,7 @@ export const internalErrorNotification = {
 
 export interface Work {
   title: string
-  content: Promise<string>
+  data: Promise<WorkData>
   next(): void
   prev(): Promise<boolean>
 }
