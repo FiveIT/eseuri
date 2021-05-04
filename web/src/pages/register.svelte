@@ -82,6 +82,7 @@
   }
 </script>
 
+<!-- TODO: Make the school and county fields work as intended -->
 <Allow unregistered redirect="/" dontNotify>
   <Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} blurBackground>
     <LayoutContext let:alive>

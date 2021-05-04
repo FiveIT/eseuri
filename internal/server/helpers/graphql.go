@@ -68,6 +68,7 @@ func GraphQLRequest(c *graphql.Client, query string, opts ...GraphQLRequestOptio
 	return c.Run(config.Context, req, config.Output)
 }
 
+// TODO: Better error messages
 func HandleGraphQLError(c *fiber.Ctx, err error) error {
 	if errVal := err.Error(); strings.Contains(errVal, "graphql:") {
 		if !strings.Contains(errVal, "server returned a non-200 status code") {

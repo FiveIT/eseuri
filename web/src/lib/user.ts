@@ -50,6 +50,7 @@ export class RequestError extends Error {
 
       const [err] = arg.graphQLErrors
 
+      // TODO: Better error messages
       switch (err.extensions?.code) {
         case 'permission-error':
         case 'constraint-violation':
