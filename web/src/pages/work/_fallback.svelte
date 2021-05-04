@@ -125,4 +125,3 @@
     <Spinner message="Se încarcă lucrarea ta..." />
   </div>
 {/if}
-<Notifications />

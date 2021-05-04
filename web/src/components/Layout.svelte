@@ -32,6 +32,8 @@
 </script>
 
 <script lang="ts">
+  import { getTheme } from '$/pages/_layout.svelte'
+
   const defaultTransition: FlyParams = {
     y: -1000,
     duration,
@@ -58,7 +60,7 @@
   export let center = false
 
   const alive = writable(true)
-  const themeStore = writable<Theme>(theme)
+  const themeStore = getTheme()
   const autoSet = writable(true)
   // eslint-disable-next-line no-unused-vars
   $: $themeStore = theme

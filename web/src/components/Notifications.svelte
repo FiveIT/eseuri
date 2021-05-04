@@ -25,7 +25,6 @@
   export let duration = 5000
 </script>
 
-<!-- TODO: Fix bug with `removeChild` missing property -->
 <Notifications let:payload {duration}>
   <Notification {...payload} />
 </Notifications>
