@@ -137,17 +137,17 @@ func Upload(tikaClient *tika.Client, graphQLClient *graphql.Client) fiber.Handle
 		}
 
 		supertypeQuery, err := getWorkSupertypeQuery(c, workInput.Type)
-		if err != nil {
+		if supertypeQuery == "" {
 			return err
 		}
 
 		body, err := parseFormFile(c, tikaClient)
-		if err != nil {
+		if body == "" {
 			return err
 		}
 
 		work, err := insertWork(c, body, supertypeQuery, workInput, graphQLClient)
-		if err != nil {
+		if work == nil {
 			return err
 		}
 
