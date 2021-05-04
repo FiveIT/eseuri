@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
+  // import { onMount } from 'svelte'
 
   import LayoutContext from './LayoutContext.svelte'
   import { text, filterShadow, border } from '$/theme'
@@ -21,8 +21,8 @@
   ) {
     const { height: parentHeight } = parent.getBoundingClientRect()
     const { height: childHeight } = child.getBoundingClientRect()
-    console.log(parent)
-    console.log(child)
+    console.log(parent.getBoundingClientRect())
+    console.log(child.getBoundingClientRect())
 
     if (childHeight > parentHeight) {
       const p = parentHeight / childHeight
@@ -36,6 +36,16 @@
   export let work: Associate
   console.log(work.status)
   $: console.log(show)
+  // onMount(() => {
+  //   console.log(titleParent)
+  //   fixFontSize(titleParent, titleChild, 1.5)
+  //   console.log(creatorParent)
+  //   fixFontSize(creatorParent, creatorChild)
+  //   console.log(schoolParent)
+  //   fixFontSize(schoolParent, schoolChild)
+  //   console.log(messageParent)
+  //   fixFontSize(messageParent, messageChild)
+  // })
 </script>
 
 <LayoutContext let:theme>
@@ -57,7 +67,7 @@
     </div>
   {:else}
     <div
-      class=" wr z-10 mt-sm w-full rounded {border.size[
+      class=" wr mt-sm w-full rounded {border.size[
         theme
       ]} h-full border-white  border-red border-orange  z-20  grid w-full grid-flow-row h-full opacity-80  grid-rows-4 gap-y-xs px-sm py-xs font-sans antialiased  leading-none {text[
         theme
@@ -77,34 +87,29 @@
           {work.name}
         </h2>
       </dt>
-      <dt
-        class="self-center row-start-3 h-full flex flex-col"
-        bind:this={creatorParent}>
-        <span
-          class="text-workInfo leading-none my-auto"
-          bind:this={creatorChild}>{work.email}</span>
+      <dt class=" row-start-3 h-full flex flex-col" bind:this={creatorParent}>
+        <span class="text-workInfo  my-auto" bind:this={creatorChild}
+          >{work.email}</span>
       </dt>
-      <dt
-        class="self-center row-start-4 h-full flex flex-col"
-        bind:this={schoolParent}>
-        <span
-          class="text-workInfo leading-none my-auto"
-          bind:this={schoolChild}>
+      <dt class=" row-start-4 h-full flex flex-col" bind:this={schoolParent}>
+        <span class="text-workInfo  my-auto" bind:this={schoolChild}>
           {work.school}
         </span>
       </dt>
       {#if show && (work.status == 'Pending' || work.status == 'Rejected')}
-        <div
-          class=" fixed my-auto text-md blur bg-white h-full w-full text-center items-center bg-transparent flex"
+        <dt
+          class=" fixed rounded hover h-full w-full text-center flex"
           bind:this={messageParent}>
-          <div class="my-auto mx-auto" bind:this={messageChild}>
+          <span
+            class="self-center mx-auto my-auto text-white text-md text-opacity-10 "
+            bind:this={messageChild}>
             {#if work.status == 'Pending'}
               Cerere în așteptare
             {:else if work.status == 'Rejected'}
               Cerere refuzată
             {/if}
-          </div>
-        </div>
+          </span>
+        </dt>
       {/if}
     </div>
   {/if}
@@ -114,10 +119,10 @@
   .wr {
     background: rgba(0, 0, 0, 0.5);
   }
-  .wr:hover {
-    opacity: 0.8;
-  }
   .ws {
     background: rgba(0, 0, 0, 0.5);
+  }
+  .hover {
+    background: rgba(0, 0, 0, 0.8);
   }
 </style>
