@@ -23,6 +23,15 @@
   --configure-login-width: calc(
     var(--essay-column-gap) +var(--essay-column-gap) + var(--column-width)
   );
+  --bookmark-creation-width: calc(
+    var(--essay-column-gap) +var(--essay-column-gap) + var(--essay-column-gap) +
+      var(--column-width) + var(--column-width) + var(--column-width)
+  );
+  --bookmark-creation-height: calc(
+    var(--row-height) +var(--row-height) + var(--row-height) + var(--row-gap) + var(
+        --row-gap
+      ) + var(--row-gap) + var(--row-gap)
+  );
 }
 
 html {

@@ -62,6 +62,8 @@ export default defineConfig({
       columnwidth: 'var(--column-width)',
       rowheight: 'var(--row-height)',
       buttonleft: '13vmin',
+      bookmarkcreationwidth: 'var(--bookmark-creation-width)',
+      bookmarkcreationheight: 'var(--bookmark-creation-height)',
     },
     borderRadius: {
       DEFAULT: '0.625rem',
