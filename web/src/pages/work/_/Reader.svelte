@@ -2,13 +2,11 @@
   const keys: Record<'prev' | 'next', Record<string, boolean>> = {
     prev: {
       ArrowLeft: true,
-      ArrowUp: true,
       KeyH: true,
       KeyK: true,
     },
     next: {
       ArrowRight: true,
-      ArrowDown: true,
       KeyL: true,
       KeyJ: true,
     },
@@ -17,35 +15,49 @@
 
 <script lang="ts">
   import { Next, Back, Bookmark, Spinner, notify, internalErrorNotification } from '.'
-  import type { Work } from '.'
+  import type { Work, WorkData } from '.'
   import { TRANSITION_EASING as easing, TRANSITION_DURATION as duration } from '$/lib/globals'
-  import { fade } from 'svelte/transition'
+  import { fade, fly } from 'svelte/transition'
 
   export let work: Work
 
-  let prevDisabled = true
+  let disablePrevious = true
+  let disableNavigation = false
+  let data: Promise<WorkData>
 
-  $: p = work.content.catch(err => {
-    console.error(err)
+  $: {
+    disableNavigation = true
 
-    notify(internalErrorNotification)
-  })
+    data = work.data
+      .catch(() => (notify(internalErrorNotification), { id: '', content: '' } as WorkData))
+      .finally(() => (disableNavigation = false))
+  }
 
   const update = () => {
     work = work
   }
 
+  let direction = 1
+
   const next = () => {
+    if (disableNavigation) {
+      return
+    }
+
     work.next()
-    prevDisabled = false
+    disablePrevious = false
     update()
   }
 
   const prev = async () => {
-    if (!prevDisabled) {
-      prevDisabled = !(await work.prev())
-      update()
+    if (disableNavigation || disablePrevious) {
+      return
     }
+
+    direction = -1
+    disablePrevious = !(await work.prev())
+    update()
+    direction = 1
   }
 
   function onKey({ code }: KeyboardEvent) {
@@ -57,7 +69,7 @@
   }
 </script>
 
-<div class="col-start-2 col-end-6 row-start-3 flex flex-col space-y-sm justify-between">
+<div class="col-start-2 col-end-6 row-start-3 flex flex-col justify-between relative">
   <h2 class="text-title font-serif antialiased">
     {work.title}
   </h2>
@@ -65,17 +77,20 @@
     <div class="w-min text-sm font-sans antialiased">Eseu</div>
     <div class="w-min"><Bookmark /></div>
   </div>
-  {#await p}
-    <div class="col-span-6 flex justify-center items-center">
+  {#await data}
+    <div class="col-span-6 flex justify-center items-center my-lg">
       <Spinner />
     </div>
   {:then text}
-    <p class="text-prose font-serif antialiased whitespace-pre-line" in:fade={{ duration, easing }}>
-      {text}
+    <p
+      class="text-prose font-serif antialiased my-lg whitespace-pre-line"
+      in:fade={{ duration, easing, delay: duration }}
+      out:fly={{ x: direction * -200, duration, easing }}>
+      {text.content.trim()}
     </p>
   {/await}
 </div>
-<Back disabled={prevDisabled} on:click={prev} />
+<Back disabled={disablePrevious} on:click={prev} />
 <Next on:click={next} />
 <div class="col-start-2">
   <Bookmark />
