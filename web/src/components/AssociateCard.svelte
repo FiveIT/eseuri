@@ -29,13 +29,10 @@
       const fontSize = parseInt(window.getComputedStyle(child).fontSize)
       child.style.fontSize = `${p * compensation * fontSize}px`
     }
-    console.log('done')
   }
   let show = false
 
   export let work: Associate
-  console.log(work.status)
-  $: console.log(show)
   // onMount(() => {
   //   console.log(titleParent)
   //   fixFontSize(titleParent, titleChild, 1.5)
