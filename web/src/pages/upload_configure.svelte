@@ -126,6 +126,5 @@
         <Actions slot="actions" submitValue="Publică" on:navigate={removeFile} />
       </Form>
     {/if}
-    <Notifications />
   </LayoutContext>
 </Layout>

@@ -104,5 +104,4 @@
       <Spinner />
     </div>
   {/if}
-  <Notifications />
 </Layout>

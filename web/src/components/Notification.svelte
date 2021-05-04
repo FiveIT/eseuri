@@ -77,11 +77,11 @@
 
 <script lang="ts">
   import { text, border, filterShadow, background, innerShadow } from '$/lib/theme'
-  import { getLayout } from './Layout.svelte'
+  import { getTheme } from '$/pages/_layout.svelte'
   import { px } from '$/lib/util'
   import { tick } from 'svelte'
 
-  const { theme: themeStore } = getLayout()
+  const themeStore = getTheme()
 
   export let status: Status
   export let message: string
@@ -136,7 +136,7 @@
     <p
       class="mx-sm mb-sm {filterShadow[theme]}"
       bind:offsetHeight={detailsHeight}
-      transition:slide={{ easing, duration: 50 }}>
+      in:slide={{ easing, duration: 50 }}>
       {@html explanation}
     </p>
   {/if}

@@ -99,7 +99,6 @@
         <Radio name="role" options={roles} displayModifier={translateRole}>Ocupația ta</Radio>
         <Actions slot="actions" submitValue="Sunt gata" />
       </Form>
-      <Notifications />
     </LayoutContext>
   </Layout>
 </Allow>
