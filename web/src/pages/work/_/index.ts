@@ -35,7 +35,7 @@ const defaultPageInfo: Relay.PageInfo = {
 }
 
 type WorksIterable = AsyncIterator<string> & {
-  prev(): IteratorResult<string>
+  prev(): Promise<IteratorResult<string>>
   fetchCurrent(): Promise<string>
 }
 
@@ -73,22 +73,13 @@ export const works = async (url: string, type: WorkType) => {
     [Symbol.asyncIterator](): WorksIterable {
       let seed = graphQLSeed()
 
-      const fetched: Record<Relay.ID, string> = {}
       const ids: Relay.ID[] = []
 
       let current = 0
       let pageInfo = defaultPageInfo
 
-      const fromCache = (): string | undefined => fetched[ids[current] || '']
-
       return {
-        async fetchCurrent() {
-          const content = (await fetchWork(ids[current]))!
-
-          fetched[ids[current]] = content
-
-          return content
-        },
+        fetchCurrent: () => fetchWork(ids[current]).then(w => w!),
         async next() {
           const { hasNextPage, endCursor } = pageInfo
 
@@ -114,21 +105,18 @@ export const works = async (url: string, type: WorkType) => {
             ids.push(...data.edges.map(e => e.node.id))
           }
 
-          let value = fromCache()
-          if (!value) {
-            value = await this.fetchCurrent()
-          }
+          const value = await this.fetchCurrent()
 
           current++
 
           return { value }
         },
-        prev() {
-          if (--current <= 1) {
+        async prev() {
+          if (--current <= 0) {
             return { value: undefined, done: true }
           }
 
-          return { value: fromCache()! }
+          return { value: await this.fetchCurrent() }
         },
       }
     },
@@ -145,5 +133,5 @@ export interface Work {
   title: string
   content: Promise<string>
   next(): void
-  prev(): boolean
+  prev(): Promise<boolean>
 }

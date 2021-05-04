@@ -41,9 +41,9 @@
     update()
   }
 
-  const prev = () => {
+  const prev = async () => {
     if (!prevDisabled) {
-      prevDisabled = !work.prev()
+      prevDisabled = !(await work.prev())
       update()
     }
   }

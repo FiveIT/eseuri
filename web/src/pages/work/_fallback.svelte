@@ -2,14 +2,7 @@
   import { getLayout } from '$/components/Layout.svelte'
   import { store as window } from '$/components/Window.svelte'
   import { store as red } from '$/components/blob/Red.svelte'
-  import {
-    Reader,
-    Notifications,
-    Spinner,
-    works,
-    notify,
-    internalErrorNotification,
-  } from './_'
+  import { Reader, Notifications, Spinner, works, notify, internalErrorNotification } from './_'
   import type { Work } from './_'
 
   import { isWorkType } from '$/lib/types'
@@ -77,14 +70,9 @@
           },
           prev() {
             const res = it.prev()
+            this.content = res.then(r => r.value)
 
-            if (res.done) {
-              return false
-            }
-
-            this.content = Promise.resolve(res.value)
-
-            return true
+            return res.then(r => !!r.done)
           },
         }
 
@@ -107,8 +95,7 @@
   <div class="flex flex-col col-start-2 col-span-4 text-center">
     <h2 class="font-serif text-title antialiased mb-md">Ups!</h2>
     {#each notFoundParagraphs as text}
-      <p
-        class="text-sm font-sans mt-sm antialiased leading-none mx-auto max-w-1/2">
+      <p class="text-sm font-sans mt-sm antialiased leading-none mx-auto max-w-1/2">
         {@html text}
       </p>
     {/each}
