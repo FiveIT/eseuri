@@ -20,6 +20,7 @@ export default defineConfig({
         DEFAULT: 'var(--gray, #939393)',
         dark: 'var(--gray-dark, #4F4F4F)',
       },
+      'google-docs': '#4688f4',
     },
     fontFamily: {
       sans: ['Sora', ...defaults.fontFamily.sans],
