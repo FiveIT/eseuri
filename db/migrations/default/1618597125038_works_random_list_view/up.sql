@@ -2,6 +2,7 @@ set search_path to public;
 
 create domain seed as float check (value <= 1) check (value >= -1);
 
+-- TODO: add join on works in order to check status
 create function list_essays(titleID int, seed seed) returns setof essays stable as $$
 begin
     perform setseed(seed);

@@ -103,6 +103,7 @@ func insertWork(c *fiber.Ctx, body string, supertypeQuery string, input helpers.
 		workOpts.Vars["requestedTeacherID"] = input.RequestedTeacherID
 	}
 
+	// TODO: Check also with the database for teacher status
 	if claims.Role == "teacher" {
 		workOpts.Vars["status"] = "approved"
 	}
