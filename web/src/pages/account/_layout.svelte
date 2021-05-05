@@ -11,12 +11,18 @@
 
   let selected: Choosen
   selected = 'Lucrari'
+  let blueBlobProps: BlobPropsInput
+  $: blueBlobProps = {
+    x: ($window.width - blue.width * 0.8) / 2,
+    y: -blue.height * 0.635 + $window.height * 0.17,
+    scale: 13,
+  }
+
   let orangeBlobProps: BlobPropsInput
   $: orangeBlobProps = {
-    scale: 1.8,
     x: -orange.width * 1.4,
     y: $window.height - orange.height,
-    zIndex: -1,
+    scale: 1.8,
   }
 
   let redBlobProps: BlobPropsInput
@@ -25,16 +31,7 @@
     scale: 6,
     x: $window.width - red.width * 3,
     y: $window.height - 1500,
-    zIndex: -1,
-  }
-
-  let blueBlobProps: BlobPropsInput
-  $: blueBlobProps = {
-    scale: 18,
-    rotate: 45,
-    x: $window.width - blue.width * 1,
-    y: $window.height - 400,
-    zIndex: -3,
+    zIndex: 0,
   }
 
   interface Route {
@@ -64,10 +61,12 @@
 
 <Layout
   theme="white"
+  {blueBlobProps}
   {orangeBlobProps}
   {redBlobProps}
-  {blueBlobProps}
-  transition={{ y: 1000 }}>
+  transition={{ y: 1000 }}
+  afterMount={() => (document.body.style.backgroundColor = 'var(--blue)')}
+  beforeDestroy={() => (document.body.style.backgroundColor = '')}>
   <SlimNav />
   <div
     class="col-span-6 row-start-4 grid grid-cols-layout gap-x-md border-b-3px border-white filter-shadow items-center">

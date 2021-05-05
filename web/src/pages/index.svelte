@@ -36,6 +36,7 @@
     x: ($window.width - blue.width * 0.8) / 2,
     y: -blue.height * 0.635 + $window.height * 0.17,
     scale: 1.5,
+    rotate: 0,
   }
 
   let type: WorkType = 'essay'
@@ -59,7 +60,7 @@
     <LoginButton theme="white" />
   </div>
   <div class="col-start-4 col-end-5 row-start-2 w-full h-full text-sm my-auto ">
-    <Buton enable={false} theme="white">Plagiat</Buton>
+    <Buton enable={true} href="./account" theme="white">Plagiat</Buton>
   </div>
   <div class="col-start-5 col-end-6 row-start-2 w-full h-full text-sm my-auto">
     <Buton href="./indexteacher" enable={true} theme="white">Profesori</Buton>

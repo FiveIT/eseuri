@@ -44,7 +44,7 @@
 <LayoutContext let:theme>
   {#if show}
     <div
-      class=" z-40 w-screen h-screen  fixed top-0 left-0 flex justify-center items-center z-1"
+      class=" z-50 w-screen h-screen  fixed top-0 left-0 flex justify-center items-center z-1"
       class:blur={theme === 'default'}>
       <div
         class=" w-associationboxwidth h-associationboxheight grid-cols-3 rounded z-20  grid grid-rows-5   gap-x-md gap-y-sm p-sm    {text[

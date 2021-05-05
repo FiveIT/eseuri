@@ -8,12 +8,12 @@
 </script>
 
 {#if logoOnly}
-  <nav class="w-full col-span-6 row-span-2">
+  <nav class="w-full z-10 col-span-6 row-span-2">
     <Logo on:navigate />
   </nav>
 {:else}
   <nav class="w-full col-span-6 row-span-2">
-    <div class="flex w-full">
+    <div class="flex w-full z-10">
       <Logo on:navigate />
       <div class="ml-auto grid grid-flow-col gap-x-md auto-cols-layout">
         <span />
