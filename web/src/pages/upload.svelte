@@ -88,7 +88,7 @@
           >Încarcă imagini/PDF</UploadVariantPlaceholder>
       </div>
       <div class="row-start-3 row-span-2 col-start-4 col-span-2">
-        <Logo big={true} />
+        <Logo big />
       </div>
       <h3
         class="row-start-5 row-span-1 col-start-4 col-end-6 text-sm font-sans text-sm antialiased">
