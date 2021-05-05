@@ -217,13 +217,9 @@ interface ListSubjectsVars extends Relay.CursorVars {
   seed: `${number}`
 }
 
-interface WorkIDer {
-  workID: number
-}
-
 export type ListSubjects<Name extends `${WorkType}s`> = Relay<
   `list_${Name}`,
-  Relay.IDObject & WorkIDer,
+  Relay.IDObject & { work_id: number },
   ListSubjectsVars,
   true
 >
@@ -315,7 +311,11 @@ export const TEACHER_REQUEST = gql<Data<TeacherRequest>, Vars<TeacherRequest>>`
   }
 `
 
-type Bookmark = Query<'insert_bookmarks_one', Typename, WorkIDer>
+interface BookmarkVars {
+  workID: number
+}
+
+type Bookmark = Query<'insert_bookmarks_one', Typename, BookmarkVars>
 
 export const BOOKMARK = gql<Data<Bookmark>, Vars<Bookmark>>`
   mutation bookmark($workID: Int!) {
@@ -325,7 +325,7 @@ export const BOOKMARK = gql<Data<Bookmark>, Vars<Bookmark>>`
   }
 `
 
-type RemoveBookmark = Query<'delete_bookmarks', Typename, WorkIDer>
+type RemoveBookmark = Query<'delete_bookmarks', Typename, BookmarkVars>
 
 export const REMOVE_BOOKMARK = gql<Data<RemoveBookmark>, Vars<RemoveBookmark>>`
   mutation removeBookmark($workID: Int!) {
@@ -335,7 +335,7 @@ export const REMOVE_BOOKMARK = gql<Data<RemoveBookmark>, Vars<RemoveBookmark>>`
   }
 `
 
-type IsBookmarked = Query<'bookmarks', [Typename] | [], WorkIDer>
+type IsBookmarked = Query<'bookmarks', [Typename] | [], BookmarkVars>
 
 export const IS_BOOKMARKED = gql<Data<IsBookmarked>, Vars<IsBookmarked>>`
   query isBookmarked($workID: Int!) {
