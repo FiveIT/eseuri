@@ -5,15 +5,34 @@
   export let time: string
   let clock = time.substring(0, 5)
   let date = time.substring(5, time.length)
+  import Delete from 'svelte-material-icons/CloseCircleOutline.svelte'
+  export let todelete: boolean
+  export let i: number
+  export let position: number
+  let show = false
+  position = i
 </script>
 
-<div class="grid grid-cols-6 gap-x-md border-b-2 border-t-2 mb-sm h-rowheight">
-  <div class="col-start-1 text-center my-auto">{type}</div>
-  <div class="col-start-2 col-span-2 text-center my-auto">
-    {name}
+{#if !todelete}
+  <div
+    class="grid grid-rows-1 grid-cols-6 gap-x-md border-b-2 border-t-2 mb-sm h-rowheight"
+    on:mouseenter={() => (show = true)}
+    on:mouseleave={() => (show = false)}>
+    <div class="col-start-1 text-center my-auto">{type}</div>
+    <div class="col-start-2 col-span-2 text-center my-auto">
+      {name}
+    </div>
+    <div class="col-start-4 col-span-2 text-center my-auto">
+      {subiect}
+    </div>
+    <div class="col-start-6 text-center my-auto">{clock}<br /> {date}</div>
+    {#if show}
+      <dt
+        class=" fixed rounded   w-full text-center flex flex-row justify-start items-start">
+        <button class=" mt-xs mr-sm " on:click={() => (todelete = true)}>
+          <Delete size="1.8em" />
+        </button>
+      </dt>
+    {/if}
   </div>
-  <div class="col-start-4 col-span-2 text-center my-auto">
-    {subiect}
-  </div>
-  <div class="col-start-6 text-center my-auto">{clock}<br /> {date}</div>
-</div>
+{/if}

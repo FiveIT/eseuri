@@ -3,6 +3,13 @@
   import { text, filterShadow } from '$/theme'
   import BookmarkModel from './BookmarkModel.svelte'
   import { bookmarks } from '$/content'
+  let todelete: boolean
+  $: if (todelete == true) {
+    todelete = false
+    bookmarks.splice(position)
+    console.log(position)
+  }
+  let position: number
 </script>
 
 <LayoutContext let:theme>
@@ -22,12 +29,15 @@
     </div>
   </div>
   <div class="row-start-6 col-span-6 {text[theme]} {filterShadow[theme]}">
-    {#each bookmarks as bookmark}
+    {#each bookmarks as bookmark, i}
       <BookmarkModel
         name={bookmark.bookmarkname}
         type={bookmark.type}
         subiect={bookmark.subject}
-        time={bookmark.time} />
+        time={bookmark.time}
+        {todelete}
+        {i}
+        bind:position />
     {/each}
   </div>
 </LayoutContext>

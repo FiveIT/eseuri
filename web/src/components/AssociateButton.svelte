@@ -1,9 +1,7 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
   import LayoutContext from './LayoutContext.svelte'
   import Association from './Association.svelte'
   import Associate from 'svelte-material-icons/AccountPlus.svelte'
-  import { text, border, filterShadow, background } from '$/theme'
   import { px } from '$/util'
 
   let size: string
