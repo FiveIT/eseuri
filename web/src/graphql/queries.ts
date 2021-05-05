@@ -217,9 +217,13 @@ interface ListSubjectsVars extends Relay.CursorVars {
   seed: `${number}`
 }
 
+interface WorkIDer {
+  workID: number
+}
+
 export type ListSubjects<Name extends `${WorkType}s`> = Relay<
   `list_${Name}`,
-  Relay.IDObject,
+  Relay.IDObject & WorkIDer,
   ListSubjectsVars,
   true
 >
@@ -243,6 +247,7 @@ export const LIST_ESSAYS = gql<Data<ListEssays>, Vars<ListEssays>>`
         cursor
         node {
           id
+          work_id
         }
       }
     }
@@ -266,25 +271,34 @@ export const LIST_CHARACTERIZATIONS = gql<Data<ListCharacterizations>, Vars<List
         cursor
         node {
           id
+          work_id
         }
       }
     }
   }
 `
 
-type WorkContent = Relay.Node<'work', { content: string }, Relay.IDObject>
+interface WorkData {
+  content: string
+}
+
+type WorkContent = Relay.Node<'work', WorkData, Relay.IDObject>
 
 export const WORK_CONTENT = gql<Data<WorkContent>, Vars<WorkContent>>`
+  fragment WorkData on works {
+    content
+  }
+
   query workContent($id: ID!) {
     node(id: $id) {
       ... on essays {
         work {
-          content
+          ...WorkData
         }
       }
       ... on characterizations {
         work {
-          content
+          ...WorkData
         }
       }
     }
@@ -297,6 +311,36 @@ export const TEACHER_REQUEST = gql<Data<TeacherRequest>, Vars<TeacherRequest>>`
   mutation teacherRequest {
     insert_teacher_requests_one(object: {}) {
       status
+    }
+  }
+`
+
+type Bookmark = Query<'insert_bookmarks_one', Typename, WorkIDer>
+
+export const BOOKMARK = gql<Data<Bookmark>, Vars<Bookmark>>`
+  mutation bookmark($workID: Int!) {
+    insert_bookmarks_one(object: { work_id: $workID }) {
+      __typename
+    }
+  }
+`
+
+type RemoveBookmark = Query<'delete_bookmarks', Typename, WorkIDer>
+
+export const REMOVE_BOOKMARK = gql<Data<RemoveBookmark>, Vars<RemoveBookmark>>`
+  mutation removeBookmark($workID: Int!) {
+    delete_bookmarks(where: { work_id: $workID }) {
+      __typename
+    }
+  }
+`
+
+type IsBookmarked = Query<'bookmarks', [Typename] | [], WorkIDer>
+
+export const IS_BOOKMARKED = gql<Data<IsBookmarked>, Vars<IsBookmarked>>`
+  query isBookmarked($workID: Int!) {
+    bookmarks(where: { work_id: { _eq: $workID } }) {
+      __typename
     }
   }
 `
