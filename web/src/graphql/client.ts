@@ -36,6 +36,10 @@ const exchanges = [
   cacheExchange,
   errorExchange({
     onError(error, operation) {
+      if (import.meta.env.PROD) {
+        return
+      }
+
       const query = operation.query.definitions.find(
         (def): def is OperationDefinitionNode => def.kind === 'OperationDefinition'
       )!
@@ -60,9 +64,8 @@ const exchanges = [
 
       switch (code) {
         case 'invalid-jwt':
-          return true
         case 'validation-failed':
-          return error.message.includes(`field "updated_at" not found in type: 'users'`)
+          return true
       }
 
       return false
