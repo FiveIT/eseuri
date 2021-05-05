@@ -63,8 +63,6 @@ export class RequestError extends Error {
           this.explanation = 'Încearcă să reîmprospătezi pagina sau să te reconectezi.'
           break
         default:
-          console.error({ graphQLError: arg, err })
-
           this.message = internalErrorNotification.message
           this.explanation = internalErrorNotification.status
       }
