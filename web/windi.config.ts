@@ -79,11 +79,11 @@ export default defineConfig({
       none: 'none',
     },
     gridAutoRows: {
-      layout: 'minmax(var(--row-height), max-content)',
+      layout: 'var(--row-height)',
       essays: 'var(--essay-row-heigth)',
     },
     gridTemplateColumns: {
-      layout: 'repeat(6, 1fr)',
+      layout: 'repeat(6, var(--column-width))',
       essays: 'repeat(3, var(--essay-column-width))',
     },
     gridAutoColumns: {
