@@ -694,7 +694,19 @@ export const asociates: Associate[] = JSON.parse(`[
     "school": "Col Nat „M. Eminescu” Iasi"
   },
   {
+    "status": "Accepted",
+    "name": "Mircea Ioan Andreescu",
+    "email": "mioan.a@gmail.com",
+    "school": "Col Nat „M. Eminescu” Iasi"
+  },  
+  {
     "status": "Incoming",
+    "name": "Mircea Ioan Andreescu",
+    "email": "mioan.a@gmail.com",
+    "school": "Col Nat „M. Eminescu” Iasi"
+  },
+  {
+    "status": "Accepted",
     "name": "Mircea Ioan Andreescu",
     "email": "mioan.a@gmail.com",
     "school": "Col Nat „M. Eminescu” Iasi"

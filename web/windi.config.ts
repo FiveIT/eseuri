@@ -64,6 +64,9 @@ export default defineConfig({
       buttonleft: '13vmin',
       bookmarkcreationwidth: 'var(--bookmark-creation-width)',
       bookmarkcreationheight: 'var(--bookmark-creation-height)',
+      teacherdescriptionwidth: 'var(--teacher-description-width)',
+      teacherdescriptionheight: 'var(--teacher-description-height)',
+      teacherdisplacement: 'var( --teacher-description-displacement)',
     },
     borderRadius: {
       DEFAULT: '0.625rem',

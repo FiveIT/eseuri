@@ -32,6 +32,18 @@
         --row-gap
       ) + var(--row-gap) + var(--row-gap)
   );
+  --teacher-description-width: calc(
+    var(--column-width) + var(--column-width) + var(--essay-column-gap)
+  );
+  --teacher-description-height: calc(
+    var(--row-height) + var(--row-height) + var(--row-gap)
+  );
+  --teacher-description-displacement: calc(
+    (
+        var(--column-width) + var(--essay-column-gap) + var(--essay-column-gap) +
+          var(--essay-column-gap)
+      ) / 2
+  );
 }
 
 html {
