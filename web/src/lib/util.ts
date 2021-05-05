@@ -1,4 +1,7 @@
-import type { OperationResult } from '@urql/svelte'
+import type { DocumentNode } from 'graphql'
+import type { Client, OperationResult, TypedDocumentNode } from '@urql/svelte'
+import { from } from 'rxjs'
+import { map } from 'rxjs/operators'
 import { rem } from './globals'
 
 export const px = (v: number) => `${rem * v}`
@@ -19,4 +22,20 @@ export function handleGraphQLResponse<Data, T>(
 
 export function graphQLSeed(): `${number}` {
   return `${Math.random()}` as const
+}
+
+export function fromQuery<Result = any, Variables extends object = {}>(
+  client: Client,
+  query: DocumentNode | TypedDocumentNode<Result, Variables> | string,
+  vars: Variables
+) {
+  return from(client.query(query, vars).toPromise()).pipe(map(handleGraphQLResponse(v => v)))
+}
+
+export function fromMutation<Result, Variables extends object>(
+  client: Client,
+  mutation: DocumentNode | TypedDocumentNode<Result, Variables> | string,
+  vars: Variables
+) {
+  return from(client.mutation(mutation, vars).toPromise()).pipe(map(handleGraphQLResponse(v => v)))
 }
