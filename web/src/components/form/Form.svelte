@@ -67,6 +67,7 @@
     submitStatus: Writable<SubmitStatus>
   ) => ({ target }: Event) => {
     submitStatus.set('awaitingResponse')
+    let handle: ReturnType<typeof setTimeout> | undefined
 
     return from(
       onSubmit({
@@ -82,7 +83,8 @@
         },
         error(err) {
           submitStatus.set('error')
-          setTimeout(() => submitStatus.set('awaitingInput'), 5000)
+          handle && clearTimeout(handle)
+          handle = setTimeout(() => submitStatus.set('awaitingInput'), 5000)
           error(err)
         },
       })
@@ -100,18 +102,13 @@
       method,
       cache: 'no-cache',
       ...getHeaders(),
-      selector: r => r.json().then(v => [v, r.ok, r.status]),
+      selector: r => r.json().then(v => [v, r.ok, r.status] as const),
     }).pipe(
-      mergeMap(([{ error }, ok, status]) => {
-        if (ok) {
-          return of({ status: 'success', message, explanation } as const)
-        }
-
-        console.error({ error, ok, status, messages })
-        console.error({ msg: messages[status] })
-
-        return throwError(() => new RequestError(messages[status.toString()], error))
-      })
+      mergeMap(([{ error }, ok, status]) =>
+        ok
+          ? of({ status: 'success', message, explanation } as const)
+          : throwError(() => new RequestError(messages[status], error))
+      )
     )
 
   export type { SubmitArgs, SubmitFn, Context, SubmitStatus }
