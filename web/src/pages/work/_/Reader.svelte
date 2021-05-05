@@ -1,4 +1,11 @@
 <script lang="ts" context="module">
+  import { setContext, getContext } from 'svelte'
+  import { writable } from 'svelte/store'
+  import type { Readable, Writable } from 'svelte/store'
+
+  import type { Work, WorkData } from '.'
+  import { defaultWorkData } from '.'
+
   const keys: Record<'prev' | 'next', Record<string, boolean>> = {
     prev: {
       ArrowLeft: true,
@@ -11,13 +18,25 @@
       KeyJ: true,
     },
   }
+
+  const contextKey = {}
+
+  const createWorkStore = (): Writable<WorkData> => writable(defaultWorkData)
+
+  export function getWork(): Readable<WorkData> {
+    return getContext(contextKey)
+  }
+
+  function setWork(store: Readable<WorkData>) {
+    setContext(contextKey, store)
+  }
 </script>
 
 <script lang="ts">
   import { Next, Back, Bookmark, Spinner, notify, internalErrorNotification } from '.'
-  import type { Work, WorkData } from '.'
   import { TRANSITION_EASING as easing, TRANSITION_DURATION as duration } from '$/lib/globals'
   import { fade, fly } from 'svelte/transition'
+  import { isAuthenticated } from '@tmaxmax/svelte-auth0'
 
   export let work: Work
 
@@ -25,12 +44,22 @@
   let disableNavigation = false
   let data: Promise<WorkData>
 
+  const workStore = createWorkStore()
+  setWork(workStore)
+
   $: {
     disableNavigation = true
 
     data = work.data
-      .catch(() => (notify(internalErrorNotification), { id: '', content: '' } as WorkData))
-      .finally(() => (disableNavigation = false))
+      .then(w => (($workStore = w), w))
+      .catch(() => {
+        notify(internalErrorNotification)
+
+        return { id: '', content: '', workID: 0 }
+      })
+      .finally(() => {
+        disableNavigation = false
+      })
   }
 
   const update = () => {
@@ -75,7 +104,11 @@
   </h2>
   <div class="flex justify-between align-middle">
     <div class="w-min text-sm font-sans antialiased">Eseu</div>
-    <div class="w-min"><Bookmark /></div>
+    <div class="w-min">
+      {#if $isAuthenticated}
+        <Bookmark />
+      {/if}
+    </div>
   </div>
   {#await data}
     <div class="col-span-6 flex justify-center items-center my-lg">
@@ -92,8 +125,10 @@
 </div>
 <Back disabled={disablePrevious} on:click={prev} />
 <Next on:click={next} />
-<div class="col-start-2">
-  <Bookmark />
-</div>
+{#if $isAuthenticated}
+  <div class="col-start-2">
+    <Bookmark />
+  </div>
+{/if}
 
 <svelte:window on:keydown={onKey} />

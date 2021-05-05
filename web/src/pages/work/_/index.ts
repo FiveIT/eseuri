@@ -1,7 +1,8 @@
 export { default as Next } from './navigation/Next.svelte'
 export { default as Back } from './navigation/Back.svelte'
 export { default as Bookmark } from './Bookmark.svelte'
-export { default as Reader } from './Reader.svelte'
+// @ts-expect-error
+export { default as Reader, getWork } from './Reader.svelte'
 export { default as Spinner } from '$/components/Spinner.svelte'
 
 // @ts-expect-error
@@ -14,24 +15,34 @@ import {
   SUBJECT_ID_FROM_URL,
   LIST_ESSAYS,
   LIST_CHARACTERIZATIONS,
+  BOOKMARK,
   ListSubjects,
   Relay,
+  REMOVE_BOOKMARK,
 } from '$/graphql/queries'
 import type { WorkType } from '$/lib/types'
-import { handleGraphQLResponse, graphQLSeed } from '$/lib/util'
+import { graphQLSeed, fromQuery, fromMutation, handleGraphQLResponse } from '$/lib/util'
 
-export interface WorkData {
-  content: string
+import { from, firstValueFrom, lastValueFrom } from 'rxjs'
+import { map, mergeMap, tap } from 'rxjs/operators'
+
+export interface WorkID {
   id: Relay.ID
+  workID: number
 }
 
-export const defaultWorkData = Promise.resolve({ id: '', content: '' })
+export interface WorkData extends WorkID {
+  content: string
+}
 
-const fetchWork = (id: Relay.ID): Promise<WorkData | undefined> =>
-  relay
-    .query(WORK_CONTENT, { id })
-    .toPromise()
-    .then(handleGraphQLResponse(resp => ({ id, content: resp!.node.work.content })))
+export const defaultWorkData: WorkData = { id: '', content: '', workID: 0 }
+
+const fetchWork = (id: Relay.ID): Promise<Omit<WorkData, 'workID'> | undefined> =>
+  firstValueFrom(
+    fromQuery(relay, WORK_CONTENT, { id }).pipe(
+      map(res => (res ? { id, content: res.node.work.content } : undefined))
+    )
+  )
 
 const WORK_LIMIT = 50
 const defaultPageInfo: Relay.PageInfo = {
@@ -46,30 +57,27 @@ type WorksIterable = AsyncIterator<WorkData, WorkData> & {
   fetchCurrent(): Promise<WorkData>
 }
 
-export const works = async (url: string, type: WorkType, beginWith?: Relay.ID) => {
-  const res = await client.query(SUBJECT_ID_FROM_URL, { url }).toPromise()
+export const works = async (url: string, type: WorkType, beginWith?: WorkID) => {
+  const res = await client
+    .query(SUBJECT_ID_FROM_URL, { url })
+    .toPromise()
+    .then(handleGraphQLResponse(v => (v?.work_summaries.length ? v.work_summaries[0] : undefined)))
 
-  if (res.error) {
-    throw res.error
-  }
-
-  if (res.data!.work_summaries.length === 0) {
+  if (!res) {
     return
   }
 
-  const { id, name, work_count } = res.data!.work_summaries[0]
+  const { id, name, work_count } = res
   if (work_count === 0) {
     return { found: false, id, name } as const
   }
 
   const query = type === 'essay' ? LIST_ESSAYS : LIST_CHARACTERIZATIONS
-
-  const vars = (seed: `${number}`, cursor: Relay.CursorVars) =>
-    ({
-      seed,
-      subjectID: id,
-      ...cursor,
-    } as const)
+  const vars = (seed: `${number}`, cursor: Relay.CursorVars) => ({
+    seed,
+    subjectID: id,
+    ...cursor,
+  })
 
   type Data = NonNullable<ListSubjects<'essays'>['data']>['list_essays_connection']
 
@@ -80,46 +88,39 @@ export const works = async (url: string, type: WorkType, beginWith?: Relay.ID) =
     [Symbol.asyncIterator](): WorksIterable {
       let seed = graphQLSeed()
 
-      const ids: Relay.ID[] = []
+      const ids: WorkID[] = []
 
       let current = -1
-      let pageInfo = defaultPageInfo
-
-      if (beginWith) {
-        ids.push(beginWith)
-      }
+      let page = defaultPageInfo
 
       return {
-        fetchCurrent: () => fetchWork(ids[current]).then(w => w!),
+        fetchCurrent: () =>
+          fetchWork(ids[current].id).then(w => ({
+            ...w!,
+            ...ids[current],
+          })),
         async next() {
-          const { hasNextPage, endCursor } = pageInfo
-
           if (++current === ids.length) {
-            if (!hasNextPage && endCursor !== null) {
+            if (!page.hasNextPage && page.endCursor !== null) {
               seed = graphQLSeed()
-              pageInfo = defaultPageInfo
+              page = defaultPageInfo
               --current
 
               return this.next()
             }
 
-            const res = await relay
-              .query(query, vars(seed, { after: pageInfo.endCursor, first: WORK_LIMIT }))
-              .toPromise()
-
-            if (res.error || !res.data) {
-              throw res.error
-            }
-
-            const data: Data = (res.data as any)[`list_${type}s_connection`]
-            pageInfo = data.pageInfo
-
-            ids.push(...data.edges.map(e => e.node.id))
+            const v = vars(seed, { after: page.endCursor, first: WORK_LIMIT })
+            await lastValueFrom(
+              fromQuery(relay, query, v).pipe(
+                map(v => (v! as any)[`list_${type}s_connection`] as Data),
+                tap(r => (page = r.pageInfo)),
+                mergeMap(v => from(v.edges)),
+                tap(r => ids.push({ id: r.node.id, workID: r.node.work_id }))
+              )
+            )
           }
 
-          const value = await this.fetchCurrent()
-
-          return { value }
+          return { value: await this.fetchCurrent() }
         },
         async prev() {
           if (current-- === -1) {
@@ -145,3 +146,9 @@ export interface Work {
   next(): void
   prev(): Promise<boolean>
 }
+
+export const bookmark = (workID: number) =>
+  firstValueFrom(fromMutation(client, BOOKMARK, { workID }))
+
+export const removeBookmark = (workID: number) =>
+  firstValueFrom(fromMutation(client, REMOVE_BOOKMARK, { workID }))

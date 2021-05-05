@@ -68,7 +68,7 @@
 
         work = {
           title: name,
-          data: defaultWorkData,
+          data: Promise.resolve(defaultWorkData),
           next() {
             this.data = it.next().then(v => {
               const data = v.value
