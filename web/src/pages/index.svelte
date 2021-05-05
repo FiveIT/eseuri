@@ -60,7 +60,7 @@
     <LoginButton theme="white" />
   </div>
   <div class="col-start-4 col-end-5 row-start-2 w-full h-full text-sm my-auto ">
-    <Buton enable={true} href="./account" theme="white">Plagiat</Buton>
+    <Buton enable={false} theme="white">Plagiat</Buton>
   </div>
   <div class="col-start-5 col-end-6 row-start-2 w-full h-full text-sm my-auto">
     <Buton href="./indexteacher" enable={true} theme="white">Profesori</Buton>
