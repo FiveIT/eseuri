@@ -109,3 +109,5 @@ export interface FullNamer {
   middle_name: string | null
   last_name: string
 }
+
+export type Timeout = ReturnType<typeof setTimeout>
