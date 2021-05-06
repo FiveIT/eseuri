@@ -5,6 +5,7 @@
   import type { Nullable } from '$/lib/types'
   import { isNonNullable } from '$/lib/types'
   import { requestError } from '$/lib/util'
+  import type { MessagesRecord } from '$/lib/user'
 
   import { from, of } from 'rxjs'
   import { fromFetch } from 'rxjs/fetch'
@@ -88,10 +89,9 @@
       })
   }
 
-  const messages: Record<number, string> = {
+  const messages: MessagesRecord = {
     400: 'Formularul trimis sau datele de autentificare sunt invalide.',
     401: 'Nu ești autorizat pentru a încărca o lucrare.',
-    500: 'A apărut o eroare internă, încearcă mai târziu.',
   }
 
   export const defaultSubmitFn: SubmitFn = ({ body, action, method, message, explanation }) =>
