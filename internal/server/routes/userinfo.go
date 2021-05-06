@@ -16,37 +16,46 @@ type userInfo struct {
 	Role         string `json:"role"`
 }
 
+func fetchUserInfo(c *fiber.Ctx, client *graphql.Client) (*userInfo, error) {
+	claims := c.Locals("claims").(auth.CustomClaims)
+
+	var response gqlqueries.UserOutput
+
+	if err := helpers.GraphQLRequest(client, gqlqueries.User, helpers.GraphQLRequestOptions{
+		Output:  &response,
+		Context: c.Context(),
+		Headers: map[string]string{
+			"X-Hasura-User-Id": strconv.Itoa(claims.UserID),
+			"X-Hasura-Role":    claims.Role,
+		},
+		Vars: map[string]interface{}{
+			"id": claims.UserID,
+		},
+		Promote: true,
+	}); err != nil {
+		return nil, helpers.HandleGraphQLError(c, err)
+	}
+
+	if len(response.Query) == 0 {
+		return nil, helpers.SendError(c, fiber.StatusNotFound, "acest utilizator nu există", nil)
+	}
+
+	user := response.Query[0]
+
+	return &userInfo{
+		ID:           claims.UserID,
+		IsRegistered: user.UpdatedAt != nil,
+		Role:         user.Role,
+	}, nil
+}
+
 func UserInfo(client *graphql.Client) fiber.Handler {
 	return func(c *fiber.Ctx) error {
-		claims := c.Locals("claims").(auth.CustomClaims)
-
-		var response gqlqueries.UserOutput
-
-		if err := helpers.GraphQLRequest(client, gqlqueries.User, helpers.GraphQLRequestOptions{
-			Output:  &response,
-			Context: c.Context(),
-			Headers: map[string]string{
-				"X-Hasura-User-Id": strconv.Itoa(claims.UserID),
-				"X-Hasura-Role":    claims.Role,
-			},
-			Vars: map[string]interface{}{
-				"id": claims.UserID,
-			},
-			Promote: true,
-		}); err != nil {
-			return helpers.HandleGraphQLError(c, err)
+		info, err := fetchUserInfo(c, client)
+		if info == nil {
+			return err
 		}
 
-		if len(response.Query) == 0 {
-			return helpers.SendError(c, fiber.StatusNotFound, "acest utilizator nu există", nil)
-		}
-
-		user := response.Query[0]
-
-		return c.JSON(userInfo{
-			ID:           claims.UserID,
-			IsRegistered: user.UpdatedAt != nil,
-			Role:         user.Role,
-		})
+		return c.JSON(info)
 	}
 }

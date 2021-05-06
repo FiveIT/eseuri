@@ -103,9 +103,12 @@ func insertWork(c *fiber.Ctx, body string, supertypeQuery string, input helpers.
 		workOpts.Vars["requestedTeacherID"] = input.RequestedTeacherID
 	}
 
-	// TODO: Check also with the database for teacher status
 	if claims.Role == "teacher" {
 		workOpts.Vars["status"] = "approved"
+	} else if info, err := fetchUserInfo(c, client); info != nil && info.Role == "teacher" {
+		workOpts.Vars["status"] = "approved"
+	} else if info == nil {
+		return nil, err
 	}
 
 	if err := helpers.GraphQLRequest(client, gqlqueries.InsertWork, workOpts); err != nil {
