@@ -1,5 +1,5 @@
 <script context="module" lang="ts">
-  import type { Theme } from '$/lib/types'
+  import type { Theme, NotificationStatus as Status, Notification } from '$/lib/types'
   import Error from 'svelte-material-icons/AlertCircle.svelte'
   import ErrorBlue from 'svelte-material-icons/AlertCircleOutline.svelte'
   import Check from 'svelte-material-icons/CheckCircle.svelte'
@@ -13,22 +13,6 @@
     /* The icon's Svelte component */
     icon: any
     color: string
-  }
-
-  type Status = 'success' | 'error' | 'info'
-
-  export interface Payload {
-    status: Status
-    /**
-     * The headline of the notification. It is a short summary
-     * of the reason the notification appeared.
-     */
-    message: string
-    /**
-     * More details about the cause of the notification. It is
-     * shown when the notification box is hovered over.
-     */
-    explanation?: string
   }
 
   const assets: Record<Status, Record<Theme, Assets>> = {
@@ -73,6 +57,8 @@
     default: 'filter-shadow-large',
     white: 'filter-shadow',
   }
+
+  export type { Notification }
 </script>
 
 <script lang="ts">

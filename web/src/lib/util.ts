@@ -1,8 +1,12 @@
 import type { DocumentNode } from 'graphql'
-import type { Client, OperationResult, TypedDocumentNode } from '@urql/svelte'
+import type { Client, OperationResult, TypedDocumentNode, OperationContext } from '@urql/svelte'
+import { CombinedError } from '@urql/svelte'
 import { from } from 'rxjs'
 import { map } from 'rxjs/operators'
 import { rem } from './globals'
+import { RequestError, internalErrorNotification } from './user'
+import type { FullNamer } from './types'
+import type { MessagesRecord } from './user'
 
 export const px = (v: number) => `${rem * v}`
 
@@ -27,15 +31,60 @@ export function graphQLSeed(): `${number}` {
 export function fromQuery<Result = any, Variables extends object = {}>(
   client: Client,
   query: DocumentNode | TypedDocumentNode<Result, Variables> | string,
-  vars: Variables
+  vars?: Variables,
+  context?: Partial<OperationContext>
 ) {
-  return from(client.query(query, vars).toPromise()).pipe(map(handleGraphQLResponse(v => v)))
+  return from(client.query(query, vars, context).toPromise()).pipe(
+    map(handleGraphQLResponse(v => v!))
+  )
 }
 
-export function fromMutation<Result, Variables extends object>(
+export function fromMutation<Result, Variables extends object = {}>(
   client: Client,
   mutation: DocumentNode | TypedDocumentNode<Result, Variables> | string,
-  vars: Variables
+  vars?: Variables,
+  context?: Partial<OperationContext>
 ) {
-  return from(client.mutation(mutation, vars).toPromise()).pipe(map(handleGraphQLResponse(v => v)))
+  return from(client.mutation(mutation, vars, context).toPromise()).pipe(
+    map(handleGraphQLResponse(v => v!))
+  )
+}
+
+export function getName({ first_name, middle_name, last_name }: FullNamer) {
+  return `${first_name} ${middle_name ? `${middle_name} ` : ''}${last_name}`
+}
+
+// TODO: Maybe do this directly in the constructor?
+// eslint-disable-next-line no-unused-vars
+export function requestError(graphQLError: CombinedError): RequestError
+// eslint-disable-next-line no-redeclare
+export function requestError(
+  // eslint-disable-next-line no-unused-vars
+  messagesRecord: MessagesRecord,
+  // eslint-disable-next-line no-unused-vars
+  status: number,
+  // eslint-disable-next-line no-unused-vars
+  error?: string
+): RequestError
+// eslint-disable-next-line no-redeclare
+export function requestError(
+  arg: MessagesRecord | CombinedError,
+  status?: number,
+  error?: string
+): RequestError {
+  if (arg instanceof CombinedError) {
+    return new RequestError(arg)
+  }
+
+  if (!status) {
+    throw new Error('requestError: status must be defined')
+  }
+
+  const data: typeof arg[number] = arg[status] || internalErrorNotification
+
+  if (typeof data === 'string') {
+    return new RequestError(data, error)
+  }
+
+  return new RequestError(data.message, data.explanation || error)
 }

@@ -81,3 +81,31 @@ export interface UnrevisedWork {
     }
   }
 }
+
+export interface UserStatus {
+  id: number
+  isRegistered: boolean
+  role: Role
+}
+
+export type NotificationStatus = 'success' | 'error' | 'info'
+
+export interface Notification {
+  status: NotificationStatus
+  /**
+   * The headline of the notification. It is a short summary
+   * of the reason the notification appeared.
+   */
+  message: string
+  /**
+   * More details about the cause of the notification. It is
+   * shown when the notification box is hovered over.
+   */
+  explanation?: string
+}
+
+export interface FullNamer {
+  first_name: string
+  middle_name: string | null
+  last_name: string
+}

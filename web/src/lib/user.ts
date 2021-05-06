@@ -1,12 +1,14 @@
 import { authToken } from '@tmaxmax/svelte-auth0'
 import { get } from 'svelte/store'
-import client from '$/graphql/client'
-import { USER_UPDATED_AT } from '$/graphql/queries'
+import type { UserStatus, Notification } from '$/lib/types'
+import { requestError } from '$/lib/util'
 import type { CombinedError } from '@urql/svelte'
 
-import { from, firstValueFrom } from 'rxjs'
-import { map } from 'rxjs/operators'
-import { handleGraphQLResponse } from './util'
+import { firstValueFrom, of } from 'rxjs'
+import { switchMap } from 'rxjs/operators'
+import { fromFetch } from 'rxjs/fetch'
+
+const endpoint = `${import.meta.env.VITE_FUNCTIONS_URL}` as const
 
 export const getHeaders = () => {
   const token = get(authToken)
@@ -18,18 +20,48 @@ export const getHeaders = () => {
   return {}
 }
 
-export const isRegistered = () =>
-  firstValueFrom(
-    from(
-      client.query(USER_UPDATED_AT, undefined, { requestPolicy: 'network-only' }).toPromise()
-    ).pipe(map(handleGraphQLResponse(v => v!.users[0].updated_at !== null)))
-  )
-
 export const internalErrorNotification = {
   status: 'error',
   message: 'Ceva neașteptat s-a întâmplat.',
   explanation: `Este o eroare internă, revino mai târziu - o vom rezolva în curând!`,
 } as const
+
+export type MessagesRecord = Record<number, string | Omit<Notification, 'status'>>
+
+const statusErrorMessages: MessagesRecord = {
+  400: {
+    message: 'Datele de autentificare sunt invalide.',
+    explanation: 'Încearcă să te reloghezi, probabil a expirat sesiunea.',
+  },
+  401: {
+    message: 'Nu ești autorizat.',
+    explanation: 'Conectează-te sau fă-ți un cont pentru a continua.',
+  },
+  404: {
+    message: 'Utilizatorul tău nu a fost găsit.',
+    explanation:
+      'Ai făcut ceva tare ciudat ca să primești această eroare, încearcă să te reloghezi.',
+  },
+}
+
+export const status = (): Promise<UserStatus> =>
+  firstValueFrom(
+    fromFetch(`${endpoint}/user`, {
+      cache: 'no-cache',
+      ...getHeaders(),
+      selector: r => r.json().then(v => [v, r.ok, r.status] as const),
+    }).pipe(
+      switchMap(([data, ok, status]) => {
+        if (ok) {
+          return of(data)
+        }
+
+        throw requestError(statusErrorMessages, status)
+      })
+    )
+  )
+
+export const isTeacher = () => firstValueFrom(of(undefined))
 
 export class RequestError extends Error {
   public readonly message: string

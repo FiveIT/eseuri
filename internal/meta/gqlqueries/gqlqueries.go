@@ -52,9 +52,10 @@ const (
 	}
 }`
 
-	User = `query getUser {
-	users(where: {}) {
+	User = `query getUser($id: Int!) {
+	users(where: {id: {_eq: $id}}) {
 		updated_at
+		role
 	}
 }`
 )
@@ -89,5 +90,6 @@ type WorksByPKOutput struct {
 type UserOutput struct {
 	Query []struct {
 		UpdatedAt *string `json:"updated_at"`
+		Role      string  `json:"role"`
 	} `json:"users"`
 }

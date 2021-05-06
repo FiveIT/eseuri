@@ -4,8 +4,7 @@
 
   import { query, operationStore } from '@urql/svelte'
 
-  import { RequestError } from '$/lib/user'
-  import { px } from '$/lib/util'
+  import { px, requestError } from '$/lib/util'
   import { IS_BOOKMARKED } from '$/graphql/queries'
 
   import { bookmark, removeBookmark, getWork, notify } from '.'
@@ -35,7 +34,7 @@
   $: if ($bookmarked.error) {
     allowBookmarking = false
 
-    const err = new RequestError($bookmarked.error)
+    const err = requestError($bookmarked.error)
 
     notify({
       status: 'error',

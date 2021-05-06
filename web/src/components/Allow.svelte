@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { isAuthenticated, authError, isLoading } from '@tmaxmax/svelte-auth0'
+  import { isAuthenticated, authError, isLoading, authToken } from '@tmaxmax/svelte-auth0'
   import { notify } from '$/components/Notifications.svelte'
   import Spinner from '$/components/Spinner.svelte'
   import * as user from '$/lib/user'
@@ -62,7 +62,7 @@
       explanation: 'Încearcă să revii mai târziu, este o problemă de moment.',
       force: true,
     })
-  } else if (!$isLoading) {
+  } else if (!$isLoading && $authToken) {
     if (!$isAuthenticated && authenticated) {
       bail({
         status: 'info',
@@ -70,8 +70,8 @@
       })
     } else if (registered || unregistered) {
       user
-        .isRegistered()
-        .then(isRegistered => {
+        .status()
+        .then(({ isRegistered }) => {
           if ((isRegistered && registered) || (!isRegistered && unregistered)) {
             show()
 

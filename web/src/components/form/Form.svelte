@@ -4,12 +4,12 @@
   import { RequestError, internalErrorNotification, getHeaders } from '$/lib/user'
   import type { Nullable } from '$/lib/types'
   import { isNonNullable } from '$/lib/types'
+  import { requestError } from '$/lib/util'
 
-  import { from, of, throwError } from 'rxjs'
+  import { from, of } from 'rxjs'
   import { fromFetch } from 'rxjs/fetch'
   import type { ObservableInput } from 'rxjs'
-  import { filter, mergeMap, tap } from 'rxjs/operators'
-  import { CombinedError } from '@urql/svelte'
+  import { filter, switchMap } from 'rxjs/operators'
   import { getContext, setContext } from 'svelte'
   import { writable } from 'svelte/store'
   import type { Readable, Writable } from 'svelte/store'
@@ -42,8 +42,6 @@
         message: err.message,
         explanation: err.explanation,
       })
-    } else if (err instanceof CombinedError) {
-      return error(new RequestError(err))
     } else {
       console.error({ formError: err })
       notify(internalErrorNotification)
@@ -104,11 +102,13 @@
       ...getHeaders(),
       selector: r => r.json().then(v => [v, r.ok, r.status] as const),
     }).pipe(
-      mergeMap(([{ error }, ok, status]) =>
-        ok
-          ? of({ status: 'success', message, explanation } as const)
-          : throwError(() => new RequestError(messages[status], error))
-      )
+      switchMap(([{ error }, ok, status]) => {
+        if (ok) {
+          return of({ status: 'success', message, explanation } as const)
+        }
+
+        throw requestError(messages, status, error)
+      })
     )
 
   export type { SubmitArgs, SubmitFn, Context, SubmitStatus }
