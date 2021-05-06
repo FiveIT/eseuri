@@ -24,6 +24,8 @@
   export let href = '/'
   export let disable = $isActive(href, undefined, { strict: false })
   export let hideIfDisabled = false
+  export let directGoto = false
+  export let title: string | undefined = undefined
 </script>
 
 {#if !disable}
@@ -31,11 +33,16 @@
     href={$url(href)}
     on:click|preventDefault={() => {
       dispatch('navigate', { href })
-      go(href, alive, $goto)
+      if (directGoto) {
+        $goto(href)
+      } else {
+        go(href, alive, $goto)
+      }
     }}
-    class="w-auto h-auto select-none">
-    <slot {disable} {href} />
+    class="w-auto h-auto select-none"
+    {title}>
+    <slot tabindex={undefined} {disable} {href} />
   </a>
 {:else if !hideIfDisabled}
-  <slot {disable} {href} />
+  <slot tabindex="0" {disable} {href} />
 {/if}

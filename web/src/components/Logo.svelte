@@ -7,7 +7,7 @@
 </script>
 
 <LayoutContext let:theme>
-  <Link href="/" on:navigate let:disable>
+  <Link href="/" on:navigate let:disable title="Acasă">
     <h1
       class="font-serif text-{big ? 'xl' : 'lg'} font-bold {text[theme]} antialiased select-none"
       class:cursor-default={disable}>
