@@ -17,8 +17,8 @@
   import Allow from '$/components/Allow.svelte'
 
   import { goto, metatags } from '@roxi/routify'
-  import { from, of } from 'rxjs'
-  import { map, mergeMap, tap } from 'rxjs/operators'
+  import { of } from 'rxjs'
+  import { map, switchMap, tap } from 'rxjs/operators'
 
   import { store as orange } from '$/components/blob/Orange.svelte'
   import { store as red } from '$/components/blob/Red.svelte'
@@ -26,7 +26,7 @@
 
   import type { BlobPropsInput, Role } from '$/lib/types'
   import { roleTranslation } from '$/content'
-  import { handleGraphQLResponse } from '$/lib/util'
+  import { fromMutation } from '$/lib/util'
   import type { Writable } from 'svelte/store'
   import { go } from '$/components/Link.svelte'
 
@@ -70,13 +70,8 @@
       schoolID: parseInt(form.get('school')!.toString() || ''),
     } as const
 
-    return from(client.mutation(REGISTER_USER, vars).toPromise()).pipe(
-      map(handleGraphQLResponse()),
-      mergeMap(() =>
-        role === 'teacher'
-          ? from(client.mutation(TEACHER_REQUEST).toPromise()).pipe(map(handleGraphQLResponse()))
-          : of(undefined)
-      ),
+    return fromMutation(client, REGISTER_USER, vars).pipe(
+      switchMap(() => (role === 'teacher' ? fromMutation(client, TEACHER_REQUEST) : of(undefined))),
       map(() => notification),
       tap(() => go('/', alive, $goto))
     )
