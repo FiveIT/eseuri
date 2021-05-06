@@ -3,11 +3,12 @@
   import { notify } from '$/components/Notifications.svelte'
   import Spinner from '$/components/Spinner.svelte'
   import * as user from '$/lib/user'
-  import { redirect as goto } from '@roxi/routify'
-
-  import { fade } from 'svelte/transition'
   import { TRANSITION_EASING as easing, TRANSITION_DURATION as duration } from '$/lib/globals'
+  import type { Notification, Timeout } from '$/lib/types'
+
   import { onDestroy } from 'svelte'
+  import { fade } from 'svelte/transition'
+  import { redirect as goto } from '@roxi/routify'
 
   export let redirect: string
 
@@ -25,8 +26,6 @@
     }
   }
 
-  type Timeout = ReturnType<typeof setTimeout>
-
   let showSlot = false
   let showLoading = unregistered
   let showLoadingHandle: Timeout | undefined
@@ -43,9 +42,9 @@
 
   onDestroy(clear)
 
-  function bail(notif: Parameters<typeof notify>[0] & { force?: boolean }) {
-    if (!dontNotify || notif.force) {
-      notify(notif)
+  function bail(notification: Notification) {
+    if (!dontNotify || notification.status === 'error') {
+      notify(notification)
     }
 
     $goto(redirect)
@@ -60,46 +59,46 @@
       status: 'error',
       message: 'A apărut o eroare la autentificare',
       explanation: 'Încearcă să revii mai târziu, este o problemă de moment.',
-      force: true,
     })
-  } else if (!$isLoading && $authToken) {
+  } else if (!$isLoading) {
     if (!$isAuthenticated && authenticated) {
       bail({
         status: 'info',
         message: `Autentifică-te mai întâi pentru a avea acces la această resursă.`,
       })
     } else if (registered || unregistered) {
-      user
-        .status()
-        .then(({ isRegistered }) => {
-          if ((isRegistered && registered) || (!isRegistered && unregistered)) {
-            show()
+      if ($authToken) {
+        user
+          .status()
+          .then(({ isRegistered }) => {
+            if ((isRegistered && registered) || (!isRegistered && unregistered)) {
+              show()
 
-            return
-          }
+              return
+            }
 
-          if (registered) {
-            bail({
-              status: 'info',
-              message: `Înregistrează-te pentru a avea acces la această resursă.`,
-              explanation: `Pentru a te înregistra, mergi în <a class="underline" href="/account/configure">Contul meu &gt; Configurare</a>, sau la <a class="underline" href="/register">Înregistrare</a>.`,
-            })
-          } else {
-            bail({
-              status: 'info',
-              message: 'Ești deja înregistrat',
-            })
-          }
-        })
-        .catch(err => {
-          console.error(err)
-
-          bail({
-            status: 'error',
-            message: 'A apărut o eroare internă, încearcă mai târziu.',
-            force: true,
+            if (registered) {
+              bail({
+                status: 'info',
+                message: `Înregistrează-te pentru a avea acces la această resursă.`,
+                explanation: `Pentru a te înregistra, mergi în <a class="underline" href="/account/configure">Contul meu &gt; Configurare</a>, sau la <a class="underline" href="/register">Înregistrare</a>.`,
+              })
+            } else {
+              bail({
+                status: 'info',
+                message: 'Ești deja înregistrat',
+              })
+            }
           })
-        })
+          .catch(err => {
+            console.error(err)
+
+            bail({
+              status: 'error',
+              message: 'A apărut o eroare internă, încearcă mai târziu.',
+            })
+          })
+      }
     } else {
       show()
     }
