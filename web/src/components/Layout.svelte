@@ -120,13 +120,13 @@
 
 {#if $alive}
   <div
-    class="min-h-screen flex flex-col scrollbar-window-padding z-1"
+    class="min-h-screen flex flex-col scrollbar-window-padding"
     class:blur={blurBackground}
     class:white-bg={blurBackground}
     class:bg-opacity-50={blurBackground}
     transition:fly={finalTransition}>
     <div
-      class="min-h-full mx-auto max-w-layout grid grid-cols-layout auto-rows-layout gap-x-md gap-y-sm py-xlg relative"
+      class="min-h-full mx-auto max-w-layout grid grid-cols-layout auto-rows-layout gap-x-md gap-y-sm py-xlg"
       class:my-auto={center}>
       <slot />
     </div>
