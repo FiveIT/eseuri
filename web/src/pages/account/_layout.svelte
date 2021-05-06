@@ -7,10 +7,7 @@
   import type { BlobPropsInput } from '$/lib/types'
   import SlimNav from '$/components/SlimNav.svelte'
   import NavLink from './_/NavLink.svelte'
-  type Choosen = 'Lucrari' | 'Marcaje' | 'Profesori' | 'Configurare'
 
-  let selected: Choosen
-  selected = 'Lucrari'
   let blueBlobProps: BlobPropsInput
   $: blueBlobProps = {
     x: ($window.width - blue.width * 0.8) / 2,
@@ -41,19 +38,19 @@
 
   const routes: Route[] = [
     {
-      href: '/works',
+      href: 'works',
       label: 'Lucrări',
     },
     {
-      href: '/bookmarks',
+      href: 'bookmarks',
       label: 'Marcaje',
     },
     {
-      href: '/associations',
+      href: 'associations',
       label: 'Asocieri',
     },
     {
-      href: '/configure',
+      href: 'configure',
       label: 'Configurare/<wbr />Ieși din cont',
     },
   ]
@@ -70,14 +67,12 @@
   <SlimNav />
   <div
     class="col-span-6 row-start-4 grid grid-cols-layout gap-x-md border-b-3px border-white filter-shadow items-center">
-    <h2 class="text-md text-white font-sans antialiased col-span-2">
-      Contul meu
-    </h2>
+    <h2 class="text-md text-white font-sans antialiased col-span-2">Contul meu</h2>
     <ul
       class="col-start-3 col-span-4 grid grid-flow-col place-items-center gap-x-md auto-cols-layout">
       {#each routes as { href, label } (href)}
         <li class="w-full h-full text-center">
-          <NavLink href="/account{href}">{@html label}</NavLink>
+          <NavLink href="/account/{href}">{@html label}</NavLink>
         </li>
       {/each}
     </ul>
