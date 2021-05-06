@@ -30,6 +30,12 @@
   function setWork(store: Readable<WorkData>) {
     setContext(contextKey, store)
   }
+
+  const getParagraphs = (text: string) =>
+    text
+      .trim()
+      .split(/(?:\r?\n)+/)
+      .map(p => p.trim())
 </script>
 
 <script lang="ts">
@@ -98,31 +104,37 @@
   }
 </script>
 
-<div class="col-start-2 col-end-6 row-start-3 flex flex-col justify-between relative">
-  <h2 class="text-title font-serif antialiased">
-    {work.title}
-  </h2>
-  <div class="flex justify-between align-middle">
-    <div class="w-min text-sm font-sans antialiased">Eseu</div>
-    <div class="w-min">
-      {#if $isAuthenticated}
-        <Bookmark />
-      {/if}
+<article class="col-start-2 col-end-6 row-start-3 flex flex-col justify-between relative">
+  <header>
+    <h1 class="text-title font-serif antialiased">
+      {work.title}
+    </h1>
+    <div class="flex justify-between align-middle">
+      <div class="w-min text-sm font-sans antialiased">Eseu</div>
+      <div class="w-min">
+        {#if $isAuthenticated}
+          <Bookmark />
+        {/if}
+      </div>
     </div>
-  </div>
+  </header>
   {#await data}
     <div class="col-span-6 flex justify-center items-center my-lg">
       <Spinner />
     </div>
-  {:then text}
-    <p
-      class="text-prose font-serif antialiased my-lg whitespace-pre-line"
+  {:then { content }}
+    <main
+      class="mt-lg space-y-sm"
       in:fade={{ duration, easing, delay: duration }}
       out:fly={{ x: direction * -200, duration, easing }}>
-      {text.content.trim()}
-    </p>
+      {#each getParagraphs(content) as paragraph}
+        <p class="text-prose font-serif antialiased">
+          {paragraph}
+        </p>
+      {/each}
+    </main>
   {/await}
-</div>
+</article>
 <Back disabled={disablePrevious} on:click={prev} />
 <Next on:click={next} />
 {#if $isAuthenticated}
