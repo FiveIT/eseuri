@@ -120,7 +120,7 @@
 
 {#if $alive}
   <div
-    class="min-h-screen flex flex-col scrollbar-window-padding"
+    class="min-h-screen flex flex-col scrollbar-window-padding z-1"
     class:blur={blurBackground}
     class:white-bg={blurBackground}
     class:bg-opacity-50={blurBackground}

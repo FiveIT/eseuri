@@ -25,7 +25,7 @@
   import { store as window } from '$/components/Window.svelte'
 
   import type { BlobPropsInput, Role } from '$/lib/types'
-  import { roleTranslation } from '$/lib/content'
+  import { roleTranslation } from '$/content'
   import { handleGraphQLResponse } from '$/lib/util'
   import type { Writable } from 'svelte/store'
   import { go } from '$/components/Link.svelte'

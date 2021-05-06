@@ -25,7 +25,7 @@
   import { go } from '$/components/Link.svelte'
 
   import type { BlobPropsInput, WorkType } from '$/lib/types'
-  import { workTypeTranslation } from '$/lib/content'
+  import { workTypeTranslation } from '$/content'
   import type { Writable } from 'svelte/store'
 
   import { operationStore, query } from '@urql/svelte'

@@ -40,6 +40,7 @@
     x: ($window.width - blue.width * 0.8) / 2,
     y: -blue.height * 0.635 + $window.height * 0.17,
     scale: 1.5,
+    rotate: 0,
   }
 
   let type: WorkType = 'essay'
@@ -68,7 +69,7 @@
     <Buton disable theme="white">Plagiat</Buton>
   </div>
   <div class="col-start-5 my-auto">
-    <Buton disable theme="white">Profesori</Buton>
+    <Buton href="./indexteacher" theme="white">Profesori</Buton>
   </div>
   <div class="col-start-6 row-start-3 place-self-center">
     <UploadButton />

@@ -7,7 +7,7 @@
   import type { WorkSummary } from '$/lib/types'
 
   import { text, border, filterShadow, fontWeight } from '$/lib/theme'
-  import { workTypeTranslation } from '$/lib/content'
+  import { workTypeTranslation } from '$/content'
 
   let titleParent: HTMLElement
   let titleChild: HTMLElement

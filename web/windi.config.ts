@@ -53,6 +53,8 @@ export default defineConfig({
       md: '1.25rem',
       lg: 'var(--essay-column-gap)',
       xlg: '6.5vmin',
+      col: 'var(--column-width)',
+      teacher: 'var(--teacher-description-displacement)',
     },
     borderRadius: {
       DEFAULT: '0.625rem',
@@ -68,7 +70,7 @@ export default defineConfig({
       none: 'none',
     },
     gridAutoRows: {
-      layout: 'minmax(var(--row-height), max-content)',
+      layout: 'var(--row-height)',
       essays: 'var(--essay-row-heigth)',
     },
     gridTemplateColumns: {
@@ -84,9 +86,18 @@ export default defineConfig({
       },
       width: {
         notification: ' var(--essay-column-width)',
+        association: 'var(--association-box-width)',
+        'delete-box': 'var(--delete-box-width)',
+        'configure-login': 'var(--configure-login-width)',
+        bookmark: 'var(--bookmark-creation-width)',
+        teacher: 'var(--teacher-description-width)',
       },
       height: {
         notification: 'var(--row-height)',
+        association: 'var(--association-box-height)',
+        row: 'var(--row-height)',
+        bookmark: 'var(--bookmark-creation-height)',
+        teacher: 'var(--teacher-description-height)',
       },
       minHeight: {
         notification: 'var(--row-height)',
@@ -121,5 +132,8 @@ export default defineConfig({
     'shadow-inner',
     'font-light',
     [].concat(...['soft', 'large'].map(v => [`shadow-${v}`, `shadow-inner-${v}`])),
+    'grid-cols-3',
+    'w-associationboxwidth',
+    'h-associationboxheight',
   ],
 })
