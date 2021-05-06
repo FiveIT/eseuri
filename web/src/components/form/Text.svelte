@@ -12,7 +12,7 @@
 </script>
 
 <Base>
-  <label for={name} class="place-self-center select-none"><slot /></label>
+  <label for={name} class="place-self-center select-none text-center"><slot /></label>
   <input
     {list}
     id={name}
