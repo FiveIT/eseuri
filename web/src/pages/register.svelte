@@ -95,7 +95,7 @@
         </Text>
         <Text name="school" placeholder="Scrie aici numele școlii..." required>Școala ta</Text>
         <Radio name="role" options={roles} displayModifier={translateRole}>Ocupația ta</Radio>
-        <Actions slot="actions" submitValue="Sunt gata" />
+        <Actions slot="actions">Sunt gata</Actions>
       </Form>
     </LayoutContext>
   </Layout>

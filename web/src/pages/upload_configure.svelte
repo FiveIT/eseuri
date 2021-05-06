@@ -127,7 +127,7 @@
           required>
           {currentWorkType === 'essay' ? 'Titlu' : 'Caracter'}
         </Select>
-        <Actions slot="actions" submitValue="Publică" on:navigate={removeFile} />
+        <Actions slot="actions" abortHref="/upload" on:navigate={removeFile}>Publică</Actions>
       </Form>
     {/if}
   </LayoutContext>
