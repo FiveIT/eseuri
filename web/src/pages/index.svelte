@@ -3,11 +3,7 @@
   import { store as orange } from '$/components/blob/Orange.svelte'
   import { store as red } from '$/components/blob/Red.svelte'
   import Layout from '$/components/Layout.svelte'
-  import LoginButton from '$/components/LoginButton.svelte'
-  import Logo from '$/components/Logo.svelte'
-  import Buton from '$/components/NavButton.svelte'
-  import Search from '$/components/SearchBar.svelte'
-  import UploadButton from '$/components/UploadButton.svelte'
+  import BigNav from './_/BigNav.svelte'
   import TypeSelector from '$/components/TypeSelector.svelte'
   import Spinner from '$/components/Spinner.svelte'
   import { store as window } from '$/components/Window.svelte'
@@ -58,22 +54,7 @@
 </script>
 
 <Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} transition={{ y: 1000 }}>
-  <Logo />
-  <div class="col-start-3 col-end-6 my-auto">
-    <Search />
-  </div>
-  <div class="col-start-6">
-    <LoginButton theme="white" />
-  </div>
-  <div class="col-start-4 my-auto">
-    <Buton disable theme="white">Plagiat</Buton>
-  </div>
-  <div class="col-start-5 my-auto">
-    <Buton href="./indexteacher" theme="white">Profesori</Buton>
-  </div>
-  <div class="col-start-6 row-start-3 place-self-center">
-    <UploadButton />
-  </div>
+  <BigNav />
   <TypeSelector bind:type rowStart={4} colStart={3} />
   {#if $content.data}
     <Works works={$content.data.work_summaries} />

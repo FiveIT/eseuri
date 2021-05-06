@@ -3,12 +3,8 @@
   import { store as orange } from '$/components/blob/Orange.svelte'
   import { store as red } from '$/components/blob/Red.svelte'
   import Layout from '$/components/Layout.svelte'
-  import LoginButton from '$/components/LoginButton.svelte'
-  import Logo from '$/components/Logo.svelte'
+  import BigNav from './_/BigNav.svelte'
   import Printer from '$/components/Printer.svelte'
-  import Buton from '$/components/NavButton.svelte'
-  import Search from '$/components/SearchBar.svelte'
-  import UploadButton from '$/components/UploadButton.svelte'
   import { store as window } from '$/components/Window.svelte'
   import type { BlobPropsInput, UserRevision, UnrevisedWork } from '$/lib/types'
   import { unrevisedWorks, UnrevTypeTranslation } from '$/content'
@@ -48,49 +44,17 @@
   }
   let unrevtype: UserRevision = 'yours'
   const unrevtypes: UserRevision[] = ['yours', 'anybody']
-  $: unrevised_works = unrevisedWorks.filter(unrevisedWorkswe =>
-    hasTeacher(unrevisedWorkswe)
-  )
-  $: unrevised_genworks = unrevisedWorks.filter(unrevisedWorkswe =>
-    noTeacher(unrevisedWorkswe)
-  )
+  $: unrevised_works = unrevisedWorks.filter(unrevisedWorkswe => hasTeacher(unrevisedWorkswe))
+  $: unrevised_genworks = unrevisedWorks.filter(unrevisedWorkswe => noTeacher(unrevisedWorkswe))
 
-  let lg = unrevisedWorks.filter(unrevisedWorkswe =>
-    hasTeacher(unrevisedWorkswe)
-  ).length
-  let lggen = unrevisedWorks.filter(unrevisedWorkswe =>
-    noTeacher(unrevisedWorkswe)
-  ).length
+  let lg = unrevisedWorks.filter(unrevisedWorkswe => hasTeacher(unrevisedWorkswe)).length
+  let lggen = unrevisedWorks.filter(unrevisedWorkswe => noTeacher(unrevisedWorkswe)).length
 </script>
 
-<Layout
-  {orangeBlobProps}
-  {redBlobProps}
-  {blueBlobProps}
-  transition={{ y: 1000 }}>
-  <div
-    class="row-start-1 row-span-1 col-start-1  col-span-1 my-auto select-none">
-    <Logo />
-  </div>
-  <div class=" row-start-1 row-span-1 col-start-3 col-end-6 text-sm my-auto">
-    <Search />
-  </div>
-  <div class="w-full h-full row-start-1 row-span-1 col-start-6 col-span-1">
-    <LoginButton theme="white" />
-  </div>
-  <div class="col-start-4 col-end-5 row-start-2 w-full h-full text-sm my-auto ">
-    <Buton enable={false} theme="white">Plagiat</Buton>
-  </div>
-  <div class="col-start-5 col-end-6 row-start-2 w-full h-full text-sm my-auto">
-    <Buton enable={false} theme="white">Profesori</Buton>
-  </div>
-  <div class="col-span-1 col-start-6 row-span-1 row-start-3 place-self-center">
-    <UploadButton />
-  </div>
+<Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} transition={{ y: 1000 }}>
+  <BigNav />
   {#each unrevtypes as t, i}
-    <div
-      class="col-start-{2 +
-        2 * i} col-span-2 row-start-4 flex flex-row m-auto my-auto">
+    <div class="col-start-{2 + 2 * i} col-span-2 row-start-4 flex flex-row m-auto my-auto">
       {#if t === 'yours'}<div
           class="font-sans text-xs rounded-full h-7 w-7 bg-red flex items-center justify-center text-white">
           {lg}
