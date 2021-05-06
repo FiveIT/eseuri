@@ -204,10 +204,10 @@ export type Relay<
 
 // eslint-disable-next-line no-redeclare
 export namespace Relay {
-  export type Node<Name extends string, Data = Typename, Vars = object> = Query<
+  export type Node<Name extends string | undefined, Data = Typename, Vars = object> = Query<
     'node',
     // eslint-disable-next-line no-unused-vars
-    { [key in Name]: Data },
+    [Name] extends [string] ? { [key in Name]: Data } : Data,
     Vars
   >
 }
@@ -217,9 +217,11 @@ interface ListSubjectsVars extends Relay.CursorVars {
   seed: `${number}`
 }
 
+type WorkIDer = { work_id: number }
+
 export type ListSubjects<Name extends `${WorkType}s`> = Relay<
   `list_${Name}`,
-  Relay.IDObject & { work_id: number },
+  Relay.IDObject & WorkIDer,
   ListSubjectsVars,
   true
 >
@@ -269,6 +271,21 @@ export const LIST_CHARACTERIZATIONS = gql<Data<ListCharacterizations>, Vars<List
           id
           work_id
         }
+      }
+    }
+  }
+`
+
+type WorkID = Relay.Node<undefined, WorkIDer, Relay.IDObject>
+
+export const WORK_ID = gql<Data<WorkID>, Vars<WorkID>>`
+  query workID($id: ID!) {
+    node(id: $id) {
+      ... on essays {
+        work_id
+      }
+      ... on characterizations {
+        work_id
       }
     }
   }

@@ -16,6 +16,7 @@ import {
   LIST_ESSAYS,
   LIST_CHARACTERIZATIONS,
   BOOKMARK,
+  WORK_ID,
   ListSubjects,
   Relay,
   REMOVE_BOOKMARK,
@@ -57,7 +58,7 @@ type WorksIterable = AsyncIterator<WorkData, WorkData> & {
   fetchCurrent(): Promise<WorkData>
 }
 
-export const works = async (url: string, type: WorkType, beginWith?: WorkID) => {
+export const works = async (url: string, type: WorkType, beginWith?: string) => {
   const res = await client
     .query(SUBJECT_ID_FROM_URL, { url })
     .toPromise()
@@ -79,6 +80,18 @@ export const works = async (url: string, type: WorkType, beginWith?: WorkID) => 
     ...cursor,
   })
 
+  let beginID: WorkID | undefined
+  if (beginWith) {
+    beginID = await firstValueFrom(
+      fromQuery(relay, WORK_ID, { id: beginWith }).pipe(
+        map(v => ({
+          id: beginWith,
+          workID: v.node.work_id,
+        }))
+      )
+    )
+  }
+
   type Data = NonNullable<ListSubjects<'essays'>['data']>['list_essays_connection']
 
   return {
@@ -89,6 +102,9 @@ export const works = async (url: string, type: WorkType, beginWith?: WorkID) => 
       let seed = graphQLSeed()
 
       const ids: WorkID[] = []
+      if (beginID) {
+        ids.push(beginID)
+      }
 
       let current = -1
       let page = defaultPageInfo
