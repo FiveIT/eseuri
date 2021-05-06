@@ -3,8 +3,10 @@
   import BookmarkOutline from 'svelte-material-icons/BookmarkOutline.svelte'
 
   import { query, operationStore } from '@urql/svelte'
+  import { fade } from 'svelte/transition'
 
   import { px, requestError } from '$/lib/util'
+  import { TRANSITION_EASING as easing, TRANSITION_DURATION as duration } from '$/lib/globals'
   import { IS_BOOKMARKED } from '$/graphql/queries'
 
   import { bookmark, removeBookmark, getWork, notify } from '.'
@@ -52,7 +54,8 @@
 <button
   class="align-middle"
   disabled={!allowBookmarking}
-  on:click={() => allowBookmarking && (isBookmarked ? removeBookmarkHandler : bookmarkHandler)()}>
+  on:click={() => allowBookmarking && (isBookmarked ? removeBookmarkHandler : bookmarkHandler)()}
+  transition:fade={{ easing, duration }}>
   {#if isBookmarked}
     <Bookmark {size} />
   {:else}
