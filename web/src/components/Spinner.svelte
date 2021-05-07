@@ -38,6 +38,7 @@
   export let theme: Theme | undefined = undefined
   export let message: string | undefined = undefined
   export let longDuration: LongDurationOptions = longDurationDefaults
+  export let size = '4em'
 
   longDuration = {
     ...longDurationDefaults,
@@ -72,7 +73,7 @@
       {message}
     </p>
   {/if}
-  <div class="relative w-4em h-4em">
+  <div class="relative w-{size} h-{size}">
     <div class="animate-spin-a absolute">
       <Loading color="var(--{spinnerColor.accent[t]})" size="100%" />
     </div>
