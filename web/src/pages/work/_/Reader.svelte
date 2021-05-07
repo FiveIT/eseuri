@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
   import { setContext, getContext } from 'svelte'
   import { writable } from 'svelte/store'
-  import type { Readable, Writable } from 'svelte/store'
+  import type { Writable } from 'svelte/store'
 
   import type { Work, WorkData } from '.'
   import { defaultWorkData } from '.'
