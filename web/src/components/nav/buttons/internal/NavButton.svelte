@@ -37,7 +37,7 @@
 
 <style>
   div:hover > p,
-  div:focus > p {
+  div:focus-visible > p {
     display: initial;
   }
 </style>
