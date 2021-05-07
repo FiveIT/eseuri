@@ -3,11 +3,6 @@ export { default as Back } from './navigation/Back.svelte'
 export { default as Bookmark } from './Bookmark.svelte'
 // @ts-expect-error
 export { default as Reader, getWork } from './Reader.svelte'
-export { default as Spinner } from '$/components/Spinner.svelte'
-
-// @ts-expect-error
-import { notify } from '$/components/Notifications.svelte'
-export { notify }
 
 import client, { relay } from '$/graphql/client'
 import {
@@ -21,8 +16,8 @@ import {
   Relay,
   REMOVE_BOOKMARK,
 } from '$/graphql/queries'
-import type { WorkType } from '$/lib/types'
-import { graphQLSeed, fromQuery, fromMutation, handleGraphQLResponse } from '$/lib/util'
+import type { WorkType } from '$/lib'
+import { graphQLSeed, fromQuery, fromMutation, handleGraphQLResponse } from '$/lib'
 
 import { from, firstValueFrom, lastValueFrom } from 'rxjs'
 import { map, mergeMap, tap } from 'rxjs/operators'

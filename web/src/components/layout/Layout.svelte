@@ -1,9 +1,8 @@
 <script context="module" lang="ts">
-  import { store as blue } from '$/components/blob/Blue.svelte'
-  import { store as orange } from '$/components/blob/Orange.svelte'
-  import { store as red } from '$/components/blob/Red.svelte'
-  import { TRANSITION_DURATION as duration, TRANSITION_EASING as easing } from '$/lib/globals'
-  import type { BlobPropsInput, Theme } from '$/lib/types'
+  import { blue, orange, red } from '$/components'
+  import { TRANSITION_DURATION as duration, TRANSITION_EASING as easing } from '$/lib'
+  import type { BlobPropsInput, Theme } from '$/lib'
+
   import { onMount, setContext, getContext } from 'svelte'
   import type { Readable, Writable } from 'svelte/store'
   import { writable } from 'svelte/store'

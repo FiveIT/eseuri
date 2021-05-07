@@ -1,8 +1,9 @@
-import { authToken } from '@tmaxmax/svelte-auth0'
 import { get } from 'svelte/store'
-import type { UserStatus, Notification } from '$/lib/types'
-import { requestError } from '$/lib/util'
+import { authToken } from '@tmaxmax/svelte-auth0'
 import type { CombinedError } from '@urql/svelte'
+
+import type { UserStatus, Notification } from '.'
+import { requestError } from '.'
 
 import { firstValueFrom, of } from 'rxjs'
 import { switchMap } from 'rxjs/operators'

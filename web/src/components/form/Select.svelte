@@ -1,6 +1,6 @@
 <script lang="ts">
   import Base from './internal/Base.svelte'
-  import { placeholderText, text } from '$/lib/theme'
+  import { placeholderText, text } from '$/lib'
 
   export let options: readonly any[]
   export let mapper = (option: any) => option

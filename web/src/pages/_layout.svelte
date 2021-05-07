@@ -3,7 +3,7 @@
   import { writable } from 'svelte/store'
   import type { Writable } from 'svelte/store'
 
-  import type { Theme } from '$/lib/types'
+  import type { Theme } from '$/lib'
 
   const themeContextKey = {}
 
@@ -17,10 +17,7 @@
 </script>
 
 <script lang="ts">
-  import Orange from '$/components/blob/Orange.svelte'
-  import Red from '$/components/blob/Red.svelte'
-  import Blue from '$/components/blob/Blue.svelte'
-  import Notifications from '$/components/Notifications.svelte'
+  import { Orange, Red, Blue, Notifications } from '$/components'
 
   import { contextKey } from '$/pages/upload.svelte'
   import type { Context } from '$/pages/upload.svelte'

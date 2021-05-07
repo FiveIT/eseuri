@@ -1,5 +1,5 @@
 <script>
-  import LayoutContext from '../../LayoutContext.svelte'
+  import { LayoutContext } from '$/components'
 </script>
 
 <LayoutContext let:theme>

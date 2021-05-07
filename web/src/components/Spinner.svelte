@@ -29,7 +29,7 @@
 <script lang="ts">
   import { onDestroy } from 'svelte'
   import { slide } from 'svelte/transition'
-  import { getLayout } from './Layout.svelte'
+  import { getLayout } from '.'
 
   import Loading from 'svelte-material-icons/Loading.svelte'
 

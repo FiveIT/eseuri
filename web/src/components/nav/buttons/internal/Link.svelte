@@ -3,7 +3,8 @@
   import { goto, isActive, url } from '@roxi/routify'
   import { createEventDispatcher, tick } from 'svelte'
   import type { Writable } from 'svelte/store'
-  import { getLayout } from './Layout.svelte'
+
+  import { getLayout } from '$/components'
 
   export function go(
     href: string,

@@ -1,6 +1,6 @@
 <script>
-  import NavButton from '../NavButton.svelte'
-  import { getLayout } from '../Layout.svelte'
+  import NavButton from './internal/NavButton.svelte'
+  import { getLayout } from '$/components'
 
   const { theme: themeStore } = getLayout()
 

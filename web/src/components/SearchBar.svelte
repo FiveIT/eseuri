@@ -3,8 +3,7 @@
   import { px } from '$/lib/util'
   import { goto, isActive } from '@roxi/routify'
   import Search from 'svelte-material-icons/Magnify.svelte'
-  import { go } from './Link.svelte'
-  import { getLayout } from './Layout.svelte'
+  import { go, getLayout } from '.'
 
   const { alive } = getLayout()
 

@@ -1,11 +1,13 @@
 <script lang="ts" context="module">
-  import { notify } from '$/components/Notifications.svelte'
-  import type { Notification } from '$/components/Notifications.svelte'
-  import { RequestError, internalErrorNotification, getHeaders } from '$/lib/user'
-  import type { Nullable } from '$/lib/types'
-  import { isNonNullable } from '$/lib/types'
-  import { requestError } from '$/lib/util'
-  import type { MessagesRecord } from '$/lib/user'
+  import { notify } from '$/components'
+  import {
+    isNonNullable,
+    requestError,
+    RequestError,
+    internalErrorNotification,
+    getHeaders,
+  } from '$/lib'
+  import type { Notification, Nullable, MessagesRecord } from '$/lib'
 
   import { from, of } from 'rxjs'
   import { fromFetch } from 'rxjs/fetch'

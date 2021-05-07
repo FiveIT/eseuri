@@ -6,32 +6,34 @@
 </script>
 
 <script lang="ts">
-  import SlimNav from '$/components/SlimNav.svelte'
-  import Layout from '$/components/Layout.svelte'
-  import LayoutContext from '$/components/LayoutContext.svelte'
-  import Form from '$/components/form/Form.svelte'
-  import type { SubmitArgs } from '$/components/form/Form.svelte'
-  import Text from '$/components/form/Text.svelte'
-  import Radio from '$/components/form/Radio.svelte'
-  import Actions from '$/components/form/Actions.svelte'
-  import Allow from '$/components/Allow.svelte'
+  import {
+    NavSlim,
+    Layout,
+    LayoutContext,
+    Form,
+    Text,
+    Radio,
+    Actions,
+    Allow,
+    orange,
+    red,
+    window,
+    go,
+  } from '$/components'
+  import type { SubmitArgs } from '$/components'
 
-  import { goto, metatags } from '@roxi/routify'
-  import { of } from 'rxjs'
-  import { map, switchMap, tap } from 'rxjs/operators'
-
-  import { store as orange } from '$/components/blob/Orange.svelte'
-  import { store as red } from '$/components/blob/Red.svelte'
-  import { store as window } from '$/components/Window.svelte'
-
-  import type { BlobPropsInput, Role } from '$/lib/types'
-  import { roleTranslation } from '$/content'
-  import { fromMutation } from '$/lib/util'
-  import type { Writable } from 'svelte/store'
-  import { go } from '$/components/Link.svelte'
+  import type { BlobPropsInput, Role } from '$/lib'
+  import { roleTranslation } from '$/lib/content'
+  import { fromMutation } from '$/lib'
 
   import { REGISTER_USER, TEACHER_REQUEST } from '$/graphql/queries'
   import client from '$/graphql/client'
+
+  import { goto, metatags } from '@roxi/routify'
+  import type { Writable } from 'svelte/store'
+
+  import { of } from 'rxjs'
+  import { map, switchMap, tap } from 'rxjs/operators'
 
   metatags.title = 'Înregistrare - Eseuri'
 
@@ -82,7 +84,7 @@
 <Allow unregistered redirect="/" dontNotify>
   <Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} blurBackground>
     <LayoutContext let:alive>
-      <SlimNav logoOnly />
+      <NavSlim logoOnly />
       <Form name="register" onSubmit={args => onSubmit(alive, args)}>
         <span slot="legend">Completează-ți profilul</span>
         <Text name="last_name" placeholder="Scrie-ți aici numele de familie..." required>

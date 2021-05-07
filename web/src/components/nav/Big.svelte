@@ -1,12 +1,11 @@
 <script>
-  import Logo from '$/components/Logo.svelte'
-  import { Forgery, Teachers, Upload, Login } from '$/components/buttons'
-  import Search from '$/components/SearchBar.svelte'
+  import { Forgery, Teachers, Upload, Login, Logo } from './buttons'
+  import { SearchBar } from '$/components'
 </script>
 
 <Logo />
 <div class="col-start-3 col-end-6 my-auto">
-  <Search />
+  <SearchBar />
 </div>
 <div class="col-start-6 h-full">
   <Login theme="white" />

@@ -1,4 +1,4 @@
-export type { BlobPropsInput } from '$/components/blob/internal/store'
+export type { BlobPropsInput } from '$/components'
 
 export type Role = 'student' | 'teacher'
 

@@ -1,8 +1,8 @@
 <script lang="ts">
   import { Auth0LoginButton, Auth0LogoutButton, isAuthenticated } from '@tmaxmax/svelte-auth0'
-  import type { Theme } from '$/lib/types'
-  import { text, filterShadow } from '$/lib/theme'
-  import { getLayout } from '../Layout.svelte'
+  import type { Theme } from '$/lib'
+  import { text, filterShadow } from '$/lib'
+  import { getLayout } from '$/components'
 
   const { theme: themeStore } = getLayout()
 

@@ -1,12 +1,12 @@
 <script context="module" lang="ts">
-  import type { Theme, NotificationStatus as Status, Notification } from '$/lib/types'
+  import type { Theme, NotificationStatus as Status } from '$/lib'
   import Error from 'svelte-material-icons/AlertCircle.svelte'
   import ErrorBlue from 'svelte-material-icons/AlertCircleOutline.svelte'
   import Check from 'svelte-material-icons/CheckCircle.svelte'
   import CheckBlue from 'svelte-material-icons/CheckCircleOutline.svelte'
   import Information from 'svelte-material-icons/Information.svelte'
   import InformationBlue from 'svelte-material-icons/InformationOutline.svelte'
-  import { TRANSITION_EASING as easing, TRANSITION_DURATION as duration } from '$/lib/globals'
+  import { TRANSITION_EASING as easing, TRANSITION_DURATION as duration } from '$/lib'
   import { slide, fade } from 'svelte/transition'
 
   interface Assets {
@@ -57,8 +57,6 @@
     default: 'filter-shadow-large',
     white: 'filter-shadow',
   }
-
-  export type { Notification }
 </script>
 
 <script lang="ts">
@@ -69,6 +67,7 @@
 
   const themeStore = getTheme()
 
+  // properties are the same as in $/lib/types.Notification
   export let status: Status
   export let message: string
   export let explanation: string | undefined = undefined

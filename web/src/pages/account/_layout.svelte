@@ -5,7 +5,7 @@
   import Layout from '$/components/Layout.svelte'
   import { store as window } from '$/components/Window.svelte'
   import type { BlobPropsInput } from '$/lib/types'
-  import SlimNav from '$/components/SlimNav.svelte'
+  import SlimNav from '$/components/nav/SlimNav.svelte'
   import NavLink from './_/NavLink.svelte'
 
   let blueBlobProps: BlobPropsInput

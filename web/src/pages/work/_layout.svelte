@@ -1,11 +1,6 @@
 <script lang="ts">
-  import { store as blue } from '$/components/blob/Blue.svelte'
-  import { store as orange } from '$/components/blob/Orange.svelte'
-  import { store as red } from '$/components/blob/Red.svelte'
-  import Layout from '$/components/Layout.svelte'
-  import { store as window } from '$/components/Window.svelte'
-  import type { BlobPropsInput } from '$/lib/types'
-  import SlimNav from '$/components/SlimNav.svelte'
+  import { blue, orange, red, Layout, window, NavSlim } from '$/components'
+  import type { BlobPropsInput } from '$/lib'
 
   let orangeBlobProps: BlobPropsInput
   $: orangeBlobProps = {
@@ -31,6 +26,6 @@
 </script>
 
 <Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} transition={{ y: 1000 }}>
-  <SlimNav />
+  <NavSlim />
   <slot />
 </Layout>

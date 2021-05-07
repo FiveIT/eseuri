@@ -1,18 +1,11 @@
 <script lang="ts">
-  import { store as blue } from '$/components/blob/Blue.svelte'
-  import { store as orange } from '$/components/blob/Orange.svelte'
-  import { store as red } from '$/components/blob/Red.svelte'
-  import Layout from '$/components/Layout.svelte'
-  import BigNav from './_/BigNav.svelte'
+  import { blue, orange, red, Layout, NavBig, Spinner, window, notify } from '$/components'
   import TypeSelector from '$/components/TypeSelector.svelte'
-  import Spinner from '$/components/Spinner.svelte'
-  import { store as window } from '$/components/Window.svelte'
   import Works from '$/components/Works.svelte'
   import type { BlobPropsInput, WorkType } from '$/lib/types'
   import { metatags } from '@roxi/routify'
   import { WORK_SUMMARIES } from '$/graphql/queries'
   import { operationStore, query } from '@urql/svelte'
-  import { notify } from '$/components/Notifications.svelte'
 
   metatags.title = 'Acasă - Eseuri'
 
@@ -54,7 +47,7 @@
 </script>
 
 <Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} transition={{ y: 1000 }}>
-  <BigNav />
+  <NavBig />
   <TypeSelector bind:type rowStart={4} colStart={3} />
   {#if $content.data}
     <Works works={$content.data.work_summaries} />

@@ -5,11 +5,16 @@
   import { query, operationStore } from '@urql/svelte'
   import { fade } from 'svelte/transition'
 
-  import { px, requestError } from '$/lib/util'
-  import { TRANSITION_EASING as easing, TRANSITION_DURATION as duration } from '$/lib/globals'
+  import {
+    px,
+    requestError,
+    TRANSITION_EASING as easing,
+    TRANSITION_DURATION as duration,
+  } from '$/lib'
+  import { notify } from '$/components'
   import { IS_BOOKMARKED } from '$/graphql/queries'
 
-  import { bookmark, removeBookmark, getWork, notify } from '.'
+  import { bookmark, removeBookmark, getWork } from '.'
 
   const work = getWork()
 

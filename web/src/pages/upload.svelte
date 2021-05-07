@@ -9,19 +9,23 @@
 </script>
 
 <script lang="ts">
-  import { store as orange } from '$/components/blob/Orange.svelte'
-  import { store as red } from '$/components/blob/Red.svelte'
-  import Layout from '$/components/Layout.svelte'
-  import LayoutContext from '$/components/LayoutContext.svelte'
-  import { go } from '$/components/Link.svelte'
-  import Logo from '$/components/Logo.svelte'
-  import UploadVariantPlaceholder from '$/components/UploadVariantPlaceholder.svelte'
-  import { store as window } from '$/components/Window.svelte'
+  import {
+    orange,
+    red,
+    Layout,
+    LayoutContext,
+    go,
+    Logo,
+    window,
+    UploadVariantPlaceholder,
+    Allow,
+  } from '$/components'
   import type { BlobPropsInput } from '$/lib/types'
   import { px } from '$/lib/util'
+
   import { goto, metatags, params } from '@roxi/routify'
   import { getContext } from 'svelte'
-  import Allow from '$/components/Allow.svelte'
+
   import Docs from 'svelte-material-icons/FileDocumentBoxMultiple.svelte'
   import GoogleDocs from 'svelte-material-icons/FileDocumentOutline.svelte'
   import Doodle from 'svelte-material-icons/Gesture.svelte'

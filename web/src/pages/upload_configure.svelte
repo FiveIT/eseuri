@@ -1,20 +1,22 @@
 <script lang="ts">
-  import Layout from '$/components/Layout.svelte'
-  import LayoutContext from '$/components/LayoutContext.svelte'
-  import SlimNav from '$/components/SlimNav.svelte'
-
-  import Form, { defaultSubmitFn } from '$/components/form/Form.svelte'
-  import type { SubmitArgs } from '$/components/form/Form.svelte'
-  import Radio from '$/components/form/Radio.svelte'
-  import Select from '$/components/form/Select.svelte'
-  import Actions from '$/components/form/Actions.svelte'
+  import {
+    Layout,
+    LayoutContext,
+    NavSlim,
+    Form,
+    Radio,
+    Select,
+    Actions,
+    defaultSubmitFn,
+    orange,
+    red,
+    window,
+    notify,
+    go,
+  } from '$/components'
+  import type { SubmitArgs } from '$/components'
 
   import { goto, metatags, params, redirect } from '@roxi/routify'
-
-  import { store as orange } from '$/components/blob/Orange.svelte'
-  import { store as red } from '$/components/blob/Red.svelte'
-  import { store as window } from '$/components/Window.svelte'
-  import { notify } from '$/components/Notifications.svelte'
 
   import { getContext } from 'svelte'
   import { from } from 'rxjs'
@@ -22,10 +24,9 @@
 
   import type { Context } from './upload.svelte'
   import { contextKey } from './upload.svelte'
-  import { go } from '$/components/Link.svelte'
 
-  import type { BlobPropsInput, WorkType } from '$/lib/types'
-  import { workTypeTranslation } from '$/content'
+  import type { BlobPropsInput, WorkType } from '$/lib'
+  import { workTypeTranslation } from '$/lib'
   import type { Writable } from 'svelte/store'
 
   import { operationStore, query } from '@urql/svelte'
@@ -103,7 +104,7 @@
     {#if !ctx || ctx.file === null}
       {go('/upload', alive, $redirect)}
     {:else}
-      <SlimNav on:navigate={removeFile} />
+      <NavSlim on:navigate={removeFile} />
       <Form
         name="work"
         {action}

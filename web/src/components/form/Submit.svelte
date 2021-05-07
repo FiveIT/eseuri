@@ -1,8 +1,8 @@
 <script lang="ts" context="module">
   import type { SubmitStatus } from './Form.svelte'
-  import Spinner from '../Spinner.svelte'
 
-  import { px } from '$/lib/util'
+  import { Spinner } from '$/components'
+  import { px } from '$/lib'
 
   import IconSuccess from 'svelte-material-icons/Check.svelte'
   import IconError from 'svelte-material-icons/Exclamation.svelte'

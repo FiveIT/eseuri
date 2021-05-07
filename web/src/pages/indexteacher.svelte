@@ -1,16 +1,10 @@
 <script lang="ts" type="text/javascript">
-  import { store as blue } from '$/components/blob/Blue.svelte'
-  import { store as orange } from '$/components/blob/Orange.svelte'
-  import { store as red } from '$/components/blob/Red.svelte'
-  import Layout from '$/components/Layout.svelte'
-  import BigNav from './_/BigNav.svelte'
+  import { blue, orange, red, Layout, NavBig, window, LayoutContext } from '$/components'
   import Printer from '$/components/Printer.svelte'
-  import { store as window } from '$/components/Window.svelte'
-  import type { BlobPropsInput, UserRevision, UnrevisedWork } from '$/lib/types'
+  import type { BlobPropsInput, UserRevision } from '$/lib'
   import { unrevisedWorks, UnrevTypeTranslation } from '$/content'
   import { metatags } from '@roxi/routify'
-  import { placeholderText, filterShadow } from '$/lib/theme'
-  import LayoutContext from '$/components/LayoutContext.svelte'
+  import { placeholderText, filterShadow } from '$/lib'
 
   metatags.title = 'Eseuri'
 
@@ -35,48 +29,39 @@
     y: -blue.height * 0.635 + $window.height * 0.17,
     scale: 1.5,
   }
-  function hasTeacher(work: UnrevisedWork): boolean {
-    return work.teacher !== null
-  }
 
-  function noTeacher(work: UnrevisedWork): boolean {
-    return work.teacher == null
-  }
-  let unrevtype: UserRevision = 'yours'
-  const unrevtypes: UserRevision[] = ['yours', 'anybody']
-  $: unrevised_works = unrevisedWorks.filter(unrevisedWorkswe => hasTeacher(unrevisedWorkswe))
-  $: unrevised_genworks = unrevisedWorks.filter(unrevisedWorkswe => noTeacher(unrevisedWorkswe))
-
-  let lg = unrevisedWorks.filter(unrevisedWorkswe => hasTeacher(unrevisedWorkswe)).length
-  let lggen = unrevisedWorks.filter(unrevisedWorkswe => noTeacher(unrevisedWorkswe)).length
+  let type: UserRevision = 'yours'
+  const types: UserRevision[] = ['yours', 'anybody']
+  $: ownWorks = unrevisedWorks.filter(w => w.teacher !== null)
+  $: otherWorks = unrevisedWorks.filter(w => w.teacher === null)
 </script>
 
 <Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} transition={{ y: 1000 }}>
-  <BigNav />
-  {#each unrevtypes as t, i}
+  <NavBig />
+  {#each types as t, i}
     <div class="col-start-{2 + 2 * i} col-span-2 row-start-4 flex flex-row m-auto my-auto">
       {#if t === 'yours'}<div
           class="font-sans text-xs rounded-full h-7 w-7 bg-red flex items-center justify-center text-white">
-          {lg}
+          {ownWorks.length}
         </div>{:else}
         <div
           class="font-sans text-xs rounded-full h-7 w-7 bg-gray flex items-center justify-center text-white">
-          {lggen}
+          {otherWorks.length}
         </div>{/if}
 
       <button
         class="w-60 h-full font-sans text-xs antialiased"
-        class:underline={unrevtype === t}
-        on:click={() => (unrevtype = t)}>
+        class:underline={type === t}
+        on:click={() => (type = t)}>
         {UnrevTypeTranslation.ro[t].inarticulate.plural}</button>
     </div>
   {/each}
-  {#if unrevtype == 'yours'}
+  {#if type == 'yours'}
     <LayoutContext let:theme>
       <div
         class="grid w-full h-full grid-cols-essays auto-rows-essays gap-x-lg gap-y-sm col-start-1 col-end-7">
-        {#if unrevised_works.length}
-          {#each unrevised_works as work}
+        {#if ownWorks.length}
+          {#each ownWorks as work}
             <Printer {work} />
           {/each}
         {:else}
@@ -93,8 +78,8 @@
     <LayoutContext let:theme>
       <div
         class="grid w-full h-full grid-cols-essays auto-rows-essays gap-x-lg gap-y-sm col-start-1 col-end-7">
-        {#if unrevised_works.length}
-          {#each unrevised_genworks as work}
+        {#if ownWorks.length}
+          {#each otherWorks as work}
             <Printer {work} />
           {/each}
         {:else}

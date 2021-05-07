@@ -1,9 +1,10 @@
 <script lang="ts">
   import Link from './Link.svelte'
-  import { getLayout } from './Layout.svelte'
+
+  import { getLayout } from '$/components'
+  import { text, filterShadow, TRANSITION_EASING as easing } from '$/lib'
+
   import { isActive } from '@roxi/routify'
-  import { text, filterShadow } from '$/lib/theme'
-  import { TRANSITION_EASING as easing } from '$/lib/globals'
   import { fade } from 'svelte/transition'
 
   const { theme: themeStore } = getLayout()
@@ -21,7 +22,8 @@
     class="relative w-full h-full flex justify-center items-center font-sans no-underline text-sm antialiased select-none {text[
       theme
     ]} {filterShadow[theme]}"
-    class:cursor-default={disable} {tabindex}>
+    class:cursor-default={disable}
+    {tabindex}>
     <slot />
     {#if title && showTooltip && !(disable && hideIfDisabled)}
       <p

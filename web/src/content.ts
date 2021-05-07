@@ -1,5 +1,5 @@
 import type {
-  Work,
+  WorkSummary,
   WorkType,
   Role,
   Bookmark,
@@ -7,7 +7,7 @@ import type {
   UnrevisedWork,
   UserRevision,
   Associate,
-} from './types'
+} from '$/lib'
 
 interface TranslationArticulation {
   singular: string
@@ -19,10 +19,7 @@ interface Translation {
   inarticulate: TranslationArticulation
 }
 
-type TranslationRecord<T extends string> = Record<
-  string,
-  Record<T, Translation>
->
+type TranslationRecord<T extends string> = Record<string, Record<T, Translation>>
 
 export const workTypeTranslation: TranslationRecord<WorkType> = {
   ro: {
@@ -654,7 +651,7 @@ export default (JSON.parse(`[
     "type": "essay",
     "work_count": 0
   }
-]`) as Work[]).map(work => ({
+]`) as WorkSummary[]).map(work => ({
   ...work,
   work_count: (Math.random() * 10000) | 0,
 }))

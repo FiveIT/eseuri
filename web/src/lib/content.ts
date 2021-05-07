@@ -1,4 +1,4 @@
-import type { WorkType, Role } from './types'
+import type { WorkType, Role } from '.'
 
 interface TranslationArticulation {
   singular: string

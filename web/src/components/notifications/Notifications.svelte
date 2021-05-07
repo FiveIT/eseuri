@@ -1,6 +1,6 @@
 <script context="module" lang="ts">
   import { notifications } from '@tmaxmax/renderless-svelte/src/Notifications.svelte'
-  import type { Payload } from './Notification.svelte'
+  import type { Notification as Payload } from '$/lib'
 
   export function notify(...payload: Payload[]) {
     payload.forEach(p => notifications.push(p))
@@ -11,8 +11,6 @@
       notifications.pop()
     }
   }
-
-  export type { Payload as Notification }
 </script>
 
 <script>

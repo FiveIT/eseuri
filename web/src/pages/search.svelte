@@ -1,21 +1,26 @@
 <script lang="ts">
-  import { store as blue } from '$/components/blob/Blue.svelte'
-  import { store as orange } from '$/components/blob/Orange.svelte'
-  import { store as red } from '$/components/blob/Red.svelte'
-  import Layout from '$/components/Layout.svelte'
-  import Search from '$/components/SearchBar.svelte'
-  import SlimNav from '$/components/SlimNav.svelte'
-  import { store as window } from '$/components/Window.svelte'
+  import {
+    blue,
+    orange,
+    red,
+    Layout,
+    SearchBar,
+    NavSlim,
+    window,
+    Spinner,
+    notify,
+  } from '$/components'
+
   import Works from '$/components/Works.svelte'
-  import Spinner from '$/components/Spinner.svelte'
-  import type { BlobPropsInput, WorkType } from '$/lib/types'
-  import { isWorkType } from '$/lib/types'
+  import TypeSelector from '$/components/TypeSelector.svelte'
+
+  import type { BlobPropsInput, WorkType } from '$/lib'
+  import { isWorkType } from '$/lib'
+  import { SEARCH_WORK_SUMMARIES } from '$/graphql/queries'
+
   import { afterPageLoad, goto, params, metatags } from '@roxi/routify'
   import { operationStore, query } from '@urql/svelte'
-  import { SEARCH_WORK_SUMMARIES } from '$/graphql/queries'
-  import TypeSelector from '$/components/TypeSelector.svelte'
   import debounce from 'lodash.debounce'
-  import { notify } from '$/components/Notifications.svelte'
 
   let q: string = $params.query?.trim() || ''
   let type: WorkType = isWorkType($params.type) ? $params.type : 'essay'
@@ -94,9 +99,9 @@
   theme="white"
   afterMount={() => document.body.classList.add('bg-blue')}
   beforeDestroy={() => document.body.classList.remove('bg-blue')}>
-  <SlimNav />
+  <NavSlim />
   <div class="col-start-1 row-span-1 row-start-3 col-end-4 my-auto">
-    <Search bind:query={q} bind:type bind:focusInput />
+    <SearchBar bind:query={q} bind:type bind:focusInput />
   </div>
   <TypeSelector bind:type rowStart={3} colStart={5} />
   {#if $content.data}

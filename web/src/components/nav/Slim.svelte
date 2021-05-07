@@ -1,7 +1,6 @@
 <script>
   import Logo from './Logo.svelte'
-  import { Forgery, Teachers, Login, Upload } from './buttons'
-  import NavButton from './NavButton.svelte'
+  import { Forgery, Teachers, Login, Upload, Search } from './buttons'
 
   export let logoOnly = false
 </script>
@@ -16,8 +15,7 @@
       <Logo on:navigate />
       <div class="ml-auto grid grid-flow-col gap-x-md auto-cols-layout">
         <span />
-        <NavButton href="/search" hideIfDisabled title="Caută o lucrare" on:navigate
-          >Caută</NavButton>
+        <Search on:navigate />
         <Forgery on:navigate />
         <Teachers on:navigate />
         <Login />

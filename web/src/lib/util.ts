@@ -3,10 +3,9 @@ import type { Client, OperationResult, TypedDocumentNode, OperationContext } fro
 import { CombinedError } from '@urql/svelte'
 import { from } from 'rxjs'
 import { map } from 'rxjs/operators'
-import { rem } from './globals'
-import { RequestError, internalErrorNotification } from './user'
-import type { FullNamer } from './types'
-import type { MessagesRecord } from './user'
+
+import { rem, RequestError, internalErrorNotification } from '.'
+import type { FullNamer, MessagesRecord } from '.'
 
 export const px = (v: number) => `${rem * v}`
 

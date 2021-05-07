@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { text } from '$/lib/theme'
-  import LayoutContext from './LayoutContext.svelte'
-  import Link from './Link.svelte'
+  import { text } from '$/lib'
+  import { LayoutContext } from '$/components'
+  import Link from './internal/Link.svelte'
 
   export let big = false
 </script>
