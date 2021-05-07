@@ -24,6 +24,8 @@
   interface Context {
     submitStatus: Readable<SubmitStatus>
     formenctype: string
+    rows: number
+    cols: number
   }
 
   export function getForm(): Context {
@@ -124,10 +126,16 @@
   export let message = 'Formularul a fost trimis cu succes!'
   export let explanation: string | undefined = undefined
   export let onSubmit: SubmitFn = defaultSubmitFn
+  export let rows = 4
+  export let cols = 2
+
+  let form: HTMLFormElement
+
+  export const focus = () => form.querySelector('input')?.focus()
 
   const submitStatus = createStatusStore()
 
-  setForm({ submitStatus, formenctype })
+  setForm({ submitStatus, formenctype, rows, cols })
 
   const submitFn = submit(onSubmit, { action, method: 'POST', message, explanation }, submitStatus)
 </script>
@@ -138,12 +146,14 @@
   {name}
   id={name}
   {formenctype}
-  class="col-span-6 row-span-6 grid grid-rows-6 grid-cols-6 gap-y-sm mx-xs"
+  bind:this={form}
+  class="col-span-{3 * cols} row-span-{rows + 2} grid grid-rows-{rows + 2} grid-cols-{3 *
+    cols} gap-y-sm"
   on:submit|preventDefault={submitFn}>
-  <fieldset class="col-span-6 row-span-4">
+  <fieldset class="col-span-{3 * cols} row-span-{rows}">
     <div
-      class="grid grid-cols-2 grid-rows-4 gap-x-md gap-y-sm w-full h-full grid-flow-col font-sans antialiased">
-      <legend class="col-span-2 text-md self-center">
+      class="grid grid-cols-{cols} grid-rows-{rows} gap-x-md gap-y-sm w-full h-full grid-flow-col font-sans antialiased">
+      <legend class="col-span-{cols} text-md self-center">
         <slot name="legend" />
       </legend>
       <slot />

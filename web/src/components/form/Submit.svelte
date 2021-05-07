@@ -45,7 +45,7 @@
   type="submit"
   {formenctype}
   {value}
-  class="col-span-1 h-full rounded text-white text-sm bg-blue cursor-pointer flex justify-center items-center">
+  class="col-span-1 h-full rounded text-white text-sm bg-blue cursor-pointer flex justify-center items-center flex-1 max-w-col">
   {#if $submitStatus == 'awaitingInput'}
     Sunt gata
   {:else}
