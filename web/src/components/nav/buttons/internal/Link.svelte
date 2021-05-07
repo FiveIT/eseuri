@@ -45,5 +45,5 @@
     <slot tabindex={undefined} {disable} {href} />
   </a>
 {:else if !hideIfDisabled}
-  <slot tabindex="0" {disable} {href} />
+  <slot tabindex={0} {disable} {href} />
 {/if}
