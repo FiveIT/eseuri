@@ -23,12 +23,17 @@
 
   const createWorkStore = (): Writable<WorkData> => writable(defaultWorkData)
 
-  export function getWork(): Readable<WorkData> {
+  interface Context {
+    work: Writable<WorkData>
+    currentlyBookmarking: Writable<boolean>
+  }
+
+  export function getReader(): Context {
     return getContext(contextKey)
   }
 
-  function setWork(store: Readable<WorkData>) {
-    setContext(contextKey, store)
+  function setReader(ctx: Context) {
+    setContext(contextKey, ctx)
   }
 
   const getParagraphs = (text: string) =>
@@ -56,7 +61,8 @@
   let data: Promise<WorkData>
 
   const workStore = createWorkStore()
-  setWork(workStore)
+  const currentlyBookmarking = writable(false)
+  setReader({ work: workStore, currentlyBookmarking })
 
   $: {
     disableNavigation = true
@@ -80,7 +86,7 @@
   let direction = 1
 
   const next = () => {
-    if (disableNavigation) {
+    if (disableNavigation || $currentlyBookmarking) {
       return
     }
 
@@ -90,7 +96,7 @@
   }
 
   const prev = async () => {
-    if (disableNavigation || disablePrevious) {
+    if (disableNavigation || disablePrevious || $currentlyBookmarking) {
       return
     }
 

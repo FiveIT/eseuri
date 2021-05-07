@@ -1,8 +1,8 @@
 export { default as Next } from './navigation/Next.svelte'
 export { default as Back } from './navigation/Back.svelte'
-export { default as Bookmark } from './Bookmark.svelte'
+export { default as Bookmark } from './bookmark'
 // @ts-expect-error
-export { default as Reader, getWork } from './Reader.svelte'
+export { default as Reader, getReader } from './Reader.svelte'
 
 import client, { relay } from '$/graphql/client'
 import {
@@ -10,14 +10,12 @@ import {
   SUBJECT_ID_FROM_URL,
   LIST_ESSAYS,
   LIST_CHARACTERIZATIONS,
-  BOOKMARK,
   WORK_ID,
   ListSubjects,
   Relay,
-  REMOVE_BOOKMARK,
 } from '$/graphql/queries'
 import type { WorkType } from '$/lib'
-import { graphQLSeed, fromQuery, fromMutation, handleGraphQLResponse } from '$/lib'
+import { graphQLSeed, fromQuery, handleGraphQLResponse } from '$/lib'
 
 import { from, firstValueFrom, lastValueFrom } from 'rxjs'
 import { map, mergeMap, tap } from 'rxjs/operators'
@@ -157,9 +155,3 @@ export interface Work {
   next(): void
   prev(): Promise<boolean>
 }
-
-export const bookmark = (workID: number) =>
-  firstValueFrom(fromMutation(client, BOOKMARK, { workID }))
-
-export const removeBookmark = (workID: number) =>
-  firstValueFrom(fromMutation(client, REMOVE_BOOKMARK, { workID }))
