@@ -332,11 +332,11 @@ interface BookmarkVars {
   workID: number
 }
 
-type Bookmark = Query<'insert_bookmarks_one', Typename, BookmarkVars>
+type Bookmark = Query<'insert_bookmarks_one', Typename, BookmarkVars & { name: string }>
 
 export const BOOKMARK = gql<Data<Bookmark>, Vars<Bookmark>>`
-  mutation bookmark($workID: Int!) {
-    insert_bookmarks_one(object: { work_id: $workID }) {
+  mutation bookmark($workID: Int!, $name: String!) {
+    insert_bookmarks_one(object: { work_id: $workID, name: $name }) {
       __typename
     }
   }
@@ -346,7 +346,7 @@ type RemoveBookmark = Query<'delete_bookmarks', Typename, BookmarkVars>
 
 export const REMOVE_BOOKMARK = gql<Data<RemoveBookmark>, Vars<RemoveBookmark>>`
   mutation removeBookmark($workID: Int!) {
-    delete_bookmarks(where: { work_id: $workID }) {
+    delete_bookmarks(where: { work_id: { _eq: $workID } }) {
       __typename
     }
   }
