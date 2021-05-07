@@ -66,6 +66,7 @@
         message: `Autentifică-te mai întâi pentru a avea acces la această resursă.`,
       })
     } else if (registered || unregistered) {
+      // TODO: Fix "Token used before issue" error
       if ($authToken) {
         user
           .status()
