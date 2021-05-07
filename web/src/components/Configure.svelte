@@ -1,8 +1,8 @@
 <script lang="ts">
-  import LayoutContext from './LayoutContext.svelte'
+  import { LayoutContext } from '.'
   import Delete from './DeleteAccount.svelte'
   import Become from './BecomeATeacher.svelte'
-  import { text, border, filterShadow } from '$/lib/theme'
+  import { text, border, filterShadow } from '$/lib'
   import ConfigureRegister from './ConfigureRegister.svelte'
   let show: boolean
   let name: string
@@ -29,23 +29,17 @@
       class="col-span-2 col-start-5 bg-transparent row-start-1"
       bind:value={name}
       placeholder="Scrie-l aici" />
-    <div class="col-start-4 row-start-2 text-center my-auto ">
-      Primul prenume
-    </div>
+    <div class="col-start-4 row-start-2 text-center my-auto ">Primul prenume</div>
     <input
       class="col-span-2 col-start-5 bg-transparent row-start-2"
       bind:value={first_name}
       placeholder="Scrie-l aici" />
-    <div class="col-start-4 row-start-3 text-center my-auto ">
-      Al doilea prenume
-    </div>
+    <div class="col-start-4 row-start-3 text-center my-auto ">Al doilea prenume</div>
     <input
       class="col-span-2 col-start-5 bg-transparent row-start-3"
       bind:value={middle_name}
       placeholder="Scrie-l aici" />
-    <div class="col-start-4 row-start-4 text-center my-auto ">
-      Județul școlii tale
-    </div>
+    <div class="col-start-4 row-start-4 text-center my-auto ">Județul școlii tale</div>
     <input
       class="col-span-2 col-start-5 bg-transparent row-start-4"
       bind:value={county}
@@ -55,29 +49,25 @@
       class="col-span-2 col-start-5 bg-transparent row-start-5"
       bind:value={school}
       placeholder="Scrie-l aici" />
-    <div class="col-start-1 col-span-3 row-start-4 text-center  my-auto ">
-      Zona periculoasă
-    </div>
+    <div class="col-start-1 col-span-3 row-start-4 text-center  my-auto ">Zona periculoasă</div>
     <button
       class="col-start-1 col-span-3 row-start-5 w-full h-full text-center text-sm my-auto {border
-        .color[theme]} {border.size[
-        theme
-      ]} rounded hover:bg-red hover:border-red  "
+        .color[theme]} {border.size[theme]} rounded hover:bg-red hover:border-red  "
       on:click={() => {
         show = true
       }}>
       Șterge-ți contul
     </button>
     <button
-      class="col-start-1 col-span-3 w-full h-full row-start-3 text-center  my-auto {border
-        .color[theme]} {border.size[theme]} rounded   ">
+      class="col-start-1 col-span-3 w-full h-full row-start-3 text-center  my-auto {border.color[
+        theme
+      ]} {border.size[theme]} rounded   ">
       Deconectează-te de la contul curent
     </button>
     <div class="col-span-3 col-start-1 row-start-2">
       <Become />
     </div>
-    <div
-      class=" col-start-4  h-full w-configure-login row-start-6  row-span-1 ">
+    <div class=" col-start-4  h-full w-configure-login row-start-6  row-span-1 ">
       <ConfigureRegister />
     </div>
   </div></LayoutContext>

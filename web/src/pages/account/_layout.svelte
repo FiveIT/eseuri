@@ -1,11 +1,6 @@
 <script lang="ts">
-  import { store as blue } from '$/components/blob/Blue.svelte'
-  import { store as orange } from '$/components/blob/Orange.svelte'
-  import { store as red } from '$/components/blob/Red.svelte'
-  import Layout from '$/components/Layout.svelte'
-  import { store as window } from '$/components/Window.svelte'
-  import type { BlobPropsInput } from '$/lib/types'
-  import SlimNav from '$/components/nav/SlimNav.svelte'
+  import { blue, orange, red, Layout, window, NavSlim } from '$/components'
+  import type { BlobPropsInput } from '$/components'
   import NavLink from './_/NavLink.svelte'
 
   let blueBlobProps: BlobPropsInput
@@ -64,7 +59,7 @@
   transition={{ y: 1000 }}
   afterMount={() => (document.body.style.backgroundColor = 'var(--blue)')}
   beforeDestroy={() => (document.body.style.backgroundColor = '')}>
-  <SlimNav />
+  <NavSlim />
   <div
     class="col-span-6 row-start-4 grid grid-cols-layout gap-x-md border-b-3px border-white filter-shadow items-center">
     <h2 class="text-md text-white font-sans antialiased col-span-2">Contul meu</h2>

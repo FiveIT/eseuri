@@ -1,13 +1,13 @@
 <script lang="ts">
   import { onMount } from 'svelte'
 
-  import Link from './Link.svelte'
-  import LayoutContext from './LayoutContext.svelte'
+  import Link from './nav/buttons/internal/Link.svelte'
+  import { LayoutContext } from '.'
 
-  import type { WorkSummary } from '$/lib/types'
+  import type { WorkSummary } from '$/lib'
 
-  import { text, border, filterShadow, fontWeight } from '$/lib/theme'
-  import { workTypeTranslation } from '$/content'
+  import { text, border, filterShadow, fontWeight } from '$/lib'
+  import { workTypeTranslation } from '$/lib/content'
 
   let titleParent: HTMLElement
   let titleChild: HTMLElement

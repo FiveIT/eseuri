@@ -1,6 +1,6 @@
 <script lang="ts">
-  import LayoutContext from './LayoutContext.svelte'
-  import { text, border, background } from '$/lib/theme'
+  import { LayoutContext } from '.'
+  import { text, border, background } from '$/lib'
 
   let isregistered: boolean | any
   let isrecorded: boolean | any
@@ -51,8 +51,7 @@
     {:else if isaccepted}
       Ești profesor
     {:else}
-      Cererea ta de a deveni profesor din {time} a fost refuzată. Click pentru a
-      retrimite.
+      Cererea ta de a deveni profesor din {time} a fost refuzată. Click pentru a retrimite.
     {/if}
   </button>
 </LayoutContext>

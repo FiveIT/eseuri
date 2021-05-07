@@ -1,15 +1,10 @@
 <script lang="ts">
-  import LayoutContext from './LayoutContext.svelte'
+  import { LayoutContext } from '.'
   import { lucrari } from '$/content'
-  import { text, filterShadow } from '$/lib/theme'
+  import { text, filterShadow } from '$/lib'
   import LucrariModel from './LucrariModel.svelte'
 
-  type Choosen =
-    | 'InLucru'
-    | 'InAsteptare'
-    | 'Aprobate'
-    | 'Respinse'
-    | 'InRevizuire'
+  type Choosen = 'InLucru' | 'InAsteptare' | 'Aprobate' | 'Respinse' | 'InRevizuire'
 
   let selected: Choosen
   selected = 'InLucru'
@@ -42,9 +37,7 @@
       class="col-start-1 row-start-6 w-full h-full "
       on:click={() => (selected = 'Respinse')}>Respinse</button>
     <div class="col-start-2 row-start-1 my-auto text-center">Tip</div>
-    <div class="col-start-3 col-span-2 row-start-1 my-auto text-center">
-      Subiect
-    </div>
+    <div class="col-start-3 col-span-2 row-start-1 my-auto text-center">Subiect</div>
     <div class="col-start-5 row-start-1 my-auto text-center">
       {#if selected === 'Aprobate'}
         Timpul<br /> Aprobarii
@@ -54,9 +47,7 @@
         Ultima <br />Actualizare
       {/if}
     </div>
-    <div class="col-start-6  row-start-1 my-auto text-center">
-      Profesor Responsabil
-    </div>
+    <div class="col-start-6  row-start-1 my-auto text-center">Profesor Responsabil</div>
     <div
       class="col-start-2 col-span-5 row-start-2 row-span-full grid grid-cols-1 grid-rows-5 gap-y-sm ">
       {#each works as lucrare}

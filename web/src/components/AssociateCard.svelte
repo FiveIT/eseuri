@@ -1,10 +1,10 @@
 <script lang="ts">
   // import { onMount } from 'svelte'
 
-  import LayoutContext from './LayoutContext.svelte'
+  import { LayoutContext } from '.'
   import Delete from 'svelte-material-icons/CloseCircleOutline.svelte'
-  import { text, filterShadow, border } from '$/lib/theme'
-  import type { Associate } from '$/lib/types'
+  import { text, filterShadow, border } from '$/lib'
+  import type { Associate } from '$/lib'
 
   let titleParent: HTMLElement
   let titleChild: HTMLElement
@@ -83,18 +83,14 @@
         class:wr={work.status == 'Pending' || work.status == 'Rejected'}
         on:mouseenter={() => (show = true)}
         on:mouseleave={() => (show = false)}
-        class:opacity-80={show &&
-          (work.status == 'Pending' || work.status == 'Rejected')}>
-        <dt
-          class="row-span-2 row-start-1 h-full flex flex-col"
-          bind:this={titleParent}>
+        class:opacity-80={show && (work.status == 'Pending' || work.status == 'Rejected')}>
+        <dt class="row-span-2 row-start-1 h-full flex flex-col" bind:this={titleParent}>
           <h2 class="text-md mt-auto" bind:this={titleChild}>
             {work.name}
           </h2>
         </dt>
         <dt class=" row-start-3 h-full flex flex-col" bind:this={creatorParent}>
-          <span class="text-workInfo  my-auto" bind:this={creatorChild}
-            >{work.email}</span>
+          <span class="text-workInfo  my-auto" bind:this={creatorChild}>{work.email}</span>
         </dt>
         <dt class=" row-start-4 h-full flex flex-col" bind:this={schoolParent}>
           <span class="text-workInfo  my-auto" bind:this={schoolChild}>
@@ -102,9 +98,7 @@
           </span>
         </dt>
         {#if show && (work.status == 'Pending' || work.status == 'Rejected')}
-          <dt
-            class=" fixed rounded hover h-full w-full text-center flex"
-            bind:this={messageParent}>
+          <dt class=" fixed rounded hover h-full w-full text-center flex" bind:this={messageParent}>
             <span
               class="self-center mx-auto my-auto text-white text-md text-opacity-10 "
               bind:this={messageChild}>

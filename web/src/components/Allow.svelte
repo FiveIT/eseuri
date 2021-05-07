@@ -1,10 +1,9 @@
 <script lang="ts">
   import { isAuthenticated, authError, isLoading, authToken } from '@tmaxmax/svelte-auth0'
-  import { notify } from '$/components/Notifications.svelte'
-  import Spinner from '$/components/Spinner.svelte'
+  import { notify, Spinner } from '.'
   import * as user from '$/lib/user'
-  import { TRANSITION_EASING as easing, TRANSITION_DURATION as duration } from '$/lib/globals'
-  import type { Notification, Timeout } from '$/lib/types'
+  import { TRANSITION_EASING as easing, TRANSITION_DURATION as duration } from '$/lib'
+  import type { Notification, Timeout } from '$/lib'
 
   import { onDestroy } from 'svelte'
   import { fade } from 'svelte/transition'

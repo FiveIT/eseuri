@@ -1,8 +1,8 @@
 <script lang="ts">
-  import LayoutContext from './LayoutContext.svelte'
+  import { LayoutContext } from '.'
   import Association from './Association.svelte'
   import Associate from 'svelte-material-icons/AccountPlus.svelte'
-  import { px } from '$/lib/util'
+  import { px } from '$/lib'
 
   let size: string
   $: {

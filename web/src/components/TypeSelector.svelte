@@ -1,9 +1,7 @@
 <script lang="ts">
-  import type { WorkType } from '$/lib/types'
-  import { workTypeTranslation } from '$/content'
-  import { text, filterShadow } from '$/lib/theme'
-
-  import { getLayout } from './Layout.svelte'
+  import type { WorkType } from '$/lib'
+  import { workTypeTranslation, text, filterShadow } from '$/lib'
+  import { getLayout } from '.'
 
   const { theme: themeStore } = getLayout()
 

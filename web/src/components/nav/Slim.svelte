@@ -1,6 +1,5 @@
 <script>
-  import Logo from './Logo.svelte'
-  import { Forgery, Teachers, Login, Upload, Search } from './buttons'
+  import { Forgery, Teachers, Login, Upload, Search, Logo } from './buttons'
 
   export let logoOnly = false
 </script>

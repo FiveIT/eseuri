@@ -1,8 +1,8 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import LayoutContext from './LayoutContext.svelte'
+  import { LayoutContext } from '.'
 
-  import { text, border, filterShadow, background } from '$/lib/theme'
+  import { text, border, filterShadow, background } from '$/lib'
 
   let titleParent: HTMLElement
   let titleChild: HTMLElement
@@ -15,11 +15,7 @@
   let button2Parent: HTMLElement
   let button2Child: HTMLElement
   export let show: boolean
-  function fixFontSize(
-    parent: HTMLElement,
-    child: HTMLElement,
-    compensation = 1
-  ) {
+  function fixFontSize(parent: HTMLElement, child: HTMLElement, compensation = 1) {
     const { height: parentHeight } = parent.getBoundingClientRect()
     const { height: nameHeight } = child.getBoundingClientRect()
 
@@ -49,14 +45,11 @@
       <div
         class=" w-association h-association grid-cols-3 rounded z-20  grid grid-rows-5   gap-x-md gap-y-sm p-sm    {text[
           theme
-        ]} {border.color[theme]} {border.size[theme]} {filterShadow[
-          theme
-        ]} {background[theme]}">
+        ]} {border.color[theme]} {border.size[theme]} {filterShadow[theme]} {background[theme]}">
         <div
           class="col-start-1 row-start-1 col-span-3   row-span-1 w-full h-full flex flex-col"
           bind:this={titleParent}>
-          <span bind:this={titleChild} class="text-lg my-auto "
-            >Inițiază o asociere</span>
+          <span bind:this={titleChild} class="text-lg my-auto ">Inițiază o asociere</span>
         </div>
         <div
           class="col-start-1 col-span-1 row-span-1 row-start-2    flex flex-col h-full justify-center"
@@ -71,9 +64,8 @@
         <div
           class="col-start-1 row-start-3 row-span-1     flex flex-col justify-center"
           bind:this={emailParent}>
-          <span
-            bind:this={emailChild}
-            class="text-lg  self-center  text-center  ">Email-ul său</span>
+          <span bind:this={emailChild} class="text-lg  self-center  text-center  "
+            >Email-ul său</span>
         </div>
         <input
           type="text"
@@ -83,9 +75,8 @@
         <div
           class="col-start-1 row-start-5    border-white border-2 rounded shadow flex flex-col justify-center items-center"
           bind:this={button1Parent}>
-          <span
-            class="text-lg self-center w-min h-min "
-            bind:this={button1Child}>Trimite cererea</span>
+          <span class="text-lg self-center w-min h-min " bind:this={button1Child}
+            >Trimite cererea</span>
         </div>
         <button
           class="col-start-2 row-start-5   border-white border-2 rounded shadow  flex flex-col justify-center items-center"

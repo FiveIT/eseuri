@@ -1,6 +1,6 @@
 <script lang="ts">
-  import LayoutContext from './LayoutContext.svelte'
-  import { text, filterShadow } from '$/lib/theme'
+  import { LayoutContext } from '.'
+  import { text, filterShadow } from '$/lib'
   import BookmarkModel from './BookmarkModel.svelte'
   import { bookmarks } from '$/content'
   let todelete: boolean
@@ -18,15 +18,9 @@
       theme
     ]}   col-start-1 col-span-6 row-start-5 grid grid-cols-6 h-full gap-x-md gap-y-sm mt-sm">
     <div class="col-start-1 row-start-1 text-center my-auto ">Tip</div>
-    <div class="col-start-2 col-span-2 row-start-1 text-center my-auto">
-      Denumire marcaj
-    </div>
-    <div class="col-start-4 col-span-2 row-start-1 text-center my-auto ">
-      Subiect
-    </div>
-    <div class="col-start-6 row-start-1 text-center my-auto ">
-      Timpul salvarii
-    </div>
+    <div class="col-start-2 col-span-2 row-start-1 text-center my-auto">Denumire marcaj</div>
+    <div class="col-start-4 col-span-2 row-start-1 text-center my-auto ">Subiect</div>
+    <div class="col-start-6 row-start-1 text-center my-auto ">Timpul salvarii</div>
   </div>
   <div class="row-start-6 col-span-6 {text[theme]} {filterShadow[theme]}">
     {#each bookmarks as bookmark, i}

@@ -1,20 +1,16 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import Link from './Link.svelte'
-  import LayoutContext from './LayoutContext.svelte'
-  import { text, border, filterShadow } from '$/lib/theme'
-  import type { UnrevisedWork } from '$/lib/types'
+  import Link from './nav/buttons/internal/Link.svelte'
+  import { LayoutContext } from '.'
+  import { text, border, filterShadow } from '$/lib'
+  import type { UnrevisedWork } from '$/lib'
 
   let titleParent: HTMLElement
   let titleChild: HTMLElement
   let creatorParent: HTMLElement
   let creatorChild: HTMLElement
 
-  function fixFontSize(
-    parent: HTMLElement,
-    child: HTMLElement,
-    compensation = 1
-  ) {
+  function fixFontSize(parent: HTMLElement, child: HTMLElement, compensation = 1) {
     const { height: parentHeight } = parent.getBoundingClientRect()
     const { height: childHeight } = child.getBoundingClientRect()
 
@@ -68,8 +64,7 @@
         </h2>
       </dt>
       <dt class="self-center h-full flex flex-col" bind:this={creatorParent}>
-        <span class="text-workInfo my-auto" bind:this={creatorChild}
-          >{nameauthor}</span>
+        <span class="text-workInfo my-auto" bind:this={creatorChild}>{nameauthor}</span>
       </dt>
       <dt class="text-workInfo">
         {message}

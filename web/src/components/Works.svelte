@@ -1,10 +1,10 @@
 <script lang="ts">
-  import type { WorkSummary } from '$/lib/types'
+  import type { WorkSummary } from '$/lib'
 
-  import LayoutContext from './LayoutContext.svelte'
+  import { LayoutContext } from '.'
   import W from './Work.svelte'
 
-  import { placeholderText, filterShadow } from '$/lib/theme'
+  import { placeholderText, filterShadow } from '$/lib'
 
   export let works: WorkSummary[] | undefined
 </script>

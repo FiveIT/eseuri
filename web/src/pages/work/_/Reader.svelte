@@ -39,8 +39,13 @@
 </script>
 
 <script lang="ts">
-  import { Next, Back, Bookmark, Spinner, notify, internalErrorNotification } from '.'
-  import { TRANSITION_EASING as easing, TRANSITION_DURATION as duration } from '$/lib/globals'
+  import { Next, Back, Bookmark } from '.'
+  import { notify, Spinner } from '$/components'
+  import {
+    TRANSITION_EASING as easing,
+    TRANSITION_DURATION as duration,
+    internalErrorNotification,
+  } from '$/lib'
   import { fade, fly } from 'svelte/transition'
   import { isAuthenticated } from '@tmaxmax/svelte-auth0'
 

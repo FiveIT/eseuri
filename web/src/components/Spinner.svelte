@@ -1,8 +1,10 @@
 <script context="module" lang="ts">
-  import type { Theme } from '$/lib/types'
-  import type { ThemeEntry } from '$/lib/theme'
-  import { placeholderText } from '$/lib/theme'
-  import { TRANSITION_DURATION as duration, TRANSITION_EASING as easing } from '$/lib/globals'
+  import type { Theme, ThemeEntry } from '$/lib'
+  import {
+    placeholderText,
+    TRANSITION_DURATION as duration,
+    TRANSITION_EASING as easing,
+  } from '$/lib'
 
   interface LongDurationOptions {
     after: number

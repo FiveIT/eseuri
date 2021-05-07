@@ -1,6 +1,6 @@
 <script lang="ts">
   import Submit from './Submit.svelte'
-  import NavButton from '$/components'
+  import { NavButton } from '$/components'
 
   export let submitValue: string | undefined = undefined
   export let abortHref = '/'

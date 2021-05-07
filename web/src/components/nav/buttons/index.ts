@@ -5,5 +5,6 @@ export { default as Login } from './Login.svelte'
 export { default as Logo } from './Logo.svelte'
 export { default as Search } from './Search.svelte'
 export { default as NavButton } from './internal/NavButton.svelte'
+export { default as Link } from './internal/Link.svelte'
 // @ts-expect-error
 export { go } from './internal/Link.svelte'
