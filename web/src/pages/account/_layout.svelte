@@ -1,7 +1,6 @@
 <script lang="ts">
-  import { blue, orange, red, Layout, window, NavSlim } from '$/components'
+  import { blue, orange, red, Layout, window, NavSlim, NavButton } from '$/components'
   import type { BlobPropsInput } from '$/components'
-  import NavLink from './_/NavLink.svelte'
 
   let blueBlobProps: BlobPropsInput
   $: blueBlobProps = {
@@ -29,24 +28,30 @@
   interface Route {
     href: string
     label: string
+    title: string
   }
 
   const routes: Route[] = [
     {
       href: 'works',
       label: 'Lucrări',
+      title: 'Vezi stadiul lucrărilor tale încărcate.',
     },
     {
       href: 'bookmarks',
       label: 'Marcaje',
+      title: 'Accesează-ți lucrările salvate.',
     },
     {
       href: 'associations',
       label: 'Asocieri',
+      title: 'Urmărește stadiul asocierilor tale, răspunde la alte asocieri sau inițiază tu una.',
     },
     {
       href: 'configure',
       label: 'Configurare/<wbr />Ieși din cont',
+      title:
+        'Actualizează-ți datele, cere rolul de profesor, deconectează-te sau șterge-ți contul.',
     },
   ]
 </script>
@@ -65,9 +70,10 @@
     <h2 class="text-md text-white font-sans antialiased col-span-2">Contul meu</h2>
     <ul
       class="col-start-3 col-span-4 grid grid-flow-col place-items-center gap-x-md auto-cols-layout">
-      {#each routes as { href, label } (href)}
-        <li class="w-full h-full text-center">
-          <NavLink href="/account/{href}">{@html label}</NavLink>
+      {#each routes as { href, label, title }}
+        <li class="h-full flex items-center justify-center">
+          <NavButton href="/account/{href}" directGoto {title} let:disable
+            ><span class="text-center" class:underline={disable}>{@html label}</span></NavButton>
         </li>
       {/each}
     </ul>
