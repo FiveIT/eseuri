@@ -23,13 +23,16 @@
   const { alive } = getLayout()
 
   export let href = '/'
-  export let disable = $isActive(href, undefined, { strict: false })
+  export let disable: boolean | undefined = undefined
   export let hideIfDisabled = false
   export let directGoto = false
   export let title: string | undefined = undefined
+
+  $: isDisabled =
+    typeof disable === 'undefined' ? $isActive(href, undefined, { strict: false }) : disable
 </script>
 
-{#if !disable}
+{#if !isDisabled}
   <a
     href={$url(href)}
     on:click|preventDefault={() => {
@@ -40,10 +43,10 @@
         go(href, alive, $goto)
       }
     }}
-    class="w-auto h-auto select-none"
+    class="group w-auto h-auto select-none"
     {title}>
-    <slot tabindex={undefined} {disable} {href} />
+    <slot tabindex={undefined} disable={false} {href} />
   </a>
 {:else if !hideIfDisabled}
-  <slot tabindex={0} {disable} {href} />
+  <slot tabindex={0} disable {href} />
 {/if}

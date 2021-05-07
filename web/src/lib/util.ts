@@ -1,7 +1,7 @@
 import type { DocumentNode } from 'graphql'
 import type { Client, OperationResult, TypedDocumentNode, OperationContext } from '@urql/svelte'
 import { CombinedError } from '@urql/svelte'
-import { from } from 'rxjs'
+import { from, Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 
 import { rem, RequestError, internalErrorNotification } from '.'
@@ -87,3 +87,6 @@ export function requestError(
 
   return new RequestError(data.message, data.explanation || error)
 }
+
+export const clamp = (num: number, min: number, max: number) =>
+  num <= min ? min : num >= max ? max : num

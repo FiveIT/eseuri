@@ -3,6 +3,7 @@ export * from './form'
 export * from './notifications'
 export * from './layout'
 export * from './nav'
+export * from './cards'
 
 export { default as Allow } from './Allow.svelte'
 export { default as SearchBar } from './SearchBar.svelte'

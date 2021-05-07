@@ -58,6 +58,7 @@ export default defineConfig({
     },
     borderRadius: {
       DEFAULT: '0.625rem',
+      overlay: '0.6rem',
       full: '9999px',
     },
     boxShadow: {
