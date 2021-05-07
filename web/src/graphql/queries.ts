@@ -1,6 +1,6 @@
 import { gql } from '@urql/svelte'
 
-import type { WorkType, WorkSummary, Nullable } from '$/lib/types'
+import type { WorkType, WorkSummary, Nullable, FullNamer } from '$/lib'
 
 type QueryData<Name extends string, Data> = Nullable<
   {
@@ -358,6 +358,64 @@ export const IS_BOOKMARKED = gql<Data<IsBookmarked>, Vars<IsBookmarked>>`
   query isBookmarked($workID: Int!) {
     bookmarks(where: { work_id: { _eq: $workID } }) {
       __typename
+    }
+  }
+`
+
+interface UnrevisedWorksVars {
+  noTeacher: boolean
+}
+
+type UnrevisedWork = ID & {
+  user: FullNamer
+} & {
+  essay: null
+  characterization: {
+    character: Namer & {
+      title: Namer
+    }
+  }
+} & {
+  characterization: null
+  essay: {
+    title: Namer & {
+      author: FullNamer
+    }
+  }
+}
+
+type UnrevisedWorks = Query<'works', UnrevisedWork[], UnrevisedWorksVars>
+
+export const UNREVISED_WORKS = gql<Data<UnrevisedWorks>, Vars<UnrevisedWorksVars>>`
+  subscription unrevisedWorks($noTeacher: Boolean!) {
+    works(
+      order_by: { created_at: desc }
+      where: { _and: [{ status: { _eq: pending } }, { teacher_id: { _is_null: $noTeacher } }] }
+    ) {
+      id
+      user {
+        first_name
+        last_name
+        middle_name
+      }
+      characterization {
+        character {
+          name
+          title {
+            name
+          }
+        }
+      }
+      essay {
+        title {
+          name
+          author {
+            first_name
+            middle_name
+            last_name
+          }
+        }
+      }
     }
   }
 `
