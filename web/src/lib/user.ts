@@ -81,10 +81,12 @@ export class RequestError extends Error {
     } else {
       super(arg.message)
 
-      const [err] = arg.graphQLErrors
+      const err = arg.graphQLErrors.length
+        ? arg.graphQLErrors[0]
+        : (arg.networkError as Error & { extensions: { [k: string]: any } })
 
       // TODO: Better error messages
-      switch (err.extensions?.code) {
+      switch (err?.extensions?.code) {
         case 'permission-error':
         case 'constraint-violation':
           var [match] = err.message.match(/(?<=")[^"]*(?="[^"]*$)/)!
