@@ -75,6 +75,7 @@ export default defineConfig({
     },
     gridTemplateColumns: {
       layout: 'repeat(6, var(--column-width))',
+      form: 'repeat(3, var(--column-width))',
       essays: 'repeat(3, var(--essay-column-width))',
     },
     gridAutoColumns: {
@@ -112,7 +113,15 @@ export default defineConfig({
     'underline',
     [].concat(...['white', 'black', 'gray'].map(v => [`text-${v}`, `border-${v}`])),
     [2, 3].map(v => `border-${v}`),
-    ...Array.from({ length: 6 }, (_, i) => ['row', 'col'].map(v => `${v}-start-${i + 1}`)),
+    ...Array.from({ length: 6 }, (_, i) =>
+      [].concat(
+        ...['row', 'col'].map(v => [
+          `grid-${v}s-${i + 1}`,
+          `${v}-start-${i + 1}`,
+          `${v}-span-${i + 1}`,
+        ])
+      )
+    ),
     'bg-white-50',
     'pointer-events-none',
     'w-full',
@@ -131,9 +140,10 @@ export default defineConfig({
     'shadow',
     'shadow-inner',
     'font-light',
+    'w-4em',
+    'h-4em',
+    'w-1.4em',
+    'h-1.4em',
     [].concat(...['soft', 'large'].map(v => [`shadow-${v}`, `shadow-inner-${v}`])),
-    'grid-cols-3',
-    'w-associationboxwidth',
-    'h-associationboxheight',
   ],
 })
