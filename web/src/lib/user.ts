@@ -48,7 +48,6 @@ const statusErrorMessages: MessagesRecord = {
 export const status = (): Promise<UserStatus> =>
   firstValueFrom(
     fromFetch(`${endpoint}/user`, {
-      cache: 'no-cache',
       ...getHeaders(),
       selector: r => r.json().then(v => [v, r.ok, r.status] as const),
     }).pipe(
