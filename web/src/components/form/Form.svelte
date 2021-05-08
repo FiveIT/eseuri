@@ -26,6 +26,7 @@
     formenctype: string
     rows: number
     cols: number
+    disabled: Readable<boolean>
   }
 
   export function getForm(): Context {
@@ -128,6 +129,10 @@
   export let onSubmit: SubmitFn = defaultSubmitFn
   export let rows = 4
   export let cols = 2
+  export let disabled = false
+
+  const disabledStore = writable(disabled)
+  $: $disabledStore = disabled
 
   let form: HTMLFormElement
 
@@ -135,7 +140,7 @@
 
   const submitStatus = createStatusStore()
 
-  setForm({ submitStatus, formenctype, rows, cols })
+  setForm({ submitStatus, formenctype, rows, cols, disabled: disabledStore })
 
   const submitFn = submit(onSubmit, { action, method: 'POST', message, explanation }, submitStatus)
 </script>
@@ -146,6 +151,7 @@
   {name}
   id={name}
   {formenctype}
+  {disabled}
   bind:this={form}
   class="col-span-{3 * cols} row-span-{rows + 2} grid grid-rows-{rows + 2} grid-cols-{3 *
     cols} gap-y-sm"
