@@ -24,6 +24,9 @@ func AssertRegistration(client *graphql.Client) fiber.Handler {
 			Headers: map[string]string{
 				fiber.HeaderAuthorization: c.Get(fiber.HeaderAuthorization),
 			},
+			Vars: map[string]interface{}{
+				"id": claims.UserID,
+			},
 		}); err != nil {
 			return helpers.HandleGraphQLError(c, err)
 		}
