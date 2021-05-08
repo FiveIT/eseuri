@@ -363,10 +363,10 @@ export const IS_BOOKMARKED = gql<Data<IsBookmarked>, Vars<IsBookmarked>>`
 `
 
 interface UnrevisedWorksVars {
-  noTeacher: boolean
+  hasNoTeacher: boolean
 }
 
-type UnrevisedWork = ID & {
+export type UnrevisedWork = ID & {
   user: FullNamer
 } & {
   essay: null
@@ -387,10 +387,10 @@ type UnrevisedWork = ID & {
 type UnrevisedWorks = Query<'works', UnrevisedWork[], UnrevisedWorksVars>
 
 export const UNREVISED_WORKS = gql<Data<UnrevisedWorks>, Vars<UnrevisedWorksVars>>`
-  subscription unrevisedWorks($noTeacher: Boolean!) {
+  subscription unrevisedWorks($hasNoTeacher: Boolean!) {
     works(
       order_by: { created_at: desc }
-      where: { _and: [{ status: { _eq: pending } }, { teacher_id: { _is_null: $noTeacher } }] }
+      where: { _and: [{ status: { _eq: pending } }, { teacher_id: { _is_null: $hasNoTeacher } }] }
     ) {
       id
       user {
@@ -416,6 +416,40 @@ export const UNREVISED_WORKS = gql<Data<UnrevisedWorks>, Vars<UnrevisedWorksVars
           }
         }
       }
+    }
+  }
+`
+
+export interface County {
+  id: string
+  name: string
+}
+
+type Counties = Query<'counties', County[]>
+
+export const COUNTIES = gql<Data<Counties>, Vars<Counties>>`
+  query counties {
+    counties {
+      id
+      name
+    }
+  }
+`
+
+export interface School {
+  id: number
+  name: string
+  short_name: string
+}
+
+type Schools = Query<'schools', School[], { countyID?: string }>
+
+export const SCHOOLS = gql<Data<Schools>, Vars<Schools>>`
+  query schools($countyID: String = "AB") {
+    schools(where: { county_id: { _eq: $countyID } }) {
+      id
+      name
+      short_name
     }
   }
 `
