@@ -151,6 +151,7 @@ export const internalErrorNotification = {
 
 export interface Work {
   title: string
+  type: WorkType
   data: Promise<WorkData>
   next(): void
   prev(): Promise<boolean>

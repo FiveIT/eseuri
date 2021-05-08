@@ -50,6 +50,8 @@
     TRANSITION_EASING as easing,
     TRANSITION_DURATION as duration,
     internalErrorNotification,
+    workTypeTranslation,
+    title,
   } from '$/lib'
   import { fade, fly } from 'svelte/transition'
   import { isAuthenticated } from '@tmaxmax/svelte-auth0'
@@ -116,12 +118,14 @@
 </script>
 
 <article class="col-start-2 col-end-6 row-start-3 flex flex-col justify-between relative">
-  <header>
+  <header class="space-y-sm">
     <h1 class="text-title font-serif antialiased">
       {work.title}
     </h1>
     <div class="flex justify-between align-middle">
-      <div class="w-min text-sm font-sans antialiased">Eseu</div>
+      <div class="w-min text-sm font-sans antialiased">
+        {title(workTypeTranslation.ro[work.type].inarticulate.singular)}
+      </div>
       <div class="w-min">
         {#if $isAuthenticated}
           <Bookmark />
