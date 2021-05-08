@@ -12,6 +12,11 @@ const defaultFontSizeProps: FitTextProperties = {
   max: parseInt(px(1.75)), // text-md
 }
 
+const noop = {
+  update() {},
+  destroy() {},
+} as const
+
 export function fitText(node: HTMLElement, props?: Partial<FitTextProperties>) {
   const { compensation, min, max } = {
     ...defaultFontSizeProps,
@@ -19,7 +24,7 @@ export function fitText(node: HTMLElement, props?: Partial<FitTextProperties>) {
   }
 
   if (node.children.length === 0) {
-    return { update() {}, destroy() {} }
+    return noop
   }
 
   const child = node.children[0] as HTMLElement
@@ -33,8 +38,5 @@ export function fitText(node: HTMLElement, props?: Partial<FitTextProperties>) {
     child.style.fontSize = `${clamp(p * fontSize * compensation, min, max)}px`
   }
 
-  return {
-    update() {},
-    destroy() {},
-  }
+  return noop
 }
