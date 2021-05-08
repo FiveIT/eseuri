@@ -18,7 +18,7 @@ import type { WorkType } from '$/lib'
 import { graphQLSeed, fromQuery, handleGraphQLResponse } from '$/lib'
 
 import { from, firstValueFrom, lastValueFrom } from 'rxjs'
-import { map, mergeMap, tap } from 'rxjs/operators'
+import { map, switchMap, tap } from 'rxjs/operators'
 
 export interface WorkID {
   id: Relay.ID
@@ -123,7 +123,7 @@ export const works = async (url: string, type: WorkType, beginWith?: string) => 
               fromQuery(relay, query, v).pipe(
                 map(v => (v! as any)[`list_${type}s_connection`] as Data),
                 tap(r => (page = r.pageInfo)),
-                mergeMap(v => from(v.edges)),
+                switchMap(v => from(v.edges)),
                 tap(r => ids.push({ id: r.node.id, workID: r.node.work_id }))
               )
             )
