@@ -141,10 +141,10 @@
             name="requestedTeacher"
             placeholder="Opțional: alege cine va revizui lucrarea"
             options={$teachers}
-            mapper={teacher => teacher.user.id}
-            display={teacher => getName(teacher.user)}>Profesor pentru revizuire</Select>
+            mapper={({ teacher }) => teacher.user.id}
+            display={({ teacher }) => getName(teacher.user)}>Profesor pentru revizuire</Select>
         {:else if !$teachers}
-          <Spinner />
+          <Spinner longDuration={null} />
         {/if}
         <Actions slot="actions" abortHref="/upload" on:navigate={removeFile}>Publică</Actions>
       </Form>
