@@ -111,8 +111,8 @@ export const USER_UPDATED_AT = gql<Data<UserUpdatedAt>, Vars<UserUpdatedAt>>`
   }
 `
 
-interface ID {
-  id: number
+interface ID<T extends string | number = number> {
+  id: T
 }
 
 interface Namer {
@@ -420,11 +420,7 @@ export const UNREVISED_WORKS = gql<Data<UnrevisedWorks>, Vars<UnrevisedWorksVars
   }
 `
 
-export interface County {
-  id: string
-  name: string
-}
-
+type County = ID<string> & Namer
 type Counties = Query<'counties', County[]>
 
 export const COUNTIES = gql<Data<Counties>, Vars<Counties>>`
@@ -436,11 +432,11 @@ export const COUNTIES = gql<Data<Counties>, Vars<Counties>>`
   }
 `
 
-export interface School {
-  id: number
-  name: string
+interface SchoolName extends Namer {
   short_name: string
 }
+
+export type School = ID & SchoolName
 
 type Schools = Query<'schools', School[], { countyID?: string }>
 
@@ -450,6 +446,87 @@ export const SCHOOLS = gql<Data<Schools>, Vars<Schools>>`
       id
       name
       short_name
+    }
+  }
+`
+
+type AssociationUser = ID &
+  FullNamer & {
+    email: string
+    school: Omit<School, 'id'>
+  }
+
+const ASSOCIATION_USER_FRAGMENT = gql`
+  fragment AssociationUser on users {
+    id
+    first_name
+    middle_name
+    last_name
+    email
+    school {
+      name
+      short_name
+    }
+  }
+`
+
+const ASSOCIATION_TEACHER_FRAGMENT = gql`
+  ${ASSOCIATION_USER_FRAGMENT}
+
+  fragment AssociationTeacher on teacher_student_associations {
+    teacher {
+      user {
+        ...AssociationUser
+      }
+    }
+  }
+`
+
+export type TeacherAssociationStatus = 'pending' | 'approved' | 'rejected'
+
+type AssociationData<T extends 'teacher' | 'student'> = {
+  initiatior_id: number
+} & {
+  // eslint-disable-next-line no-unused-vars
+  [key in T]: {
+    user: AssociationUser
+  }
+}
+
+type Associations<T extends 'teacher' | 'student'> = Query<
+  'teacher_student_associations',
+  AssociationData<T>[],
+  { status?: TeacherAssociationStatus }
+>
+
+export const TEACHER_ASSOCIATIONS = gql<
+  Data<Associations<'teacher'>>,
+  Vars<Associations<'teacher'>>
+>`
+  ${ASSOCIATION_TEACHER_FRAGMENT}
+
+  query teacherAssociations($status: teacher_student_association_status_enum = approved) {
+    teacher_student_associations(where: { status: { _eq: $status } }) {
+      initiator_id
+      ...AssociationTeacher
+    }
+  }
+`
+
+export const STUDENT_ASSOCIATIONS = gql<
+  Data<Associations<'student'>>,
+  Vars<Associations<'student'>>
+>`
+  ${ASSOCIATION_USER_FRAGMENT}
+
+  query studentAssociations($status: teacher_student_association_status_enum = approved) {
+    teacher_student_associations(where: { status: { _eq: $status } }) {
+      initiator_id
+      student {
+        user {
+          ...AssociationUser
+        }
+      }
     }
   }
 `

@@ -6,6 +6,7 @@
     Form,
     Radio,
     Select,
+    Spinner,
     Actions,
     defaultSubmitFn,
     orange,
@@ -22,15 +23,16 @@
   import { from } from 'rxjs'
   import { tap } from 'rxjs/operators'
 
-  import type { Context } from './upload.svelte'
-  import { contextKey } from './upload.svelte'
+  import type { Context } from '../upload.svelte'
+  import { contextKey } from '../upload.svelte'
+  import { getRequestedTeachers } from '.'
 
   import type { BlobPropsInput, WorkType } from '$/lib'
-  import { workTypeTranslation } from '$/lib'
-  import type { Writable } from 'svelte/store'
+  import { workTypeTranslation, getName } from '$/lib'
 
   import { operationStore, query } from '@urql/svelte'
   import { TITLES, CHARACTERS } from '$/graphql/queries'
+  import type { Writable } from 'svelte/store'
 
   metatags.title = 'Încarcă o lucrare - Eseuri'
 
@@ -97,6 +99,8 @@
 
   const message = 'Lucrarea ta a fost încărcată cu succes!'
   const explanation = `Va fi publică în scurt timp, după ce a fost revizuită de un profesor.`
+
+  const teachers = getRequestedTeachers()
 </script>
 
 <Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} blurBackground>
@@ -128,6 +132,20 @@
           required>
           {currentWorkType === 'essay' ? 'Titlu' : 'Caracter'}
         </Select>
+        {#if $teachers === null}
+          <p class="font-sans text-sm antialiased text-gray">
+            A apărut o eroare la obținerea asocierilor tale
+          </p>
+        {:else if $teachers && $teachers.length}
+          <Select
+            name="requestedTeacher"
+            placeholder="Opțional: alege cine va revizui lucrarea"
+            options={$teachers}
+            mapper={teacher => teacher.user.id}
+            display={teacher => getName(teacher.user)}>Profesor pentru revizuire</Select>
+        {:else if !$teachers}
+          <Spinner />
+        {/if}
         <Actions slot="actions" abortHref="/upload" on:navigate={removeFile}>Publică</Actions>
       </Form>
     {/if}
