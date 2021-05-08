@@ -1,18 +1,18 @@
 import { px, clamp } from '$/lib'
 
-interface AdjustFontSizeProperties {
+interface FitTextProperties {
   compensation: number
   min: number
   max: number
 }
 
-const defaultFontSizeProps: AdjustFontSizeProperties = {
+const defaultFontSizeProps: FitTextProperties = {
   compensation: 1,
   min: parseInt(px(1)),
   max: parseInt(px(1.75)), // text-md
 }
 
-export function fitText(node: HTMLElement, props?: Partial<AdjustFontSizeProperties>) {
+export function fitText(node: HTMLElement, props?: Partial<FitTextProperties>) {
   const { compensation, min, max } = {
     ...defaultFontSizeProps,
     ...props,
