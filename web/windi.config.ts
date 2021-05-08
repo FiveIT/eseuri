@@ -129,7 +129,7 @@ export default defineConfig({
     'h-full',
     ['lg', 'xl'].map(v => `text-${v}`),
     'my-auto',
-    ['white', 'blue', 'google-docs', 'red'].map(v => `bg-${v}`),
+    ['white', 'blue', 'google-docs', 'red', 'orange', 'gray-dark'].map(v => `bg-${v}`),
     'border',
     'cursor-default',
     'font-sans',
@@ -141,7 +141,7 @@ export default defineConfig({
     'shadow',
     'shadow-inner',
     'font-light',
-    ...[4, 3, 1.4].map(v => [`w-${v}em`, `h-${v}em`]),
+    ...[4, 3, 2, 1.4].map(v => [`w-${v}em`, `h-${v}em`]),
     [].concat(...['soft', 'large'].map(v => [`shadow-${v}`, `shadow-inner-${v}`])),
   ],
 })
