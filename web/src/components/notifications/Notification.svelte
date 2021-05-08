@@ -96,14 +96,19 @@
 </script>
 
 <div
-  class="w-notification min-h-notification z-10 rounded fixed top-4/5 left-3/4 transition-all duration-50 ease-out {text[
+  class="w-notification min-h-notification z-10 rounded fixed top-4/5 left-3/4 transition-all duration-50 ease-out focus-visible:outline-solid-black {text[
     theme
   ]} {border.color[theme]} {border.size[theme]} {baseShadow[theme]}
   {background[
     theme
   ]} {innerShadow[theme]} text-sm font-sans antialiased leading-none flex flex-col"
+  on:focus={handleMouseOver}
+  on:blur={handleMouseOut}
+  on:touchstart={handleMouseOver}
+  on:touchend={handleMouseOut}
   on:mouseenter={handleMouseOver}
   on:mouseleave={handleMouseOut}
+  tabindex={1}
   bind:this={parent}
   transition:fade={{ easing, duration }}>
   <div class="flex w-full h-notification flex-row items-center px-sm">
