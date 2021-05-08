@@ -27,6 +27,7 @@
   export let hideIfDisabled = false
   export let directGoto = false
   export let title: string | undefined = undefined
+  export let onBeforeNavigate: () => Promise<boolean | undefined> | boolean | undefined = () => true
 
   $: isDisabled =
     typeof disable === 'undefined' ? $isActive(href, undefined, { strict: false }) : disable
@@ -35,7 +36,12 @@
 {#if !isDisabled}
   <a
     href={$url(href)}
-    on:click|preventDefault={() => {
+    on:click|preventDefault={async () => {
+      const shouldNavigate = await onBeforeNavigate()
+      if (!shouldNavigate) {
+        return
+      }
+
       dispatch('navigate', { href })
       if (directGoto) {
         $goto(href)
