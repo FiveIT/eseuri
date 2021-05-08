@@ -156,7 +156,7 @@ export interface Work {
   data: Promise<WorkData>
   next(): void
   prev(): Promise<boolean>
-  bookmarked: Writable<boolean | null>
+  bookmarked: Writable<string | null>
   // eslint-disable-next-line no-unused-vars
   bookmark(name: string): Promise<void>
   removeBookmark(): Promise<void>

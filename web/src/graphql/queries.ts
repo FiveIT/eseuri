@@ -332,12 +332,12 @@ interface BookmarkVars {
   workID: number
 }
 
-type Bookmark = Query<'insert_bookmarks_one', Typename, BookmarkVars & { name: string }>
+type Bookmark = Query<'insert_bookmarks_one', Namer, BookmarkVars & Namer>
 
 export const BOOKMARK = gql<Data<Bookmark>, Vars<Bookmark>>`
   mutation bookmark($workID: Int!, $name: String!) {
     insert_bookmarks_one(object: { work_id: $workID, name: $name }) {
-      __typename
+      name
     }
   }
 `
@@ -352,12 +352,12 @@ export const REMOVE_BOOKMARK = gql<Data<RemoveBookmark>, Vars<RemoveBookmark>>`
   }
 `
 
-type IsBookmarked = Query<'bookmarks', [Typename] | [], BookmarkVars>
+type IsBookmarked = Query<'bookmarks', [Namer] | [], BookmarkVars>
 
 export const IS_BOOKMARKED = gql<Data<IsBookmarked>, Vars<IsBookmarked>>`
   query isBookmarked($workID: Int!) {
     bookmarks(where: { work_id: { _eq: $workID } }) {
-      __typename
+      name
     }
   }
 `

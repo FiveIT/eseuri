@@ -73,8 +73,13 @@
 
 <button
   class="align-middle"
+  class:cursor-default={loading}
   disabled={loading}
-  title="Salvează lucrarea"
+  title={loading
+    ? undefined
+    : isBookmarked
+    ? `Anulează salvarea "${isBookmarked}"`
+    : 'Salvează lucrarea'}
   on:click={onClick}
   transition:fade={{ easing, duration }}>
   {#if loading}

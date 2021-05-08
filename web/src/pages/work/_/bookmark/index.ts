@@ -12,7 +12,12 @@ export const bookmark = (workID: number, name: string) =>
 export const removeBookmark = (workID: number) =>
   firstValueFrom(fromMutation(client, REMOVE_BOOKMARK, { workID }))
 
-export const isBookmarked = (workID: number) =>
+export const isBookmarked = (workID: number, forceFetch?: boolean) =>
   firstValueFrom(
-    fromQuery(client, IS_BOOKMARKED, { workID }).pipe(map(v => v.bookmarks.length === 1))
+    fromQuery(
+      client,
+      IS_BOOKMARKED,
+      { workID },
+      { requestPolicy: forceFetch ? 'network-only' : 'cache-first' }
+    ).pipe(map(v => v.bookmarks[0]?.name || ''))
   )

@@ -9,6 +9,7 @@
   import { goto, leftover, metatags } from '@roxi/routify'
   import { writable } from 'svelte/store'
   import { isAuthenticated } from '@tmaxmax/svelte-auth0'
+  import type { Relay } from '$/graphql/queries'
 
   const { red: setRedBlob, autoSet } = getLayout().blobs
   let work: (Work & { setBookmarked(): void }) | undefined
@@ -66,13 +67,23 @@
 
         const it = works[Symbol.asyncIterator]()
 
+        const bookmarkedWorks: Record<Relay.ID, string> = {}
+
         work = {
           title: name,
           type,
           data: Promise.resolve(defaultWorkData),
-          setBookmarked() {
+          setBookmarked(force?: boolean) {
             if ($isAuthenticated) {
-              this.data.then(w => isBookmarked(w.workID)).then(is => this.bookmarked.set(is))
+              this.data
+                .then(w => {
+                  if (bookmarkedWorks[w.id]) {
+                    return bookmarkedWorks[w.id]
+                  }
+
+                  return isBookmarked(w.workID, force)
+                })
+                .then(is => this.bookmarked.set(is))
             }
           },
           next() {
@@ -110,14 +121,21 @@
           },
           bookmarked: writable(null),
           async bookmark(name: string) {
-            const { workID } = await this.data
+            const { id, workID } = await this.data
             await bookmark(workID, name)
-            this.bookmarked.set(true)
+            this.bookmarked.set(name)
+
+            bookmarkedWorks[id] = name
           },
           async removeBookmark() {
-            const { workID } = await this.data
+            const { id, workID } = await this.data
             await removeBookmark(workID)
-            this.bookmarked.set(false)
+            this.bookmarked.set('')
+
+            if (bookmarkedWorks[id]) {
+              bookmarkedWorks[id] = ''
+              delete bookmarkedWorks[id]
+            }
           },
         }
 
