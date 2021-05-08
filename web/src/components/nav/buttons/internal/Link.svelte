@@ -45,8 +45,8 @@
     }}
     class="group w-auto h-auto select-none"
     {title}>
-    <slot tabindex={undefined} disable={false} {href} />
+    <slot disable={false} {href} />
   </a>
 {:else if !hideIfDisabled}
-  <slot tabindex={0} disable {href} />
+  <slot disable {href} />
 {/if}

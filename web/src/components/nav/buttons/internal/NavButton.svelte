@@ -17,27 +17,19 @@
   export let title: string | undefined = undefined
 </script>
 
-<Link {href} {disable} {hideIfDisabled} {directGoto} on:navigate let:tabindex {title}>
+<Link {href} {disable} {hideIfDisabled} {directGoto} on:navigate {title}>
   <div
-    class="relative w-full h-full flex justify-center items-center font-sans no-underline text-sm antialiased select-none {text[
+    class="group relative w-full h-full flex justify-center items-center font-sans no-underline text-sm antialiased select-none {text[
       theme
     ]} {filterShadow[theme]}"
-    class:cursor-default={disable}
-    {tabindex}>
+    class:cursor-default={disable}>
     <slot {disable} />
     {#if title && showTooltip && !(disable && hideIfDisabled)}
       <p
-        class="absolute hidden text-white text-0.8em top-3/4 text-center bg-black p-sm rounded"
+        class="absolute hidden text-white text-0.8em top-3/4 text-center bg-black p-sm rounded group-hover:block"
         transition:fade={{ easing, duration: 50 }}>
         {title}
       </p>
     {/if}
   </div>
 </Link>
-
-<style>
-  div:hover > p,
-  div:focus-visible > p {
-    display: initial;
-  }
-</style>
