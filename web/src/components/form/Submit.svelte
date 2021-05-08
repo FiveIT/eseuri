@@ -19,7 +19,7 @@
     awaitingResponse: {
       icon: Spinner,
       props: {
-        small: true,
+        size: '3em',
       },
     },
     success: {
