@@ -2,50 +2,51 @@ table:
   name: schools
   schema: public
 object_relationships:
-- name: county
-  using:
-    foreign_key_constraint_on: county_id
+  - name: county
+    using:
+      foreign_key_constraint_on: county_id
 array_relationships:
-- name: users
-  using:
-    manual_configuration:
-      column_mapping:
-        id: school_id
-      insertion_order: null
-      remote_table:
-        name: users
-        schema: public
-- name: users_alls
-  using:
-    foreign_key_constraint_on:
-      column: school_id
-      table:
-        name: users_all
-        schema: public
+  - name: users
+    using:
+      manual_configuration:
+        column_mapping:
+          id: school_id
+        insertion_order: null
+        remote_table:
+          name: users
+          schema: public
+  - name: users_alls
+    using:
+      foreign_key_constraint_on:
+        column: school_id
+        table:
+          name: users_all
+          schema: public
 select_permissions:
-- permission:
-    columns:
-    - county_id
-    - name
-    - short_name
-    filter: {}
-    limit: 50
-  role: anonymous
-- permission:
-    columns:
-    - id
-    - name
-    - short_name
-    - county_id
-    filter: {}
-    limit: 50
-  role: student
-- permission:
-    columns:
-    - id
-    - name
-    - short_name
-    - county_id
-    filter: {}
-    limit: 50
-  role: teacher
+  - permission:
+      columns:
+        - id
+        - county_id
+        - name
+        - short_name
+      filter: {}
+      limit: 200
+    role: anonymous
+  - permission:
+      columns:
+        - id
+        - name
+        - short_name
+        - county_id
+      filter: {}
+      limit: 200
+    role: student
+  - permission:
+      columns:
+        - id
+        - name
+        - short_name
+        - county_id
+      filter: {}
+      limit: 200
+    role: teacher
