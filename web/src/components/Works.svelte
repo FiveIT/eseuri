@@ -25,11 +25,11 @@
   <div
     class="grid w-full h-full grid-cols-essays auto-rows-essays gap-x-lg gap-y-sm col-start-1 col-end-7">
     {#if isWorkSummaryArray(works)}
-      {#each works as work}
+      {#each works as work (work.url)}
         <W {work} />
       {/each}
     {:else if works?.length}
-      {#each works as work}
+      {#each works as work (work.id)}
         <UW {work} />
       {/each}
     {:else}
