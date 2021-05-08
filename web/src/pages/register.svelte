@@ -12,6 +12,8 @@
     LayoutContext,
     Form,
     Text,
+    Select,
+    Spinner,
     Radio,
     Actions,
     Allow,
@@ -26,10 +28,11 @@
   import { roleTranslation } from '$/lib/content'
   import { fromMutation } from '$/lib'
 
-  import { REGISTER_USER, TEACHER_REQUEST } from '$/graphql/queries'
+  import { COUNTIES, REGISTER_USER, SCHOOLS, TEACHER_REQUEST } from '$/graphql/queries'
   import client from '$/graphql/client'
 
   import { goto, metatags } from '@roxi/routify'
+  import { query, operationStore } from '@urql/svelte'
   import type { Writable } from 'svelte/store'
 
   import { of } from 'rxjs'
@@ -76,27 +79,63 @@
       tap(() => go('/', alive, $goto))
     )
   }
+
+  let countyID: string | undefined
+  const counties = query(operationStore(COUNTIES))
+
+  const schools = query(operationStore(SCHOOLS, { countyID }))
+  $: $schools.variables = { countyID }
 </script>
 
-<!-- TODO: Make the school and county fields work as intended -->
 <Allow unregistered redirect="/" dontNotify>
   <Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} blurBackground>
     <LayoutContext let:alive>
       <NavSlim logoOnly />
-      <Form name="register" onSubmit={args => onSubmit(alive, args)}>
-        <span slot="legend">Completează-ți profilul</span>
-        <Text name="last_name" placeholder="Scrie-ți aici numele de familie..." required>
-          Numele tău
-        </Text>
-        <Text name="first_name" placeholder="Scrie-l aici..." required>Primul prenume</Text>
-        <Text name="middle_name" placeholder="Scrie-l aici...">Al doilea prenume</Text>
-        <Text name="county" placeholder="Scrie aici judetul scolii..." required>
-          Județul școlii tale
-        </Text>
-        <Text name="school" placeholder="Scrie aici numele școlii..." required>Școala ta</Text>
-        <Radio name="role" options={roles} displayModifier={translateRole}>Ocupația ta</Radio>
-        <Actions slot="actions">Sunt gata</Actions>
-      </Form>
+      {#if $counties.fetching}
+        <div class="flex items-center justify-center row-span-2 col-span-2 row-start-4 col-start-3">
+          <Spinner message="O secundă..." />
+        </div>
+      {:else if $counties.error || $schools.error || !$schools.data || !$counties.data}
+        <p
+          class="text-md text-gray font-sans antialiased row-start-4 col-start-2 col-span-4 text-center">
+          A apărut o eroare, revino mai târziu să te înregistrezi
+        </p>
+      {:else}
+        <Form
+          name="register"
+          onSubmit={args => onSubmit(alive, args)}
+          disabled={$schools.fetching || !$schools.data || $schools.error}>
+          <span slot="legend">Completează-ți profilul</span>
+          <Text name="last_name" placeholder="Scrie-ți aici numele de familie..." required>
+            Numele tău
+          </Text>
+          <Text name="first_name" placeholder="Scrie-l aici..." required>Primul prenume</Text>
+          <Text name="middle_name" placeholder="Scrie-l aici...">Al doilea prenume</Text>
+          <Select
+            name="county"
+            placeholder="Scrie aici judetul scolii..."
+            options={$counties.data.counties}
+            mapper={county => county.id}
+            display={county => county.name}
+            bind:value={countyID}
+            required>
+            Județul școlii tale
+          </Select>
+          {#if $schools.fetching}
+            <Spinner />
+          {:else if $schools.data}
+            <Select
+              name="school"
+              placeholder="Scrie aici numele școlii..."
+              options={$schools.data.schools}
+              mapper={school => school.id}
+              display={school => school.name}
+              required>Școala ta</Select>
+          {/if}
+          <Radio name="role" options={roles} displayModifier={translateRole}>Ocupația ta</Radio>
+          <Actions slot="actions">Sunt gata</Actions>
+        </Form>
+      {/if}
     </LayoutContext>
   </Layout>
 </Allow>
