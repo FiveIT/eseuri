@@ -14,8 +14,6 @@
 
     closeFn?.()
   }
-
-  console.log({ closeFn })
 </script>
 
 <LayoutContext let:theme>
