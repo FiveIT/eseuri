@@ -2,29 +2,32 @@
   import { getLayout, window, red, notify, Spinner } from '$/components'
   import { isWorkType, internalErrorNotification } from '$/lib'
   import { Reader, works, defaultWorkData } from './_'
+  import { bookmark, isBookmarked, removeBookmark } from './_/bookmark'
   import type { Work } from './_'
 
   import { onDestroy } from 'svelte'
   import { goto, leftover, metatags } from '@roxi/routify'
+  import { writable } from 'svelte/store'
+  import { isAuthenticated } from '@tmaxmax/svelte-auth0'
 
   const { red: setRedBlob, autoSet } = getLayout().blobs
-  let work: Work
+  let work: (Work & { setBookmarked(): void }) | undefined
   let done = false
-  let show = false
   let notFoundParagraphs = [
     'Am primit niște date incorecte și nu-ți putem afișa vreo lucrare.',
     `Cel mai probabil ai ajuns aici din greșeală, <a class="underline" href="/search">caută ceva</a> sau <a class="underline" href="/upload">încarcă o lucrare</a>!`,
   ]
 
-  $: $autoSet = !done || show
+  $: $autoSet = !done || !!work
   $: done &&
-    !show &&
+    !work &&
     setRedBlob({
       rotate: 47,
       scale: 2,
       x: $window.width - red.width * 2,
       y: $window.height + 40,
     })
+  $: work && $isAuthenticated && work.setBookmarked()
 
   onDestroy(() => ($autoSet = true))
 
@@ -67,7 +70,14 @@
           title: name,
           type,
           data: Promise.resolve(defaultWorkData),
+          setBookmarked() {
+            if ($isAuthenticated) {
+              this.data.then(w => isBookmarked(w.workID)).then(is => this.bookmarked.set(is))
+            }
+          },
           next() {
+            this.bookmarked.set(null)
+
             this.data = it.next().then(v => {
               const data = v.value
 
@@ -77,8 +87,12 @@
 
               return data
             })
+
+            this.setBookmarked()
           },
           prev() {
+            this.bookmarked.set(null)
+
             const res = it.prev()
             this.data = res.then(r => {
               const data = r.value!
@@ -90,13 +104,24 @@
               return data
             })
 
+            this.setBookmarked()
+
             return res.then(r => !!r.done)
+          },
+          bookmarked: writable(null),
+          async bookmark(name: string) {
+            const { workID } = await this.data
+            await bookmark(workID, name)
+            this.bookmarked.set(true)
+          },
+          async removeBookmark() {
+            const { workID } = await this.data
+            await removeBookmark(workID)
+            this.bookmarked.set(false)
           },
         }
 
         work.next()
-
-        show = true
       })
       .catch(err => {
         console.error(err)
@@ -107,7 +132,7 @@
   }
 </script>
 
-{#if done && show}
+{#if work}
   <Reader {work} />
 {:else if done}
   <div class="flex flex-col col-start-2 col-span-4 text-center">

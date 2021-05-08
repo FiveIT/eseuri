@@ -1,10 +1,9 @@
 <script lang="ts" context="module">
   import { setContext, getContext } from 'svelte'
   import { writable } from 'svelte/store'
-  import type { Writable } from 'svelte/store'
+  import type { Writable, Readable } from 'svelte/store'
 
   import type { Work, WorkData } from '.'
-  import { defaultWorkData } from '.'
 
   const keys: Record<'prev' | 'next', Record<string, boolean>> = {
     prev: {
@@ -21,10 +20,10 @@
 
   const contextKey = {}
 
-  const createWorkStore = (): Writable<WorkData> => writable(defaultWorkData)
+  const createWorkStore = (): Writable<Work | null> => writable(null)
 
   interface Context {
-    work: Writable<WorkData>
+    work: Readable<Work | null>
     currentlyBookmarking: Writable<boolean>
   }
 
@@ -70,7 +69,7 @@
     disableNavigation = true
 
     data = work.data
-      .then(w => (($workStore = w), w))
+      .then(w => (($workStore = work), w))
       .catch(() => {
         notify(internalErrorNotification)
 

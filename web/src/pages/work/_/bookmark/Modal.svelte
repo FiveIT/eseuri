@@ -13,15 +13,16 @@
 
   import { fade } from 'svelte/transition'
   import { onMount } from 'svelte'
-  import { bookmark } from '.'
+  import type { Work } from '..'
 
-  export let workID: number
+  export let work: Work
 
   let focus: () => void
   let elem: HTMLElement
 
   const onSubmit: SubmitFn = ({ body }) =>
-    bookmark(workID, body.get('name')!.toString())
+    work
+      .bookmark(body.get('name')!.toString())
       .then(closeModal)
       .then(() => notification)
 

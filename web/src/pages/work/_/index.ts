@@ -19,6 +19,7 @@ import { graphQLSeed, fromQuery, handleGraphQLResponse } from '$/lib'
 
 import { from, firstValueFrom, lastValueFrom } from 'rxjs'
 import { map, switchMap, tap } from 'rxjs/operators'
+import type { Writable } from 'svelte/store'
 
 export interface WorkID {
   id: Relay.ID
@@ -155,4 +156,8 @@ export interface Work {
   data: Promise<WorkData>
   next(): void
   prev(): Promise<boolean>
+  bookmarked: Writable<boolean | null>
+  // eslint-disable-next-line no-unused-vars
+  bookmark(name: string): Promise<void>
+  removeBookmark(): Promise<void>
 }

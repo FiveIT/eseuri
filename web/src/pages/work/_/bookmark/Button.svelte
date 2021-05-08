@@ -4,69 +4,51 @@
   import Create from './Modal.svelte'
   import Modal, { openModal } from '@tmaxmax/renderless-svelte/src/Modal.svelte'
 
-  import { query, operationStore } from '@urql/svelte'
   import { fade } from 'svelte/transition'
 
   import {
     px,
-    requestError,
     TRANSITION_EASING as easing,
     TRANSITION_DURATION as duration,
     internalErrorNotification,
   } from '$/lib'
   import { notify, Spinner } from '$/components'
-  import { IS_BOOKMARKED } from '$/graphql/queries'
 
-  import { removeBookmark } from '.'
   import { getReader } from '..'
 
   const { work, currentlyBookmarking } = getReader()
 
-  $: workID = $work.workID
-
-  const bookmarked = query(operationStore(IS_BOOKMARKED, { workID }))
-
-  $: $bookmarked.variables!.workID = workID
-
-  // TODO: Fix status not updating
-  let isBookmarked = false
-  let allowBookmarking = false
-
-  $: if ($bookmarked.error) {
-    allowBookmarking = false
-
-    const err = requestError($bookmarked.error)
-
-    notify({
-      status: 'error',
-      message: `Eroare la obținerea marcajelor: ${err.message.toLocaleLowerCase('ro-RO')}`,
-      explanation: err.explanation,
-    })
-  } else if ($bookmarked.data) {
-    allowBookmarking = true
-    isBookmarked = $bookmarked.data.bookmarks.length === 1
-  } else {
-    allowBookmarking = false
-  }
+  $: bookmarkStore = $work?.bookmarked
+  $: isBookmarked = !!bookmarkStore && $bookmarkStore !== null && $bookmarkStore
+  $: loading = !bookmarkStore || $bookmarkStore === null
 
   const bookmarkHandler = async () => {
     $currentlyBookmarking = true
-    await openModal(workID)
+    await openModal($work!)
     $currentlyBookmarking = false
   }
 
-  const removeBookmarkHandler = () =>
-    removeBookmark(workID)
-      .then(() => {
+  const removeBookmarkHandler = () => {
+    $work!
+      .removeBookmark()
+      .then(() =>
         notify({
           status: 'success',
-          message: 'Marcajul a fost șters cu succes!',
+          message: 'Lucrarea nu mai este salvată!',
         })
-      })
-      .catch(() => notify(internalErrorNotification))
+      )
+      .catch(() =>
+        notify({
+          ...internalErrorNotification,
+          message: `Eroare la anularea salvării lucrării: ${internalErrorNotification.message.toLocaleLowerCase(
+            'ro-RO'
+          )}`,
+        })
+      )
+  }
 
   function onClick() {
-    if ($currentlyBookmarking) {
+    if (loading) {
       return
     }
 
@@ -91,22 +73,22 @@
 
 <button
   class="align-middle"
-  disabled={!allowBookmarking}
+  disabled={loading}
   title="Salvează lucrarea"
   on:click={onClick}
   transition:fade={{ easing, duration }}>
-  {#if isBookmarked}
-    <Bookmark {size} />
-  {:else if allowBookmarking}
-    <BookmarkOutline {size} />
-  {:else if !$bookmarked.error}
+  {#if loading}
     <Spinner size="{emSize}em" />
+  {:else if isBookmarked}
+    <Bookmark {size} />
+  {:else}
+    <BookmarkOutline {size} />
   {/if}
 </button>
 
 <Modal let:payload>
   {#if payload}
-    <Create workID={payload} />
+    <Create work={payload} />
   {/if}
 </Modal>
 
