@@ -83,7 +83,7 @@
   on:click={onClick}
   transition:fade={{ easing, duration }}>
   {#if loading}
-    <Spinner size="{emSize}em" />
+    <Spinner size="{emSize}em" longDuration={null} />
   {:else if isBookmarked}
     <Bookmark {size} />
   {:else}
