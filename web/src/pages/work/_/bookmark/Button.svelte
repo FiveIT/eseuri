@@ -85,7 +85,8 @@
     onClick()
   }
 
-  const size = px(1.4)
+  const emSize = 1.4
+  const size = px(emSize)
 </script>
 
 <button
@@ -99,7 +100,7 @@
   {:else if allowBookmarking}
     <BookmarkOutline {size} />
   {:else if !$bookmarked.error}
-    <Spinner size="1.4em" />
+    <Spinner size="{emSize}em" />
   {/if}
 </button>
 
