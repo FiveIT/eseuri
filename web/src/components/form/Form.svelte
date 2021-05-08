@@ -48,6 +48,8 @@
         message: err.message,
         explanation: err.explanation,
       })
+    } else if (err instanceof CombinedError) {
+      error(requestError(err))
     } else {
       console.error({ formError: err })
       notify(internalErrorNotification)
@@ -120,6 +122,8 @@
 </script>
 
 <script lang="ts">
+  import { CombinedError } from '@urql/svelte'
+
   export let action: string = ''
   export let name: string
   export let formenctype: 'application/x-www-form-urlencoded' | 'multipart/form-data' =
