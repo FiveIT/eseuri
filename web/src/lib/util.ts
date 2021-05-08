@@ -1,7 +1,7 @@
 import type { DocumentNode } from 'graphql'
 import type { Client, OperationResult, TypedDocumentNode, OperationContext } from '@urql/svelte'
 import { CombinedError } from '@urql/svelte'
-import { from, Observable } from 'rxjs'
+import { from } from 'rxjs'
 import { map } from 'rxjs/operators'
 
 import { rem, RequestError, internalErrorNotification } from '.'
@@ -90,3 +90,9 @@ export function requestError(
 
 export const clamp = (num: number, min: number, max: number) =>
   num <= min ? min : num >= max ? max : num
+
+export const title = (s: string) =>
+  s
+    .split(/(\s+)/)
+    .map(w => w[0].toLocaleUpperCase('ro-RO') + w.slice(1))
+    .join('')
