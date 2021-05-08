@@ -7,8 +7,8 @@
   } from '$/lib'
 
   interface LongDurationOptions {
-    after: number
-    message: string
+    after?: number
+    message?: string
   }
 
   const longDurationDefaults: LongDurationOptions = {
@@ -37,19 +37,19 @@
 
   export let theme: Theme | undefined = undefined
   export let message: string | undefined = undefined
-  export let longDuration: LongDurationOptions = longDurationDefaults
+  export let longDuration: LongDurationOptions | null = longDurationDefaults
   export let size = '4em'
 
-  longDuration = {
-    ...longDurationDefaults,
-    ...longDuration,
+  if (longDuration) {
+    longDuration = {
+      ...longDurationDefaults,
+      ...longDuration,
+    }
   }
 
   let showLongDurationNotice = false
-  const showLongDurationNoticeHandle = setTimeout(
-    () => (showLongDurationNotice = true),
-    longDuration.after
-  )
+  const showLongDurationNoticeHandle =
+    longDuration && setTimeout(() => (showLongDurationNotice = true), longDuration.after)
 
   const layout = getLayout()
   let themeStore: typeof layout.theme | undefined
@@ -81,7 +81,7 @@
       <Loading color="var(--{spinnerColor.main[t]})" size="100%" />
     </div>
   </div>
-  {#if showLongDurationNotice}
+  {#if longDuration && showLongDurationNotice}
     <p class="font-sans text-sm mt-md {placeholderText[t]}" transition:slide={{ duration, easing }}>
       {longDuration.message}
     </p>
