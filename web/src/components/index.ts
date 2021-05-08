@@ -11,3 +11,5 @@ export { default as Spinner } from './Spinner.svelte'
 export { default as UploadVariantPlaceholder } from './UploadVariantPlaceholder.svelte'
 // @ts-expect-error
 export { default as Window, store as window } from './Window.svelte'
+export { default as Works } from './Works.svelte'
+export { default as TypeSelector } from './TypeSelector.svelte'
