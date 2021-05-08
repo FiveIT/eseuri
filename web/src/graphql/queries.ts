@@ -362,37 +362,38 @@ export const IS_BOOKMARKED = gql<Data<IsBookmarked>, Vars<IsBookmarked>>`
   }
 `
 
-interface UnrevisedWorksVars {
-  hasNoTeacher: boolean
-}
-
 export type UnrevisedWork = ID & {
   user: FullNamer
-} & {
-  essay: null
-  characterization: {
-    character: Namer & {
-      title: Namer
-    }
-  }
-} & {
-  characterization: null
-  essay: {
-    title: Namer & {
-      author: FullNamer
-    }
-  }
-}
+  teacher_id: number
+} & (
+    | {
+        essay: null
+        characterization: {
+          character: Namer & {
+            title: Namer
+          }
+        }
+      }
+    | {
+        characterization: null
+        essay: {
+          title: Namer & {
+            author: FullNamer
+          }
+        }
+      }
+  )
 
-type UnrevisedWorks = Query<'works', UnrevisedWork[], UnrevisedWorksVars>
+type UnrevisedWorks = Query<'works', UnrevisedWork[], ID>
 
-export const UNREVISED_WORKS = gql<Data<UnrevisedWorks>, Vars<UnrevisedWorksVars>>`
-  subscription unrevisedWorks($hasNoTeacher: Boolean!) {
+export const UNREVISED_WORKS = gql<Data<UnrevisedWorks>, Vars<UnrevisedWorks>>`
+  subscription unrevisedWorks {
     works(
-      order_by: { created_at: desc }
-      where: { _and: [{ status: { _eq: pending } }, { teacher_id: { _is_null: $hasNoTeacher } }] }
+      order_by: [{ status: asc }, { created_at: desc }]
+      where: { status: { _in: [pending, inReview] } }
     ) {
       id
+      teacher_id
       user {
         first_name
         last_name
@@ -416,6 +417,23 @@ export const UNREVISED_WORKS = gql<Data<UnrevisedWorks>, Vars<UnrevisedWorksVars
           }
         }
       }
+    }
+  }
+`
+
+export type WorkStatus = 'draft' | 'pending' | 'inReview' | 'approved' | 'rejected'
+
+interface UpdateWorkStatusVars {
+  workID: number
+  status: WorkStatus
+}
+
+type UpdateWorkStatus = Query<'update_works_by_pk', Typename | null, UpdateWorkStatusVars>
+
+export const UPDATE_WORK_STATUS = gql<Data<UpdateWorkStatus>, Vars<UpdateWorkStatus>>`
+  mutation updateWorkStatus($workID: Int!, $status: work_status_enum!) {
+    update_works_by_pk(pk_columns: { id: $workID }, _set: { status: $status }) {
+      __typename
     }
   }
 `
