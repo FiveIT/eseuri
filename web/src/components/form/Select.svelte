@@ -14,7 +14,7 @@
 </script>
 
 <Base let:theme>
-  <label for={name} class="place-self-center select-none {text[theme]}">
+  <label for={name} class="place-self-center text-center select-none {text[theme]}">
     <slot />
   </label>
   <select
