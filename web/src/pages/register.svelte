@@ -58,8 +58,6 @@
     scale: 1.5,
   }
 
-  metatags.title = 'Înregistrare'
-
   const roles: Role[] = ['student', 'teacher']
   const translateRole = (r: Role) => roleTranslation.ro[r].inarticulate.singular
 
