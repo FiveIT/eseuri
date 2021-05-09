@@ -7,8 +7,10 @@
   import IconSuccess from 'svelte-material-icons/Check.svelte'
   import IconError from 'svelte-material-icons/Exclamation.svelte'
 
+  const emSize = 3
+
   const props = {
-    size: px(3),
+    size: px(emSize),
     color: 'white',
   }
 
@@ -19,7 +21,7 @@
     awaitingResponse: {
       icon: Spinner,
       props: {
-        size: `${props.size}em`,
+        size: `${emSize}em`,
       },
     },
     success: {
