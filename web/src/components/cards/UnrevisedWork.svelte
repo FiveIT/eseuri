@@ -60,11 +60,7 @@
   $: heading = (work.essay?.title || work.characterization!.character).name
   $: middle = getMiddle(work)
   $: end = getEnd(work)
-  $: when =
-    work.updated_at &&
-    formatDate(new Date(work.updated_at + '+00:00'))
-      .reverse()
-      .join(' ')
+  $: when = work.updated_at && formatDate(work.updated_at).reverse().join(' ')
 </script>
 
 <WorkBase

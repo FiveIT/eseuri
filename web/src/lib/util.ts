@@ -127,7 +127,8 @@ const monthLookup = [
   ['dec', 'decembrie'],
 ]
 
-export function formatDate(date: Date, short?: boolean, html?: boolean): [string, 'la' | 'în'] {
+export function formatDate(s: string, short?: boolean, html?: boolean): [string, 'la' | 'în'] {
+  const date = new Date(s + '+00:00')
   const time = `${date.getHours()}:${date.getMinutes()}`
 
   const today = new Date()
