@@ -1,6 +1,6 @@
 <script lang="ts">
   import { getLayout, window, red, notify, Spinner } from '$/components'
-  import { isWorkType, internalErrorNotification } from '$/lib'
+  import { isWorkType, internalErrorNotification, WorkType } from '$/lib'
   import { Reader, works, defaultWorkData } from './_'
   import { bookmark, isBookmarked, removeBookmark } from './_/bookmark'
   import type { Work } from './_'
@@ -38,9 +38,7 @@
 
   $: metatags.title = pageTitle
 
-  if (!type || !title || !isWorkType(type)) {
-    done = true
-  } else {
+  const setWork = (title: string, type: WorkType, workID?: Relay.ID) =>
     works(title, type, workID)
       .then(works => {
         if (!works) {
@@ -147,9 +145,21 @@
         notify(internalErrorNotification)
       })
       .finally(() => (done = true))
+
+  if (!type) {
+    done = true
+  } else {
+    const id = parseInt(type)
+
+    if (!id) {
+      if (isWorkType(type)) {
+        setWork(title, type, workID)
+      }
+    }
   }
 </script>
 
+<!-- TODO: Reader for review -->
 {#if work}
   <Reader {work} />
 {:else if done}
