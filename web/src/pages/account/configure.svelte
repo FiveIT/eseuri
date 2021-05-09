@@ -53,7 +53,7 @@
     <div class="col-start-1 col-span-3 row-start-4 text-center  my-auto ">Zona periculoasă</div>
     <button
       class="col-start-1 col-span-3 row-start-5 w-full h-full text-center text-sm my-auto {border
-        .color[theme]} {border.size[theme]} rounded hover:bg-red hover:border-red  "
+        .color[theme]} {border.all[theme]} rounded hover:bg-red hover:border-red  "
       on:click={() => {
         show = true
       }}>
@@ -62,7 +62,7 @@
     <button
       class="col-start-1 col-span-3 w-full h-full row-start-3 text-center  my-auto {border.color[
         theme
-      ]} {border.size[theme]} rounded   ">
+      ]} {border.all[theme]} rounded   ">
       Deconectează-te de la contul curent
     </button>
     <div class="col-span-3 col-start-1 row-start-2">

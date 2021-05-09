@@ -45,7 +45,7 @@
       <div
         class=" w-association h-association grid-cols-3 rounded z-20  grid grid-rows-5   gap-x-md gap-y-sm p-sm    {text[
           theme
-        ]} {border.color[theme]} {border.size[theme]} {filterShadow[theme]} {background[theme]}">
+        ]} {border.color[theme]} {border.all[theme]} {filterShadow[theme]} {background[theme]}">
         <div
           class="col-start-1 row-start-1 col-span-3   row-span-1 w-full h-full flex flex-col"
           bind:this={titleParent}>

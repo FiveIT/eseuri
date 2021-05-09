@@ -38,7 +38,7 @@
     <dl
       class="group grid w-full grid-flow-row h-full grid-rows-4 gap-y-xs px-sm py-xs font-sans antialiased rounded leading-none {text[
         theme
-      ]} {border.color[theme]} {border.size[theme]} {filterShadow[theme]} {fontWeight[theme]}"
+      ]} {border.color[theme]} {border.all[theme]} {filterShadow[theme]} {fontWeight[theme]}"
       class:white-bg={theme === 'default'}
       class:blur={theme === 'default'}>
       <dt class="row-span-2 h-full flex flex-col" bind:this={titleParent}>

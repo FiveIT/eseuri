@@ -33,7 +33,7 @@
   <button
     class="border-orange border-green-light border-white border-red bg-blue bg-red bg-green-light {text[
       theme
-    ]} {border.size[theme]}  {background[theme]} rounded w-full h-full"
+    ]} {border.all[theme]}  {background[theme]} rounded w-full h-full"
     class:border-white={isregistered}
     class:border-orange={isrecorded}
     class:border-green-light={isaccepted}

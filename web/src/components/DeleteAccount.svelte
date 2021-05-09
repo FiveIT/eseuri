@@ -41,7 +41,7 @@
       <div
         class=" w-delete-box  h-association rounded z-20  grid grid-rows-5 grid-cols-4 gap-x-md gap-y-sm p-sm    {text[
           theme
-        ]} {border.color[theme]} {border.size[theme]} {filterShadow[theme]} {background[theme]}">
+        ]} {border.color[theme]} {border.all[theme]} {filterShadow[theme]} {background[theme]}">
         <div
           class="col-start-1 row-start-1 col-end-5   row-span-1 w-full h-full flex flex-col"
           bind:this={titleParent}>

@@ -15,22 +15,6 @@
   let schoolParent: HTMLElement
   let schoolChild: HTMLElement
 
-  // function fixFontSize(
-  //   parent: HTMLElement,
-  //   child: HTMLElement,
-  //   compensation = 1
-  // ) {
-  //   const { height: parentHeight } = parent.getBoundingClientRect()
-  //   const { height: childHeight } = child.getBoundingClientRect()
-  //   console.log(parent.getBoundingClientRect())
-  //   console.log(child.getBoundingClientRect())
-
-  //   if (childHeight > parentHeight) {
-  //     const p = parentHeight / childHeight
-  //     const fontSize = parseInt(window.getComputedStyle(child).fontSize)
-  //     child.style.fontSize = `${p * compensation * fontSize}px`
-  //   }
-  // }
   let show = false
 
   export let todelete: boolean
@@ -38,16 +22,6 @@
   export let position: number
   position = i
   export let work: Associate
-  // onMount(() => {
-  //   console.log(titleParent)
-  //   fixFontSize(titleParent, titleChild, 1.5)
-  //   console.log(creatorParent)
-  //   fixFontSize(creatorParent, creatorChild)
-  //   console.log(schoolParent)
-  //   fixFontSize(schoolParent, schoolChild)
-  //   console.log(messageParent)
-  //   fixFontSize(messageParent, messageChild)
-  // })
 </script>
 
 {#if !todelete}
@@ -55,7 +29,7 @@
     {#if work.status == 'Incoming'}
       <div
         class="grid grid-rows-2 grid-cols-2 rounded border border-3px text-white h-full text-center mt-sm w-full ws {border
-          .size[theme]} {filterShadow[theme]} ">
+          .all[theme]} {filterShadow[theme]} ">
         <div class="col-span-2 text-center my-auto font-sans ">
           Asociere cu:<br />{work.name}
         </div>
@@ -72,7 +46,7 @@
       </div>
     {:else}
       <div
-        class=" wr mt-sm w-full rounded {border.size[
+        class=" wr mt-sm w-full rounded {border.all[
           theme
         ]} h-full border-white  border-red border-orange  z-20  grid w-full grid-flow-row h-full opacity-80  grid-rows-4 gap-y-xs px-sm py-xs font-sans antialiased  leading-none {text[
           theme

@@ -17,9 +17,13 @@ export const border: Record<string, ThemeEntry> = {
     default: 'border-black',
     white: 'border-white',
   },
-  size: {
+  all: {
     default: 'border-2',
     white: 'border-3',
+  },
+  b: {
+    default: 'border-b-2',
+    white: 'border-b-3',
   },
 }
 

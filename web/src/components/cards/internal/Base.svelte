@@ -18,7 +18,7 @@
 <dl
   class="group relative grid w-full grid-flow-row h-full grid-rows-4 gap-y-xs px-sm py-xs font-sans antialiased rounded leading-none {text[
     t
-  ]} {b} {border.size[t]} {filterShadow[t]} {fontWeight[t]}"
+  ]} {b} {border.all[t]} {filterShadow[t]} {fontWeight[t]}"
   class:white-bg={t === 'default'}
   class:blur={t === 'default'}
   class:darkBg>
