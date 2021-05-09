@@ -136,14 +136,16 @@
           <p class="font-sans text-sm antialiased text-gray">
             A apărut o eroare la obținerea asocierilor tale
           </p>
-        {:else if $teachers && $teachers.length}
-          <Select
-            name="requestedTeacher"
-            placeholder="Opțional: alege cine va revizui lucrarea"
-            options={$teachers}
-            mapper={({ teacher }) => teacher.user.id}
-            display={({ teacher }) => getName(teacher.user)}>Profesor pentru revizuire</Select>
-        {:else if !$teachers}
+        {:else if $teachers}
+          {#if $teachers.length}
+            <Select
+              name="requestedTeacher"
+              placeholder="Opțional: alege cine va revizui lucrarea"
+              options={$teachers}
+              mapper={({ teacher }) => teacher.user.id}
+              display={({ teacher }) => getName(teacher.user)}>Profesor pentru revizuire</Select>
+          {/if}
+        {:else}
           <Spinner longDuration={null} />
         {/if}
         <Actions slot="actions" abortHref="/upload" on:navigate={removeFile}>Publică</Actions>

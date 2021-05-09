@@ -12,7 +12,7 @@ export const getRequestedTeachers = () =>
       switchMap(({ role }) =>
         role === 'student'
           ? fromQuery(client, TEACHER_ASSOCIATIONS).pipe(map(v => v.teacher_student_associations))
-          : of(undefined)
+          : of([])
       ),
       catchError(() => of(null))
     )
