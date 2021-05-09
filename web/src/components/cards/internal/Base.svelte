@@ -9,6 +9,7 @@
   export let theme: Theme | undefined = undefined
   export let borderColor: string | undefined = undefined
   export let darkBg = false
+  export let showOverlay = false
 
   $: t = theme ? theme : $themeStore
   $: b = borderColor ? borderColor : border.color[t]
@@ -30,10 +31,12 @@
   <dt use:fitText>
     <slot name="end" />
   </dt>
-  <div
-    class="absolute w-full h-full duration-50 transition-opacity ease-out opacity-0 group-hover:opacity-100 group-focus:opacity-100">
-    <slot name="overlay" />
-  </div>
+  {#if showOverlay}
+    <div
+      class="absolute w-full h-full duration-50 transition-opacity ease-out opacity-0 group-hover:opacity-100 group-focus:opacity-100">
+      <slot name="overlay" />
+    </div>
+  {/if}
 </dl>
 
 <style>

@@ -365,6 +365,7 @@ export const IS_BOOKMARKED = gql<Data<IsBookmarked>, Vars<IsBookmarked>>`
 export type UnrevisedWork = ID & {
   user: FullNamer
   teacher_id: number
+  updated_at: string | null
 } & (
     | {
         essay: null
@@ -424,12 +425,13 @@ export const UNREVISED_WORKS = gql<Data<UnrevisedWorks>, Vars<UnrevisedWorks>>`
     ) {
       id
       teacher_id
+      updated_at
       ...UnrevisedWorkData
     }
   }
 `
 
-export type UnrevisedWorkData = Omit<UnrevisedWork, 'id' | 'teacher_id'> & WorkData
+export type UnrevisedWorkData = Omit<UnrevisedWork, 'id' | 'teacher_id' | 'updated_at'> & WorkData
 
 type UnrevisedWorkQuery = Query<'works_by_pk', UnrevisedWorkData | null, { workID: number }>
 

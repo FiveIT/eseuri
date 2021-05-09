@@ -3,7 +3,7 @@
   import client from '$/graphql/client'
   import { UPDATE_WORK_STATUS } from '$/graphql/queries'
   import type { UnrevisedWork } from '$/graphql/queries'
-  import { getName, fromMutation, internalErrorNotification } from '$/lib'
+  import { getName, fromMutation, internalErrorNotification, formatDate } from '$/lib'
 
   import { firstValueFrom } from 'rxjs'
   import type { GotoHelper } from '@roxi/routify'
@@ -60,6 +60,11 @@
   $: heading = (work.essay?.title || work.characterization!.character).name
   $: middle = getMiddle(work)
   $: end = getEnd(work)
+  $: when =
+    work.updated_at &&
+    formatDate(new Date(work.updated_at + '+00:00'))
+      .reverse()
+      .join(' ')
 </script>
 
 <WorkBase
@@ -67,4 +72,17 @@
   {heading}
   {middle}
   {end}
-  onBeforeNavigate={() => onBeforeNavigate(work, $redirect)} />
+  showOverlay={!!when}
+  onBeforeNavigate={() => onBeforeNavigate(work, $redirect)}>
+  <p
+    slot="overlay"
+    class="w-full h-full flex items-center rounded-overlay font-sans font-bold text-sm antialiased text-center text-white">
+    Ai început să revizuiești lucrarea {when}
+  </p>
+</WorkBase>
+
+<style>
+  p {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+</style>
