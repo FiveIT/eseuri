@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators'
 
 import { rem, RequestError, internalErrorNotification } from '.'
 import type { FullNamer, MessagesRecord } from '.'
+import { isNonNullable } from './types'
 
 export const px = (v: number) => `${rem * v}`
 
@@ -96,3 +97,9 @@ export const title = (s: string) =>
     .split(/(\s+)/)
     .map(w => w[0].toLocaleUpperCase('ro-RO') + w.slice(1))
     .join('')
+
+export const mapDefined = <T, R>(
+  // eslint-disable-next-line no-unused-vars
+  project: (v: NonNullable<T>, index: number) => R,
+  nullValue: null | undefined = undefined
+) => map<T, R | typeof nullValue>((v: T, i) => (isNonNullable(v) ? project(v, i) : nullValue))
