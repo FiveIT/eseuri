@@ -2,7 +2,8 @@ export { default as Next } from './navigation/Next.svelte'
 export { default as Back } from './navigation/Back.svelte'
 export { default as Bookmark } from './bookmark'
 // @ts-expect-error
-export { default as Reader, getReader } from './Reader.svelte'
+export { default as Read, getReader } from './view/Read.svelte'
+export { default as Review } from './view/Review.svelte'
 
 import client, { relay } from '$/graphql/client'
 import {
@@ -13,11 +14,13 @@ import {
   WORK_ID,
   ListSubjects,
   Relay,
+  UNREVISED_WORK,
 } from '$/graphql/queries'
-import type { WorkType } from '$/lib'
-import { graphQLSeed, fromQuery, handleGraphQLResponse } from '$/lib'
+import { WorkType, Nullable, getName } from '$/lib'
+import { graphQLSeed, fromQuery, handleGraphQLResponse, mapDefined } from '$/lib'
 
-import { from, firstValueFrom, lastValueFrom } from 'rxjs'
+import { from, firstValueFrom, lastValueFrom, concat, of } from 'rxjs'
+import type { Observable } from 'rxjs'
 import { map, switchMap, tap } from 'rxjs/operators'
 import type { Writable } from 'svelte/store'
 
@@ -30,12 +33,14 @@ export interface WorkData extends WorkID {
   content: string
 }
 
+export type WorkBaseData = Omit<WorkData, 'id'>
+
 export const defaultWorkData: WorkData = { id: '', content: '', workID: 0 }
 
 const fetchWork = (id: Relay.ID): Promise<Omit<WorkData, 'workID'> | undefined> =>
   firstValueFrom(
     fromQuery(relay, WORK_CONTENT, { id }).pipe(
-      map(res => (res ? { id, content: res.node.work.content } : undefined))
+      map(res => ({ id, content: res.node.work.content }))
     )
   )
 
@@ -144,16 +149,43 @@ export const works = async (url: string, type: WorkType, beginWith?: string) => 
   }
 }
 
+export const unrevisedWork = (workID: number): Observable<Nullable<UnrevisedWork>> =>
+  concat(
+    of(undefined),
+    fromQuery(client, UNREVISED_WORK, { workID }).pipe(
+      map(v => v.works_by_pk),
+      mapDefined(
+        (v): UnrevisedWork => ({
+          type: v.essay ? 'essay' : 'characterization',
+          title: v.essay ? v.essay.title.name : v.characterization!.character.name,
+          user: getName(v.user),
+          data: Promise.resolve({
+            workID,
+            content: v.content,
+          }),
+        }),
+        null
+      )
+    )
+  )
+
 export const internalErrorNotification = {
   status: 'error',
   message: 'Nu s-au putut obține lucrările.',
   explanation: `Este o eroare internă, revino mai târziu - va fi rezolvată în scurt timp!`,
 } as const
 
-export interface Work {
+export interface WorkBase<T extends WorkBaseData = WorkBaseData> {
   title: string
   type: WorkType
-  data: Promise<WorkData>
+  data: Promise<T>
+}
+
+export interface UnrevisedWork extends WorkBase {
+  user: string
+}
+
+export interface Work extends WorkBase<WorkData> {
   next(): void
   prev(): Promise<boolean>
   bookmarked: Writable<string | null>

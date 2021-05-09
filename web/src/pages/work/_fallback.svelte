@@ -2,7 +2,8 @@
   import { getLayout, window, red, notify, Spinner } from '$/components'
   import { isWorkType, internalErrorNotification } from '$/lib'
   import type { WorkType } from '$/lib'
-  import { Reader, works, defaultWorkData } from './_'
+  import type { Relay } from '$/graphql/queries'
+  import { Read, Review, works, defaultWorkData, unrevisedWork } from './_'
   import { bookmark, isBookmarked, removeBookmark } from './_/bookmark'
   import type { Work } from './_'
 
@@ -10,26 +11,29 @@
   import { goto, leftover, metatags } from '@roxi/routify'
   import { writable } from 'svelte/store'
   import { isAuthenticated } from '@tmaxmax/svelte-auth0'
-  import type { Relay } from '$/graphql/queries'
 
   const { red: setRedBlob, autoSet } = getLayout().blobs
-  let work: (Work & { setBookmarked(): void }) | undefined
-  let done = false
+  let w: (Work & { setBookmarked(): void }) | undefined
+  let uw: ReturnType<typeof unrevisedWork> | undefined
+  let noMatch = false
   let notFoundParagraphs = [
     'Am primit niște date incorecte și nu-ți putem afișa vreo lucrare.',
     `Cel mai probabil ai ajuns aici din greșeală, <a class="underline" href="/search">caută ceva</a> sau <a class="underline" href="/upload">încarcă o lucrare</a>!`,
   ]
 
-  $: $autoSet = !done || !!work
-  $: done &&
-    !work &&
+  $: $autoSet = !noMatch || !!w
+  $: noMatch &&
+    !w &&
     setRedBlob({
       rotate: 47,
       scale: 2,
       x: $window.width - red.width * 2,
       y: $window.height + 40,
     })
-  $: work && $isAuthenticated && work.setBookmarked()
+  $: w && $isAuthenticated && w.setBookmarked()
+  $: if (uw && $uw === null) {
+    noMatch = true
+  }
 
   onDestroy(() => ($autoSet = true))
 
@@ -68,7 +72,7 @@
 
         const bookmarkedWorks: Record<Relay.ID, string> = {}
 
-        work = {
+        w = {
           title: name,
           type,
           data: Promise.resolve(defaultWorkData),
@@ -138,32 +142,36 @@
           },
         }
 
-        work.next()
+        w.next()
       })
       .catch(err => {
         console.error(err)
 
         notify(internalErrorNotification)
       })
-      .finally(() => (done = true))
+      .finally(() => (noMatch = true))
 
-  if (!type) {
-    done = true
-  } else {
+  if (type) {
     const id = parseInt(type)
 
-    if (!id) {
-      if (isWorkType(type)) {
-        setWork(title, type, workID)
-      }
+    if (id) {
+      uw = unrevisedWork(id)
+    } else if (isWorkType(type)) {
+      setWork(title, type, workID)
+    } else {
+      noMatch = true
     }
+  } else {
+    noMatch = true
   }
 </script>
 
 <!-- TODO: Reader for review -->
-{#if work}
-  <Reader {work} />
-{:else if done}
+{#if w}
+  <Read work={w} />
+{:else if uw && $uw}
+  <Review work={$uw} />
+{:else if noMatch}
   <div class="flex flex-col col-start-2 col-span-4 text-center">
     <h2 class="font-serif text-title antialiased mb-md">Ups!</h2>
     {#each notFoundParagraphs as text}

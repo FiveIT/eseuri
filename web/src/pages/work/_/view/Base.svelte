@@ -18,6 +18,7 @@
   import { fade } from 'svelte/transition'
 
   export let work: WorkBase
+  export let additionalHeadingText = ''
   // eslint-disable-next-line no-unused-vars
   export let transitionFn: (...args: any[]) => any = fade
   export let transitionProps: any = { duration, easing }
@@ -29,9 +30,10 @@
       {work.title}
     </h1>
     <div class="flex justify-between align-middle">
-      <div class="w-min text-sm font-sans antialiased">
+      <p class="text-sm font-sans antialiased">
         {title(workTypeTranslation.ro[work.type].inarticulate.singular)}
-      </div>
+        {additionalHeadingText}
+      </p>
       <div class="w-min">
         <slot name="heading" />
       </div>
