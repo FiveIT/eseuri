@@ -25,13 +25,12 @@
   import type { SubmitArgs } from '$/components'
 
   import type { BlobPropsInput, Role } from '$/lib'
-  import { roleTranslation } from '$/lib/content'
-  import { fromMutation } from '$/lib'
+  import { fromMutation, roleTranslation, user } from '$/lib'
 
   import { COUNTIES, REGISTER_USER, SCHOOLS, TEACHER_REQUEST } from '$/graphql/queries'
   import client from '$/graphql/client'
 
-  import { goto, metatags } from '@roxi/routify'
+  import { redirect, metatags } from '@roxi/routify'
   import { query, operationStore } from '@urql/svelte'
   import type { Writable } from 'svelte/store'
 
@@ -76,7 +75,13 @@
     return fromMutation(client, REGISTER_USER, vars).pipe(
       switchMap(() => (role === 'teacher' ? fromMutation(client, TEACHER_REQUEST) : of(undefined))),
       map(() => notification),
-      tap(() => go('/', alive, $goto))
+      tap(() => {
+        user.update(v => ({
+          ...v!,
+          isRegistered: true,
+        }))
+        go('/', alive, $redirect)
+      })
     )
   }
 
