@@ -6,8 +6,6 @@ export type Theme = 'white' | 'default'
 
 export type WorkType = 'essay' | 'characterization'
 
-export type UserRevision = 'yours' | 'anybody'
-
 export function isWorkType(s: string): s is WorkType {
   return s === 'essay' || s === 'characterization'
 }
@@ -19,10 +17,6 @@ export function isNonNullable<T>(v: T): v is NonNullable<T> {
 export type Status = 'InLucru' | 'InAsteptare' | 'Aprobate' | 'Respinse' | 'InRevizuire'
 
 export type AssociateStatus = 'Incoming' | 'Accepted' | 'Rejected' | 'Pending'
-
-export function whoseUnrevWork(s: string): s is UserRevision {
-  return s === 'yours' || s === 'anybody'
-}
 
 export interface WorkSummary {
   readonly name: string
@@ -53,33 +47,6 @@ export interface Associate {
   readonly name: string
   readonly email: string
   readonly school: string
-}
-
-export interface UnrevisedWork {
-  readonly users_all: {
-    readonly first_name: string
-    readonly middle_name: string
-    readonly last_name: string
-  }
-  readonly teacher: string
-  readonly essay: {
-    readonly title: {
-      readonly name: string
-      readonly author: {
-        readonly first_name: string
-        readonly middle_name: string
-        readonly last_name: string
-      }
-    }
-  }
-  readonly characterization: {
-    readonly character: {
-      readonly name: string
-      readonly title: {
-        readonly name: string
-      }
-    }
-  }
 }
 
 export interface UserStatus {
