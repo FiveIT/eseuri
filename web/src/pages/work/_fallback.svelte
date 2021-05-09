@@ -1,6 +1,7 @@
 <script lang="ts">
   import { getLayout, window, red, notify, Spinner } from '$/components'
-  import { isWorkType, internalErrorNotification, WorkType } from '$/lib'
+  import { isWorkType, internalErrorNotification } from '$/lib'
+  import type { WorkType } from '$/lib'
   import { Reader, works, defaultWorkData } from './_'
   import { bookmark, isBookmarked, removeBookmark } from './_/bookmark'
   import type { Work } from './_'
