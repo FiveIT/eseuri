@@ -141,6 +141,8 @@ export default defineConfig({
     'shadow',
     'shadow-inner',
     'font-light',
+    'mt-0.3em',
+    'mt-0.33em',
     ...[4, 3, 2, 1.4].map(v => [`w-${v}em`, `h-${v}em`]),
     [].concat(...['soft', 'large'].map(v => [`shadow-${v}`, `shadow-inner-${v}`])),
   ],

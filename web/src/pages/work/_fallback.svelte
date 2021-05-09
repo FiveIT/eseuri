@@ -1,6 +1,6 @@
 <script lang="ts">
   import { getLayout, window, red, notify, Spinner } from '$/components'
-  import { isWorkType, internalErrorNotification } from '$/lib'
+  import { isWorkType, internalErrorNotification, workTypeTranslation } from '$/lib'
   import type { WorkType } from '$/lib'
   import type { Relay } from '$/graphql/queries'
   import { Read, Review, works, defaultWorkData, unrevisedWork } from './_'
@@ -31,8 +31,13 @@
       y: $window.height + 40,
     })
   $: w && $isAuthenticated && w.setBookmarked()
-  $: if (uw && $uw === null) {
-    noMatch = true
+  $: if (uw) {
+    if ($uw === null) {
+      noMatch = true
+    } else if ($uw) {
+      const type = workTypeTranslation.ro[$uw.type].inarticulate.singular
+      pageTitle = `Revizuire ${type} "${$uw.title}", de ${$uw.user} - Eseuri`
+    }
   }
 
   onDestroy(() => ($autoSet = true))

@@ -27,6 +27,7 @@
     rows: number
     cols: number
     disabled: Readable<boolean>
+    hasTitle: Readable<boolean>
   }
 
   export function getForm(): Context {
@@ -71,13 +72,13 @@
     onSubmit: SubmitFn,
     submitArgs: Omit<SubmitArgs, 'body'>,
     submitStatus: Writable<SubmitStatus>
-  ) => ({ target }: Event) => {
+  ) => (form: HTMLFormElement) => {
     submitStatus.set('awaitingResponse')
     let handle: ReturnType<typeof setTimeout> | undefined
 
     return from(
       onSubmit({
-        body: new FormData(target as HTMLFormElement),
+        body: new FormData(form),
         ...submitArgs,
       })
     )
@@ -134,7 +135,11 @@
   export let rows = 4
   export let cols = 2
   export let disabled = false
+  export let hasTitle = true
+  export let submitOnChange = false
 
+  const hasTitleStore = writable(hasTitle)
+  $: $hasTitleStore = hasTitle
   const disabledStore = writable(disabled)
   $: $disabledStore = disabled
 
@@ -144,7 +149,14 @@
 
   const submitStatus = createStatusStore()
 
-  setForm({ submitStatus, formenctype, rows, cols, disabled: disabledStore })
+  setForm({
+    submitStatus,
+    formenctype,
+    rows,
+    cols,
+    disabled: disabledStore,
+    hasTitle: hasTitleStore,
+  })
 
   const submitFn = submit(onSubmit, { action, method: 'POST', message, explanation }, submitStatus)
 </script>
@@ -156,16 +168,19 @@
   id={name}
   {formenctype}
   {disabled}
+  on:change={() => submitOnChange && submitFn(form)}
   bind:this={form}
-  class="col-span-{3 * cols} row-span-{rows + 2} grid grid-rows-{rows + 2} grid-cols-{3 *
-    cols} gap-y-sm"
-  on:submit|preventDefault={submitFn}>
+  class="col-span-{3 * cols} row-span-{rows + 2 * +hasTitle} grid grid-rows-{rows +
+    2 * +hasTitle} grid-cols-{3 * cols} gap-y-sm"
+  on:submit|preventDefault={() => submitFn(form)}>
   <fieldset class="col-span-{3 * cols} row-span-{rows}">
     <div
       class="grid grid-cols-{cols} grid-rows-{rows} gap-x-md gap-y-sm w-full h-full grid-flow-col font-sans antialiased">
-      <legend class="col-span-{cols} text-md self-center">
-        <slot name="legend" />
-      </legend>
+      {#if hasTitle}
+        <legend class="col-span-{cols} text-md self-center">
+          <slot name="legend" />
+        </legend>
+      {/if}
       <slot />
     </div>
   </fieldset>
