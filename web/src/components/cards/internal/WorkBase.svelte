@@ -15,5 +15,6 @@
     <div slot="heading" class="text-md mt-auto">{heading}</div>
     <div slot="middle" class="text-workInfo leading-none my-auto">{middle}</div>
     <div slot="end" class="text-workInfo">{end}</div>
+    <slot slot="overlay" name="overlay" />
   </Base>
 </Link>
