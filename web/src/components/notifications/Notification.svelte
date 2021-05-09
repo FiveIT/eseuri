@@ -98,7 +98,7 @@
 <div
   class="w-notification min-h-notification z-10 rounded fixed top-4/5 left-3/4 transition-all duration-50 ease-out focus-visible:outline-solid-black {text[
     theme
-  ]} {border.color[theme]} {border.size[theme]} {baseShadow[theme]}
+  ]} {border.color[theme]} {border.all[theme]} {baseShadow[theme]}
   {background[
     theme
   ]} {innerShadow[theme]} text-sm font-sans antialiased leading-none flex flex-col"

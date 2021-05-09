@@ -29,8 +29,8 @@
   export let title: string | undefined = undefined
   export let onBeforeNavigate: () => Promise<boolean | undefined> | boolean | undefined = () => true
 
-  $: isDisabled =
-    typeof disable === 'undefined' ? $isActive(href, undefined, { strict: false }) : disable
+  $: selected = $isActive(href, undefined, { strict: false })
+  $: isDisabled = typeof disable === 'undefined' ? selected : disable
 </script>
 
 {#if !isDisabled}
@@ -51,8 +51,8 @@
     }}
     class="group w-auto h-auto select-none"
     {title}>
-    <slot disable={false} {href} />
+    <slot disable={false} {href} {selected} />
   </a>
 {:else if !hideIfDisabled}
-  <slot disable {href} />
+  <slot disable {href} {selected} />
 {/if}

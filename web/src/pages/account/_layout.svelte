@@ -1,30 +1,4 @@
-<script lang="ts">
-  import { blue, orange, red, Layout, window, NavSlim, NavButton } from '$/components'
-  import type { BlobPropsInput } from '$/components'
-
-  let blueBlobProps: BlobPropsInput
-  $: blueBlobProps = {
-    x: ($window.width - blue.width * 0.8) / 2,
-    y: -blue.height * 0.635 + $window.height * 0.17,
-    scale: 13,
-  }
-
-  let orangeBlobProps: BlobPropsInput
-  $: orangeBlobProps = {
-    x: -orange.width * 1.4,
-    y: $window.height - orange.height,
-    scale: 1.8,
-  }
-
-  let redBlobProps: BlobPropsInput
-  $: redBlobProps = {
-    rotate: 180,
-    scale: 6,
-    x: $window.width - red.width * 3,
-    y: $window.height - 1500,
-    zIndex: 0,
-  }
-
+<script context="module" lang="ts">
   interface Route {
     href: string
     label: string
@@ -54,29 +28,62 @@
         'Actualizează-ți datele, cere rolul de profesor, deconectează-te sau șterge-ți contul.',
     },
   ]
+
+  const theme = 'white'
+</script>
+
+<script lang="ts">
+  import { blue, orange, red, Layout, window, NavSlim, NavButton } from '$/components'
+  import type { BlobPropsInput } from '$/components'
+  import { filterShadow, text, background, border } from '$/lib'
+
+  let blueBlobProps: BlobPropsInput
+  $: blueBlobProps = {
+    x: ($window.width - blue.width * 0.8) / 2,
+    y: -blue.height * 0.635 + $window.height * 0.17,
+    scale: 13,
+  }
+
+  let orangeBlobProps: BlobPropsInput
+  $: orangeBlobProps = {
+    x: -orange.width * 1.4,
+    y: $window.height - orange.height,
+    scale: 1.8,
+  }
+
+  let redBlobProps: BlobPropsInput
+  $: redBlobProps = {
+    rotate: 180,
+    scale: 0,
+    x: $window.width - red.width * 3,
+    y: $window.height - 1500,
+    zIndex: 0,
+  }
 </script>
 
 <Layout
-  theme="white"
+  {theme}
   {blueBlobProps}
   {orangeBlobProps}
   {redBlobProps}
   transition={{ y: 1000 }}
-  afterMount={() => (document.body.style.backgroundColor = 'var(--blue)')}
-  beforeDestroy={() => (document.body.style.backgroundColor = '')}>
+  afterMount={() => document.body.classList.add(background[theme])}
+  beforeDestroy={() => document.body.classList.remove(background[theme])}>
   <NavSlim />
   <div
-    class="col-span-6 row-start-4 grid grid-cols-layout gap-x-md border-b-3px border-white filter-shadow items-center">
-    <h2 class="text-md text-white font-sans antialiased col-span-2">Contul meu</h2>
-    <ul
-      class="col-start-3 col-span-4 grid grid-flow-col place-items-center gap-x-md auto-cols-layout">
-      {#each routes as { href, label, title }}
-        <li class="h-full flex items-center justify-center">
-          <NavButton href="/account/{href}" directGoto {title} let:disable
-            ><span class="text-center" class:underline={disable}>{@html label}</span></NavButton>
-        </li>
-      {/each}
-    </ul>
+    class="col-span-6 row-start-4 grid grid-cols-layout gap-x-md {border.color[theme]} {border.b[
+      theme
+    ]} items-center">
+    <h1 class="col-span-2 text-md {text[theme]} font-sans antialiased {filterShadow[theme]}">
+      Contul meu
+    </h1>
+    {#each routes as { href, label, title }}
+      <div class="h-full">
+        <NavButton href="/account/{href}" directGoto disable={false} {title} let:selected>
+          <span class="text-center" class:underline={selected}>{@html label}</span>
+        </NavButton>
+      </div>
+    {/each}
   </div>
   <slot />
 </Layout>
