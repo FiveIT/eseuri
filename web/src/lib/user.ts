@@ -1,12 +1,12 @@
-import { get } from 'svelte/store'
+import { get, writable, Writable } from 'svelte/store'
 import { authToken } from '@tmaxmax/svelte-auth0'
 import type { CombinedError } from '@urql/svelte'
 
 import type { UserStatus, Notification } from '.'
 import { requestError } from '.'
 
-import { firstValueFrom, of } from 'rxjs'
-import { switchMap } from 'rxjs/operators'
+import { firstValueFrom, of, concat } from 'rxjs'
+import { filter, switchMap } from 'rxjs/operators'
 import { fromFetch } from 'rxjs/fetch'
 
 const endpoint = `${import.meta.env.VITE_FUNCTIONS_URL}` as const
@@ -45,20 +45,27 @@ const statusErrorMessages: MessagesRecord = {
   },
 }
 
+export const user: Writable<UserStatus | null> = writable(null)
+
 export const status = (): Promise<UserStatus> =>
   firstValueFrom(
-    fromFetch(`${endpoint}/user`, {
-      ...getHeaders(),
-      selector: r => r.json().then(v => [v, r.ok, r.status] as const),
-    }).pipe(
-      switchMap(([data, ok, status]) => {
-        if (ok) {
-          return of(data)
-        }
+    concat(
+      of(get(user)),
+      fromFetch(`${endpoint}/user`, {
+        ...getHeaders(),
+        selector: r => r.json().then(v => [v, r.ok, r.status] as const),
+      }).pipe(
+        switchMap(([data, ok, status]) => {
+          if (ok) {
+            user.set(data)
 
-        throw requestError(statusErrorMessages, status)
-      })
-    )
+            return of(data)
+          }
+
+          throw requestError(statusErrorMessages, status)
+        })
+      )
+    ).pipe(filter(v => !!v))
   )
 
 export const isTeacher = () => firstValueFrom(of(undefined))
