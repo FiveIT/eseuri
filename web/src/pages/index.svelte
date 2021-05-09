@@ -3,8 +3,8 @@
   import Spinner from './_/Spinner.svelte'
   import UserMenu from './_/User.svelte'
   import TeacherMenu from './_/Teacher.svelte'
-  import { user, status } from '$/lib'
-  import type { BlobPropsInput } from '$/lib'
+  import { status } from '$/lib'
+  import type { BlobPropsInput, Role } from '$/lib'
 
   import { metatags } from '@roxi/routify'
   import { authToken, isAuthenticated, isLoading } from '@tmaxmax/svelte-auth0'
@@ -35,10 +35,13 @@
   }
 
   let id = 0
+  let role: Role | undefined
   let loading = true
 
   $: if ($isAuthenticated && $authToken) {
-    status().finally(() => (loading = false))
+    status()
+      .then(s => ({ id, role } = s))
+      .finally(() => (loading = false))
   } else if ($isLoading) {
     loading = true
   } else if (!$isAuthenticated) {
@@ -50,7 +53,7 @@
   <NavBig />
   {#if loading}
     <Spinner />
-  {:else if $user?.role === 'teacher'}
+  {:else if role === 'teacher'}
     <TeacherMenu {id} />
   {:else}
     <UserMenu />

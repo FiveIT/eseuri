@@ -49,23 +49,18 @@ export const user: Writable<UserStatus | null> = writable(null)
 
 export const status = (): Promise<UserStatus> =>
   firstValueFrom(
-    concat(
-      of(get(user)),
-      fromFetch(`${endpoint}/user`, {
-        ...getHeaders(),
-        selector: r => r.json().then(v => [v, r.ok, r.status] as const),
-      }).pipe(
-        switchMap(([data, ok, status]) => {
-          if (ok) {
-            user.set(data)
+    fromFetch(`${endpoint}/user`, {
+      ...getHeaders(),
+      selector: r => r.json().then(v => [v, r.ok, r.status] as const),
+    }).pipe(
+      switchMap(([data, ok, status]) => {
+        if (ok) {
+          return of(data)
+        }
 
-            return of(data)
-          }
-
-          throw requestError(statusErrorMessages, status)
-        })
-      )
-    ).pipe(filter(v => !!v))
+        throw requestError(statusErrorMessages, status)
+      })
+    )
   )
 
 export const isTeacher = () => firstValueFrom(of(undefined))

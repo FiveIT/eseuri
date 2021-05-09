@@ -75,13 +75,7 @@
     return fromMutation(client, REGISTER_USER, vars).pipe(
       switchMap(() => (role === 'teacher' ? fromMutation(client, TEACHER_REQUEST) : of(undefined))),
       map(() => notification),
-      tap(() => {
-        user.update(v => ({
-          ...v!,
-          isRegistered: true,
-        }))
-        go('/', alive, $redirect)
-      })
+      tap(() => go('/', alive, $redirect))
     )
   }
 
