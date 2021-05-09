@@ -28,7 +28,7 @@
 
 <style>
   input:focus + label {
-    outline: 2px solid #000;
+    outline: auto;
     outline-offset: 2px;
   }
 

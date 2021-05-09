@@ -30,24 +30,22 @@
   import ActionsLayout from '$/components/form/internal/ActionsLayout.svelte'
 
   let group: Value
-
-  $: console.log({ group })
 </script>
 
 <ActionsLayout>
   {#each values as value}
+    <input
+      type="radio"
+      {name}
+      id="{name}_{value}"
+      bind:group
+      checked={group === value}
+      class="absolute opacity-0 w-0 h-0"
+      {value}
+      required />
     <label
       for="{name}_{value}"
-      class="relative w-full h-full flex items-center space-x-0.3em font-sans text-sm antialiased text-black cursor-pointer focus-visible:outline-solid-black">
-      <input
-        type="radio"
-        {name}
-        id="{name}_{value}"
-        bind:group
-        checked={group === value}
-        class="absolute opacity-0 w-0 h-0"
-        {value}
-        required />
+      class="w-full h-full flex items-center space-x-0.3em font-sans text-sm antialiased text-black cursor-pointer focus-visible:outline-solid-black">
       <div class="w-1.4em h-1.4em {data[value].iconOffset ? `mt-${data[value].iconOffset}` : ''}">
         <svelte:component this={data[value].icon} size="100%" color="var(--black)" />
       </div>
@@ -56,3 +54,9 @@
     </label>
   {/each}
 </ActionsLayout>
+
+<style>
+  input:focus + label {
+    outline: auto;
+  }
+</style>
