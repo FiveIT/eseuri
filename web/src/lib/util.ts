@@ -103,3 +103,45 @@ export const mapDefined = <T, R>(
   project: (v: NonNullable<T>, index: number) => R,
   nullValue: null | undefined = undefined
 ) => map<T, R | typeof nullValue>((v: T, i) => (isNonNullable(v) ? project(v, i) : nullValue))
+
+function isDate(lhs: Date, rhs: Date): boolean {
+  return (
+    lhs.getDate() === rhs.getDate() &&
+    lhs.getMonth() === rhs.getMonth() &&
+    rhs.getFullYear() === lhs.getFullYear()
+  )
+}
+
+const monthLookup = [
+  ['ian', 'ianuarie'],
+  ['feb', 'feburarie'],
+  ['mar', 'martie'],
+  ['apr', 'aprilie'],
+  ['mai', 'mai'],
+  ['iun', 'iunie'],
+  ['iul', 'iulie'],
+  ['aug', 'august'],
+  ['sep', 'septembrie'],
+  ['oct', 'octombrie'],
+  ['nov', 'noiembrie'],
+  ['dec', 'decembrie'],
+]
+
+export function formatDate(date: Date, short?: boolean, html?: boolean): [string, 'la' | 'în'] {
+  const time = `${date.getHours()}:${date.getMinutes()}`
+
+  const today = new Date()
+  if (isDate(date, today)) {
+    return [time, 'la']
+  }
+
+  const isCurrentYear = date.getFullYear() === today.getFullYear()
+  const monthLength = +!!short
+
+  return [
+    `${date.getDate()} ${monthLookup[date.getMonth()][monthLength]}${
+      isCurrentYear ? '' : date.getFullYear()
+    }${html ? '<wbr />' : ' '}${time}`,
+    'în',
+  ]
+}
