@@ -13,6 +13,6 @@
   $: $content.variables = { type }
 </script>
 
-<Base loading={!$content.data} error={!!$content.error} works={$content.data?.work_summaries}>
+<Base loading={$content.fetching} error={!!$content.error} works={$content.data?.work_summaries}>
   <TypeSelector slot="typeSelector" bind:type rowStart={4} colStart={3} />
 </Base>
