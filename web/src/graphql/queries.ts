@@ -386,7 +386,37 @@ export type UnrevisedWork = ID & {
 
 type UnrevisedWorks = Query<'works', UnrevisedWork[], ID>
 
+const UNREVISED_WORK_DATA_FRAGMENT = gql`
+  fragment UnrevisedWorkData on works {
+    user {
+      first_name
+      last_name
+      middle_name
+    }
+    characterization {
+      character {
+        name
+        title {
+          name
+        }
+      }
+    }
+    essay {
+      title {
+        name
+        author {
+          first_name
+          middle_name
+          last_name
+        }
+      }
+    }
+  }
+`
+
 export const UNREVISED_WORKS = gql<Data<UnrevisedWorks>, Vars<UnrevisedWorks>>`
+  ${UNREVISED_WORK_DATA_FRAGMENT}
+
   subscription unrevisedWorks {
     works(
       order_by: [{ status: asc }, { created_at: desc }]
@@ -394,29 +424,22 @@ export const UNREVISED_WORKS = gql<Data<UnrevisedWorks>, Vars<UnrevisedWorks>>`
     ) {
       id
       teacher_id
-      user {
-        first_name
-        last_name
-        middle_name
-      }
-      characterization {
-        character {
-          name
-          title {
-            name
-          }
-        }
-      }
-      essay {
-        title {
-          name
-          author {
-            first_name
-            middle_name
-            last_name
-          }
-        }
-      }
+      ...UnrevisedWorkData
+    }
+  }
+`
+
+export type UnrevisedWorkData = Omit<UnrevisedWork, 'id' | 'teacher_id'> & WorkData
+
+type UnrevisedWorkQuery = Query<'works_by_pk', UnrevisedWorkData | null, { workID: number }>
+
+export const UNREVISED_WORK = gql<Data<UnrevisedWorkQuery>, Vars<UnrevisedWorkQuery>>`
+  ${UNREVISED_WORK_DATA_FRAGMENT}
+
+  query unrevisedWork($workID: Int!) {
+    works_by_pk(id: $workID) {
+      content
+      ...UnrevisedWorkData
     }
   }
 `
