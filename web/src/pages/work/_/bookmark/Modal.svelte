@@ -3,11 +3,10 @@
     status: 'success',
     message: 'Marcaj creat cu succes, lucrarea este salvată!',
   } as const
-
 </script>
 
 <script lang="ts">
-  import { Form, Text, ActionsModal, ModalBase } from '$/components'
+  import { Form, Text, ActionsModal, ModalGrid } from '$/components'
   import type { SubmitFn } from '$/components'
   import { closeModal } from '@tmaxmax/renderless-svelte/src/Modal.svelte'
 
@@ -25,13 +24,12 @@
       .then(() => notification)
 
   onMount(() => focus())
-
 </script>
 
-<ModalBase>
+<ModalGrid>
   <Form name="bookmark" {onSubmit} bind:focus cols={1} rows={2}>
     <span slot="legend">Creează un marcaj</span>
     <Text name="name" placeholder="Scrie numele marcajului aici..." required>Nume</Text>
     <ActionsModal slot="actions" closeFn={closeModal}>Salvează lucrarea</ActionsModal>
   </Form>
-</ModalBase>
+</ModalGrid>

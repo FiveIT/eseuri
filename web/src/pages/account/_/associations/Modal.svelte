@@ -13,24 +13,22 @@
   function check(input: HTMLInputElement, role: Role) {
     const { value: email } = input
 
-    fromQuery(client, USER_BY_EMAIL, { email })
-      .pipe(tap(console.log))
-      .subscribe({
-        next({ users: [user] }) {
-          if (!user) {
-            input.setCustomValidity('Nu există vreun utilizator cu acest email.')
-          } else if (user[role]) {
-            input.setCustomValidity('Nu te poți asocia cu utilizatori care au același rol cu tine.')
-          }
-        },
-        error(err) {
-          if (err instanceof CombinedError) {
-            notify(internalErrorNotification)
-          } else {
-            notify(internalErrorNotification)
-          }
-        },
-      })
+    fromQuery(client, USER_BY_EMAIL, { email }).subscribe({
+      next({ users: [user] }) {
+        if (!user) {
+          input.setCustomValidity('Nu există vreun utilizator cu acest email.')
+        } else if (user[role]) {
+          input.setCustomValidity('Nu te poți asocia cu utilizatori care au același rol cu tine.')
+        }
+      },
+      error(err) {
+        if (err instanceof CombinedError) {
+          notify(internalErrorNotification)
+        } else {
+          notify(internalErrorNotification)
+        }
+      },
+    })
   }
 
   function submit({ body }: SubmitArgs, role: Role) {
@@ -51,11 +49,10 @@
       tap(closeModal)
     )
   }
-
 </script>
 
 <script lang="ts">
-  import { Form, TextConstraint, ActionsModal, ModalBase } from '$/components'
+  import { Form, TextConstraint, ActionsModal, ModalGrid } from '$/components'
   import { onMount } from 'svelte'
 
   export let role: Role
@@ -63,10 +60,9 @@
   let focus: () => void
 
   onMount(() => focus())
-
 </script>
 
-<ModalBase>
+<ModalGrid>
   <Form name="associate" bind:focus cols={1} rows={2} onSubmit={args => submit(args, role)}>
     <span slot="legend">Inițiază o asociere</span>
     <TextConstraint
@@ -79,4 +75,4 @@
     </TextConstraint>
     <ActionsModal slot="actions">Trimite cererea</ActionsModal>
   </Form>
-</ModalBase>
+</ModalGrid>
