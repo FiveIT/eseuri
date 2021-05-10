@@ -8,7 +8,7 @@
 </script>
 
 <Link href="/upload" on:navigate {disable} hideIfDisabled title="Încarcă o lucrare">
-  <div class="bg-orange p-md rounded-full w-min filter-shadow relative">
+  <div class="bg-orange p-md rounded-full w-min filter-shadow">
     <Cross size={px(2)} color="var(--white)" />
   </div>
 </Link>
