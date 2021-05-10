@@ -89,8 +89,8 @@
 
 <LayoutContext let:theme>
   <button
-    disabled={!handlers[status]}
-    on:click={() => handlers[status]?.()}
+    disabled={!!$tr.error || !handlers[status]}
+    on:click={() => !$tr.error && handlers[status]?.()}
     class="rounded {border.all[
       theme
     ]} disabled:cursor-default font-sans text-sm antialiased transition-all duration-100 ease-out {borders[
