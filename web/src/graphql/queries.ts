@@ -363,6 +363,7 @@ export const IS_BOOKMARKED = gql<Data<IsBookmarked>, Vars<IsBookmarked>>`
 `
 
 export type UnrevisedWork = ID & {
+  status: WorkStatus
   user: FullNamer
   teacher_id: number
   updated_at: string | null
@@ -389,6 +390,7 @@ type UnrevisedWorks = Query<'works', UnrevisedWork[], ID>
 
 const UNREVISED_WORK_DATA_FRAGMENT = gql`
   fragment UnrevisedWorkData on works {
+    status
     user {
       first_name
       last_name
@@ -475,6 +477,10 @@ export const COUNTIES = gql<Data<Counties>, Vars<Counties>>`
   }
 `
 
+interface Emailer {
+  email: string
+}
+
 interface SchoolName extends Namer {
   short_name: string
 }
@@ -494,8 +500,8 @@ export const SCHOOLS = gql<Data<Schools>, Vars<Schools>>`
 `
 
 type AssociationUser = ID &
-  FullNamer & {
-    email: string
+  FullNamer &
+  Emailer & {
     school: Omit<School, 'id'>
   }
 
@@ -568,6 +574,66 @@ export const STUDENT_ASSOCIATIONS = gql<
       student {
         user {
           ...AssociationUser
+        }
+      }
+    }
+  }
+`
+
+export interface Teacher {
+  user: FullNamer &
+    Emailer & {
+      school: Omit<School, 'id'>
+    }
+}
+
+type WorksSingleData = ID & {
+  created_at: string
+  updated_at: string | null
+  teacher: Teacher | null
+} & (
+    | {
+        characterization: null
+        essay: {
+          title: Namer
+        }
+      }
+    | {
+        essay: null
+        characterization: {
+          character: Namer
+        }
+      }
+  )
+
+type Works = Query<'works', WorksSingleData[], { userID: number; status: WorkStatus }>
+
+export const WORKS = gql<Data<Works>, Vars<Works>>`
+  subscription works($userID: Int!, $status: work_status_enum!) {
+    works(where: { _and: [{ user_id: { _eq: $userID } }, { status: { _eq: $status } }] }) {
+      id
+      created_at
+      updated_at
+      teacher {
+        user {
+          first_name
+          middle_name
+          last_name
+          email
+          school {
+            name
+            short_name
+          }
+        }
+      }
+      essay {
+        title {
+          name
+        }
+      }
+      characterization {
+        character {
+          name
         }
       }
     }
