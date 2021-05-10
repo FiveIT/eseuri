@@ -41,7 +41,7 @@
         <div class="flex space-x-sm">
           <slot name="heading" />
           {#if $params.back}
-            <Link href={$params.back} title="Întoarce-te de unde ai venit">
+            <Link href={atob($params.back)} title="Întoarce-te de unde ai venit">
               <ArrowBack size={px(1.4)} color="var(--black)" />
             </Link>
           {/if}

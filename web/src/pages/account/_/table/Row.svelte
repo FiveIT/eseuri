@@ -2,6 +2,7 @@
   import { getTable, register } from '.'
   import { getLayout, Link } from '$/components'
   import { border } from '$/lib'
+  import { url } from '@roxi/routify'
 
   export let bordered = false
   export let href: string | undefined = undefined
@@ -19,9 +20,9 @@
 {#if href}
   <div role="row" class="col-span-full h-row {borders}" {id}>
     <Link
-      href="{href}?back={encodeURI(
-        window.location.pathname + window.location.search + (id ? `#${id}` : '')
-      )}"
+      href={$url(href, {
+        back: btoa(window.location.pathname + window.location.search + (id ? `#${id}` : '')),
+      })}
       {title}>
       <div class="relative w-full h-full grid grid-cols-{cols} gap-x-md">
         <slot />
