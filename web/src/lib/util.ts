@@ -140,9 +140,9 @@ export function formatDate(s: string, short?: boolean, html?: boolean): [string,
   const monthLength = +!!short
 
   return [
-    `${date.getDate()} ${monthLookup[date.getMonth()][monthLength]}${
-      isCurrentYear ? '' : date.getFullYear()
-    }${html ? '<wbr />' : ' '}${time}`,
+    `${date.getDate()} ${monthLookup[date.getMonth()][monthLength]} ${
+      isCurrentYear ? '' : `${date.getFullYear()} `
+    }${html ? '<wbr />' : ''}${time}`,
     'în',
   ]
 }
