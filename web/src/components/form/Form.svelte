@@ -68,34 +68,36 @@
   // eslint-disable-next-line no-unused-vars
   type SubmitFn = (args: SubmitArgs) => ObservableInput<Nullable<Notification>>
 
-  const submit = (
-    onSubmit: SubmitFn,
-    submitArgs: Omit<SubmitArgs, 'body'>,
-    submitStatus: Writable<SubmitStatus>
-  ) => (form: HTMLFormElement) => {
-    submitStatus.set('awaitingResponse')
-    let handle: ReturnType<typeof setTimeout> | undefined
+  const submit =
+    (
+      onSubmit: SubmitFn,
+      submitArgs: Omit<SubmitArgs, 'body'>,
+      submitStatus: Writable<SubmitStatus>
+    ) =>
+    (form: HTMLFormElement) => {
+      submitStatus.set('awaitingResponse')
+      let handle: ReturnType<typeof setTimeout> | undefined
 
-    return from(
-      onSubmit({
-        body: new FormData(form),
-        ...submitArgs,
-      })
-    )
-      .pipe(filter(isNonNullable))
-      .subscribe({
-        next(notification) {
-          submitStatus.set('success')
-          notify(notification)
-        },
-        error(err) {
-          submitStatus.set('error')
-          handle && clearTimeout(handle)
-          handle = setTimeout(() => submitStatus.set('awaitingInput'), 5000)
-          error(err)
-        },
-      })
-  }
+      return from(
+        onSubmit({
+          body: new FormData(form),
+          ...submitArgs,
+        })
+      )
+        .pipe(filter(isNonNullable))
+        .subscribe({
+          next(notification) {
+            submitStatus.set('success')
+            notify(notification)
+          },
+          error(err) {
+            submitStatus.set('error')
+            handle && clearTimeout(handle)
+            handle = setTimeout(() => submitStatus.set('awaitingInput'), 5000)
+            error(err)
+          },
+        })
+    }
 
   const messages: MessagesRecord = {
     400: 'Formularul trimis sau datele de autentificare sunt invalide.',
@@ -120,10 +122,14 @@
     )
 
   export type { SubmitArgs, SubmitFn, Context, SubmitStatus }
+
 </script>
 
 <script lang="ts">
   import { CombinedError } from '@urql/svelte'
+
+  import { LayoutContext } from '$/components'
+  import { filterShadow, text } from '$/lib'
 
   export let action: string = ''
   export let name: string
@@ -159,30 +165,33 @@
   })
 
   const submitFn = submit(onSubmit, { action, method: 'POST', message, explanation }, submitStatus)
+
 </script>
 
-<form
-  {action}
-  method="POST"
-  {name}
-  id={name}
-  {formenctype}
-  {disabled}
-  on:change={() => submitOnChange && submitFn(form)}
-  bind:this={form}
-  class="col-span-{3 * cols} row-span-{rows + 2 * +hasTitle} grid grid-rows-{rows +
-    2 * +hasTitle} grid-cols-{3 * cols} gap-y-sm"
-  on:submit|preventDefault={() => submitFn(form)}>
-  <fieldset class="col-span-{3 * cols} row-span-{rows}">
-    <div
-      class="grid grid-cols-{cols} grid-rows-{rows} gap-x-md gap-y-sm w-full h-full grid-flow-col font-sans antialiased">
-      {#if hasTitle}
-        <legend class="col-span-{cols} text-md self-center">
-          <slot name="legend" />
-        </legend>
-      {/if}
-      <slot />
-    </div>
-  </fieldset>
-  <slot name="actions" />
-</form>
+<LayoutContext let:theme>
+  <form
+    {action}
+    method="POST"
+    {name}
+    id={name}
+    {formenctype}
+    {disabled}
+    on:change={() => submitOnChange && submitFn(form)}
+    bind:this={form}
+    class="col-span-{3 * cols} row-span-{rows + 2 * +hasTitle} grid grid-rows-{rows +
+      2 * +hasTitle} grid-cols-{3 * cols} gap-y-sm {filterShadow[theme]}"
+    on:submit|preventDefault={() => submitFn(form)}>
+    <fieldset class="col-span-{3 * cols} row-span-{rows}">
+      <div
+        class="grid grid-cols-{cols} grid-rows-{rows} gap-x-md gap-y-sm w-full h-full grid-flow-col font-sans antialiased">
+        {#if hasTitle}
+          <legend class="col-span-{cols} text-md self-center {text[theme]}">
+            <slot name="legend" />
+          </legend>
+        {/if}
+        <slot />
+      </div>
+    </fieldset>
+    <slot name="actions" />
+  </form>
+</LayoutContext>
