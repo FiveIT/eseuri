@@ -1,6 +1,9 @@
 <script lang="ts">
   import { Table, Row, Header } from './_/table'
   import Bookmarks from './_/Bookmarks.svelte'
+  import { metatags } from '@roxi/routify'
+
+  metatags.title = 'Marcaje - Contul meu - Eseuri'
 </script>
 
 <Table>

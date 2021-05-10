@@ -22,7 +22,9 @@
   import { Table, Row, Header, Spinner, Error } from './_/table'
   import Works from './_/Works.svelte'
 
-  import { params, goto } from '@roxi/routify'
+  import { params, goto, metatags } from '@roxi/routify'
+
+  metatags.title = 'Lucrări - Contul meu - Eseuri'
 
   let status: WorkStatus = isWorkStatus($params.status) ? $params.status : 'pending'
 
