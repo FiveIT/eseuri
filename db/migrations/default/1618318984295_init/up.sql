@@ -84,7 +84,7 @@ create table users_all
     last_name   text
         constraint registered_user_last_name check (updated_at is null or last_name is not null and last_name <> ''),
     email       email
-        constraint users_all_email_key check (deleted_at is null or email is not null) unique,
+        constraint users_all_email_key check (deleted_at is not null or email is not null) unique,
     school_id   int
         constraint registered_user_school check (updated_at is null or school_id is not null),
     created_at  timestamp default (localtimestamp),
