@@ -34,6 +34,7 @@
   function setReader(ctx: Context) {
     setContext(contextKey, ctx)
   }
+
 </script>
 
 <script lang="ts">
@@ -91,7 +92,7 @@
   }
 
   async function onKey(ev: KeyboardEvent) {
-    if ($currentlyBookmarking) {
+    if ($currentlyBookmarking || ev.altKey) {
       return
     }
 
@@ -113,6 +114,7 @@
       $currentlyBookmarking = false
     }
   }
+
 </script>
 
 <Base {work} transitionFn={fly} transitionProps={{ x: direction * -200, duration, easing }}>
@@ -128,4 +130,4 @@
   {/if}
 </Modal>
 
-<svelte:window on:keydown={onKey} />
+<svelte:window on:keyup={onKey} />
