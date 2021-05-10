@@ -23,6 +23,7 @@
   import Works from './_/Works.svelte'
 
   import { params, goto, metatags } from '@roxi/routify'
+  import { firstValueFrom } from 'rxjs'
 
   metatags.title = 'Lucrări - Contul meu - Eseuri'
 
@@ -59,7 +60,7 @@
       <Header>Ultima actualizare</Header>
       <Header>Profesor responsabil</Header>
     </Row>
-    {#await userStatus()}
+    {#await firstValueFrom(userStatus())}
       <Spinner />
     {:then { id }}
       <Works {status} userID={id} />

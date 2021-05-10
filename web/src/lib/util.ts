@@ -1,7 +1,8 @@
 import type { DocumentNode } from 'graphql'
 import type { Client, OperationResult, TypedDocumentNode, OperationContext } from '@urql/svelte'
 import { CombinedError } from '@urql/svelte'
-import { from } from 'rxjs'
+import type { Readable } from 'svelte/store'
+import { from, Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
 
 import { rem, RequestError, internalErrorNotification } from '.'
@@ -48,6 +49,12 @@ export function fromMutation<Result, Variables extends object = {}>(
   return from(client.mutation(mutation, vars, context).toPromise()).pipe(
     map(handleGraphQLResponse(v => v!))
   )
+}
+
+export function fromStore<T>(store: Readable<T>): Observable<T> {
+  return new Observable(subscriber => {
+    return store.subscribe(v => subscriber.next(v))
+  })
 }
 
 export function getName({ first_name, middle_name, last_name }: FullNamer) {

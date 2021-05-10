@@ -1,12 +1,12 @@
-import { get, writable, Writable } from 'svelte/store'
+import { get } from 'svelte/store'
 import { authToken } from '@tmaxmax/svelte-auth0'
 import type { CombinedError } from '@urql/svelte'
 
-import type { UserStatus, Notification } from '.'
-import { requestError } from '.'
+import type { Notification } from '.'
+import { requestError, fromStore } from '.'
 
-import { firstValueFrom, of, from, interval } from 'rxjs'
-import { catchError, switchMap, take } from 'rxjs/operators'
+import { of } from 'rxjs'
+import { filter, switchMap, take } from 'rxjs/operators'
 import { fromFetch } from 'rxjs/fetch'
 
 const endpoint = `${import.meta.env.VITE_FUNCTIONS_URL}` as const
@@ -45,35 +45,25 @@ const statusErrorMessages: MessagesRecord = {
   },
 }
 
-export const user: Writable<UserStatus | null> = writable(null)
+export const status = () =>
+  fromStore(authToken).pipe(
+    filter(v => !!v),
+    take(1),
+    switchMap(token =>
+      fromFetch(`${endpoint}/user`, {
+        headers: { Authorization: `Bearer ${token}` },
+        selector: r => r.json().then(v => [v, r.ok, r.status] as const),
+      }).pipe(
+        switchMap(([data, ok, status]) => {
+          if (ok) {
+            return of(data)
+          }
 
-export const status = (retries = 2): Promise<UserStatus> =>
-  firstValueFrom(
-    fromFetch(`${endpoint}/user`, {
-      ...getHeaders(),
-      selector: r => r.json().then(v => [v, r.ok, r.status] as const),
-    }).pipe(
-      switchMap(([data, ok, status]) => {
-        if (ok) {
-          return of(data)
-        }
-
-        throw requestError(statusErrorMessages, status)
-      }),
-      catchError(err => {
-        if (retries) {
-          return interval(1000).pipe(
-            take(1),
-            switchMap(() => from(status(retries - 1)))
-          )
-        }
-
-        throw err
-      })
+          throw requestError(statusErrorMessages, status)
+        })
+      )
     )
   )
-
-export const isTeacher = () => firstValueFrom(of(undefined))
 
 export class RequestError extends Error {
   public readonly message: string

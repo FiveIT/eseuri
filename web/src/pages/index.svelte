@@ -8,6 +8,7 @@
 
   import { metatags } from '@roxi/routify'
   import { authToken, isAuthenticated, isLoading } from '@tmaxmax/svelte-auth0'
+  import { firstValueFrom } from 'rxjs'
 
   metatags.title = 'Acasă - Eseuri'
 
@@ -39,7 +40,7 @@
   let loading = true
 
   $: if ($isAuthenticated && $authToken) {
-    status()
+    firstValueFrom(status())
       .then(s => ({ id, role } = s))
       .finally(() => (loading = false))
   } else if ($isLoading) {

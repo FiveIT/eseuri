@@ -9,6 +9,7 @@
 
   import type { GotoHelper } from '@roxi/routify'
   import type { Writable } from 'svelte/store'
+  import { firstValueFrom } from 'rxjs'
   import { map, tap } from 'rxjs/operators'
 
   function onSubmit(
@@ -35,7 +36,7 @@
 
   let user: UserStatus | undefined
 
-  status().then(s => (user = s))
+  firstValueFrom(status()).then(s => (user = s))
 
   export let work: UnrevisedWork
 </script>
