@@ -2,18 +2,20 @@
   import ActionsBase from './internal/ActionsBase.svelte'
   import { LayoutContext } from '..'
   import { text } from '$/lib/theme'
+  import { closeModal } from '@tmaxmax/renderless-svelte/src/Modal.svelte'
 
   export let submitValue: string | undefined = undefined
-  export let closeFn: (() => void) | undefined = undefined
+  export let closeFn: () => void = closeModal
   export let closeLabel = 'Anulează'
 
-  function onKeyup({ code }: KeyboardEvent) {
-    if (code !== 'Escape') {
+  function onKeyup(e: KeyboardEvent) {
+    if (e.code !== 'Escape' || e.altKey) {
       return
     }
 
     closeFn?.()
   }
+
 </script>
 
 <LayoutContext let:theme>
