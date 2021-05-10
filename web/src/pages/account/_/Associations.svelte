@@ -46,6 +46,7 @@
       },
     })
   }
+
 </script>
 
 <script lang="ts">
@@ -61,7 +62,7 @@
   import { subscription, operationStore } from '@urql/svelte'
   import type { Role } from '$/lib'
 
-  import Modal from '@tmaxmax/renderless-svelte/src/Modal.svelte'
+  import Modal, { openModal } from '@tmaxmax/renderless-svelte/src/Modal.svelte'
 
   export let userID: number
   export let role: Role
@@ -80,10 +81,32 @@
     ...v,
     id: id(v),
   }))
+
+  let hasOpenedModal = false
+
+  async function onClick() {
+    if (hasOpenedModal) {
+      return
+    }
+
+    hasOpenedModal = true
+    await openModal(role)
+    hasOpenedModal = false
+  }
+
+  function onKeyup(e: KeyboardEvent) {
+    if (hasOpenedModal || e.key !== '+' || e.altKey) {
+      return
+    }
+
+    e.preventDefault()
+    onClick()
+  }
+
 </script>
 
 {#if data}
-  <InitiateAssociation />
+  <InitiateAssociation on:click={onClick} />
   {#each data as assoc (assoc.id)}
     {#if assoc.status === 'pending' && assoc.initiator_id !== userID}
       <IncomingAssociation
@@ -93,9 +116,9 @@
       <Assoc association={assoc} on:click={() => remove(assoc)} />
     {/if}
   {/each}
-  <Modal let:payload={userID}>
-    {#if userID}
-      <AssociationModal {userID} />
+  <Modal let:payload={role}>
+    {#if role}
+      <AssociationModal {role} />
     {/if}
   </Modal>
 {:else if !$content.error}
@@ -103,3 +126,5 @@
     <Spinner />
   </div>
 {/if}
+
+<svelte:window on:keyup={onKeyup} />
