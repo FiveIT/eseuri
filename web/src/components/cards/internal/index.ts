@@ -4,8 +4,27 @@ export { default as BaseLayout } from './Layout.svelte'
 export { default as Base } from './Base.svelte'
 
 interface FitTextProperties {
+  /**
+   * The deduced font size is multiplied with this value
+   * in order to produce a more pleasing resizing. Set this
+   * to your own taste.
+   *
+   * The default value does not modify the final font size.
+   *
+   * @default 1
+   */
   compensation: number
+  /**
+   * The lower bound to limit the possible resizing values to.
+   *
+   * @default 1rem
+   */
   min: number
+  /**
+   * The upper bound to limit the possible resizing values to.
+   *
+   * @default 1.75rem
+   */
   max: number
 }
 
@@ -15,72 +34,74 @@ const defaultFontSizeProps: FitTextProperties = {
   max: parseInt(px(1.75)), // text-md
 }
 
-const noop = {
-  update() {},
-  destroy() {},
-} as const
-
-const observed: Map<Element, FitTextProperties & { done: boolean }> = new Map()
+const observed: Map<Element, FitTextProperties> = new Map()
 
 const observer = new IntersectionObserver(
   entries => {
     entries
       .map(entry => {
-        const { compensation, min, max, done } = observed.get(entry.target)!
-
-        if (done) {
+        if (!entry.isIntersecting) {
           return
         }
+
+        const { compensation, min, max } = observed.get(entry.target)!
 
         const child = entry.target.children[0] as HTMLElement
 
-        const parentHeight = entry.boundingClientRect.height
-        const childHeight = child.getBoundingClientRect().height
+        const { height: ph } = entry.boundingClientRect
+        const { height: ch } = child.getBoundingClientRect()
 
-        if (childHeight <= parentHeight) {
+        destroy(entry.target)
+
+        if (ch <= ph) {
           return
         }
 
-        const p = parentHeight / childHeight
+        const p = ph / ch
         const fontSize = parseInt(window.getComputedStyle(child).fontSize)
 
-        return [child, `${clamp(p * fontSize * compensation, min, max)}`] as const
+        return `${clamp(p * fontSize * compensation, min, max)}px`
       })
-      .forEach(change => {
-        if (!change) {
-          return
-        }
+      .forEach((fontSize, i) => {
+        if (fontSize) {
+          const elem = entries[i].target.children[0] as HTMLElement
 
-        change[0].style.fontSize = change[1]
+          elem.style.fontSize = fontSize
+        }
       })
   },
-  {
-    root: document.querySelector('#app'),
-    rootMargin: '0px',
-    threshold: 1.0,
-  }
+  { threshold: 1 }
 )
 
+function destroy(target: Element) {
+  observer.unobserve(target)
+  observed.delete(target)
+}
+
+/**
+ * Lazily resizes the font of the first child of the element the action is applied to
+ * when it becomes visible in the viewport.
+ *
+ * For this to work, the text must overflow vertically. To achieve this behaviour
+ * for text without blanks, add the CSS property `overflow-wrap: break-words`.
+ */
 export function fitText(node: Element, props?: Partial<FitTextProperties>) {
-  const { compensation, min, max } = {
+  const preferences = {
     ...defaultFontSizeProps,
     ...props,
   }
 
   if (node.children.length === 0) {
-    return noop
+    return { update() {}, destroy() {} }
   }
 
-  const child = node.children[0] as HTMLElement
+  observed.set(node, preferences)
+  observer.observe(node)
 
-  const childHeight = child.getBoundingClientRect().height
-  const parentHeight = node.getBoundingClientRect().height
-
-  if (childHeight > parentHeight) {
-    const p = parentHeight / childHeight
-    const fontSize = parseInt(window.getComputedStyle(child).fontSize)
-    child.style.fontSize = `${clamp(p * fontSize * compensation, min, max)}px`
+  return {
+    update() {},
+    destroy() {
+      destroy(node)
+    },
   }
-
-  return noop
 }
