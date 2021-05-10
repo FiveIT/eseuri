@@ -806,3 +806,51 @@ export const SELF = gql<Data<SelfQuery>, Vars<SelfQuery>>`
     }
   }
 `
+
+type TeacherRequestTracking = {
+  created_at: string
+} & (
+  | {
+      status: 'pending'
+      updated_at: null
+    }
+  | {
+      status: 'approved' | 'rejected'
+      updated_at: string
+    }
+)
+
+type TeacherRequestTrackingQuery = Query<'teacher_requests', [TeacherRequestTracking] | []>
+
+export const TEACHER_REQUEST_TRACKING = gql<
+  Data<TeacherRequestTrackingQuery>,
+  Vars<TeacherRequestTrackingQuery>
+>`
+  subscription teacherRequest {
+    teacher_requests {
+      created_at
+      updated_at
+      status
+    }
+  }
+`
+
+type RemoveTeacherRequest = Query<'delete_teacher_request', { affected_rows: number }>
+
+export const REMOVE_TEACHER_REQUEST = gql<Data<RemoveTeacherRequest>, Vars<RemoveTeacherRequest>>`
+  mutation deleteTeacherRequest {
+    delete_teacher_requests(where: {}) {
+      affected_rows
+    }
+  }
+`
+
+type DeleteAccount = Query<'delete_users', { affected_rows: number }>
+
+export const DELETE_ACCOUNT = gql<Data<DeleteAccount>, Vars<DeleteAccount>>`
+  mutation deleteAccount {
+    delete_users(where: {}) {
+      affected_rows
+    }
+  }
+`
