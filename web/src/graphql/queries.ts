@@ -483,7 +483,7 @@ interface Emailer {
 }
 
 interface SchoolName extends Namer {
-  short_name: string
+  short_name: string | null
 }
 
 export type School = ID & SchoolName
@@ -563,16 +563,49 @@ export const TEACHER_ASSOCIATIONS = gql<
   }
 `
 
-export const STUDENT_ASSOCIATIONS = gql<
-  Data<Associations<'student'>>,
-  Vars<Associations<'student'>>
->`
+type AssociationPerson =
+  | {
+      teacher?: null
+      student: {
+        user: AssociationUser
+      }
+    }
+  | {
+      student?: null
+      teacher: {
+        user: AssociationUser
+      }
+    }
+
+export type Association = AssociationPerson & {
+  initiator_id: number
+  status: TeacherAssociationStatus
+}
+
+type AssociationsQuery = Query<
+  'teacher_student_associations',
+  Association[],
+  { teacher?: boolean; userID: number }
+>
+
+export const ASSOCIATIONS = gql<Data<AssociationsQuery>, Vars<AssociationsQuery>>`
   ${ASSOCIATION_USER_FRAGMENT}
 
-  query studentAssociations($status: teacher_student_association_status_enum = approved) {
-    teacher_student_associations(where: { status: { _eq: $status } }) {
+  subscription associations($userID: Int!, $teacher: Boolean = false) {
+    teacher_student_associations(
+      where: {
+        _not: { _and: [{ status: { _eq: rejected } }, { initiator_id: { _neq: $userID } }] }
+      }
+      order_by: { status: asc }
+    ) {
       initiator_id
-      student {
+      status
+      student @include(if: $teacher) {
+        user {
+          ...AssociationUser
+        }
+      }
+      teacher @skip(if: $teacher) {
         user {
           ...AssociationUser
         }
@@ -581,11 +614,53 @@ export const STUDENT_ASSOCIATIONS = gql<
   }
 `
 
-export interface Teacher {
-  user: FullNamer &
-    Emailer & {
-      school: Omit<School, 'id'>
+interface ResolveAssociationRequestVars {
+  initiatorID: number
+  status: Exclude<TeacherAssociationStatus, 'pending'>
+}
+
+type ResolveAssociationRequest = Query<
+  'update_teacher_student_associations',
+  { affected_rows: number },
+  ResolveAssociationRequestVars
+>
+
+export const RESOLVE_ASSOCIATION_REQUEST = gql<
+  Data<ResolveAssociationRequest>,
+  Vars<ResolveAssociationRequest>
+>`
+  mutation resolveAssociationRequest(
+    $initiatorID: Int!
+    $status: teacher_student_association_status_enum = approved
+  ) {
+    update_teacher_student_associations(
+      where: { initiator_id: { _eq: $initiatorID } }
+      _set: { status: $status }
+    ) {
+      affected_rows
     }
+  }
+`
+
+type DeleteAssociation = Query<'delete_teacher_student_associations', { affected_rows: number }, ID>
+
+export const DELETE_ASSOCIATION = gql<Data<DeleteAssociation>, Vars<DeleteAssociation>>`
+  mutation deleteAssociation($id: Int!) {
+    delete_teacher_student_associations(
+      where: {
+        _or: [
+          { student: { user: { id: { _eq: $id } } } }
+          { teacher: { user: { id: { _eq: $id } } } }
+        ]
+      }
+    ) {
+      affected_rows
+    }
+  }
+`
+
+export interface Teacher {
+  user: User
 }
 
 type WorkSubject =
