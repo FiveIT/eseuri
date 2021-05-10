@@ -33,7 +33,7 @@
 </script>
 
 <script lang="ts">
-  import { blue, orange, red, Layout, window, NavSlim, NavButton } from '$/components'
+  import { blue, orange, red, Layout, window, NavSlim, NavButton, Allow } from '$/components'
   import type { BlobPropsInput } from '$/components'
   import { filterShadow, text, background, border } from '$/lib'
 
@@ -61,29 +61,36 @@
   }
 </script>
 
-<Layout
-  {theme}
-  {blueBlobProps}
-  {orangeBlobProps}
-  {redBlobProps}
-  transition={{ y: 1000 }}
-  afterMount={() => document.body.classList.add(background[theme])}
-  beforeDestroy={() => document.body.classList.remove(background[theme])}>
-  <NavSlim />
-  <div
-    class="col-span-6 row-start-4 grid grid-cols-layout gap-x-md {border.color[theme]} {border.b[
-      theme
-    ]} items-center">
-    <h1 class="col-span-2 text-md {text[theme]} font-sans antialiased {filterShadow[theme]}">
-      Contul meu
-    </h1>
-    {#each routes as { href, label, title }}
-      <div class="h-full">
-        <NavButton href="/account/{href}" directGoto disable={false} {title} let:selected>
-          <span class="text-center" class:underline={selected}>{@html label}</span>
-        </NavButton>
-      </div>
-    {/each}
-  </div>
-  <slot />
-</Layout>
+<Allow authenticated redirect="/">
+  <Layout
+    {theme}
+    {blueBlobProps}
+    {orangeBlobProps}
+    {redBlobProps}
+    transition={{ y: 1000 }}
+    afterMount={() => document.body.classList.add(background[theme])}
+    beforeDestroy={() => document.body.classList.remove(background[theme])}>
+    <NavSlim />
+    <div
+      class="col-span-6 row-start-4 grid grid-cols-layout gap-x-md {border.color[theme]} {border.b[
+        theme
+      ]} items-center sticky top-0 bg-blue z-1">
+      <h1
+        class="col-span-2 text-md {text[theme]} font-sans antialiased select-none {filterShadow[
+          theme
+        ]}">
+        Contul meu
+      </h1>
+      {#each routes as { href, label, title }}
+        <div class="h-full">
+          <NavButton href="/account/{href}" directGoto disable={false} {title} let:selected>
+            <span class="text-center" class:underline={selected}>{@html label}</span>
+          </NavButton>
+        </div>
+      {/each}
+    </div>
+    <div class="row-start-5 col-span-full grid grid-cols-6 gap-x-md gap-y-sm auto-rows-layout">
+      <slot />
+    </div>
+  </Layout>
+</Allow>
