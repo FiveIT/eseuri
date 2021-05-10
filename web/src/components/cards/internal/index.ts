@@ -20,7 +20,48 @@ const noop = {
   destroy() {},
 } as const
 
-export function fitText(node: HTMLElement, props?: Partial<FitTextProperties>) {
+const observed: Map<Element, FitTextProperties & { done: boolean }> = new Map()
+
+const observer = new IntersectionObserver(
+  entries => {
+    entries
+      .map(entry => {
+        const { compensation, min, max, done } = observed.get(entry.target)!
+
+        if (done) {
+          return
+        }
+
+        const child = entry.target.children[0] as HTMLElement
+
+        const parentHeight = entry.boundingClientRect.height
+        const childHeight = child.getBoundingClientRect().height
+
+        if (childHeight <= parentHeight) {
+          return
+        }
+
+        const p = parentHeight / childHeight
+        const fontSize = parseInt(window.getComputedStyle(child).fontSize)
+
+        return [child, `${clamp(p * fontSize * compensation, min, max)}`] as const
+      })
+      .forEach(change => {
+        if (!change) {
+          return
+        }
+
+        change[0].style.fontSize = change[1]
+      })
+  },
+  {
+    root: document.querySelector('#app'),
+    rootMargin: '0px',
+    threshold: 1.0,
+  }
+)
+
+export function fitText(node: Element, props?: Partial<FitTextProperties>) {
   const { compensation, min, max } = {
     ...defaultFontSizeProps,
     ...props,
