@@ -14,9 +14,11 @@
   --green: #008148;
   --row-height: 4.133rem;
   --row-gap: 0.625rem;
+  --column-gap: 1.25rem;
   --column-width: 7.6rem;
   --essay-column-gap: 1.875rem;
-  --essay-column-width: calc(var(--column-width) * 2 + var(--essay-column-gap));
+  --essay-column-half: calc(var(--column-width) + var(--column-gap) - var(--essay-column-gap));
+  --essay-column-width: calc(var(--essay-column-half) * 2 + var(--essay-column-gap));
   --essay-row-heigth: calc(var(--row-height) * 2 + var(--row-gap));
   --association-box-width: calc(var(--column-width) * 3 + var(--essay-column-gap) * 2);
   --association-box-height: calc(var(--row-height) * 5 + var(--row-gap) * 4);

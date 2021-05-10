@@ -50,7 +50,7 @@ export default defineConfig({
     spacing: {
       xs: 'calc(var(--row-gap) / 2)',
       sm: 'var(--row-gap)',
-      md: '1.25rem',
+      md: 'var(--column-gap)',
       lg: 'var(--essay-column-gap)',
       xlg: '6.5vmin',
       col: 'var(--column-width)',
@@ -76,7 +76,7 @@ export default defineConfig({
     gridTemplateColumns: {
       layout: 'repeat(6, var(--column-width))',
       form: 'repeat(3, var(--column-width))',
-      essays: 'repeat(3, 1fr)',
+      essays: 'repeat(3, var(--essay-column-width))',
     },
     gridAutoColumns: {
       layout: 'var(--column-width)',
