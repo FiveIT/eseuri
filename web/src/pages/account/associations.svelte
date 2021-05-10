@@ -1,22 +1,28 @@
 <script lang="ts">
-  import AssociateButton from '$/components/AssociateButton.svelte'
-  import AssociateCard from '$/components/AssociateCard.svelte'
+  import { Spinner, LayoutContext } from '$/components'
+  import { status, placeholderText } from '$/lib'
+  import Associations from './_/Associations.svelte'
 
-  import { asociates } from '$/content'
+  import { metatags } from '@roxi/routify'
 
-  let todelete: boolean
-  $: if (todelete == true) {
-    todelete = false
-    asociates.splice(position)
-    console.log(position)
-  }
-  let position: number
+  metatags.title = 'Asocieri - Contul meu - Eseuri'
 </script>
 
-<div
-  class="row-start-5 col-span-6 col-start-1 grid grid-cols-essays auto-rows-essays gap-x-md gap-y-sm ">
-  <AssociateButton />
-  {#each asociates as associate, i}
-    <AssociateCard work={associate} {todelete} {i} bind:position />
-  {/each}
-</div>
+<LayoutContext let:theme>
+  <div class="col-span-full grid grid-cols-essays auto-rows-essays gap-x-lg gap-y-sm">
+    {#await status()}
+      <div class="col-start-1 h-full flex items-center justify-center">
+        <Spinner />
+      </div>
+    {:then { role, id: userID }}
+      <Associations {role} {userID} />
+    {:catch}
+      <p
+        class="text-md font-sans antialiased {placeholderText[
+          theme
+        ]} col-start-1 h-full text-center flex items-center justify-center">
+        Nu s-au putut obține asocierile, revino mai târziu.
+      </p>
+    {/await}
+  </div>
+</LayoutContext>
