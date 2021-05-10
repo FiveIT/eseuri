@@ -162,7 +162,7 @@
     if (id) {
       uw = unrevisedWork(id)
     } else if (isWorkType(type)) {
-      setWork(title, type, workID)
+      setWork(title, type, workID?.slice(0, workID?.lastIndexOf('?')))
     } else {
       noMatch = true
     }
