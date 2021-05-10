@@ -25,6 +25,6 @@
 
 <style>
   div.darkBg {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.4);
   }
 </style>
