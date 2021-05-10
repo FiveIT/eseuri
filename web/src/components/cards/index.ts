@@ -1,3 +1,5 @@
 export { default as Work } from './Work.svelte'
 export { default as UnrevisedWork } from './UnrevisedWork.svelte'
 export { default as InitiateAssociation } from './InitiateAssociation.svelte'
+export { default as IncomingAssociation } from './IncomingAssociation.svelte'
+export { default as Association } from './Association.svelte'

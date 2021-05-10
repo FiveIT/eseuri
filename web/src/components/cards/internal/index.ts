@@ -1,6 +1,7 @@
 import { px, clamp } from '$/lib'
 
 export { default as BaseLayout } from './Layout.svelte'
+export { default as Base } from './Base.svelte'
 
 interface FitTextProperties {
   compensation: number
