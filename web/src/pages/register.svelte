@@ -25,7 +25,7 @@
   import type { SubmitArgs } from '$/components'
 
   import type { BlobPropsInput, Role } from '$/lib'
-  import { fromMutation, roleTranslation, user } from '$/lib'
+  import { fromMutation, roleTranslation } from '$/lib'
 
   import { COUNTIES, REGISTER_USER, SCHOOLS, TEACHER_REQUEST } from '$/graphql/queries'
   import client from '$/graphql/client'
