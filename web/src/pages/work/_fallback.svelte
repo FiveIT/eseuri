@@ -8,7 +8,7 @@
   import type { Work } from './_'
 
   import { onDestroy } from 'svelte'
-  import { goto, leftover, metatags } from '@roxi/routify'
+  import { goto, leftover, metatags, params } from '@roxi/routify'
   import { writable } from 'svelte/store'
   import { isAuthenticated } from '@tmaxmax/svelte-auth0'
 
@@ -100,7 +100,7 @@
             this.data = it.next().then(v => {
               const data = v.value
 
-              $goto(`/work/${type}/${title}/${data.id}`)
+              $goto(`/work/${type}/${title}/${data.id}`, $params)
 
               pageTitle = `${name} - Lucrări - Eseuri`
 
@@ -116,7 +116,7 @@
             this.data = res.then(r => {
               const data = r.value!
 
-              $goto(`/work/${type}/${title}/${data.id}`)
+              $goto(`/work/${type}/${title}/${data.id}`, $params)
 
               pageTitle = `${name} - Lucrări - Eseuri`
 
