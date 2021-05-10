@@ -5,8 +5,8 @@ import type { CombinedError } from '@urql/svelte'
 import type { UserStatus, Notification } from '.'
 import { requestError } from '.'
 
-import { firstValueFrom, of, concat } from 'rxjs'
-import { filter, switchMap } from 'rxjs/operators'
+import { firstValueFrom, of, from } from 'rxjs'
+import { catchError, switchMap } from 'rxjs/operators'
 import { fromFetch } from 'rxjs/fetch'
 
 const endpoint = `${import.meta.env.VITE_FUNCTIONS_URL}` as const
@@ -47,7 +47,7 @@ const statusErrorMessages: MessagesRecord = {
 
 export const user: Writable<UserStatus | null> = writable(null)
 
-export const status = (): Promise<UserStatus> =>
+export const status = (retries = 2): Promise<UserStatus> =>
   firstValueFrom(
     fromFetch(`${endpoint}/user`, {
       ...getHeaders(),
@@ -59,6 +59,13 @@ export const status = (): Promise<UserStatus> =>
         }
 
         throw requestError(statusErrorMessages, status)
+      }),
+      catchError(err => {
+        if (retries) {
+          return from(status(retries - 1))
+        }
+
+        throw err
       })
     )
   )
