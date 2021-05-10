@@ -77,6 +77,41 @@ select_permissions:
       - teacher_id:
           _eq: X-Hasura-User-Id
   role: teacher
+update_permissions:
+- permission:
+    check:
+      status:
+        _in:
+        - approved
+        - rejected
+    columns:
+    - status
+    filter:
+      _and:
+      - status:
+          _eq: pending
+      - initiator_id:
+          _neq: X-Hasura-User-Id
+      - student_id:
+          _eq: X-Hasura-User-Id
+  role: student
+- permission:
+    check:
+      status:
+        _in:
+        - approved
+        - rejected
+    columns:
+    - status
+    filter:
+      _and:
+      - status:
+          _eq: pending
+      - initiator_id:
+          _neq: X-Hasura-User-Id
+      - teacher_id:
+          _eq: X-Hasura-User-Id
+  role: teacher
 delete_permissions:
 - permission:
     filter:
