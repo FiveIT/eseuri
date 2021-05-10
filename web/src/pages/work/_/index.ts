@@ -15,6 +15,7 @@ import {
   ListSubjects,
   Relay,
   UNREVISED_WORK,
+  WorkStatus,
 } from '$/graphql/queries'
 import { WorkType, Nullable, getName } from '$/lib'
 import { graphQLSeed, fromQuery, handleGraphQLResponse, mapDefined } from '$/lib'
@@ -163,6 +164,8 @@ export const unrevisedWork = (workID: number): Observable<Nullable<UnrevisedWork
             workID,
             content: v.content,
           }),
+          status: v.status,
+          teacherID: v.teacher_id,
         }),
         null
       )
@@ -183,6 +186,8 @@ export interface WorkBase<T extends WorkBaseData = WorkBaseData> {
 
 export interface UnrevisedWork extends WorkBase {
   user: string
+  status: WorkStatus
+  teacherID: number
 }
 
 export interface Work extends WorkBase<WorkData> {
