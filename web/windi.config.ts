@@ -76,7 +76,7 @@ export default defineConfig({
     gridTemplateColumns: {
       layout: 'repeat(6, var(--column-width))',
       form: 'repeat(3, var(--column-width))',
-      essays: 'repeat(3, var(--essay-column-width))',
+      essays: 'repeat(3, 1fr)',
     },
     gridAutoColumns: {
       layout: 'var(--column-width)',
@@ -109,7 +109,9 @@ export default defineConfig({
   },
   safelist: [
     'underline',
-    [].concat(...['white', 'black', 'gray'].map(v => [`text-${v}`, `border-${v}`])),
+    [].concat(
+      ...['white', 'black', 'gray', 'red', 'orange'].map(v => [`text-${v}`, `border-${v}`])
+    ),
     ...[1, 2, 3].map(v => [`border-${v}`, `border-t-${v}`, `border-b-${v}`]),
     ...Array.from({ length: 6 }, (_, i) =>
       [].concat(
