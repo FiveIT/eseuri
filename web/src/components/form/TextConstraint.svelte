@@ -1,6 +1,6 @@
 <script lang="ts">
   import Base from './internal/Base.svelte'
-  import { placeholderText, text } from '$/lib'
+  import { placeholderText, text, color } from '$/lib'
 
   export let name: string
   export let placeholder = ''
@@ -11,7 +11,6 @@
   export let check: (input: HTMLInputElement) => void = () => {}
 
   let self: HTMLInputElement
-
 </script>
 
 <Base let:theme>
@@ -26,7 +25,8 @@
     on:input={() => check(self)}
     class="col-span-2 {text[theme]} placeholder-{placeholderText[theme].slice(
       5
-    )} text-sm bg-transparent" />
+    )} text-sm bg-transparent"
+    style="--color: var(--{color[theme]})" />
 </Base>
 
 <style>
@@ -38,8 +38,7 @@
   }
 
   input {
-    color: var(--white) !important;
-    -webkit-text-fill-color: var(--white) !important;
+    color: var(--color) !important;
+    -webkit-text-fill-color: var(--color) !important;
   }
-
 </style>

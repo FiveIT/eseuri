@@ -46,3 +46,8 @@ export const fontWeight: ThemeEntry = {
   default: 'font-light',
   white: '',
 }
+
+export const color: ThemeEntry = {
+  default: 'black',
+  white: 'white',
+}
