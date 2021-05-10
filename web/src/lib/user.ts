@@ -5,8 +5,8 @@ import type { CombinedError } from '@urql/svelte'
 import type { UserStatus, Notification } from '.'
 import { requestError } from '.'
 
-import { firstValueFrom, of, from } from 'rxjs'
-import { catchError, switchMap } from 'rxjs/operators'
+import { firstValueFrom, of, from, interval } from 'rxjs'
+import { catchError, switchMap, take } from 'rxjs/operators'
 import { fromFetch } from 'rxjs/fetch'
 
 const endpoint = `${import.meta.env.VITE_FUNCTIONS_URL}` as const
@@ -62,7 +62,10 @@ export const status = (retries = 2): Promise<UserStatus> =>
       }),
       catchError(err => {
         if (retries) {
-          return from(status(retries - 1))
+          return interval(1000).pipe(
+            take(1),
+            switchMap(() => from(status(retries - 1)))
+          )
         }
 
         throw err
