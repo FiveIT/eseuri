@@ -47,7 +47,7 @@
         <Cell cols={2}>{name}</Cell>
         <Cell cols={2}
           >{work.essay ? work.essay.title.name : work.characterization.character.name}</Cell>
-        <Cell>{@html formatDate(created_at)[0]}</Cell>
+        <Cell>{formatDate(created_at, true)[0]}</Cell>
       </Row>
       <div class="absolute -top-1em -left-1em">
         <DeleteButton on:click={() => handler(work.id)} />
