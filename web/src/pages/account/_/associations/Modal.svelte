@@ -3,7 +3,7 @@
   import { fromQuery, fromMutation, internalErrorNotification } from '$/lib'
   import client from '$/graphql/client'
   import { notify } from '$/components'
-  import type { SubmitArgs, Notification } from '$/components'
+  import type { SubmitArgs } from '$/components'
   import { ASSOCIATE_WITH_STUDENT, ASSOCIATE_WITH_TEACHER, USER_BY_EMAIL } from '$/graphql/queries'
 
   import { CombinedError } from '@urql/svelte'
@@ -33,7 +33,7 @@
       })
   }
 
-  function submit({ body, message, explanation }: SubmitArgs, role: Role) {
+  function submit({ body }: SubmitArgs, role: Role) {
     return fromQuery(client, USER_BY_EMAIL, { email: body.get('email')!.toString() }).pipe(
       switchMap(({ users: [user] }) =>
         fromMutation(client, role === 'student' ? ASSOCIATE_WITH_TEACHER : ASSOCIATE_WITH_STUDENT, {
@@ -41,11 +41,12 @@
         })
       ),
       map(
-        (): Notification => ({
-          status: 'success',
-          message,
-          explanation,
-        })
+        () =>
+          ({
+            status: 'success',
+            message: 'Asocierea a fost trimisă cu succes!',
+            explanation: `Urmează doar ca celălalt să răspundă la cerea ta, iar apoi puteți împărtășii noile beneficii.`,
+          } as const)
       ),
       tap(closeModal)
     )
@@ -66,14 +67,7 @@
 </script>
 
 <ModalBase>
-  <Form
-    name="associate"
-    bind:focus
-    cols={1}
-    rows={2}
-    message="Asocierea a fost trimisă cu succes!"
-    explanation="Urmează doar ca celălalt să răspundă la cerea ta, iar apoi puteți împărtășii noile beneficii."
-    onSubmit={args => submit(args, role)}>
+  <Form name="associate" bind:focus cols={1} rows={2} onSubmit={args => submit(args, role)}>
     <span slot="legend">Inițiază o asociere</span>
     <TextConstraint
       name="email"
