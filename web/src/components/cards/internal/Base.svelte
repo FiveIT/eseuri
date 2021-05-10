@@ -10,7 +10,7 @@
 </script>
 
 <BaseLayout {theme} {borderColor} {darkBg}>
-  <dl class="grid w-full grid-flow-row h-full grid-rows-4 gap-y-xs">
+  <dl class="grid grid-flow-row h-full w-auto grid-rows-4 grid-cols-1 gap-y-xs">
     <dt
       class="row-span-2 h-full flex flex-col"
       use:fitText={{ min: parseInt(px(1.5)), max: parseInt(px(1.75)) }}>

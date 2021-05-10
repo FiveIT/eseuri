@@ -42,20 +42,19 @@
 
   let name: string, email: string, school: string
 
-  $: notApproved = association.status !== 'approved'
+  $: approved = association.status === 'approved'
   $: [name, email, school] = getData(association)
 </script>
 
 <div class="group relative">
-  <Base
-    showOverlay={notApproved}
-    darkBg={notApproved}
-    borderColor={borderColors[association.status]}>
+  <Base showOverlay={!approved} darkBg={!approved} borderColor={borderColors[association.status]}>
     <div slot="heading" class="text-md mt-auto">
       {name}
     </div>
-    <a slot="middle" href="mailto:{email}" class="text-workInfo leading-none my-auto underline"
-      >{email}</a>
+    <a
+      slot="middle"
+      href="mailto:{email}"
+      class="text-workInfo leading-none my-auto underline break-words">{email}</a>
     <div slot="end" class="text-workInfo">{school}</div>
     <p
       slot="overlay"
@@ -63,7 +62,7 @@
       {overlayLabel[association.status]}
     </p>
   </Base>
-  {#if association.status === 'approved'}
+  {#if approved}
     <div class="absolute right-0.5em top-0.5em"><DeleteButton on:click /></div>
   {/if}
 </div>
