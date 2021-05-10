@@ -23,7 +23,7 @@
   import { text, filterShadow } from '$/lib'
   import { writable } from 'svelte/store'
 
-  export let cols: number
+  export let cols = 6
   export let start = 1
 
   const rows = writable(0)

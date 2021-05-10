@@ -16,7 +16,7 @@
 </script>
 
 {#if $sub.data}
-  {#each $sub.data.works as work}
+  {#each $sub.data.works as work (work.id)}
     <Row bordered href="/work/{work.id}" id={work.id.toString()}>
       <Cell>{work.essay ? 'Eseu' : 'Caracterizare'}</Cell>
       <Cell cols={2}

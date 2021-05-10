@@ -40,6 +40,7 @@
   export let work: UnrevisedWork
 </script>
 
+<!-- TODO: Don't use this for previewing bookmarks, as student's can't access information about other students required by this reader. -->
 {#await work.data then { workID }}
   <LayoutContext let:alive>
     <Base {work} additionalHeadingText="de {work.user}">

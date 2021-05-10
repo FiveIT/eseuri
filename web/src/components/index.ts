@@ -13,3 +13,4 @@ export { default as UploadVariantPlaceholder } from './UploadVariantPlaceholder.
 export { default as Window, store as window } from './Window.svelte'
 export { default as Works } from './Works.svelte'
 export { default as TypeSelector } from './TypeSelector.svelte'
+export { default as DeleteButton } from './DeleteButton.svelte'

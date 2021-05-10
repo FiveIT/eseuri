@@ -588,30 +588,34 @@ export interface Teacher {
     }
 }
 
+type WorkSubject =
+  | {
+      characterization: null
+      essay: {
+        title: Namer
+      }
+    }
+  | {
+      essay: null
+      characterization: {
+        character: Namer
+      }
+    }
+
 type WorksSingleData = ID & {
   created_at: string
   updated_at: string | null
   teacher: Teacher | null
-} & (
-    | {
-        characterization: null
-        essay: {
-          title: Namer
-        }
-      }
-    | {
-        essay: null
-        characterization: {
-          character: Namer
-        }
-      }
-  )
+} & WorkSubject
 
 type Works = Query<'works', WorksSingleData[], { userID: number; status: WorkStatus }>
 
 export const WORKS = gql<Data<Works>, Vars<Works>>`
   subscription works($userID: Int!, $status: work_status_enum!) {
-    works(where: { _and: [{ user_id: { _eq: $userID } }, { status: { _eq: $status } }] }) {
+    works(
+      where: { _and: [{ user_id: { _eq: $userID } }, { status: { _eq: $status } }] }
+      order_by: [{ updated_at: desc_nulls_last }, { created_at: desc }]
+    ) {
       id
       created_at
       updated_at
@@ -635,6 +639,35 @@ export const WORKS = gql<Data<Works>, Vars<Works>>`
       characterization {
         character {
           name
+        }
+      }
+    }
+  }
+`
+
+export type BookmarkData = Namer & {
+  created_at: string
+  work: ID & WorkSubject
+}
+
+type Bookmarks = Query<'bookmarks', BookmarkData[]>
+
+export const BOOKMARKS = gql<Data<Bookmarks>, Vars<Bookmarks>>`
+  query bookmarks {
+    bookmarks(order_by: { created_at: desc }) {
+      name
+      created_at
+      work {
+        id
+        essay {
+          title {
+            name
+          }
+        }
+        characterization {
+          character {
+            name
+          }
         }
       }
     }
