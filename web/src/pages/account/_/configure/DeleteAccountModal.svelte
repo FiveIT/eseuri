@@ -36,7 +36,7 @@
     altfel, îți pierzi și statutul de profesor pe platformă, dacă e cazul, iar în situația în care
     îți creezi un cont nou va trebui să redepui o cerere pentru a fi profesor.<br />
     Lucrările tale nu vor fi șterse: acestea vor rămâne permanent pe platformă. Dacă totuși dorești să
-    fie șterse contactează-ne pe email.
+    fie șterse <a href="mailto:tmaxmax@outlook.com" class="underline">contactează-ne pe email</a>.
   </p>
   <div class="grid auto-cols-layout grid-flow-col gap-x-md auto-rows-layout">
     <button
