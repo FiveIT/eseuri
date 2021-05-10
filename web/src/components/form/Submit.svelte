@@ -65,7 +65,7 @@
     class="col-span-1 h-full rounded text-white text-sm {bg[theme]} {border[
       theme
     ]} cursor-pointer flex justify-center items-center flex-1 max-w-col">
-    {#if $submitStatus == 'awaitingInput'}
+    {#if $submitStatus === 'awaitingInput'}
       <slot />
     {:else}
       <svelte:component
