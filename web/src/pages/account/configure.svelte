@@ -4,6 +4,7 @@
   import Become from '$/components/BecomeATeacher.svelte'
   import { text, border, filterShadow } from '$/lib'
   import ConfigureRegister from '$/components/ConfigureRegister.svelte'
+  import { Auth0LogoutButton } from '@tmaxmax/svelte-auth0'
 
   let show: boolean
   let name: string
@@ -59,12 +60,12 @@
       }}>
       Șterge-ți contul
     </button>
-    <button
+    <Auth0LogoutButton
       class="col-start-1 col-span-3 w-full h-full row-start-3 text-center  my-auto {border.color[
         theme
       ]} {border.all[theme]} rounded   ">
       Deconectează-te de la contul curent
-    </button>
+    </Auth0LogoutButton>
     <div class="col-span-3 col-start-1 row-start-2">
       <Become />
     </div>
