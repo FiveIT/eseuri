@@ -26,8 +26,7 @@
     <slot {disable} {selected} />
     {#if title && showTooltip && !(disable && hideIfDisabled)}
       <p
-        class="absolute hidden text-white text-0.8em top-3/4 text-center bg-black p-sm rounded group-hover:block"
-        transition:fade={{ easing, duration: 50 }}>
+        class="absolute hidden text-white text-0.8em top-3/4 text-center bg-black p-sm rounded group-hover:block">
         {title}
       </p>
     {/if}
