@@ -16,7 +16,7 @@
   <button
     class="rounded-full w-2em h-2em border-1 {background[theme]} {border.color[
       theme
-    ]} opacity-0 group-hover:opacity-100 focus:opacity-100 group-focus:opacity-100 flex items-center justify-center z-1"
+    ]} opacity-0 transition-opacity duration-50 ease-out group-hover:opacity-100 focus:opacity-100 group-focus:opacity-100 flex items-center justify-center z-1"
     on:click>
     <Icon color="var(--{colors[theme]})" size={px(2)} />
   </button>
