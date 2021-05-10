@@ -87,16 +87,12 @@ export default defineConfig({
       },
       width: {
         notification: ' var(--essay-column-width)',
-        association: 'var(--association-box-width)',
         'delete-box': 'var(--delete-box-width)',
         submit: 'var(--configure-login-width)',
-        teacher: 'var(--essay-column-width)',
       },
       height: {
         notification: 'var(--row-height)',
-        association: 'var(--association-box-height)',
         row: 'var(--row-height)',
-        teacher: 'var(--essay-row-height)',
       },
       minHeight: {
         notification: 'var(--row-height)',
