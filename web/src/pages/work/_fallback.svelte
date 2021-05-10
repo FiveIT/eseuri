@@ -162,7 +162,9 @@
     if (id) {
       uw = unrevisedWork(id)
     } else if (isWorkType(type)) {
-      setWork(title, type, workID?.slice(0, workID?.lastIndexOf('?')))
+      const queryIndex = workID?.lastIndexOf('?')
+      const actualID = queryIndex && queryIndex !== -1 ? workID?.slice(0, queryIndex) : workID
+      setWork(title, type, actualID)
     } else {
       noMatch = true
     }
