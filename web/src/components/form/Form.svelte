@@ -78,6 +78,11 @@
       submitStatus.set('awaitingResponse')
       let handle: ReturnType<typeof setTimeout> | undefined
 
+      const scheduleReset = () => {
+        handle && clearTimeout(handle)
+        handle = setTimeout(() => submitStatus.set('awaitingInput'), 5000)
+      }
+
       return from(
         onSubmit({
           body: new FormData(form),
@@ -88,12 +93,12 @@
         .subscribe({
           next(notification) {
             submitStatus.set('success')
+            scheduleReset()
             notify(notification)
           },
           error(err) {
             submitStatus.set('error')
-            handle && clearTimeout(handle)
-            handle = setTimeout(() => submitStatus.set('awaitingInput'), 5000)
+            scheduleReset()
             error(err)
           },
         })
@@ -181,9 +186,10 @@
     class="col-span-{3 * cols} row-span-{rows + 2 * +hasTitle} grid grid-rows-{rows +
       2 * +hasTitle} grid-cols-{3 * cols} gap-y-sm {filterShadow[theme]}"
     on:submit|preventDefault={() => submitFn(form)}>
-    <fieldset class="col-span-{3 * cols} row-span-{rows}">
+    <fieldset class="col-span-{3 * cols} row-span-{rows + -!hasTitle}">
       <div
-        class="grid grid-cols-{cols} grid-rows-{rows} gap-x-md gap-y-sm w-full h-full grid-flow-col font-sans antialiased">
+        class="grid grid-cols-{cols} grid-rows-{rows +
+          -!hasTitle} gap-x-md gap-y-sm w-full h-full grid-flow-col font-sans antialiased">
         {#if hasTitle}
           <legend class="col-span-{cols} text-md self-center {text[theme]}">
             <slot name="legend" />

@@ -23,7 +23,7 @@
   --association-box-width: calc(var(--column-width) * 3 + var(--essay-column-gap) * 2);
   --association-box-height: calc(var(--row-height) * 5 + var(--row-gap) * 4);
   --delete-box-width: calc(var(--column-width) * 4 + var(--essay-column-gap) * 4);
-  --configure-login-width: calc(2 * var(--essay-column-gap) + var(--column-width));
+  --configure-login-width: calc(2 * var(--column-gap) + var(--column-width));
 }
 
 html {

@@ -54,6 +54,7 @@
   const { formenctype, submitStatus } = getForm()
 
   export let value = ''
+  export let big = false
 
 </script>
 
@@ -62,9 +63,11 @@
     type="submit"
     {formenctype}
     {value}
-    class="col-span-1 h-full rounded text-white text-sm {bg[theme]} {border[
+    class="col-span-1 h-full rounded text-white text-sm leading-none {bg[theme]} {border[
       theme
-    ]} cursor-pointer flex justify-center items-center flex-1 max-w-col">
+    ]} cursor-pointer flex justify-center items-center flex-1 {big
+      ? 'w-submit px-sm'
+      : 'max-w-col'}">
     {#if $submitStatus === 'awaitingInput'}
       <slot />
     {:else}

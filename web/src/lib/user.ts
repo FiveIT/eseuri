@@ -2,12 +2,15 @@ import { get } from 'svelte/store'
 import { authToken } from '@tmaxmax/svelte-auth0'
 import type { CombinedError } from '@urql/svelte'
 
-import type { Notification } from '.'
-import { requestError, fromStore } from '.'
+import type { Notification, UserStatus } from '.'
+import { requestError, fromStore, fromQuery } from '.'
 
-import { of } from 'rxjs'
-import { filter, switchMap, take } from 'rxjs/operators'
+import { Observable, of } from 'rxjs'
+import { filter, switchMap, take, map, catchError, concatWith, concat } from 'rxjs/operators'
 import { fromFetch } from 'rxjs/fetch'
+
+import client from '$/graphql/client'
+import { SELF } from '$/graphql/queries'
 
 const endpoint = `${import.meta.env.VITE_FUNCTIONS_URL}` as const
 
@@ -45,7 +48,7 @@ const statusErrorMessages: MessagesRecord = {
   },
 }
 
-export const status = () =>
+export const status = (): Observable<UserStatus> =>
   fromStore(authToken).pipe(
     filter(v => !!v),
     take(1),
@@ -61,6 +64,19 @@ export const status = () =>
 
           throw requestError(statusErrorMessages, status)
         })
+      )
+    )
+  )
+
+export const self = () =>
+  of(undefined).pipe(
+    concatWith(
+      status().pipe(
+        switchMap(({ id }) => fromQuery(client, SELF, { id })),
+        map(v =>
+          v.users[0] ? ({ found: true, user: v.users[0] } as const) : ({ found: false } as const)
+        ),
+        catchError(() => of(null))
       )
     )
   )

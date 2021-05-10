@@ -785,3 +785,24 @@ export const ASSOCIATE_WITH_STUDENT = gql<Data<AssociateWith>, Vars<AssociateWit
     }
   }
 `
+
+export type Self = ID & FullNamer & { school: ID & { county: ID<string> } }
+
+type SelfQuery = Query<'users', [Self] | [], ID>
+
+export const SELF = gql<Data<SelfQuery>, Vars<SelfQuery>>`
+  query self($id: Int!) {
+    users(where: { id: { _eq: $id } }) {
+      id
+      first_name
+      middle_name
+      last_name
+      school {
+        id
+        county {
+          id
+        }
+      }
+    }
+  }
+`

@@ -28,7 +28,7 @@
       theme
     ]} bg-transparent">
     {#each options as opt}
-      <option value={mapper(opt)}>{display(opt)}</option>
+      <option value={mapper(opt)} class="text-black">{display(opt)}</option>
     {/each}
   </select>
 </Base>

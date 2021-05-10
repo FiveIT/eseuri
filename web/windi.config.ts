@@ -89,7 +89,7 @@ export default defineConfig({
         notification: ' var(--essay-column-width)',
         association: 'var(--association-box-width)',
         'delete-box': 'var(--delete-box-width)',
-        'configure-login': 'var(--configure-login-width)',
+        submit: 'var(--configure-login-width)',
         teacher: 'var(--essay-column-width)',
       },
       height: {
@@ -144,6 +144,7 @@ export default defineConfig({
     'mt-0.3em',
     'mt-0.33em',
     'top-4.5rem',
+    'w-submit',
     ...[4, 3, 2, 1.4].map(v => [`w-${v}em`, `h-${v}em`]),
     [].concat(...['soft', 'large'].map(v => [`shadow-${v}`, `shadow-inner-${v}`])),
   ],
