@@ -18,37 +18,10 @@
   --essay-column-gap: 1.875rem;
   --essay-column-width: calc(var(--column-width) * 2 + var(--essay-column-gap));
   --essay-row-heigth: calc(var(--row-height) * 2 + var(--row-gap));
-  --association-box-width: calc(
-    var(--column-width) * 3 + var(--essay-column-gap) * 2
-  );
+  --association-box-width: calc(var(--column-width) * 3 + var(--essay-column-gap) * 2);
   --association-box-height: calc(var(--row-height) * 5 + var(--row-gap) * 4);
-  --delete-box-width: calc(
-    var(--column-width) * 4 + var(--essay-column-gap) * 4
-  );
-  --configure-login-width: calc(
-    var(--essay-column-gap) +var(--essay-column-gap) + var(--column-width)
-  );
-  --bookmark-creation-width: calc(
-    var(--essay-column-gap) +var(--essay-column-gap) + var(--essay-column-gap) +
-      var(--column-width) + var(--column-width) + var(--column-width)
-  );
-  --bookmark-creation-height: calc(
-    var(--row-height) +var(--row-height) + var(--row-height) + var(--row-gap) + var(
-        --row-gap
-      ) + var(--row-gap) + var(--row-gap)
-  );
-  --teacher-description-width: calc(
-    var(--column-width) + var(--column-width) + var(--essay-column-gap)
-  );
-  --teacher-description-height: calc(
-    var(--row-height) + var(--row-height) + var(--row-gap)
-  );
-  --teacher-description-displacement: calc(
-    (
-        var(--column-width) + var(--essay-column-gap) + var(--essay-column-gap) +
-          var(--essay-column-gap)
-      ) / 2
-  );
+  --delete-box-width: calc(var(--column-width) * 4 + var(--essay-column-gap) * 4);
+  --configure-login-width: calc(2 * var(--essay-column-gap) + var(--column-width));
 }
 
 html {

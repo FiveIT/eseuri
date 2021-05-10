@@ -54,7 +54,6 @@ export default defineConfig({
       lg: 'var(--essay-column-gap)',
       xlg: '6.5vmin',
       col: 'var(--column-width)',
-      teacher: 'var(--teacher-description-displacement)',
     },
     borderRadius: {
       DEFAULT: '0.625rem',
@@ -91,15 +90,13 @@ export default defineConfig({
         association: 'var(--association-box-width)',
         'delete-box': 'var(--delete-box-width)',
         'configure-login': 'var(--configure-login-width)',
-        bookmark: 'var(--bookmark-creation-width)',
-        teacher: 'var(--teacher-description-width)',
+        teacher: 'var(--essay-column-width)',
       },
       height: {
         notification: 'var(--row-height)',
         association: 'var(--association-box-height)',
         row: 'var(--row-height)',
-        bookmark: 'var(--bookmark-creation-height)',
-        teacher: 'var(--teacher-description-height)',
+        teacher: 'var(--essay-row-height)',
       },
       minHeight: {
         notification: 'var(--row-height)',
@@ -113,12 +110,13 @@ export default defineConfig({
   safelist: [
     'underline',
     [].concat(...['white', 'black', 'gray'].map(v => [`text-${v}`, `border-${v}`])),
-    [2, 3].map(v => `border-${v}`),
+    ...[1, 2, 3].map(v => [`border-${v}`, `border-t-${v}`, `border-b-${v}`]),
     ...Array.from({ length: 6 }, (_, i) =>
       [].concat(
         ...['row', 'col'].map(v => [
           `grid-${v}s-${i + 1}`,
           `${v}-start-${i + 1}`,
+          `${v}-start-${i + 7}`,
           `${v}-span-${i + 1}`,
         ])
       )
@@ -143,6 +141,7 @@ export default defineConfig({
     'font-light',
     'mt-0.3em',
     'mt-0.33em',
+    'top-4.5rem',
     ...[4, 3, 2, 1.4].map(v => [`w-${v}em`, `h-${v}em`]),
     [].concat(...['soft', 'large'].map(v => [`shadow-${v}`, `shadow-inner-${v}`])),
   ],
