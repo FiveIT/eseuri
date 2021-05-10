@@ -1,8 +1,7 @@
 <script lang="ts">
   import Bookmark from 'svelte-material-icons/Bookmark.svelte'
   import BookmarkOutline from 'svelte-material-icons/BookmarkOutline.svelte'
-  import Create from './Modal.svelte'
-  import Modal, { openModal } from '@tmaxmax/renderless-svelte/src/Modal.svelte'
+  import { openModal } from '@tmaxmax/renderless-svelte/src/Modal.svelte'
 
   import { fade } from 'svelte/transition'
 
@@ -59,14 +58,6 @@
     }
   }
 
-  function onKeyup({ code }: KeyboardEvent) {
-    if (code !== 'KeyB') {
-      return
-    }
-
-    onClick()
-  }
-
   const emSize = 1.4
   const size = px(emSize)
 </script>
@@ -90,11 +81,3 @@
     <BookmarkOutline {size} />
   {/if}
 </button>
-
-<Modal let:payload>
-  {#if payload}
-    <Create work={payload} />
-  {/if}
-</Modal>
-
-<svelte:window on:keyup={onKeyup} />

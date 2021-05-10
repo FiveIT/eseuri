@@ -39,8 +39,10 @@
 <script lang="ts">
   import { Next, Back, Bookmark } from '..'
   import Base from './Base.svelte'
+  import Create from '../bookmark/Modal.svelte'
   import { TRANSITION_EASING as easing, TRANSITION_DURATION as duration } from '$/lib'
   import { fly } from 'svelte/transition'
+  import Modal, { openModal } from '@tmaxmax/renderless-svelte/src/Modal.svelte'
 
   export let work: Work
 
@@ -88,11 +90,20 @@
     direction = 1
   }
 
-  function onKey({ code }: KeyboardEvent) {
+  async function onKey(ev: KeyboardEvent) {
+    const { code } = ev
+
     if (keys.prev[code]) {
-      prev()
+      ev.preventDefault()
+      await prev()
     } else if (keys.next[code]) {
+      ev.preventDefault()
       next()
+    } else if (code === 'KeyB') {
+      ev.preventDefault()
+      $currentlyBookmarking = true
+      await openModal(work)
+      $currentlyBookmarking = false
     }
   }
 </script>
@@ -103,5 +114,11 @@
   <Next on:click={next} />
   <Bookmark slot="footer" />
 </Base>
+
+<Modal let:payload>
+  {#if payload}
+    <Create work={payload} />
+  {/if}
+</Modal>
 
 <svelte:window on:keydown={onKey} />
