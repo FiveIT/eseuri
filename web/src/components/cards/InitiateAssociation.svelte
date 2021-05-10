@@ -14,7 +14,7 @@
 <BaseLayout let:theme>
   <button
     on:click
-    class="w-full h-full flex flex-col justify-center items-center text-sm text-center">
+    class="w-full h-full flex flex-col justify-center items-center text-sm text-center select-none">
     <div class="-ml-0.5em">
       <Icon size={px(4)} color="var(--{colors[theme]})" />
     </div>
