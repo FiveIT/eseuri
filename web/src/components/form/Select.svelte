@@ -11,6 +11,7 @@
   export let required = false
 
   export let value: any = undefined
+
 </script>
 
 <Base let:theme>
@@ -23,7 +24,7 @@
     {placeholder}
     {required}
     bind:value
-    class="col-span-2 font-sans text-sm placeholder-{placeholderText[theme]} {text[
+    class="col-span-2 font-sans text-sm placeholder-{placeholderText[theme].slice(5)} {text[
       theme
     ]} bg-transparent">
     {#each options as opt}

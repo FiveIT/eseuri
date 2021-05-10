@@ -1,5 +1,6 @@
 <script lang="ts">
   import Base from './internal/Base.svelte'
+  import { text } from '$/lib'
 
   export let name: string
   export let options: readonly any[] = []
@@ -7,10 +8,11 @@
   export let displayModifier = (option: any, index: number) => option
 
   export let selected = options.length > 0 ? options[0] : undefined
+
 </script>
 
-<Base>
-  <span class="place-self-center select-none"><slot /></span>
+<Base let:theme>
+  <span class="place-self-center select-none {text[theme]}"><slot /></span>
   {#each options as value, i}
     <input
       id={`${name}_${value}`}
@@ -20,19 +22,21 @@
       {value}
       checked={selected === value}
       class="absolute opacity-0 w-0 h-0" />
-    <label for={`${name}_${value}`} class="cursor-pointer capitalize place-self-center select-none">
+    <label
+      for={`${name}_${value}`}
+      class="cursor-pointer capitalize place-self-center select-none {text[theme]}">
       {displayModifier(value, i)}
     </label>
   {/each}
 </Base>
 
 <style>
-  input:focus + label {
+  input:focus-visible + label {
     outline: auto;
-    outline-offset: 2px;
   }
 
   input:checked + label {
     text-decoration: underline;
   }
+
 </style>

@@ -1,14 +1,16 @@
 <script lang="ts">
   import Base from './internal/Base.svelte'
+  import { text, placeholderText } from '$/lib'
 
   export let name: string
   export let placeholder = ''
   export let required = false
 
   export let value = ''
+
 </script>
 
-<Base>
+<Base let:theme>
   <label for={name} class="place-self-center select-none text-center"><slot /></label>
   <input
     id={name}
@@ -17,7 +19,9 @@
     {required}
     bind:value
     type="text"
-    class="col-span-2 placeholder-gray text-sm bg-transparent" />
+    class="col-span-2 {text[theme]} placeholder-{placeholderText[theme].slice(
+      5
+    )} text-sm bg-transparent" />
 </Base>
 
 <style>
@@ -27,4 +31,5 @@
   input:-webkit-autofill:active {
     transition: background-color 5000s ease-in-out 0s;
   }
+
 </style>

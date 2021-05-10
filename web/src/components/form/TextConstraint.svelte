@@ -1,6 +1,5 @@
 <script lang="ts">
   import Base from './internal/Base.svelte'
-  import { LayoutContext } from '$/components'
   import { placeholderText, text } from '$/lib'
 
   export let name: string
@@ -15,22 +14,20 @@
 
 </script>
 
-<LayoutContext let:theme>
-  <Base>
-    <label for={name} class="place-self-center select-none text-center"><slot /></label>
-    <input
-      {type}
-      {name}
-      id={name}
-      {placeholder}
-      {required}
-      bind:this={input}
-      on:input={() => check(input)}
-      class="col-span-2 {text[theme]} placeholder-{placeholderText[theme].slice(
-        5
-      )} text-sm bg-transparent" />
-  </Base>
-</LayoutContext>
+<Base let:theme>
+  <label for={name} class="place-self-center select-none text-center {text[theme]}"><slot /></label>
+  <input
+    {type}
+    {name}
+    id={name}
+    {placeholder}
+    {required}
+    bind:this={input}
+    on:input={() => check(input)}
+    class="col-span-2 {text[theme]} placeholder-{placeholderText[theme].slice(
+      5
+    )} text-sm bg-transparent" />
+</Base>
 
 <style>
   input:-webkit-autofill,
