@@ -14,8 +14,6 @@
   register(rows)
 
   $: borders = bordered ? `${border.color[$theme]} border-t-2 border-b-2` : ''
-
-  console.log(window.location)
 </script>
 
 {#if href}

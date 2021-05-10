@@ -31,7 +31,7 @@
   import type { UnrevisedWork } from '..'
   import Base from './Base.svelte'
   import Input from './review/InputOptions.svelte'
-  import { goto, params } from '@roxi/routify'
+  import { goto } from '@roxi/routify'
 
   let user: UserStatus | undefined
 
@@ -43,13 +43,6 @@
 {#await work.data then { workID }}
   <LayoutContext let:alive>
     <Base {work} additionalHeadingText="de {work.user}">
-      <span slot="heading">
-        {#if $params.back}
-          <Link href={$params.back} title="Întoarce-te de unde ai venit">
-            <span class="font-sans text-sm antialiased">Înapoi</span>
-          </Link>
-        {/if}
-      </span>
       {#if work.status === 'inReview' && work.teacherID === user?.id}
         <Form
           name="review"

@@ -8,14 +8,17 @@
 
 <script lang="ts">
   import type { WorkBase } from '..'
-  import { Spinner } from '$/components'
+  import { Spinner, Link } from '$/components'
   import {
     TRANSITION_EASING as easing,
     TRANSITION_DURATION as duration,
     workTypeTranslation,
     title,
+    px,
   } from '$/lib'
   import { fade } from 'svelte/transition'
+  import { params } from '@roxi/routify'
+  import ArrowBack from 'svelte-material-icons/ArrowLeft.svelte'
 
   export let work: WorkBase
   export let additionalHeadingText = ''
@@ -35,7 +38,14 @@
         {additionalHeadingText}
       </p>
       <div class="w-min">
-        <slot name="heading" />
+        <div class="flex space-x-sm">
+          <slot name="heading" />
+          {#if $params.back}
+            <Link href={$params.back} title="Întoarce-te de unde ai venit">
+              <ArrowBack size={px(1.4)} color="var(--black)" />
+            </Link>
+          {/if}
+        </div>
       </div>
     </div>
   </header>
