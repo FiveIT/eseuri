@@ -10,7 +10,7 @@
   // eslint-disable-next-line no-unused-vars
   export let check: (input: HTMLInputElement) => void = () => {}
 
-  let input: HTMLInputElement
+  let self: HTMLInputElement
 
 </script>
 
@@ -22,8 +22,8 @@
     id={name}
     {placeholder}
     {required}
-    bind:this={input}
-    on:input={() => check(input)}
+    bind:this={self}
+    on:input={() => check(self)}
     class="col-span-2 {text[theme]} placeholder-{placeholderText[theme].slice(
       5
     )} text-sm bg-transparent" />
@@ -35,6 +35,11 @@
   input:-webkit-autofill:focus,
   input:-webkit-autofill:active {
     transition: background-color 5000s ease-in-out 0s;
+  }
+
+  input {
+    color: var(--white) !important;
+    -webkit-text-fill-color: var(--white) !important;
   }
 
 </style>
