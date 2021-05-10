@@ -41,7 +41,7 @@
   $: blueBlobProps = {
     x: ($window.width - blue.width * 0.8) / 2,
     y: -blue.height * 0.635 + $window.height * 0.17,
-    scale: 13,
+    scale: 15,
   }
 
   let orangeBlobProps: BlobPropsInput
@@ -56,8 +56,7 @@
     rotate: 180,
     scale: 0,
     x: $window.width - red.width * 3,
-    y: $window.height - 1500,
-    zIndex: 0,
+    y: 0,
   }
 </script>
 
