@@ -91,16 +91,23 @@
   }
 
   async function onKey(ev: KeyboardEvent) {
+    if ($currentlyBookmarking) {
+      return
+    }
+
     const { code } = ev
 
     if (keys.prev[code]) {
       ev.preventDefault()
+
       await prev()
     } else if (keys.next[code]) {
       ev.preventDefault()
+
       next()
     } else if (code === 'KeyB') {
       ev.preventDefault()
+
       $currentlyBookmarking = true
       await openModal(work)
       $currentlyBookmarking = false
