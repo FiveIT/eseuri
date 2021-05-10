@@ -1,5 +1,5 @@
 <script context="module" lang="ts">
-  import { go, Form, LayoutContext, Link } from '$/components'
+  import { go, Form, LayoutContext } from '$/components'
   import type { SubmitArgs } from '$/components'
   import { fromMutation, status } from '$/lib'
   import type { UserStatus } from '$/lib'
