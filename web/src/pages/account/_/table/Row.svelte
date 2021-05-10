@@ -17,7 +17,7 @@
 </script>
 
 {#if href}
-  <div role="row" class="col-span-full h-full {borders}" {id}>
+  <div role="row" class="col-span-full h-row {borders}" {id}>
     <Link
       href="{href}?back={encodeURI(
         window.location.pathname + window.location.search + (id ? `#${id}` : '')
@@ -32,7 +32,7 @@
   <div
     role="row"
     {title}
-    class="relative col-span-full grid grid-cols-{cols} gap-x-md {borders}"
+    class="relative col-span-full h-row grid grid-cols-{cols} gap-x-md {borders}"
     {id}>
     <slot />
   </div>
