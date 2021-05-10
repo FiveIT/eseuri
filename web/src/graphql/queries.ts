@@ -660,7 +660,7 @@ export const DELETE_ASSOCIATION = gql<Data<DeleteAssociation>, Vars<DeleteAssoci
 `
 
 export interface Teacher {
-  user: User
+  user: AssociationUser
 }
 
 type WorkSubject =
@@ -745,6 +745,43 @@ export const BOOKMARKS = gql<Data<Bookmarks>, Vars<Bookmarks>>`
           }
         }
       }
+    }
+  }
+`
+
+type UserByEmail = ID &
+  ({ teacher: null; student: Typename } | { teacher: Typename; student: null })
+
+type UserByEmailQuery = Query<'users', [UserByEmail] | [], { email: string }>
+
+export const USER_BY_EMAIL = gql<Data<UserByEmailQuery>, Vars<UserByEmailQuery>>`
+  query getUserByEmail($email: citext!) {
+    users(where: { email: { _eq: $email } }) {
+      id
+      teacher {
+        __typename
+      }
+      student {
+        __typename
+      }
+    }
+  }
+`
+
+type AssociateWith = Query<'insert_teacher_student_associations_one', Typename, ID>
+
+export const ASSOCIATE_WITH_TEACHER = gql<Data<AssociateWith>, Vars<AssociateWith>>`
+  mutation associateWithTeacher($id: Int!) {
+    insert_teacher_student_associations_one(object: { teacher_id: $id }) {
+      __typename
+    }
+  }
+`
+
+export const ASSOCIATE_WITH_STUDENT = gql<Data<AssociateWith>, Vars<AssociateWith>>`
+  mutation associateWithStudent($id: Int!) {
+    insert_teacher_student_associations_one(object: { student_id: $id }) {
+      __typename
     }
   }
 `
