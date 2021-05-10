@@ -55,10 +55,13 @@
     Association as Assoc,
     Spinner,
   } from '$/components'
+  import AssociationModal from './associations/Modal.svelte'
 
   import { ASSOCIATIONS } from '$/graphql/queries'
   import { subscription, operationStore } from '@urql/svelte'
   import type { Role } from '$/lib'
+
+  import Modal from '@tmaxmax/renderless-svelte/src/Modal.svelte'
 
   export let userID: number
   export let role: Role
@@ -90,8 +93,13 @@
       <Assoc association={assoc} on:click={() => remove(assoc)} />
     {/if}
   {/each}
+  <Modal let:payload={userID}>
+    {#if userID}
+      <AssociationModal {userID} />
+    {/if}
+  </Modal>
 {:else if !$content.error}
-  <div class="col-start-1 flex items-center justify-center h-full">
+  <div class="col-start-2 flex items-center justify-center h-full">
     <Spinner />
   </div>
 {/if}
