@@ -21,6 +21,7 @@
     <slot />
     <button
       slot="abort"
+      type="button"
       on:click={closeFn}
       class="flex-1 {text[theme]} text-sm font-sans antialiased">{closeLabel}</button>
   </ActionsBase>
