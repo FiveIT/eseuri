@@ -21,7 +21,7 @@
       <Cell>{work.essay ? 'Eseu' : 'Caracterizare'}</Cell>
       <Cell cols={2}
         >{work.essay ? work.essay.title.name : work.characterization.character.name}</Cell>
-      <Cell>{@html formatDate(work.updated_at || work.created_at, true, true)[0]}</Cell>
+      <Cell>{formatDate(work.updated_at || work.created_at, true)[0]}</Cell>
       <Cell>
         {work.teacher ? getName(work.teacher.user) : '–'}
       </Cell>
