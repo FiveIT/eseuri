@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Spinner, LayoutContext } from '$/components'
-  import { status, placeholderText } from '$/lib'
+  import { status, placeholderText, filterShadow } from '$/lib'
   import Associations from './_/Associations.svelte'
 
   import { metatags } from '@roxi/routify'
@@ -19,9 +19,9 @@
       <Associations {role} {userID} />
     {:catch}
       <p
-        class="text-md font-sans antialiased {placeholderText[
+        class="text-md font-sans antialiased {placeholderText[theme]} {filterShadow[
           theme
-        ]} col-start-1 h-full text-center flex items-center justify-center">
+        ]} col-start-2 h-full text-center flex items-center justify-center">
         Nu s-au putut obține asocierile, revino mai târziu.
       </p>
     {/await}
