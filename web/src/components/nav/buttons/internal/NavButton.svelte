@@ -9,12 +9,12 @@
   const { theme: themeStore } = getLayout()
 
   export let href = '/'
-  export let disable: boolean | undefined
+  export let disable: boolean | undefined = undefined
   export let directGoto = false
   export let hideIfDisabled = false
   export let showTooltip = false
   export let theme = $themeStore
-  export let title: string | undefined
+  export let title: string | undefined = undefined
 </script>
 
 <Link {href} {disable} {hideIfDisabled} {directGoto} on:navigate {title} let:selected>
