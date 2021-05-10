@@ -59,11 +59,8 @@ select_permissions:
     - initiator_id
     - status
     filter:
-      _or:
-      - status:
-          _eq: approved
-      - student_id:
-          _eq: X-Hasura-User-Id
+      student_id:
+        _eq: X-Hasura-User-Id
   role: student
 - permission:
     allow_aggregations: true
@@ -71,11 +68,8 @@ select_permissions:
     - initiator_id
     - status
     filter:
-      _or:
-      - status:
-          _eq: approved
-      - teacher_id:
-          _eq: X-Hasura-User-Id
+      teacher_id:
+        _eq: X-Hasura-User-Id
   role: teacher
 update_permissions:
 - permission:
@@ -115,11 +109,21 @@ update_permissions:
 delete_permissions:
 - permission:
     filter:
-      student_id:
-        _eq: X-Hasura-User-Id
+      _and:
+      - student_id:
+          _eq: X-Hasura-User-Id
+      - status:
+          _in:
+          - pending
+          - approved
   role: student
 - permission:
     filter:
-      teacher_id:
-        _eq: X-Hasura-User-Id
+      _and:
+      - teacher_id:
+          _eq: X-Hasura-User-Id
+      - status:
+          _in:
+          - pending
+          - approved
   role: teacher
