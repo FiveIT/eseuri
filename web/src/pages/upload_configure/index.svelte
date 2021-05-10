@@ -17,7 +17,7 @@
   } from '$/components'
   import type { SubmitArgs } from '$/components'
 
-  import { goto, metatags, params, redirect } from '@roxi/routify'
+  import { goto, metatags, params, redirect, url } from '@roxi/routify'
 
   import { getContext } from 'svelte'
   import { from } from 'rxjs'
@@ -148,7 +148,8 @@
         {:else}
           <Spinner longDuration={null} />
         {/if}
-        <Actions slot="actions" abortHref="/upload" on:navigate={removeFile}>Publică</Actions>
+        <Actions slot="actions" abortHref={$url('/upload', $params)} on:navigate={removeFile}
+          >Publică</Actions>
       </Form>
     {/if}
   </LayoutContext>
