@@ -433,7 +433,7 @@ export const UNREVISED_WORKS = gql<Data<UnrevisedWorks>, Vars<UnrevisedWorks>>`
   }
 `
 
-export type UnrevisedWorkData = Omit<UnrevisedWork, 'id' | 'teacher_id' | 'updated_at'> & WorkData
+export type UnrevisedWorkData = Omit<UnrevisedWork, 'id' | 'updated_at'> & WorkData
 
 type UnrevisedWorkQuery = Query<'works_by_pk', UnrevisedWorkData | null, { workID: number }>
 
@@ -442,6 +442,7 @@ export const UNREVISED_WORK = gql<Data<UnrevisedWorkQuery>, Vars<UnrevisedWorkQu
 
   query unrevisedWork($workID: Int!) {
     works_by_pk(id: $workID) {
+      teacher_id
       content
       ...UnrevisedWorkData
     }
