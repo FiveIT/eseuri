@@ -14,7 +14,7 @@
 
 <div
   transition:fade={{ duration, easing }}
-  class="fixed"
+  class="fixed transition-all duration-300 ease-out"
   style="left: {p.x}px; top: {p.y}px; transform: scale({p.scale}) rotate({p.rotate}deg); z-index: {p.zIndex};"
   bind:offsetWidth={width}
   bind:offsetHeight={height}>
