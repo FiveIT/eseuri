@@ -1,61 +1,78 @@
+<script context="module" lang="ts">
+  import type { WorkStatus } from '$/graphql/queries'
+
+  const statuses: WorkStatus[] = ['draft', 'pending', 'inReview', 'approved', 'rejected']
+
+  const statusTranslations = {
+    draft: 'În lucru',
+    pending: 'În așteptare',
+    inReview: 'În revizuire acum',
+    approved: 'Aprobate',
+    rejected: 'Respinse',
+  }
+
+  function isWorkStatus(v: any): v is WorkStatus {
+    return statuses.includes(v)
+  }
+</script>
+
 <script lang="ts">
   import { LayoutContext } from '$/components'
-  import { lucrari } from '$/content'
-  import { text, filterShadow } from '$/lib'
-  import LucrariModel from '$/components/LucrariModel.svelte'
+  import { filterShadow, text, status as userStatus } from '$/lib'
+  import { Table, Row, Header, Spinner, Error } from './_/table'
+  import Works from './_/Works.svelte'
 
-  type Choosen = 'InLucru' | 'InAsteptare' | 'Aprobate' | 'Respinse' | 'InRevizuire'
+  import { params, goto } from '@roxi/routify'
 
-  let selected: Choosen
-  selected = 'InLucru'
-  $: works = lucrari.filter(lucrari => lucrari.status === selected)
+  let status: WorkStatus = isWorkStatus($params.status) ? $params.status : 'pending'
+
+  $: $goto('/account/works', { status })
 </script>
 
 <LayoutContext let:theme>
-  <div
-    class=" z-10 {text[theme]} {filterShadow[
-      theme
-    ]}   col-start-1 col-span-6 row-start-5 row-span-6 grid grid-cols-6 grid-rows-6 gap-x-md gap-y-sm mt-sm ">
-    <button
-      class:underline={selected == 'InLucru'}
-      class="col-start-1 row-start-2 w-full h-full "
-      on:click={() => (selected = 'InLucru')}>În lucru</button>
-    <button
-      class:underline={selected == 'InAsteptare'}
-      class="col-start-1 row-start-3 w-full h-full "
-      on:click={() => (selected = 'InAsteptare')}>În așteptare</button>
-    <button
-      class:underline={selected == 'InRevizuire'}
-      class="col-start-1 row-start-4 w-full h-full "
-      on:click={() => (selected = 'InRevizuire')}>În revizuire acum</button>
-    <button
-      class:underline={selected == 'Aprobate'}
-      class="col-start-1 row-start-5 w-full h-full "
-      on:click={() => (selected = 'Aprobate')}>Aprobate</button>
-    <button
-      class:underline={selected == 'Respinse'}
-      class="col-start-1 row-start-6 w-full h-full "
-      on:click={() => (selected = 'Respinse')}>Respinse</button>
-    <div class="col-start-2 row-start-1 my-auto text-center">Tip</div>
-    <div class="col-start-3 col-span-2 row-start-1 my-auto text-center">Subiect</div>
-    <div class="col-start-5 row-start-1 my-auto text-center">
-      {#if selected === 'Aprobate'}
-        Timpul<br /> Aprobarii
-      {:else if selected === 'Respinse'}
-        Timpul <br />Respingerii
-      {:else}
-        Ultima <br />Actualizare
-      {/if}
-    </div>
-    <div class="col-start-6  row-start-1 my-auto text-center">Profesor Responsabil</div>
-    <div
-      class="col-start-2 col-span-5 row-start-2 row-span-full grid grid-cols-1 grid-rows-5 gap-y-sm ">
-      {#each works as lucrare}
-        <LucrariModel
-          type={lucrare.type}
-          teacher={lucrare.teacher}
-          time={lucrare.time}
-          subiect={lucrare.subject} />
-      {/each}
-    </div>
-  </div></LayoutContext>
+  <!-- don't add draft status as no works can be drafts at the moment -->
+  <div class="row-start-2 row-span-4 grid auto-rows-layout gap-y-sm sticky top-9rem">
+    {#each statuses.slice(1) as value, i}
+      <div class="relative h-full {filterShadow[theme]}">
+        <input
+          type="radio"
+          id="status_{value}"
+          name="status"
+          {value}
+          bind:group={status}
+          class="absolute opacity-0 w-0 h-0"
+          required />
+        <label
+          for="status_{value}"
+          class="h-full font-sans text-sm antialiased flex items-center justify-center text-center cursor-pointer select-none {text[
+            theme
+          ]}">{statusTranslations[value]}</label>
+      </div>
+    {/each}
+  </div>
+  <Table start={2} cols={5}>
+    <Row>
+      <Header>Tip</Header>
+      <Header cols={2}>Subiect</Header>
+      <Header>Ultima actualizare</Header>
+      <Header>Profesor responsabil</Header>
+    </Row>
+    {#await userStatus()}
+      <Spinner />
+    {:then { id }}
+      <Works {status} userID={id} />
+    {:catch}
+      <Error />
+    {/await}
+  </Table>
+</LayoutContext>
+
+<style>
+  input:checked + label {
+    text-decoration: underline;
+  }
+
+  input:focus-visible + label {
+    outline: auto;
+  }
+</style>
