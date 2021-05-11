@@ -38,11 +38,12 @@
       )
     )
   }
+
 </script>
 
-{#if $counties.fetching}
+{#if $counties.fetching || !$counties.data}
   <Spinner />
-{:else if $counties.error || $schools.error || !$schools.data || !$counties.data}
+{:else if $counties.error || $schools.error}
   <Error>A apărut o eroare, revino mai târziu</Error>
 {:else}
   <div class="col-span-3 row-span-6 grid grid-cols-3 gap-x-md gap-y-sm grid-rows-6">
@@ -60,7 +61,7 @@
         mapper={c => c.id}
         display={c => c.name}
         options={$counties.data.counties}>Județul școlii tale</Select>
-      {#if $schools.fetching}
+      {#if $schools.fetching || !$schools.data}
         <SpinnerOG longDuration={null} />
       {:else}
         <Select
