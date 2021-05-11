@@ -15,6 +15,7 @@
     alive.set(false)
     tick().then(() => gotoFn(href, param))
   }
+
 </script>
 
 <script lang="ts">
@@ -31,6 +32,7 @@
 
   $: selected = $isActive(href, undefined, { strict: false })
   $: isDisabled = typeof disable === 'undefined' ? selected : disable
+
 </script>
 
 {#if !isDisabled}
@@ -54,5 +56,5 @@
     <slot disable={false} {href} {selected} />
   </a>
 {:else if !hideIfDisabled}
-  <slot disable {href} {selected} />
+  <slot disable={true} {href} {selected} />
 {/if}
