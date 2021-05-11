@@ -3,7 +3,7 @@
 
   const statuses: WorkStatus[] = ['draft', 'pending', 'inReview', 'approved', 'rejected']
 
-  const statusTranslations = {
+  export const statusTranslations = {
     draft: 'În lucru',
     pending: 'În așteptare',
     inReview: 'În revizuire acum',
@@ -14,6 +14,7 @@
   function isWorkStatus(v: any): v is WorkStatus {
     return statuses.includes(v)
   }
+
 </script>
 
 <script lang="ts">
@@ -30,6 +31,7 @@
   let status: WorkStatus = isWorkStatus($params.status) ? $params.status : 'pending'
 
   $: $goto('/account/works', { status })
+
 </script>
 
 <LayoutContext let:theme>
@@ -78,4 +80,5 @@
   input:focus-visible + label {
     outline: auto;
   }
+
 </style>
