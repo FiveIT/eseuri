@@ -15,7 +15,7 @@
   import TypeSelector from '$/components/TypeSelector.svelte'
 
   import type { BlobPropsInput, WorkType } from '$/lib'
-  import { isWorkType } from '$/lib'
+  import { isWorkType, background } from '$/lib'
   import { SEARCH_WORK_SUMMARIES } from '$/graphql/queries'
 
   import { afterPageLoad, goto, params, metatags } from '@roxi/routify'
@@ -35,10 +35,11 @@
     })
   )
 
-  $: $content.variables = {
-    query: q,
-    type,
-  }
+  const search = debounce((query: string, type: WorkType) => {
+    $content.variables = { query, type }
+  }, 300)
+
+  $: search(q, type)
 
   $: if ($content.error) {
     notify({
@@ -90,15 +91,18 @@
       once = true
     }
   })
+
+  const theme = 'white'
+
 </script>
 
 <Layout
   {orangeBlobProps}
   {redBlobProps}
   {blueBlobProps}
-  theme="white"
-  afterMount={() => document.body.classList.add('bg-blue')}
-  beforeDestroy={() => document.body.classList.remove('bg-blue')}>
+  {theme}
+  afterMount={() => document.body.classList.add(background[theme])}
+  beforeDestroy={() => document.body.classList.remove(background[theme])}>
   <NavSlim />
   <div class="col-start-1 row-span-1 row-start-3 col-end-4 my-auto">
     <SearchBar bind:query={q} bind:type bind:focusInput />
