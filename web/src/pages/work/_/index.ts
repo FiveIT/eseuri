@@ -60,7 +60,7 @@ type WorksIterable = AsyncIterator<WorkData, WorkData> & {
 
 export const works = async (url: string, type: WorkType, beginWith?: string) => {
   const res = await client
-    .query(SUBJECT_ID_FROM_URL, { url, type })
+    .query(SUBJECT_ID_FROM_URL, { url, type }, { requestPolicy: 'cache-and-network' })
     .toPromise()
     .then(handleGraphQLResponse(v => (v?.work_summaries.length ? v.work_summaries[0] : undefined)))
 
