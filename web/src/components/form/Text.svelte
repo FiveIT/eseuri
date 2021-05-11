@@ -7,6 +7,7 @@
   export let required = false
 
   export let value = ''
+
 </script>
 
 <Base let:theme>
@@ -33,7 +34,7 @@
   }
 
   input {
-    color: var(--color) !important;
-    -webkit-text-fill-color: var(--color) !important;
+    -webkit-text-fill-color: var(--color);
   }
+
 </style>

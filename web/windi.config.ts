@@ -141,6 +141,8 @@ export default defineConfig({
     'mt-0.33em',
     'top-4.5rem',
     'w-submit',
+    'placeholder-gray',
+    'placeholder-white',
     ...[4, 3, 2, 1.4].map(v => [`w-${v}em`, `h-${v}em`]),
     [].concat(...['soft', 'large'].map(v => [`shadow-${v}`, `shadow-inner-${v}`])),
   ],

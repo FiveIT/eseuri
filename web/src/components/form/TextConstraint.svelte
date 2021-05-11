@@ -11,6 +11,7 @@
   export let check: (input: HTMLInputElement) => void = () => {}
 
   let self: HTMLInputElement
+
 </script>
 
 <Base let:theme>
@@ -38,7 +39,7 @@
   }
 
   input {
-    color: var(--color) !important;
-    -webkit-text-fill-color: var(--color) !important;
+    -webkit-text-fill-color: var(--color);
   }
+
 </style>
