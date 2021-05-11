@@ -38,7 +38,6 @@
       )
     )
   }
-
 </script>
 
 {#if $counties.fetching}

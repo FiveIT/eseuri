@@ -60,7 +60,7 @@
   }
 </script>
 
-<Allow authenticated redirect="/">
+<Allow registered redirect="/">
   <Layout
     {theme}
     {blueBlobProps}
