@@ -146,12 +146,12 @@ export const CHARACTERS = gql<Data<Characters>, Vars<Characters>>`
 type SubjectIDFromURL = Query<
   'work_summaries',
   [ID & Namer & { work_count: number }] | [],
-  { url: string }
+  { url: string; type: WorkType }
 >
 
 export const SUBJECT_ID_FROM_URL = gql<Data<SubjectIDFromURL>, Vars<SubjectIDFromURL>>`
-  query getSubjectIDFromURL($url: String!) {
-    work_summaries(where: { url: { _eq: $url } }) {
+  query getSubjectIDFromURL($url: String!, $type: String!) {
+    work_summaries(where: { _and: [{ url: { _eq: $url } }, { type: { _eq: $type } }] }) {
       name
       id
       work_count
