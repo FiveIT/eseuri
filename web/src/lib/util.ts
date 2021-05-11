@@ -46,9 +46,9 @@ export function fromMutation<Result, Variables extends object = {}>(
   vars?: Variables,
   context?: Partial<OperationContext>
 ) {
-  return from(client.mutation(mutation, vars, context).toPromise()).pipe(
-    map(handleGraphQLResponse(v => v!))
-  )
+  return from(
+    client.mutation(mutation, vars, { requestPolicy: 'network-only', ...context }).toPromise()
+  ).pipe(map(handleGraphQLResponse(v => v!)))
 }
 
 export function fromStore<T>(store: Readable<T>): Observable<T> {
