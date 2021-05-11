@@ -1,4 +1,4 @@
-package api
+package utils
 
 import (
 	"github.com/FiveIT/eseuri/internal/server/middleware/auth"
@@ -9,10 +9,10 @@ import (
 //nolint:gochecknoglobals
 var (
 	//nolint:exhaustivestruct
-	panicHandler = recover.New(recover.Config{
+	Panic = recover.New(recover.Config{
 		EnableStackTrace: true,
 	})
-	loggerHandler     = logger.Middleware(graphQLClient)
-	authHandler       = auth.Middleware()
-	authAssertHandler = auth.AssertRegistration(graphQLClient)
+	Logger     = logger.Middleware(GraphQLClient)
+	Auth       = auth.Middleware()
+	AuthAssert = auth.AssertRegistration(GraphQLClient)
 )

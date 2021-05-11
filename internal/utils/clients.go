@@ -1,4 +1,4 @@
-package api
+package utils
 
 import (
 	"github.com/FiveIT/eseuri/internal/meta"
@@ -8,6 +8,6 @@ import (
 
 //nolint:gochecknoglobals
 var (
-	tikaClient    = tika.NewClient(nil, meta.TikaEndpoint)
-	graphQLClient = graphql.NewClient(meta.HasuraEndpoint + "/v1/graphql")
+	TikaClient    = tika.NewClient(nil, meta.TikaEndpoint)
+	GraphQLClient = graphql.NewClient(meta.HasuraEndpoint + "/v1/graphql")
 )
