@@ -14,7 +14,9 @@
 
   function handler() {
     firstValueFrom(
-      fromMutation(client, DELETE_ACCOUNT).pipe(switchMap(() => from(logout(auth0Client))))
+      fromMutation(client, DELETE_ACCOUNT).pipe(
+        switchMap(() => from(logout(auth0Client, window.location.origin)))
+      )
     )
       .then(() =>
         notify({
@@ -25,6 +27,7 @@
       .catch(() => notify(internalErrorNotification))
       .finally(closeModal)
   }
+
 </script>
 
 <ModalFlex>
