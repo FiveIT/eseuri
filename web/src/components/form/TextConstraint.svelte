@@ -10,7 +10,7 @@
   // eslint-disable-next-line no-unused-vars
   export let check: (input: HTMLInputElement) => void = () => {}
 
-  let self: HTMLInputElement
+  export let self: HTMLInputElement = undefined as any
 
 </script>
 
