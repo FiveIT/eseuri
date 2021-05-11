@@ -35,9 +35,9 @@ export function fromQuery<Result = any, Variables extends object = {}>(
   vars?: Variables,
   context?: Partial<OperationContext>
 ) {
-  return from(client.query(query, vars, context).toPromise()).pipe(
-    map(handleGraphQLResponse(v => v!))
-  )
+  return from(
+    client.query(query, vars, { requestPolicy: 'cache-and-network', ...context }).toPromise()
+  ).pipe(map(handleGraphQLResponse(v => v!)))
 }
 
 export function fromMutation<Result, Variables extends object = {}>(
