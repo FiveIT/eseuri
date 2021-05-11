@@ -23,6 +23,7 @@
       icon: Spinner,
       props: {
         size: `${emSize}em`,
+        longDuration: null,
       },
     },
     success: {
