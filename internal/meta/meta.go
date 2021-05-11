@@ -77,5 +77,5 @@ func URL() string {
 }
 
 func init() {
-	log.Info().Str("context", context).Str("client_url", URL()).Msg("Metadata")
+	log.Info().Str("context", context).Str("client_url", URL()).Msg("Meta")
 }
