@@ -26,6 +26,7 @@
       tap(() => go('/', alive, goto))
     )
   }
+
 </script>
 
 <script lang="ts">
@@ -39,12 +40,13 @@
   firstValueFrom(status()).then(s => (user = s))
 
   export let work: UnrevisedWork
+
 </script>
 
 <!-- TODO: Don't use this for previewing bookmarks, as student's can't access information about other students required by this reader. -->
 {#await work.data then { workID }}
   <LayoutContext let:alive>
-    <Base {work} additionalHeadingText="de {work.user}">
+    <Base {work} additionalHeadingText={work.user ? `de ${work.user}` : ''}>
       {#if work.status === 'inReview' && work.teacherID === user?.id}
         <Form
           name="review"
