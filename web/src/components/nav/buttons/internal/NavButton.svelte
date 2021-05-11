@@ -2,9 +2,7 @@
   import Link from './Link.svelte'
 
   import { getLayout } from '$/components'
-  import { text, filterShadow, TRANSITION_EASING as easing } from '$/lib'
-
-  import { fade } from 'svelte/transition'
+  import { text, filterShadow } from '$/lib'
 
   const { theme: themeStore } = getLayout()
 
@@ -15,6 +13,7 @@
   export let showTooltip = false
   export let theme = $themeStore
   export let title: string | undefined = undefined
+
 </script>
 
 <Link {href} {disable} {hideIfDisabled} {directGoto} on:navigate {title} let:selected>
