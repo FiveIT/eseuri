@@ -17,7 +17,7 @@
 
 </script>
 
-{#if $sub.data}
+{#if $sub.data && !($sub.fetching || $sub.stale)}
   {#if $sub.data.works.length}
     {#each $sub.data.works as work (work.id)}
       <Row bordered href="/work/{work.id}" id={work.id.toString()}>
