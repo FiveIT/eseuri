@@ -3,6 +3,7 @@
     status: 'success',
     message: 'Te-ai înregistrat cu succes!',
   } as const
+
 </script>
 
 <script lang="ts">
@@ -84,17 +85,18 @@
 
   const schools = query(operationStore(SCHOOLS, { countyID }))
   $: $schools.variables = { countyID }
+
 </script>
 
 <Allow unregistered redirect="/" dontNotify>
   <Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} blurBackground>
     <LayoutContext let:alive>
       <NavSlim logoOnly />
-      {#if $counties.fetching}
+      {#if $counties.fetching || !$counties.data}
         <div class="flex items-center justify-center row-span-2 col-span-2 row-start-4 col-start-3">
           <Spinner message="O secundă..." />
         </div>
-      {:else if $counties.error || $schools.error || !$schools.data || !$counties.data}
+      {:else if $counties.error || $schools.error}
         <p
           class="text-md text-gray font-sans antialiased row-start-4 col-start-2 col-span-4 text-center">
           A apărut o eroare, revino mai târziu să te înregistrezi
