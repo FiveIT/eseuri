@@ -151,7 +151,6 @@
 
         notify(internalErrorNotification)
       })
-      .finally(() => (noMatch = true))
 
   if (type) {
     const id = parseInt(type)
