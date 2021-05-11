@@ -159,7 +159,7 @@ export const unrevisedWork = (workID: number): Observable<Nullable<UnrevisedWork
         (v): UnrevisedWork => ({
           type: v.essay ? 'essay' : 'characterization',
           title: v.essay ? v.essay.title.name : v.characterization!.character.name,
-          user: v.user ? getName(v.user) : 'necunoscut',
+          user: v.user ? getName(v.user) : undefined,
           data: Promise.resolve({
             workID,
             content: v.content,
@@ -185,7 +185,7 @@ export interface WorkBase<T extends WorkBaseData = WorkBaseData> {
 }
 
 export interface UnrevisedWork extends WorkBase {
-  user: string
+  user?: string
   status: WorkStatus
   teacherID: number
 }
