@@ -1,10 +1,9 @@
 <script lang="ts">
-  import type { WorkType } from '$/types'
-  import { px } from '$/util'
+  import type { WorkType } from '$/lib'
+  import { px } from '$/lib'
   import { goto, isActive } from '@roxi/routify'
   import Search from 'svelte-material-icons/Magnify.svelte'
-  import { go } from './Link.svelte'
-  import { getLayout } from './Layout.svelte'
+  import { go, getLayout } from '.'
 
   const { alive } = getLayout()
 
@@ -47,7 +46,8 @@
 <div class="flex flex-row items-center">
   <button
     class="my-auto pt-{isHome ? '0.02' : 1} h-full ml-sm"
-    on:click={doSearch}>
+    on:click={doSearch}
+    title="Execută căutarea '{query}'">
     <Search color="var(--white)" {size} />
   </button>
   <input

@@ -64,23 +64,3 @@ func TestValidJWT(t *testing.T) {
 		t.Fatalf("Invalid custom claims: %+v", claims)
 	}
 }
-
-func TestValidJWTUnregisteredUser(t *testing.T) {
-	t.Parallel()
-
-	app := App(t)
-	jwt := testhelper.JWT(t)
-	req := testhelper.Request(t, http.MethodGet, "/", nil, jwt)
-
-	res := testhelper.DoTestRequest(t, app, req)
-	defer res.Body.Close()
-
-	var response struct {
-		Error string
-	}
-
-	testhelper.DecodeJSON(t, res.Body, &response)
-
-	utils.AssertEqual(t, http.StatusUnauthorized, res.StatusCode)
-	utils.AssertEqual(t, "unregistered user", response.Error)
-}

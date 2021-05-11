@@ -6,6 +6,15 @@ object_relationships:
   using:
     foreign_key_constraint_on: county_id
 array_relationships:
+- name: users
+  using:
+    manual_configuration:
+      column_mapping:
+        id: school_id
+      insertion_order: null
+      remote_table:
+        name: users
+        schema: public
 - name: users_alls
   using:
     foreign_key_constraint_on:
@@ -16,11 +25,12 @@ array_relationships:
 select_permissions:
 - permission:
     columns:
+    - id
     - county_id
     - name
     - short_name
     filter: {}
-    limit: 50
+    limit: 200
   role: anonymous
 - permission:
     columns:
@@ -29,7 +39,7 @@ select_permissions:
     - short_name
     - county_id
     filter: {}
-    limit: 50
+    limit: 200
   role: student
 - permission:
     columns:
@@ -38,5 +48,5 @@ select_permissions:
     - short_name
     - county_id
     filter: {}
-    limit: 50
+    limit: 200
   role: teacher

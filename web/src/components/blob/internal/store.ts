@@ -1,8 +1,4 @@
-import {
-  TRANSITION_DURATION as duration,
-  TRANSITION_EASING as easing,
-} from '$/globals'
-import { tweened } from 'svelte/motion'
+import { writable } from 'svelte/store'
 import type { Writable } from 'svelte/store'
 
 export interface BlobProps {
@@ -30,10 +26,7 @@ export default (): Writable<BlobPropsInput> & {
   width: number
   height: number
 } => {
-  const { subscribe, update } = tweened<BlobPropsInput>(getBlobProps(), {
-    duration,
-    easing,
-  })
+  const { subscribe, update } = writable<BlobPropsInput>(getBlobProps())
   return {
     subscribe,
     set(input) {

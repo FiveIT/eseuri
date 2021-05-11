@@ -31,23 +31,48 @@ insert_permissions:
   role: teacher
 select_permissions:
 - permission:
-    columns: []
-    filter: {}
+    columns:
+    - title_id
+    - work_id
+    filter:
+      work:
+        status:
+          _eq: approved
     limit: 50
   role: anonymous
 - permission:
-    columns: []
+    columns:
+    - title_id
+    - work_id
     filter:
-      _or:
-      - work:
-          status:
+      work:
+        _or:
+        - status:
             _eq: approved
-      - work:
-          user_id:
+        - user_id:
             _eq: X-Hasura-User-Id
     limit: 50
   role: student
 - permission:
-    columns: []
-    filter: {}
+    columns:
+    - title_id
+    - work_id
+    filter:
+      work:
+        _or:
+        - _or:
+          - status:
+              _in:
+              - pending
+              - approved
+          - _and:
+            - status:
+                _eq: inReview
+            - teacher_id:
+                _eq: X-Hasura-User-Id
+        - user_id:
+            _eq: X-Hasura-User-Id
+        - teacher_id:
+            _eq: X-Hasura-User-Id
+    limit: 50
   role: teacher

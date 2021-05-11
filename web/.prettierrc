@@ -9,5 +9,6 @@
   "svelteBracketNewLine": false,
   "endOfLine": "lf",
   "useTabs": false,
-  "pluginSearchDirs": ["./"]
+  "pluginSearchDirs": ["./"],
+  "printWidth": 100
 }

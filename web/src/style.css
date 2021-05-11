@@ -2,22 +2,28 @@
   --shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
   --shadow-soft: 2px 2px 5px rgba(0, 0, 0, 0.25);
   --shadow-large: 4px 4px 5px rgba(0, 0, 0, 0.25);
-  --white: #fcfaf9;
-  --light-gray: #dadada;
-  --gray: #939393;
-  --black: #000000;
-  --blue: #656d94;
-  --darkblue: #485696;
+  --orange: #ff7f11;
   --red: #ff3f00;
-  --dark-green: #008148;
-  --light-green: #00e781;
+  --blue: #485696;
+  --white: #fcfaf9;
+  --gray-light: #dadada;
+  --gray: #939393;
+  --gray-dark: #4f4f4f;
+  --black: #000000;
+  --green-light: #00e781;
+  --green: #008148;
   --row-height: 4.133rem;
-  --two-row-height: 6.266rem;
   --row-gap: 0.625rem;
+  --column-gap: 1.25rem;
   --column-width: 7.6rem;
   --essay-column-gap: 1.875rem;
-  --essay-column-width: calc(var(--column-width) * 2 + var(--essay-column-gap));
+  --essay-column-half: calc(var(--column-width) + var(--column-gap) - var(--essay-column-gap));
+  --essay-column-width: calc(var(--essay-column-half) * 2 + var(--essay-column-gap));
   --essay-row-heigth: calc(var(--row-height) * 2 + var(--row-gap));
+  --association-box-width: calc(var(--column-width) * 3 + var(--essay-column-gap) * 2);
+  --association-box-height: calc(var(--row-height) * 5 + var(--row-gap) * 4);
+  --delete-box-width: calc(var(--column-width) * 4 + var(--essay-column-gap) * 4);
+  --configure-login-width: calc(2 * var(--column-gap) + var(--column-width));
 }
 
 html {
@@ -34,12 +40,9 @@ body {
   padding-left: calc(100vw - 100%);
 }
 
-@supports (backdrop-filter: blur(100px)) or
-  (-webkit-backdrop-filter: blur(100px)) {
-  .blur {
-    -webkit-backdrop-filter: blur(100px);
-    backdrop-filter: blur(100px);
-  }
+.blur {
+  -webkit-backdrop-filter: blur(100px);
+  backdrop-filter: blur(100px);
 }
 
 .white-bg {

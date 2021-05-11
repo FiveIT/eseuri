@@ -1,0 +1,85 @@
+<script context="module" lang="ts">
+  import type { Role } from '$/lib'
+  import { fromQuery, fromMutation, internalErrorNotification } from '$/lib'
+  import client from '$/graphql/client'
+  import { notify } from '$/components'
+  import type { SubmitArgs } from '$/components'
+  import { ASSOCIATE_WITH_STUDENT, ASSOCIATE_WITH_TEACHER, USER_BY_EMAIL } from '$/graphql/queries'
+
+  import { CombinedError } from '@urql/svelte'
+  import { switchMap, tap, map } from 'rxjs/operators'
+  import { closeModal } from '@tmaxmax/renderless-svelte/src/Modal.svelte'
+
+  function check(input: HTMLInputElement, role: Role) {
+    const { value: email } = input
+
+    fromQuery(client, USER_BY_EMAIL, { email }, { requestPolicy: 'network-only' }).subscribe({
+      next({ users: [user] }) {
+        if (!user) {
+          input.setCustomValidity('Nu există vreun utilizator cu acest email.')
+        } else if (user[role]) {
+          input.setCustomValidity('Nu te poți asocia cu utilizatori care au același rol cu tine.')
+        }
+      },
+      error(err) {
+        if (err instanceof CombinedError) {
+          notify(internalErrorNotification)
+        } else {
+          notify(internalErrorNotification)
+        }
+      },
+    })
+  }
+
+  function submit({ body }: SubmitArgs, role: Role) {
+    return fromQuery(
+      client,
+      USER_BY_EMAIL,
+      { email: body.get('email')!.toString() },
+      { requestPolicy: 'network-only' }
+    ).pipe(
+      switchMap(({ users: [user] }) =>
+        fromMutation(client, role === 'student' ? ASSOCIATE_WITH_TEACHER : ASSOCIATE_WITH_STUDENT, {
+          id: user!.id,
+        })
+      ),
+      map(
+        () =>
+          ({
+            status: 'success',
+            message: 'Asocierea a fost trimisă cu succes!',
+            explanation: `Urmează doar ca celălalt să răspundă la cerea ta, iar apoi puteți împărtășii noile beneficii.`,
+          } as const)
+      ),
+      tap(closeModal)
+    )
+  }
+
+</script>
+
+<script lang="ts">
+  import { Form, TextConstraint, ActionsModal, ModalGrid } from '$/components'
+  import { onMount } from 'svelte'
+
+  export let role: Role
+
+  let focus: () => void
+
+  onMount(() => focus())
+
+</script>
+
+<ModalGrid>
+  <Form name="associate" bind:focus cols={1} rows={2} onSubmit={args => submit(args, role)}>
+    <span slot="legend">Inițiază o asociere</span>
+    <TextConstraint
+      name="email"
+      type="email"
+      placeholder="Scrie-l aici..."
+      check={input => check(input, role)}
+      required>
+      Email-ul utilizatorului
+    </TextConstraint>
+    <ActionsModal slot="actions">Trimite cererea</ActionsModal>
+  </Form>
+</ModalGrid>

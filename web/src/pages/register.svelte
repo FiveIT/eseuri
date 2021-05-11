@@ -1,25 +1,43 @@
+<script lang="ts" context="module">
+  const notification = {
+    status: 'success',
+    message: 'Te-ai înregistrat cu succes!',
+  } as const
+</script>
+
 <script lang="ts">
-  import SlimNav from '$/components/SlimNav.svelte'
-  import Layout from '$/components/Layout.svelte'
-  import LayoutContext from '$/components/LayoutContext.svelte'
-  import Form from '$/components/form/Form.svelte'
-  import Text from '$/components/form/Text.svelte'
-  import Radio from '$/components/form/Radio.svelte'
-  import Actions from '$/components/form/Actions.svelte'
+  import {
+    NavSlim,
+    Layout,
+    LayoutContext,
+    Form,
+    Text,
+    Select,
+    Spinner,
+    Radio,
+    Actions,
+    Allow,
+    orange,
+    red,
+    window,
+    go,
+  } from '$/components'
+  import type { SubmitArgs } from '$/components'
 
-  import { goto, metatags } from '@roxi/routify'
-  import { store as orange } from '$/components/blob/Orange.svelte'
-  import { store as red } from '$/components/blob/Red.svelte'
-  import { store as window } from '$/components/Window.svelte'
+  import type { BlobPropsInput, Role } from '$/lib'
+  import { fromMutation, roleTranslation } from '$/lib'
 
-  import type { BlobPropsInput, Role } from '$/types'
-  import { roleTranslation } from '$/content'
-  import type { Writable } from 'svelte/store'
-  import { go } from '$/components/Link.svelte'
-
-  import { REGISTER_USER } from '$/graphql/queries'
-  import type { RegisterUser, Data, Vars } from '$/graphql/types'
+  import { COUNTIES, REGISTER_USER, SCHOOLS, TEACHER_REQUEST } from '$/graphql/queries'
   import client from '$/graphql/client'
+
+  import { redirect, metatags } from '@roxi/routify'
+  import { query, operationStore } from '@urql/svelte'
+  import type { Writable } from 'svelte/store'
+
+  import { of } from 'rxjs'
+  import { map, switchMap, tap } from 'rxjs/operators'
+
+  metatags.title = 'Înregistrare - Eseuri'
 
   let orangeBlobProps: BlobPropsInput
   $: orangeBlobProps = {
@@ -42,58 +60,81 @@
     scale: 1.5,
   }
 
-  metatags.title = 'Înregistrare'
-
   const roles: Role[] = ['student', 'teacher']
   const translateRole = (r: Role) => roleTranslation.ro[r].inarticulate.singular
 
-  const action = import.meta.env.FUNCTIONS_URL as string
-  let formElement: HTMLFormElement
+  function onSubmit(alive: Writable<boolean>, { body: form }: SubmitArgs) {
+    const role = form.get('role')!.toString()
+    const vars = {
+      firstName: form.get('first_name')!.toString(),
+      middleName: form.get('middle_name')!.toString() || null,
+      lastName: form.get('last_name')!.toString(),
+      schoolID: parseInt(form.get('school')!.toString() || ''),
+    } as const
 
-  async function onSubmit(alive: Writable<boolean>) {
-    const form = new FormData(formElement)
-    form.forEach((v, k) => console.log({ [k]: v }))
-
-    try {
-      await client
-        .mutation<Data<RegisterUser>, Vars<RegisterUser>>(REGISTER_USER, {
-          userID: 1,
-          firstName: form.get('first_name')!.toString(),
-          middleName: null,
-          lastName: form.get('last_name')!.toString(),
-          schoolID: parseInt(form.get('school')!.toString()),
-        })
-        .toPromise()
-    } catch (err) {
-      console.error(err)
-    } finally {
-      go('/', alive, $goto)
-    }
+    return fromMutation(client, REGISTER_USER, vars).pipe(
+      switchMap(() => (role === 'teacher' ? fromMutation(client, TEACHER_REQUEST) : of(undefined))),
+      map(() => notification),
+      tap(() => go('/', alive, $redirect))
+    )
   }
+
+  let countyID: string | undefined
+  const counties = query(operationStore(COUNTIES))
+
+  const schools = query(operationStore(SCHOOLS, { countyID }))
+  $: $schools.variables = { countyID }
 </script>
 
-<Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} blurBackground>
-  <LayoutContext let:alive>
-    <SlimNav logoOnly={true} />
-    <Form
-      name="register"
-      {action}
-      bind:formElement
-      on:submit={() => onSubmit(alive)}>
-      <span slot="legend">Completează-ți profilul</span>
-      <Text name="last_name" placeholder="Scrie-ți aici numele de familie...">
-        Numele tău
-      </Text>
-      <Text name="first_name" placeholder="Scrie-ți aici prenumele...">
-        Prenumele tău
-      </Text>
-      <Text name="school" placeholder="Scrie-ți aici numele școlii...">
-        Școala ta
-      </Text>
-      <Radio name="role" options={roles} displayModifier={translateRole}>
-        Ocupația ta
-      </Radio>
-      <Actions slot="actions" submitValue="Sunt gata" />
-    </Form>
-  </LayoutContext>
-</Layout>
+<Allow unregistered redirect="/" dontNotify>
+  <Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} blurBackground>
+    <LayoutContext let:alive>
+      <NavSlim logoOnly />
+      {#if $counties.fetching}
+        <div class="flex items-center justify-center row-span-2 col-span-2 row-start-4 col-start-3">
+          <Spinner message="O secundă..." />
+        </div>
+      {:else if $counties.error || $schools.error || !$schools.data || !$counties.data}
+        <p
+          class="text-md text-gray font-sans antialiased row-start-4 col-start-2 col-span-4 text-center">
+          A apărut o eroare, revino mai târziu să te înregistrezi
+        </p>
+      {:else}
+        <Form
+          name="register"
+          onSubmit={args => onSubmit(alive, args)}
+          disabled={$schools.fetching || !$schools.data || $schools.error}>
+          <span slot="legend">Completează-ți profilul</span>
+          <Text name="last_name" placeholder="Scrie-ți aici numele de familie..." required>
+            Numele tău
+          </Text>
+          <Text name="first_name" placeholder="Scrie-l aici..." required>Primul prenume</Text>
+          <Text name="middle_name" placeholder="Scrie-l aici...">Al doilea prenume</Text>
+          <Select
+            name="county"
+            placeholder="Scrie aici judetul scolii..."
+            options={$counties.data.counties}
+            mapper={county => county.id}
+            display={county => county.name}
+            bind:value={countyID}
+            required>
+            Județul școlii tale
+          </Select>
+          {#if $schools.fetching}
+            <Spinner />
+          {:else if $schools.data}
+            <Select
+              name="school"
+              placeholder="Scrie aici numele școlii..."
+              options={$schools.data.schools}
+              mapper={school => school.id}
+              display={school => school.name}
+              required>Școala ta</Select>
+          {/if}
+          <Radio name="role" options={roles} displayModifier={translateRole}>Ocupația ta</Radio>
+          <Actions slot="actions">Sunt gata</Actions>
+        </Form>
+      {/if}
+    </LayoutContext>
+  </Layout>
+</Allow>

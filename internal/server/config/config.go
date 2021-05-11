@@ -7,6 +7,7 @@ import (
 
 const bufferSize = 8192
 
+// TODO: Better error messages
 func errorHandler(c *fiber.Ctx, e error) error {
 	if e.Error() == "Bad Request" {
 		return helpers.SendError(c, fiber.StatusBadRequest, "invalid request body", nil)

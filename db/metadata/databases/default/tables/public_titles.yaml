@@ -23,6 +23,7 @@ array_relationships:
 select_permissions:
 - permission:
     columns:
+    - id
     - name
     filter: {}
     limit: 50

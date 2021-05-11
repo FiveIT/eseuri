@@ -1,10 +1,7 @@
 <script lang="ts">
   import { fade } from 'svelte/transition'
 
-  import {
-    TRANSITION_EASING as easing,
-    TRANSITION_DURATION as duration,
-  } from '$/globals'
+  import { TRANSITION_EASING as easing, TRANSITION_DURATION as duration } from '$/lib/globals'
   import type { BlobPropsInput } from './store'
 
   export let props: BlobPropsInput = {}
@@ -17,7 +14,7 @@
 
 <div
   transition:fade={{ duration, easing }}
-  class="fixed"
+  class="fixed transition-all duration-300 ease-out"
   style="left: {p.x}px; top: {p.y}px; transform: scale({p.scale}) rotate({p.rotate}deg); z-index: {p.zIndex};"
   bind:offsetWidth={width}
   bind:offsetHeight={height}>

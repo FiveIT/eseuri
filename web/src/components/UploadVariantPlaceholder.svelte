@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { px } from '$/util'
+  import { px } from '$/lib'
 
   export let fg: 'black' | 'white' = 'white'
   export let bg: string

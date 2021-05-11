@@ -1,30 +1,40 @@
 <script lang="ts">
   import Base from './internal/Base.svelte'
+  import { text, placeholderText, color } from '$/lib'
 
   export let name: string
   export let placeholder = ''
-  export let suggestions: string[] = []
+  export let required = false
 
   export let value = ''
 
-  $: list = suggestions.length > 0 ? `${name}_suggestions` : undefined
 </script>
 
-<Base>
-  <label for={name} class="place-self-center select-none"><slot /></label>
+<Base let:theme>
+  <label for={name} class="place-self-center select-none text-center {text[theme]}"><slot /></label>
   <input
-    {list}
     id={name}
     {name}
     {placeholder}
+    {required}
     bind:value
     type="text"
-    class="col-span-2 placeholder-gray text-sm bg-transparent" />
-  {#if suggestions.length}
-    <datalist id={list}>
-      {#each suggestions as v}
-        <option value={v} />
-      {/each}
-    </datalist>
-  {/if}
+    class="col-span-2 {text[theme]} placeholder-{placeholderText[theme].slice(
+      5
+    )} text-sm bg-transparent"
+    style="--color: var(--{color[theme]})" />
 </Base>
+
+<style>
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+  }
+
+  input {
+    -webkit-text-fill-color: var(--color);
+  }
+
+</style>

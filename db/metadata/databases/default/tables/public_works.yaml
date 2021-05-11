@@ -23,6 +23,15 @@ object_relationships:
 - name: teacher
   using:
     foreign_key_constraint_on: teacher_id
+- name: user
+  using:
+    manual_configuration:
+      column_mapping:
+        user_id: id
+      insertion_order: null
+      remote_table:
+        name: users
+        schema: public
 - name: users_all
   using:
     foreign_key_constraint_on: user_id
@@ -74,10 +83,12 @@ select_permissions:
   role: anonymous
 - permission:
     columns:
+    - id
+    - user_id
+    - teacher_id
+    - status
     - content
     - created_at
-    - id
-    - status
     - updated_at
     filter:
       _or:
@@ -93,7 +104,9 @@ select_permissions:
     - created_at
     - id
     - status
+    - teacher_id
     - updated_at
+    - user_id
     filter:
       _or:
       - _or:
@@ -110,10 +123,6 @@ select_permissions:
           _eq: X-Hasura-User-Id
       - teacher_id:
           _eq: X-Hasura-User-Id
-      - users_all:
-          teacher_student_associations:
-            teacher_id:
-              _eq: X-Hasura-User-Id
     limit: 50
   role: teacher
 update_permissions:
@@ -130,17 +139,23 @@ update_permissions:
       status: pending
   role: student
 - permission:
-    check: null
+    check:
+      status:
+        _in:
+        - inReview
+        - approved
+        - rejected
     columns:
     - status
     filter:
-      _and:
-      - teacher_id:
-          _is_null: true
-      - teacher_id:
-          _eq: X-Hasura-User-Id
+      _or:
       - status:
-          _in:
-          - pending
-          - inReview
+          _eq: pending
+      - _and:
+        - teacher_id:
+            _eq: X-Hasura-User-Id
+        - status:
+            _eq: inReview
+    set:
+      teacher_id: x-hasura-User-Id
   role: teacher

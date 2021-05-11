@@ -2,6 +2,15 @@ table:
   name: teacher_student_associations
   schema: public
 object_relationships:
+- name: initiator
+  using:
+    manual_configuration:
+      column_mapping:
+        initiator_id: id
+      insertion_order: null
+      remote_table:
+        name: users
+        schema: public
 - name: student
   using:
     foreign_key_constraint_on: student_id
@@ -47,33 +56,74 @@ select_permissions:
 - permission:
     allow_aggregations: true
     columns:
+    - initiator_id
     - status
     filter:
-      _or:
-      - status:
-          _eq: approved
-      - student_id:
-          _eq: X-Hasura-User-Id
+      student_id:
+        _eq: X-Hasura-User-Id
   role: student
 - permission:
     allow_aggregations: true
     columns:
+    - initiator_id
     - status
     filter:
-      _or:
+      teacher_id:
+        _eq: X-Hasura-User-Id
+  role: teacher
+update_permissions:
+- permission:
+    check:
+      status:
+        _in:
+        - approved
+        - rejected
+    columns:
+    - status
+    filter:
+      _and:
       - status:
-          _eq: approved
+          _eq: pending
+      - initiator_id:
+          _neq: X-Hasura-User-Id
+      - student_id:
+          _eq: X-Hasura-User-Id
+  role: student
+- permission:
+    check:
+      status:
+        _in:
+        - approved
+        - rejected
+    columns:
+    - status
+    filter:
+      _and:
+      - status:
+          _eq: pending
+      - initiator_id:
+          _neq: X-Hasura-User-Id
       - teacher_id:
           _eq: X-Hasura-User-Id
   role: teacher
 delete_permissions:
 - permission:
     filter:
-      student_id:
-        _eq: X-Hasura-User-Id
+      _and:
+      - student_id:
+          _eq: X-Hasura-User-Id
+      - status:
+          _in:
+          - pending
+          - approved
   role: student
 - permission:
     filter:
-      teacher_id:
-        _eq: X-Hasura-User-Id
+      _and:
+      - teacher_id:
+          _eq: X-Hasura-User-Id
+      - status:
+          _in:
+          - pending
+          - approved
   role: teacher

@@ -1,2 +1,4 @@
+- "!include public_find_schools.yaml"
+- "!include public_find_work_summaries.yaml"
 - "!include public_list_characterizations.yaml"
 - "!include public_list_essays.yaml"

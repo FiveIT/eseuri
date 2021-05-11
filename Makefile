@@ -3,7 +3,7 @@
 	build-dev dev-server dev-client dev \
 	test-client test-server test
 
-go_module=github.com/FiveIT/template
+go_module=github.com/FiveIT/eseuri
 functions_base_path=/.netlify/functions/index
 
 build-server:

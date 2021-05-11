@@ -84,7 +84,7 @@ create table users_all
     last_name   text
         constraint registered_user_last_name check (updated_at is null or last_name is not null and last_name <> ''),
     email       email
-        constraint users_all_email_key check (deleted_at is null or email is not null) unique,
+        constraint users_all_email_key check (deleted_at is not null or email is not null) unique,
     school_id   int
         constraint registered_user_school check (updated_at is null or school_id is not null),
     created_at  timestamp default (localtimestamp),
@@ -3747,7 +3747,7 @@ VALUES (34, 11, 'Act venețian');
 INSERT INTO "titles" ("id", "author_id", "name")
 VALUES (35, 12, 'Enigma Otiliei');
 INSERT INTO "titles" ("id", "author_id", "name")
-VALUES (36, 12, 'Beitul Ioanide');
+VALUES (36, 12, 'Bietul Ioanide');
 INSERT INTO "titles" ("id", "author_id", "name")
 VALUES (37, 13, 'Moromeții');
 INSERT INTO "titles" ("id", "author_id", "name")
