@@ -90,7 +90,7 @@
     }
 
     hasOpenedModal = true
-    await openModal(role)
+    await openModal({ role, userID })
     hasOpenedModal = false
   }
 
@@ -116,9 +116,9 @@
       <Assoc association={assoc} on:click={() => remove(assoc)} />
     {/if}
   {/each}
-  <Modal let:payload={role}>
-    {#if role}
-      <AssociationModal {role} />
+  <Modal let:payload>
+    {#if payload}
+      <AssociationModal {...payload} />
     {/if}
   </Modal>
 {:else if !$content.error}
