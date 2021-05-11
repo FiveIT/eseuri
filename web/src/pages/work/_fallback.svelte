@@ -55,7 +55,7 @@
             'Dacă ai căutat intenționat acest subiect și crezi că ar trebui să existe pe platformă, <a class="underline" href="mailto:tmaxmax@outlook.com">scrie-ne un email</a>!',
           ]
 
-          return
+          return true
         }
 
         const { id, name } = works
@@ -67,7 +67,7 @@
             `<a class="underline" href="/upload?id=${id}&type=${type}">Încarcă o lucrare cu subiectul "${name}"</a>.`,
           ]
 
-          return
+          return true
         }
 
         const it = works[Symbol.asyncIterator]()
@@ -150,7 +150,10 @@
         console.error(err)
 
         notify(internalErrorNotification)
+
+        return true
       })
+      .then(v => (noMatch = !!v))
 
   if (type) {
     const id = parseInt(type)
