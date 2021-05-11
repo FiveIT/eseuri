@@ -6,7 +6,7 @@ import type { Notification, UserStatus } from '.'
 import { requestError, fromStore, fromQuery } from '.'
 
 import { Observable, of } from 'rxjs'
-import { filter, switchMap, take, map, catchError, concatWith, concat } from 'rxjs/operators'
+import { filter, switchMap, take, map, catchError, concatWith } from 'rxjs/operators'
 import { fromFetch } from 'rxjs/fetch'
 
 import client from '$/graphql/client'
@@ -72,7 +72,7 @@ export const self = () =>
   of(undefined).pipe(
     concatWith(
       status().pipe(
-        switchMap(({ id }) => fromQuery(client, SELF, { id })),
+        switchMap(({ id }) => fromQuery(client, SELF, { id }, { requestPolicy: 'network-only' })),
         map(v =>
           v.users[0] ? ({ found: true, user: v.users[0] } as const) : ({ found: false } as const)
         ),
