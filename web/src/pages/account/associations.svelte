@@ -7,12 +7,13 @@
   import { firstValueFrom } from 'rxjs'
 
   metatags.title = 'Asocieri - Contul meu - Eseuri'
+
 </script>
 
 <LayoutContext let:theme>
   <div class="col-span-full grid grid-cols-essays auto-rows-essays gap-x-lg gap-y-sm">
     {#await firstValueFrom(status())}
-      <div class="col-start-1 h-full flex items-center justify-center">
+      <div class="col-start-2 h-full flex items-center justify-center">
         <Spinner />
       </div>
     {:then { role, id: userID }}
