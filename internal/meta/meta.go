@@ -37,21 +37,19 @@ import (
 
 //nolint:gochecknoglobals
 var (
-	context string
-	url     string
-	netlify string
+	context = os.Getenv("VERCEL_ENV")
+	url     = os.Getenv("VERCEL_URL")
+	netlify = os.Getenv("VERCEL")
 	// IsNetlify specifies if the app was built by Netlify.
-	IsNetlify = netlify == "true"
+	IsNetlify = netlify == "1"
 	// IsProduction specifies if the app was built in production mode.
 	IsProduction = context == "production"
 	// IsDevelopment specifies if the app was built in development mode.
-	IsDevelopment = !IsProduction
+	IsDevelopment = context == "development" || !IsProduction
 	// IsDeployPreview specifies if Netlify built the site for pull/merge request preview.
-	IsDeployPreview = context == "deploy-preview"
-	// IsBranchDeploy specifies if Netlify built the site from a branch different than the site's main production branch.
-	IsBranchDeploy = context == "branch-deploy"
+	IsDeployPreview = context == "preview"
 	// FunctionsBasePath is the location of the function handler when deployed to Netlify.
-	FunctionsBasePath string
+	FunctionsBasePath = "/api"
 	// TikaEndpoint is the endpoint used to connect to the Apache Tika service.
 	TikaEndpoint = os.Getenv("TIKA_URL")
 	// HasuraEndpoint is the endpoint used to connect to the Hasura GraphQL service.
