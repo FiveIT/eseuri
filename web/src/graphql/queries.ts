@@ -364,7 +364,7 @@ export const IS_BOOKMARKED = gql<Data<IsBookmarked>, Vars<IsBookmarked>>`
 
 export type UnrevisedWork = ID & {
   status: WorkStatus
-  user: FullNamer
+  user: FullNamer | null
   teacher_id: number
   updated_at: string | null
 } & (

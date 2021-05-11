@@ -159,7 +159,7 @@ export const unrevisedWork = (workID: number): Observable<Nullable<UnrevisedWork
         (v): UnrevisedWork => ({
           type: v.essay ? 'essay' : 'characterization',
           title: v.essay ? v.essay.title.name : v.characterization!.character.name,
-          user: getName(v.user),
+          user: v.user ? getName(v.user) : 'necunoscut',
           data: Promise.resolve({
             workID,
             content: v.content,

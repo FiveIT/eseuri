@@ -18,7 +18,7 @@
 
   function getEnd(work: UnrevisedWork): string {
     const type = work.essay ? 'Eseu' : 'Caracterizare'
-    const name = getName(work.user)
+    const name = work.user ? getName(work.user) : 'necunoscut'
 
     return `${type} de ${name}`
   }
@@ -47,6 +47,7 @@
       notify(internalErrorNotification)
     }
   }
+
 </script>
 
 <script lang="ts">
@@ -61,6 +62,7 @@
   $: middle = getMiddle(work)
   $: end = getEnd(work)
   $: when = work.updated_at && formatDate(work.updated_at).reverse().join(' ')
+
 </script>
 
 <WorkBase
@@ -81,4 +83,5 @@
   p {
     background-color: rgba(0, 0, 0, 0.8);
   }
+
 </style>
