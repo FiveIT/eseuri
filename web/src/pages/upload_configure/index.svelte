@@ -101,6 +101,7 @@
   const explanation = `Va fi publică în scurt timp, după ce a fost revizuită de un profesor.`
 
   const teachers = getRequestedTeachers()
+
 </script>
 
 <Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} blurBackground>
@@ -141,9 +142,10 @@
             <Select
               name="requestedTeacher"
               placeholder="Opțional: alege cine va revizui lucrarea"
-              options={$teachers}
-              mapper={({ teacher }) => teacher.user.id}
-              display={({ teacher }) => getName(teacher.user)}>Profesor pentru revizuire</Select>
+              options={[null, ...$teachers]}
+              mapper={data => data?.teacher.user.id || 0}
+              display={data => (data ? getName(data.teacher.user) : 'Niciunul.')}
+              >Profesor pentru revizuire</Select>
           {/if}
         {:else}
           <Spinner longDuration={null} />
