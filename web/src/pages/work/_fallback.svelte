@@ -7,12 +7,10 @@
   import { bookmark, isBookmarked, removeBookmark } from './_/bookmark'
   import type { Work } from './_'
 
-  import { onDestroy } from 'svelte'
   import { goto, leftover, metatags, params } from '@roxi/routify'
   import { writable } from 'svelte/store'
   import { isAuthenticated } from '@tmaxmax/svelte-auth0'
 
-  const { red: setRedBlob, autoSet } = getLayout().blobs
   let w: (Work & { setBookmarked(): void }) | undefined
   let uw: ReturnType<typeof unrevisedWork> | undefined
   let noMatch = false
@@ -21,15 +19,16 @@
     `Cel mai probabil ai ajuns aici din greșeală, <a class="underline" href="/search">caută ceva</a> sau <a class="underline" href="/upload">încarcă o lucrare</a>!`,
   ]
 
-  $: $autoSet = !noMatch || !!w
-  $: noMatch &&
-    !w &&
-    setRedBlob({
+  const { red: setRed } = getLayout().blobs
+
+  $: if (noMatch) {
+    setRed({
       rotate: 47,
       scale: 2,
       x: $window.width - red.width * 2,
       y: $window.height + 40,
     })
+  }
   $: w && $isAuthenticated && w.setBookmarked()
   $: if (uw) {
     if ($uw === null) {
@@ -39,8 +38,6 @@
       pageTitle = `Revizuire ${type} "${$uw.title}", de ${$uw.user} - Eseuri`
     }
   }
-
-  onDestroy(() => ($autoSet = true))
 
   const [type, title, workID] = $leftover.split('/')
 
@@ -171,6 +168,7 @@
   } else {
     noMatch = true
   }
+
 </script>
 
 <!-- TODO: Reader for review -->
