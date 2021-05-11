@@ -13,7 +13,7 @@
   function check(input: HTMLInputElement, role: Role) {
     const { value: email } = input
 
-    fromQuery(client, USER_BY_EMAIL, { email }).subscribe({
+    fromQuery(client, USER_BY_EMAIL, { email }, { requestPolicy: 'network-only' }).subscribe({
       next({ users: [user] }) {
         if (!user) {
           input.setCustomValidity('Nu există vreun utilizator cu acest email.')
@@ -32,7 +32,12 @@
   }
 
   function submit({ body }: SubmitArgs, role: Role) {
-    return fromQuery(client, USER_BY_EMAIL, { email: body.get('email')!.toString() }).pipe(
+    return fromQuery(
+      client,
+      USER_BY_EMAIL,
+      { email: body.get('email')!.toString() },
+      { requestPolicy: 'network-only' }
+    ).pipe(
       switchMap(({ users: [user] }) =>
         fromMutation(client, role === 'student' ? ASSOCIATE_WITH_TEACHER : ASSOCIATE_WITH_STUDENT, {
           id: user!.id,
@@ -49,6 +54,7 @@
       tap(closeModal)
     )
   }
+
 </script>
 
 <script lang="ts">
@@ -60,6 +66,7 @@
   let focus: () => void
 
   onMount(() => focus())
+
 </script>
 
 <ModalGrid>
