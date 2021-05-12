@@ -25,7 +25,7 @@
 
   import type { Context } from '../upload.svelte'
   import { contextKey } from '../upload.svelte'
-  import { getRequestedTeachers } from '.'
+  import { requestedTeachers as teachers } from '.'
 
   import type { BlobPropsInput, WorkType } from '$/lib'
   import { workTypeTranslation, getName } from '$/lib'
@@ -99,8 +99,6 @@
 
   const message = 'Lucrarea ta a fost încărcată cu succes!'
   const explanation = `Va fi publică în scurt timp, după ce a fost revizuită de un profesor.`
-
-  const teachers = getRequestedTeachers()
 
 </script>
 

@@ -7,8 +7,7 @@
   import type { BlobPropsInput, Role } from '$/lib'
 
   import { metatags } from '@roxi/routify'
-  import { authToken, isAuthenticated, isLoading } from '@tmaxmax/svelte-auth0'
-  import { firstValueFrom } from 'rxjs'
+  import { isAuthenticated, isLoading } from '@tmaxmax/svelte-auth0'
 
   metatags.title = 'Acasă - Eseuri'
 
@@ -35,19 +34,19 @@
     rotate: 0,
   }
 
-  let id = 0
+  let id: number
   let role: Role | undefined
   let loading = true
 
-  $: if ($isAuthenticated && $authToken) {
-    firstValueFrom(status())
-      .then(s => ({ id, role } = s))
-      .finally(() => (loading = false))
-  } else if ($isLoading) {
+  $: if ($isLoading) {
     loading = true
   } else if (!$isAuthenticated) {
     loading = false
+  } else if ($status) {
+    // eslint-disable-next-line no-extra-semi
+    ;({ id, role } = $status)
   }
+
 </script>
 
 <Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} transition={{ y: 1000 }}>

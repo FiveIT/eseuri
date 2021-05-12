@@ -2,14 +2,12 @@
   import { go, Form, LayoutContext } from '$/components'
   import type { SubmitArgs } from '$/components'
   import { fromMutation, status } from '$/lib'
-  import type { UserStatus } from '$/lib'
   import client from '$/graphql/client'
   import { UPDATE_WORK_STATUS } from '$/graphql/queries'
   import type { WorkStatus } from '$/graphql/queries'
 
   import type { GotoHelper } from '@roxi/routify'
   import type { Writable } from 'svelte/store'
-  import { firstValueFrom } from 'rxjs'
   import { map, tap } from 'rxjs/operators'
 
   function onSubmit(
@@ -35,19 +33,14 @@
   import Input from './review/InputOptions.svelte'
   import { goto } from '@roxi/routify'
 
-  let user: UserStatus | undefined
-
-  firstValueFrom(status()).then(s => (user = s))
-
   export let work: UnrevisedWork
 
 </script>
 
-<!-- TODO: Don't use this for previewing bookmarks, as student's can't access information about other students required by this reader. -->
 {#await work.data then { workID }}
   <LayoutContext let:alive>
     <Base {work} additionalHeadingText={work.user ? `de ${work.user}` : ''}>
-      {#if work.status === 'inReview' && work.teacherID === user?.id}
+      {#if work.status === 'inReview' && work.teacherID === $status?.id}
         <Form
           name="review"
           cols={2}

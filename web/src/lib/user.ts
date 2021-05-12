@@ -1,16 +1,19 @@
-import { get } from 'svelte/store'
+import { get, writable } from 'svelte/store'
 import { authToken } from '@tmaxmax/svelte-auth0'
 import type { CombinedError } from '@urql/svelte'
 
 import type { Notification, UserStatus } from '.'
 import { requestError, fromStore, fromQuery } from '.'
 
-import { Observable, of } from 'rxjs'
-import { filter, switchMap, take, map, catchError, concatWith } from 'rxjs/operators'
+import { Observable, of, concat, defer } from 'rxjs'
+import { filter, switchMap, take, map, catchError } from 'rxjs/operators'
 import { fromFetch } from 'rxjs/fetch'
+import type { Writable } from 'svelte/store'
 
 import client from '$/graphql/client'
-import { SELF } from '$/graphql/queries'
+import { SELF, USER_STATUS } from '$/graphql/queries'
+import { fromSubscription, mapDefined } from './util'
+import { isNonNullable } from './types'
 
 const endpoint = `${import.meta.env.VITE_FUNCTIONS_URL}` as const
 
@@ -48,7 +51,9 @@ const statusErrorMessages: MessagesRecord = {
   },
 }
 
-export const status = (): Observable<UserStatus> =>
+export const statusError: Writable<RequestError | null> = writable(null)
+
+const fetchStatus = (): Observable<UserStatus | null> =>
   fromStore(authToken).pipe(
     filter(v => !!v),
     take(1),
@@ -62,24 +67,61 @@ export const status = (): Observable<UserStatus> =>
             return of(data)
           }
 
-          throw requestError(statusErrorMessages, status)
+          statusError.set(requestError(statusErrorMessages, status))
+
+          return of(null)
+        }),
+        catchError(() => {
+          statusError.set(requestError(statusErrorMessages, 500))
+
+          return of(null)
         })
       )
     )
   )
 
-export const self = () =>
-  of(undefined).pipe(
-    concatWith(
-      status().pipe(
-        switchMap(({ id }) => fromQuery(client, SELF, { id }, { requestPolicy: 'network-only' })),
-        map(v =>
-          v.users[0] ? ({ found: true, user: v.users[0] } as const) : ({ found: false } as const)
-        ),
-        catchError(() => of(null))
+export const status: Observable<UserStatus | null> = defer(() =>
+  concat(
+    of(null),
+    fetchStatus().pipe(
+      switchMap(value => {
+        if (value) {
+          return fromSubscription(client, USER_STATUS, { id: value.id }).pipe(
+            map(resp => (resp.users.length === 0 ? null : { ...resp.users[0], id: value.id })),
+            mapDefined(
+              ({ id, role, updated_at }): UserStatus => ({
+                id,
+                role,
+                isRegistered: updated_at !== null,
+              }),
+              null
+            ),
+            catchError(err => {
+              statusError.set(requestError(err as CombinedError))
+
+              return of(null)
+            })
+          )
+        }
+
+        return of(value)
+      })
+    )
+  )
+)
+
+export const self = defer(() =>
+  concat(
+    of(undefined),
+    status.pipe(
+      filter(isNonNullable),
+      switchMap(({ id }) => fromQuery(client, SELF, { id })),
+      map(v =>
+        v.users[0] ? ({ found: true, user: v.users[0] } as const) : ({ found: false } as const)
       )
     )
   )
+)
 
 export class RequestError extends Error {
   public readonly message: string

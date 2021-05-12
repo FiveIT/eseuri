@@ -70,6 +70,7 @@
     ),
     rejected: handler(REMOVE_TEACHER_REQUEST),
   }
+
 </script>
 
 <script lang="ts">
@@ -84,7 +85,9 @@
   }
 
   $: request = $tr.data?.teacher_requests[0]
-  $: status = request?.status || ('' as const)
+  $: status =
+    request?.user.role === 'teacher' ? ('approved' as const) : request?.status || ('' as const)
+
 </script>
 
 <LayoutContext let:theme>

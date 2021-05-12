@@ -1,6 +1,6 @@
 import { gql } from '@urql/svelte'
 
-import type { WorkType, WorkSummary, Nullable, FullNamer } from '$/lib'
+import type { WorkType, WorkSummary, Nullable, FullNamer, Role } from '$/lib'
 
 type QueryData<Name extends string, Data> = Nullable<
   {
@@ -365,7 +365,7 @@ export const IS_BOOKMARKED = gql<Data<IsBookmarked>, Vars<IsBookmarked>>`
 export type UnrevisedWork = ID & {
   status: WorkStatus
   user: FullNamer | null
-  teacher_id: number
+  teacher_id: number | null
   updated_at: string | null
 } & (
     | {
@@ -809,6 +809,9 @@ export const SELF = gql<Data<SelfQuery>, Vars<SelfQuery>>`
 
 type TeacherRequestTracking = {
   created_at: string
+  user: {
+    role: Role
+  }
 } & (
   | {
       status: 'pending'
@@ -831,6 +834,9 @@ export const TEACHER_REQUEST_TRACKING = gql<
       created_at
       updated_at
       status
+      user {
+        role
+      }
     }
   }
 `
@@ -851,6 +857,17 @@ export const DELETE_ACCOUNT = gql<Data<DeleteAccount>, Vars<DeleteAccount>>`
   mutation deleteAccount {
     delete_users(where: {}) {
       affected_rows
+    }
+  }
+`
+
+type UserStatus = Query<'users', [{ role: Role; updated_at: string | null }] | [], ID>
+
+export const USER_STATUS = gql<Data<UserStatus>, Vars<UserStatus>>`
+  subscription userStatus($id: Int!) {
+    users(where: { id: { _eq: $id } }) {
+      role
+      updated_at
     }
   }
 `

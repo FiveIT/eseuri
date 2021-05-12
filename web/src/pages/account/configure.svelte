@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { self } from '$/lib'
+  import { self, statusError } from '$/lib'
   import Error from './_/configure/Error.svelte'
   import Form from './_/configure/Form.svelte'
   import Spinner from './_/configure/Spinner.svelte'
@@ -14,7 +14,6 @@
   import { Auth0LogoutButton } from '@tmaxmax/svelte-auth0'
   import Modal, { openModal } from '@tmaxmax/renderless-svelte/src/Modal.svelte'
 
-  const formData = self()
 </script>
 
 <LayoutContext let:theme>
@@ -38,14 +37,14 @@
       </button>
     </Section>
   </div>
-  {#if $formData === null}
-    <Error>Nu am putut obține datele de utilizator, revino mai târziu.</Error>
-  {:else if $formData}
-    {#if $formData.found}
-      <Form user={$formData.user} />
+  {#if $self}
+    {#if $self.found}
+      <Form user={$self.user} />
     {:else}
       <Error>Ceva ciudat s-a întâmplat, reîncarcă pagina și vezi dacă merge!</Error>
     {/if}
+  {:else if $statusError}
+    <Error>Nu am putut obține datele de utilizator, revino mai târziu.</Error>
   {:else}
     <Spinner />
   {/if}
