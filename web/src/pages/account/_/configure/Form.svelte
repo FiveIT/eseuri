@@ -18,9 +18,14 @@
   let countyID = user.school.county.id
   let schoolID = user.school.id
 
-  const counties = query(operationStore(COUNTIES, undefined, { requestPolicy: 'cache-first' }))
+  const counties = query(operationStore(COUNTIES))
   const schools = query(operationStore(SCHOOLS, { countyID }))
   $: $schools.variables = { countyID }
+
+  const notification = {
+    status: 'success',
+    message: 'Datele tale au fost actualizate cu succes!',
+  } as const
 
   function onSubmit() {
     return fromMutation(client, REGISTER_USER, {
@@ -28,15 +33,7 @@
       middleName: middleName || null,
       lastName,
       schoolID,
-    }).pipe(
-      map(
-        () =>
-          ({
-            status: 'success',
-            message: 'Datele tale au fost actualizate cu succes!',
-          } as const)
-      )
-    )
+    }).pipe(map(() => notification))
   }
 
 </script>
