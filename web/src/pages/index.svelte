@@ -42,8 +42,6 @@
     <Spinner />
   {:else if $status?.role === 'teacher'}
     <TeacherMenu id={$status.id} />
-  {:else if !$isAuthenticated}
-    <UserMenu />
   {:else}
     <Spinner />
   {/if}
