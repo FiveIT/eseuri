@@ -5,7 +5,7 @@ import type { CombinedError } from '@urql/svelte'
 import type { Notification, UserStatus } from '.'
 import { requestError, fromStore, fromQuery } from '.'
 
-import { Observable, of, concat, defer } from 'rxjs'
+import { Observable, of, concat, BehaviorSubject } from 'rxjs'
 import { filter, switchMap, take, map, catchError } from 'rxjs/operators'
 import { fromFetch } from 'rxjs/fetch'
 import type { Writable } from 'svelte/store'
@@ -80,7 +80,7 @@ const fetchStatus = (): Observable<UserStatus | null> =>
     )
   )
 
-export const status: Observable<UserStatus | null> = concat(
+const status$ = concat(
   of(null),
   fetchStatus().pipe(
     switchMap(value => {
@@ -107,6 +107,10 @@ export const status: Observable<UserStatus | null> = concat(
     })
   )
 )
+
+export const status = new BehaviorSubject<UserStatus | null>(null)
+
+status$.subscribe(status)
 
 export const self = concat(
   of(undefined),
