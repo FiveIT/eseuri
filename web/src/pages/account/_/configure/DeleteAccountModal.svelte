@@ -7,25 +7,25 @@
   import { closeModal } from '@tmaxmax/renderless-svelte/src/Modal.svelte'
   import { AUTH0_CONTEXT_CLIENT_PROMISE, logout } from '@tmaxmax/svelte-auth0'
   import { getContext } from 'svelte'
-  import { switchMap } from 'rxjs/operators'
-  import { from, firstValueFrom } from 'rxjs'
+  import { switchMap, map, catchError } from 'rxjs/operators'
+  import { from, of } from 'rxjs'
 
   const auth0Client = getContext<any>(AUTH0_CONTEXT_CLIENT_PROMISE)
 
+  const notification = {
+    status: 'success',
+    message: 'Contul tău a fost șters cu succes!',
+  } as const
+
   function handler() {
-    firstValueFrom(
-      fromMutation(client, DELETE_ACCOUNT).pipe(
-        switchMap(() => from(logout(auth0Client, window.location.origin)))
+    fromMutation(client, DELETE_ACCOUNT)
+      .pipe(
+        switchMap(() => from(logout(auth0Client, window.location.origin))),
+        map(() => notification),
+        catchError(() => of(internalErrorNotification)),
+        map(n => notify(n))
       )
-    )
-      .then(() =>
-        notify({
-          status: 'success',
-          message: 'Contul tău a fost șters cu succes!',
-        })
-      )
-      .catch(() => notify(internalErrorNotification))
-      .finally(closeModal)
+      .subscribe(closeModal)
   }
 
 </script>
