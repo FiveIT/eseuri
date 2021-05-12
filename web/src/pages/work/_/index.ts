@@ -60,7 +60,7 @@ type WorksIterable = AsyncIterator<WorkData, WorkData> & {
 
 export const works = async (url: string, type: WorkType, beginWith?: string) => {
   const res = await client
-    .query(SUBJECT_ID_FROM_URL, { url, type }, { requestPolicy: 'cache-and-network' })
+    .query(SUBJECT_ID_FROM_URL, { url, type })
     .toPromise()
     .then(handleGraphQLResponse(v => (v?.work_summaries.length ? v.work_summaries[0] : undefined)))
 
@@ -165,7 +165,7 @@ export const unrevisedWork = (workID: number): Observable<Nullable<UnrevisedWork
             content: v.content,
           }),
           status: v.status,
-          teacherID: v.teacher_id,
+          teacherID: v.teacher_id!,
         }),
         null
       )
