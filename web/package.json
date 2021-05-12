@@ -69,7 +69,8 @@
     "lodash.debounce": "^4.0.8",
     "rxjs": "^7.0.0",
     "subscriptions-transport-ws": "^0.9.18",
-    "svelte-material-icons": "^1.0.3"
+    "svelte-material-icons": "^1.0.3",
+    "wonka": "^4.0.15"
   },
   "type": "module",
   "babel": {

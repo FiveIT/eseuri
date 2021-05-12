@@ -56,6 +56,7 @@ specifiers:
   vite: ^2.2.4
   vite-plugin-windicss: ^0.15.10
   windicss: ^2.5.14
+  wonka: ^4.0.15
 
 dependencies:
   '@tmaxmax/renderless-svelte': 1.5.0
@@ -68,6 +69,7 @@ dependencies:
   rxjs: 7.0.0
   subscriptions-transport-ws: 0.9.18_graphql@15.5.0
   svelte-material-icons: 1.0.3
+  wonka: 4.0.15
 
 devDependencies:
   '@babel/core': 7.14.0
