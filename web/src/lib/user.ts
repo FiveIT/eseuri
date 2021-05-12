@@ -80,45 +80,41 @@ const fetchStatus = (): Observable<UserStatus | null> =>
     )
   )
 
-export const status: Observable<UserStatus | null> = defer(() =>
-  concat(
-    of(null),
-    fetchStatus().pipe(
-      switchMap(value => {
-        if (value) {
-          return fromSubscription(client, USER_STATUS, { id: value.id }).pipe(
-            map(resp => (resp.users.length === 0 ? null : { ...resp.users[0], id: value.id })),
-            mapDefined(
-              ({ id, role, updated_at }): UserStatus => ({
-                id,
-                role,
-                isRegistered: updated_at !== null,
-              }),
-              null
-            ),
-            catchError(err => {
-              statusError.set(requestError(err as CombinedError))
+export const status: Observable<UserStatus | null> = concat(
+  of(null),
+  fetchStatus().pipe(
+    switchMap(value => {
+      if (value) {
+        return fromSubscription(client, USER_STATUS, { id: value.id }).pipe(
+          map(resp => (resp.users.length === 0 ? null : { ...resp.users[0], id: value.id })),
+          mapDefined(
+            ({ id, role, updated_at }): UserStatus => ({
+              id,
+              role,
+              isRegistered: updated_at !== null,
+            }),
+            null
+          ),
+          catchError(err => {
+            statusError.set(requestError(err as CombinedError))
 
-              return of(null)
-            })
-          )
-        }
+            return of(null)
+          })
+        )
+      }
 
-        return of(value)
-      })
-    )
+      return of(value)
+    })
   )
 )
 
-export const self = defer(() =>
-  concat(
-    of(undefined),
-    status.pipe(
-      filter(isNonNullable),
-      switchMap(({ id }) => fromQuery(client, SELF, { id })),
-      map(v =>
-        v.users[0] ? ({ found: true, user: v.users[0] } as const) : ({ found: false } as const)
-      )
+export const self = concat(
+  of(undefined),
+  status.pipe(
+    filter(isNonNullable),
+    switchMap(({ id }) => fromQuery(client, SELF, { id })),
+    map(v =>
+      v.users[0] ? ({ found: true, user: v.users[0] } as const) : ({ found: false } as const)
     )
   )
 )
