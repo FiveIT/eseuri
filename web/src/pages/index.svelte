@@ -40,9 +40,9 @@
   <NavBig />
   {#if $isLoading}
     <Spinner />
-  {:else if !$isAuthenticated}
-    <UserMenu />
   {:else if $status}
     <TeacherMenu id={$status.id} />
+  {:else}
+    <UserMenu />
   {/if}
 </Layout>
