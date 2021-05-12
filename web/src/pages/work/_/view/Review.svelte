@@ -1,5 +1,5 @@
 <script context="module" lang="ts">
-  import { go, Form, LayoutContext } from '$/components'
+  import { go, Form, LayoutContext, defaultSubmitFn } from '$/components'
   import type { SubmitArgs } from '$/components'
   import { fromMutation, status } from '$/lib'
   import type { UserStatus } from '$/lib'
@@ -10,7 +10,7 @@
   import type { GotoHelper } from '@roxi/routify'
   import type { Writable } from 'svelte/store'
   import { firstValueFrom } from 'rxjs'
-  import { map, tap } from 'rxjs/operators'
+  import { map, tap, switchMap } from 'rxjs/operators'
 
   function onSubmit(
     workID: number,
@@ -22,11 +22,24 @@
       status: body.get('status')!.toString() as WorkStatus,
       workID,
     }).pipe(
+      switchMap(({ update_works_by_pk }) => {
+        const body = new FormData()
+
+        body.append('name', update_works_by_pk!.first_name)
+        body.append('email', update_works_by_pk!.email)
+        // TODO: Add status and other required fields
+
+        return defaultSubmitFn({
+          action: 'url',
+          body,
+          method: 'POST',
+          message: '',
+        })
+      }),
       map(() => ({ status: 'success', message } as const)),
       tap(() => go('/', alive, goto))
     )
   }
-
 </script>
 
 <script lang="ts">
@@ -40,7 +53,6 @@
   firstValueFrom(status()).then(s => (user = s))
 
   export let work: UnrevisedWork
-
 </script>
 
 <!-- TODO: Don't use this for previewing bookmarks, as student's can't access information about other students required by this reader. -->
