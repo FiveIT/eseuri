@@ -456,12 +456,19 @@ interface UpdateWorkStatusVars {
   status: WorkStatus
 }
 
-type UpdateWorkStatus = Query<'update_works_by_pk', Typename | null, UpdateWorkStatusVars>
+type UpdateWorkStatus = Query<
+  'update_works_by_pk',
+  ({ first_name: string } & Emailer) | null,
+  UpdateWorkStatusVars
+>
 
 export const UPDATE_WORK_STATUS = gql<Data<UpdateWorkStatus>, Vars<UpdateWorkStatus>>`
   mutation updateWorkStatus($workID: Int!, $status: work_status_enum!) {
     update_works_by_pk(pk_columns: { id: $workID }, _set: { status: $status }) {
-      __typename
+      user {
+        first_name
+        email
+      }
     }
   }
 `
