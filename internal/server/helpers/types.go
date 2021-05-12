@@ -5,3 +5,10 @@ type WorkFormInput struct {
 	SubjectID          int    `form:"subject"`
 	RequestedTeacherID int    `form:"requestedTeacher"`
 }
+
+type StudentUploaderInfo struct {
+	StatusLucrare  string `form:"status"`
+	NumeleElevului string `form:"name"`
+	EmailElev      string `form:"email"`
+	WorkID         string `form:"workID"`
+}

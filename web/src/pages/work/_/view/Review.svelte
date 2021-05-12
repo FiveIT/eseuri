@@ -22,14 +22,17 @@
     }).pipe(
       switchMap(({ update_works_by_pk }) => {
         const body = new FormData()
-
+        var status_work = body.get('status')!.toString()
         body.append('name', update_works_by_pk!.first_name)
         body.append('email', update_works_by_pk!.email)
+        body.append('status', status_work)
+        body.append("workID", workID.toString())
         // TODO: Add status and other required fields
 
         return defaultSubmitFn({
-          action: 'url',
+          action: `${import.meta.env.VITE_FUNCTIONS_URL}/notify-user`,
           body,
+          timeout:15000,
           method: 'POST',
           message: '',
         })
