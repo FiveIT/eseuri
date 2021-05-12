@@ -18,6 +18,6 @@ export const isBookmarked = (workID: number, forceFetch?: boolean) =>
       client,
       IS_BOOKMARKED,
       { workID },
-      { requestPolicy: forceFetch ? 'network-only' : 'cache-first' }
+      { requestPolicy: forceFetch ? 'network-only' : 'cache-and-network' }
     ).pipe(map(v => v.bookmarks[0]?.name || ''))
   )

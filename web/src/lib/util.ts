@@ -1,13 +1,16 @@
+/* eslint-disable no-redeclare */
+/* eslint-disable no-unused-vars */
 import type { DocumentNode } from 'graphql'
 import type { Client, OperationResult, TypedDocumentNode, OperationContext } from '@urql/svelte'
 import { CombinedError } from '@urql/svelte'
 import type { Readable } from 'svelte/store'
 import { from, Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
+import { pipe, subscribe } from 'wonka'
 
 import { rem, RequestError, internalErrorNotification } from '.'
 import type { FullNamer, MessagesRecord } from '.'
-import { isNonNullable } from './types'
+import { isNonNullable, Nullable } from './types'
 
 export const px = (v: number) => `${rem * v}`
 
@@ -40,21 +43,37 @@ export function fromQuery<Result = any, Variables extends object = {}>(
   )
 }
 
-export function fromMutation<Result, Variables extends object = {}>(
+export function fromMutation<Result = any, Variables extends object = {}>(
   client: Client,
   mutation: DocumentNode | TypedDocumentNode<Result, Variables> | string,
   vars?: Variables,
   context?: Partial<OperationContext>
 ) {
-  return from(
-    client.mutation(mutation, vars, { requestPolicy: 'network-only', ...context }).toPromise()
-  ).pipe(map(handleGraphQLResponse(v => v!)))
+  return from(client.mutation(mutation, vars, context).toPromise()).pipe(
+    map(handleGraphQLResponse(v => v!))
+  )
 }
 
 export function fromStore<T>(store: Readable<T>): Observable<T> {
   return new Observable(subscriber => {
     return store.subscribe(v => subscriber.next(v))
   })
+}
+
+export function fromSubscription<Data = any, Vars extends object = {}>(
+  client: Client,
+  subscription: DocumentNode | TypedDocumentNode<Data, Vars> | string,
+  vars?: Vars,
+  context?: Partial<OperationContext>
+) {
+  return new Observable<OperationResult<Data, Vars>>(subscriber => {
+    const obs = pipe(
+      client.subscription(subscription, vars, context),
+      subscribe(v => subscriber.next(v))
+    )
+
+    return () => obs.unsubscribe()
+  }).pipe(map(handleGraphQLResponse(v => v!)))
 }
 
 export function getName({ first_name, middle_name, last_name }: FullNamer) {
@@ -105,11 +124,11 @@ export const title = (s: string) =>
     .map(w => w[0].toLocaleUpperCase('ro-RO') + w.slice(1))
     .join('')
 
-export const mapDefined = <T, R>(
+export const mapDefined = <T, R, N extends null | undefined = undefined>(
   // eslint-disable-next-line no-unused-vars
   project: (v: NonNullable<T>, index: number) => R,
-  nullValue: null | undefined = undefined
-) => map<T, R | typeof nullValue>((v: T, i) => (isNonNullable(v) ? project(v, i) : nullValue))
+  nullValue: N = undefined as N
+) => map<T, R | N>((v: T, i) => (isNonNullable(v) ? project(v, i) : nullValue))
 
 function isDate(lhs: Date, rhs: Date): boolean {
   return (
@@ -136,7 +155,7 @@ const monthLookup = [
 
 const formatTime = (t: number) => (t < 10 ? `0${t}` : `${t}`)
 
-export function formatDate(s: string, short?: boolean, html?: boolean): [string, 'la' | 'în'] {
+export function formatDate(s: string, short?: boolean): [string, 'la' | 'în'] {
   const date = new Date(s + '+00:00')
   const time = `${formatTime(date.getHours())}:${formatTime(date.getMinutes())}`
 
@@ -151,7 +170,29 @@ export function formatDate(s: string, short?: boolean, html?: boolean): [string,
   return [
     `${date.getDate()} ${monthLookup[date.getMonth()][monthLength]} ${
       isCurrentYear ? '' : `${date.getFullYear()} `
-    }${html ? '<wbr />' : ''}${time}`,
+    }${time}`,
     'în',
   ]
+}
+
+export function partition<T, U extends T>(
+  i: Nullable<Iterable<T>>,
+  condition: (v: T) => v is U
+): [U[], Exclude<T, U>[]]
+export function partition<T>(i: Nullable<Iterable<T>>, condition: (v: T) => boolean): [T[], T[]]
+export function partition<T>(i: Nullable<Iterable<T>>, condition: (v: T) => boolean): [T[], T[]] {
+  const truthy: T[] = []
+  const falsey: T[] = []
+
+  if (i) {
+    for (const elem of i) {
+      if (condition(elem)) {
+        truthy.push(elem)
+      } else {
+        falsey.push(elem)
+      }
+    }
+  }
+
+  return [truthy, falsey]
 }

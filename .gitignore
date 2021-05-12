@@ -12,3 +12,5 @@ yarn-lock.json
 cypress/screenshots
 cypress/videos
 .idea/
+
+.vercel

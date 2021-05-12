@@ -8,9 +8,12 @@
 
   let type: WorkType = 'essay'
 
-  const content = query(operationStore(WORK_SUMMARIES, { type }, { requestPolicy: 'network-only' }))
+  const content = query(
+    operationStore(WORK_SUMMARIES, { type }, { requestPolicy: 'cache-and-network' })
+  )
 
   $: $content.variables = { type }
+
 </script>
 
 <Base loading={$content.fetching} error={!!$content.error} works={$content.data?.work_summaries}>

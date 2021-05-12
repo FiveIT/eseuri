@@ -1,6 +1,6 @@
 import { gql } from '@urql/svelte'
 
-import type { WorkType, WorkSummary, Nullable, FullNamer } from '$/lib'
+import type { WorkType, WorkSummary, Nullable, FullNamer, Role } from '$/lib'
 
 type QueryData<Name extends string, Data> = Nullable<
   {
@@ -146,12 +146,12 @@ export const CHARACTERS = gql<Data<Characters>, Vars<Characters>>`
 type SubjectIDFromURL = Query<
   'work_summaries',
   [ID & Namer & { work_count: number }] | [],
-  { url: string }
+  { url: string; type: WorkType }
 >
 
 export const SUBJECT_ID_FROM_URL = gql<Data<SubjectIDFromURL>, Vars<SubjectIDFromURL>>`
-  query getSubjectIDFromURL($url: String!) {
-    work_summaries(where: { url: { _eq: $url } }) {
+  query getSubjectIDFromURL($url: String!, $type: String!) {
+    work_summaries(where: { _and: [{ url: { _eq: $url } }, { type: { _eq: $type } }] }) {
       name
       id
       work_count
@@ -365,7 +365,7 @@ export const IS_BOOKMARKED = gql<Data<IsBookmarked>, Vars<IsBookmarked>>`
 export type UnrevisedWork = ID & {
   status: WorkStatus
   user: FullNamer | null
-  teacher_id: number
+  teacher_id: number | null
   updated_at: string | null
 } & (
     | {
@@ -786,7 +786,7 @@ export const ASSOCIATE_WITH_STUDENT = gql<Data<AssociateWith>, Vars<AssociateWit
   }
 `
 
-export type Self = ID & FullNamer & { school: ID & { county: ID<string> } }
+export type Self = ID & FullNamer & Emailer & { school: ID & { county: ID<string> } }
 
 type SelfQuery = Query<'users', [Self] | [], ID>
 
@@ -797,6 +797,7 @@ export const SELF = gql<Data<SelfQuery>, Vars<SelfQuery>>`
       first_name
       middle_name
       last_name
+      email
       school {
         id
         county {
@@ -809,6 +810,9 @@ export const SELF = gql<Data<SelfQuery>, Vars<SelfQuery>>`
 
 type TeacherRequestTracking = {
   created_at: string
+  user: {
+    role: Role
+  }
 } & (
   | {
       status: 'pending'
@@ -831,6 +835,9 @@ export const TEACHER_REQUEST_TRACKING = gql<
       created_at
       updated_at
       status
+      user {
+        role
+      }
     }
   }
 `
@@ -851,6 +858,17 @@ export const DELETE_ACCOUNT = gql<Data<DeleteAccount>, Vars<DeleteAccount>>`
   mutation deleteAccount {
     delete_users(where: {}) {
       affected_rows
+    }
+  }
+`
+
+type UserStatus = Query<'users', [{ role: Role; updated_at: string | null }] | [], ID>
+
+export const USER_STATUS = gql<Data<UserStatus>, Vars<UserStatus>>`
+  subscription userStatus($id: Int!) {
+    users(where: { id: { _eq: $id } }) {
+      role
+      updated_at
     }
   }
 `

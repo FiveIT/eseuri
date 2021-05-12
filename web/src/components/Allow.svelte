@@ -1,14 +1,17 @@
 <script lang="ts">
   import { isAuthenticated, authError, isLoading } from '@tmaxmax/svelte-auth0'
   import { notify, Spinner } from '.'
-  import * as user from '$/lib/user'
-  import { TRANSITION_EASING as easing, TRANSITION_DURATION as duration } from '$/lib'
+  import {
+    TRANSITION_EASING as easing,
+    TRANSITION_DURATION as duration,
+    status,
+    statusError,
+  } from '$/lib'
   import type { Notification, Timeout } from '$/lib'
 
   import { onDestroy } from 'svelte'
   import { fade } from 'svelte/transition'
   import { redirect as goto } from '@roxi/routify'
-  import { firstValueFrom } from 'rxjs'
 
   export let redirect: string
 
@@ -67,39 +70,34 @@
         message: `Autentifică-te mai întâi pentru a avea acces la această resursă.`,
       })
     } else if (registered || unregistered) {
-      firstValueFrom(user.status())
-        .then(({ isRegistered }) => {
-          if ((isRegistered && registered) || (!isRegistered && unregistered)) {
-            show()
-
-            return
-          }
-
-          if (registered) {
-            bail({
-              status: 'info',
-              message: `Înregistrează-te pentru a avea acces la această resursă.`,
-              explanation: `Pentru a te înregistra, mergi în <a class="underline" href="/account/configure">Contul meu &gt; Configurare</a>, sau la <a class="underline" href="/register">Înregistrare</a>.`,
-            })
-          } else {
-            bail({
-              status: 'info',
-              message: 'Ești deja înregistrat',
-            })
-          }
-        })
-        .catch(err => {
-          console.error(err)
-
+      if ($status) {
+        if (($status.isRegistered && registered) || (!$status.isRegistered && unregistered)) {
+          show()
+        } else if (registered) {
           bail({
-            status: 'error',
-            message: 'A apărut o eroare internă, încearcă mai târziu.',
+            status: 'info',
+            message: `Înregistrează-te pentru a avea acces la această resursă.`,
+            explanation: `Pentru a te înregistra, mergi în <a class="underline" href="/account/configure">Contul meu &gt; Configurare</a>, sau la <a class="underline" href="/register">Înregistrare</a>.`,
           })
+        } else {
+          bail({
+            status: 'info',
+            message: 'Ești deja înregistrat',
+          })
+        }
+      } else if ($statusError) {
+        console.error({ allowError: $statusError })
+
+        bail({
+          status: 'error',
+          message: 'A apărut o eroare internă, încearcă mai târziu.',
         })
+      }
     } else {
       show()
     }
   }
+
 </script>
 
 {#if showSlot}
