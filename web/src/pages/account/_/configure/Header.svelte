@@ -1,1 +1,1 @@
-<header class="place-self-center text-center"><slot /></header>
+<header class="place-self-center text-center leading-none select-none"><slot /></header>

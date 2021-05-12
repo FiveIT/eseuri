@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Row, Cell, Spinner, Error } from './table'
+  import { Row, Cell, Spinner, Error, Empty } from './table'
 
   import { DeleteButton } from '$/components'
   import { BOOKMARKS } from '$/graphql/queries'
@@ -34,23 +34,28 @@
       notify(internalErrorNotification)
     }
   }
+
 </script>
 
 {#if $content.data}
-  {#each $content.data.bookmarks as { name, created_at, work } (work.id)}
-    <div class="relative group col-span-full h-full">
-      <Row bordered href="/work/{work.id}" id={work.id.toString()}>
-        <Cell>{work.essay ? 'Eseu' : 'Caracterizare'}</Cell>
-        <Cell cols={2}>{name}</Cell>
-        <Cell cols={2}
-          >{work.essay ? work.essay.title.name : work.characterization.character.name}</Cell>
-        <Cell>{formatDate(created_at, true)[0]}</Cell>
-      </Row>
-      <div class="absolute -top-1em -left-1em">
-        <DeleteButton on:click={() => handler(work.id)} />
+  {#if $content.data.bookmarks.length}
+    {#each $content.data.bookmarks as { name, created_at, work } (work.id)}
+      <div class="relative group col-span-full h-full">
+        <Row bordered href="/work/{work.id}" id={work.id.toString()}>
+          <Cell>{work.essay ? 'Eseu' : 'Caracterizare'}</Cell>
+          <Cell cols={2}>{name}</Cell>
+          <Cell cols={2}
+            >{work.essay ? work.essay.title.name : work.characterization.character.name}</Cell>
+          <Cell>{formatDate(created_at, true)[0]}</Cell>
+        </Row>
+        <div class="absolute -top-1em -left-1em">
+          <DeleteButton on:click={() => handler(work.id)} />
+        </div>
       </div>
-    </div>
-  {/each}
+    {/each}
+  {:else}
+    <Empty>Nicio lucrare salvată.</Empty>
+  {/if}
 {:else if $content.error}
   <Error>Nu s-au putut obține marcajele, revino mai târziu.</Error>
 {:else}

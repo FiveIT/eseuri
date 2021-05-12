@@ -36,9 +36,9 @@ const exchanges = [
   cacheExchange,
   errorExchange({
     onError(error, operation) {
-      if (import.meta.env.PROD) {
-        return
-      }
+      // if (import.meta.env.PROD) {
+      //   return
+      // }
 
       const query = operation.query.definitions.find(
         (def): def is OperationDefinitionNode => def.kind === 'OperationDefinition'

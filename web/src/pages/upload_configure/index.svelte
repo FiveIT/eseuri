@@ -25,7 +25,7 @@
 
   import type { Context } from '../upload.svelte'
   import { contextKey } from '../upload.svelte'
-  import { getRequestedTeachers } from '.'
+  import { requestedTeachers as teachers } from '.'
 
   import type { BlobPropsInput, WorkType } from '$/lib'
   import { workTypeTranslation, getName } from '$/lib'
@@ -100,7 +100,6 @@
   const message = 'Lucrarea ta a fost încărcată cu succes!'
   const explanation = `Va fi publică în scurt timp, după ce a fost revizuită de un profesor.`
 
-  const teachers = getRequestedTeachers()
 </script>
 
 <Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} blurBackground>
@@ -141,9 +140,10 @@
             <Select
               name="requestedTeacher"
               placeholder="Opțional: alege cine va revizui lucrarea"
-              options={$teachers}
-              mapper={({ teacher }) => teacher.user.id}
-              display={({ teacher }) => getName(teacher.user)}>Profesor pentru revizuire</Select>
+              options={[null, ...$teachers]}
+              mapper={data => data?.teacher.user.id || 0}
+              display={data => (data ? getName(data.teacher.user) : 'Niciunul.')}
+              >Profesor pentru revizuire</Select>
           {/if}
         {:else}
           <Spinner longDuration={null} />

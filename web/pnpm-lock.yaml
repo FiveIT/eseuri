@@ -1,5 +1,8 @@
 lockfileVersion: 5.3
 
+overrides:
+  '@urql/core': 2.0.0
+
 specifiers:
   '@babel/core': ^7.14.0
   '@babel/preset-env': ^7.14.1
@@ -53,6 +56,7 @@ specifiers:
   vite: ^2.2.4
   vite-plugin-windicss: ^0.15.10
   windicss: ^2.5.14
+  wonka: ^4.0.15
 
 dependencies:
   '@tmaxmax/renderless-svelte': 1.5.0
@@ -65,6 +69,7 @@ dependencies:
   rxjs: 7.0.0
   subscriptions-transport-ws: 0.9.18_graphql@15.5.0
   svelte-material-icons: 1.0.3
+  wonka: 4.0.15
 
 devDependencies:
   '@babel/core': 7.14.0
@@ -1965,8 +1970,8 @@ packages:
       eslint-visitor-keys: 2.1.0
     dev: true
 
-  /@urql/core/2.1.1_graphql@15.5.0:
-    resolution: {integrity: sha512-eKEmrSjnXzgXJ4xqoHh7KGV0Xj3hsEeQydrVocOPlpcGhlo8+sqR1Eo8ChmGCdLL4hf4biBN4dG59s11cG0iRQ==}
+  /@urql/core/2.0.0_graphql@15.5.0:
+    resolution: {integrity: sha512-Qj24CG8ullqZZsYmjrSH0JhH+nY7kj8GbVbA9si3KUjlYs75A/MBQU3i97j6oWyGldDBapyis2CfaQeXKbv8rA==}
     peerDependencies:
       graphql: ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
     dependencies:
@@ -1990,7 +1995,7 @@ packages:
     peerDependencies:
       graphql: ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
     dependencies:
-      '@urql/core': 2.1.1_graphql@15.5.0
+      '@urql/core': 2.0.0_graphql@15.5.0
       graphql: 15.5.0
       wonka: 4.0.15
     dev: false
@@ -2001,7 +2006,7 @@ packages:
       graphql: ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
       svelte: ^3.0.0
     dependencies:
-      '@urql/core': 2.1.1_graphql@15.5.0
+      '@urql/core': 2.0.0_graphql@15.5.0
       graphql: 15.5.0
       svelte: 3.38.2
       wonka: 4.0.15

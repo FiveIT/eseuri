@@ -8,6 +8,7 @@ export { default as Row } from './Row.svelte'
 export { default as Cell } from './Cell.svelte'
 export { default as Spinner } from './Spinner.svelte'
 export { default as Error } from './Error.svelte'
+export { default as Empty } from './Empty.svelte'
 
 export function register(store: Writable<number>, rows = 1) {
   onMount(() => {

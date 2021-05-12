@@ -18,9 +18,14 @@
   let countyID = user.school.county.id
   let schoolID = user.school.id
 
-  const counties = query(operationStore(COUNTIES, undefined, { requestPolicy: 'cache-first' }))
+  const counties = query(operationStore(COUNTIES))
   const schools = query(operationStore(SCHOOLS, { countyID }))
   $: $schools.variables = { countyID }
+
+  const notification = {
+    status: 'success',
+    message: 'Datele tale au fost actualizate cu succes!',
+  } as const
 
   function onSubmit() {
     return fromMutation(client, REGISTER_USER, {
@@ -28,21 +33,14 @@
       middleName: middleName || null,
       lastName,
       schoolID,
-    }).pipe(
-      map(
-        () =>
-          ({
-            status: 'success',
-            message: 'Datele tale au fost actualizate cu succes!',
-          } as const)
-      )
-    )
+    }).pipe(map(() => notification))
   }
+
 </script>
 
-{#if $counties.fetching}
+{#if $counties.fetching || !$counties.data}
   <Spinner />
-{:else if $counties.error || $schools.error || !$schools.data || !$counties.data}
+{:else if $counties.error || $schools.error}
   <Error>A apărut o eroare, revino mai târziu</Error>
 {:else}
   <div class="col-span-3 row-span-6 grid grid-cols-3 gap-x-md gap-y-sm grid-rows-6">
@@ -60,7 +58,7 @@
         mapper={c => c.id}
         display={c => c.name}
         options={$counties.data.counties}>Județul școlii tale</Select>
-      {#if $schools.fetching}
+      {#if $schools.fetching || !$schools.data}
         <SpinnerOG longDuration={null} />
       {:else}
         <Select

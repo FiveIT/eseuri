@@ -12,7 +12,7 @@
 </script>
 
 <Base let:theme>
-  <span class="place-self-center select-none {text[theme]}"><slot /></span>
+  <span class="place-self-center select-none {text[theme]} leading-none"><slot /></span>
   {#each options as value, i}
     <input
       id={`${name}_${value}`}

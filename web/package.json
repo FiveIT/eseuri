@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "routify -c dev-vite",
     "dev:windows": "run-p open dev",
-    "prebuild": "[ $CI = true ] && npx pnpm install --store=../node_modules/.pnpm-store || echo 'skipping pnpm install'",
+    "prebuild": "[ $CI = 1 ] && npx pnpm install --store=../node_modules/.pnpm-store || echo 'skipping pnpm install'",
     "build": "routify -b && vite build && node br.cjs",
     "dev-vite": "vite",
     "serve-vite": "vite preview",
@@ -69,7 +69,8 @@
     "lodash.debounce": "^4.0.8",
     "rxjs": "^7.0.0",
     "subscriptions-transport-ws": "^0.9.18",
-    "svelte-material-icons": "^1.0.3"
+    "svelte-material-icons": "^1.0.3",
+    "wonka": "^4.0.15"
   },
   "type": "module",
   "babel": {
@@ -102,5 +103,10 @@
     "setupFilesAfterEnv": [
       "@testing-library/jest-dom/extend-expect"
     ]
+  },
+  "pnpm": {
+    "overrides": {
+      "@urql/core": "2.0.0"
+    }
   }
 }

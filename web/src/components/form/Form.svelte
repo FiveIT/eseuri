@@ -9,10 +9,10 @@
   } from '$/lib'
   import type { Notification, Nullable, MessagesRecord } from '$/lib'
 
-  import { from, of } from 'rxjs'
+  import { from, of, throwError } from 'rxjs'
   import { fromFetch } from 'rxjs/fetch'
   import type { ObservableInput } from 'rxjs'
-  import { filter, switchMap } from 'rxjs/operators'
+  import { filter, switchMap, timeout as rxTimeout } from 'rxjs/operators'
   import { getContext, setContext } from 'svelte'
   import { writable } from 'svelte/store'
   import type { Readable, Writable } from 'svelte/store'
@@ -51,6 +51,11 @@
       })
     } else if (err instanceof CombinedError) {
       error(requestError(err))
+    } else if (err instanceof TimeoutError) {
+      notify({
+        status: 'error',
+        message: err.message,
+      })
     } else {
       console.error({ formError: err })
       notify(internalErrorNotification)
@@ -62,11 +67,18 @@
     action: string
     method: string
     message: string
+    timeout: number
     explanation?: string
   }
 
   // eslint-disable-next-line no-unused-vars
   type SubmitFn = (args: SubmitArgs) => ObservableInput<Nullable<Notification>>
+
+  class TimeoutError extends Error {
+    constructor(public readonly message: string) {
+      super(message)
+    }
+  }
 
   const submit =
     (
@@ -89,7 +101,14 @@
           ...submitArgs,
         })
       )
-        .pipe(filter(isNonNullable))
+        .pipe(
+          rxTimeout({
+            each: submitArgs.timeout,
+            with: () =>
+              throwError(() => new TimeoutError('Operația a luat prea mult, încearcă mai târziu!')),
+          }),
+          filter(isNonNullable)
+        )
         .subscribe({
           next(notification) {
             submitStatus.set('success')
@@ -148,6 +167,7 @@
   export let disabled = false
   export let hasTitle = true
   export let submitOnChange = false
+  export let timeout = 10000
 
   const hasTitleStore = writable(hasTitle)
   $: $hasTitleStore = hasTitle
@@ -169,7 +189,11 @@
     hasTitle: hasTitleStore,
   })
 
-  const submitFn = submit(onSubmit, { action, method: 'POST', message, explanation }, submitStatus)
+  const submitFn = submit(
+    onSubmit,
+    { action, method: 'POST', message, explanation, timeout },
+    submitStatus
+  )
 
 </script>
 
