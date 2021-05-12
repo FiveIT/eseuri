@@ -7,7 +7,7 @@
   import type { BlobPropsInput } from '$/lib'
 
   import { metatags } from '@roxi/routify'
-  import { isAuthenticated, isLoading } from '@tmaxmax/svelte-auth0'
+  import { isLoading } from '@tmaxmax/svelte-auth0'
 
   metatags.title = 'Acasă - Eseuri'
 
@@ -43,6 +43,6 @@
   {:else if $status?.role === 'teacher'}
     <TeacherMenu id={$status.id} />
   {:else}
-    <Spinner />
+    <UserMenu />
   {/if}
 </Layout>
