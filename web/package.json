@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "routify -c dev-vite",
     "dev:windows": "run-p open dev",
-    "prebuild": "[ $CI = true ] && npx pnpm install --store=../node_modules/.pnpm-store || echo 'skipping pnpm install'",
+    "prebuild": "[ $CI = 1 ] && npx pnpm install --store=../node_modules/.pnpm-store || echo 'skipping pnpm install'",
     "build": "routify -b && vite build && node br.cjs",
     "dev-vite": "vite",
     "serve-vite": "vite preview",
@@ -102,5 +102,10 @@
     "setupFilesAfterEnv": [
       "@testing-library/jest-dom/extend-expect"
     ]
+  },
+  "pnpm": {
+    "overrides": {
+      "@urql/core": "2.0.0"
+    }
   }
 }
