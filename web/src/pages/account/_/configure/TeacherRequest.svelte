@@ -98,7 +98,7 @@
       theme
     ]} disabled:cursor-default font-sans text-sm antialiased transition-all duration-100 ease-out {borders[
       status
-    ]} {bgs[status]}">
+    ]} {bgs[status]} leading-none">
     {labels[status](request?.created_at)}
   </button>
 </LayoutContext>
