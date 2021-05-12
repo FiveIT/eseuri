@@ -45,6 +45,8 @@
   } else if ($status) {
     // eslint-disable-next-line no-extra-semi
     ;({ id, role } = $status)
+
+    loading = false
   }
 
 </script>
