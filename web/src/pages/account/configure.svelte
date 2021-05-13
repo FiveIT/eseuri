@@ -34,7 +34,7 @@
         on:click={() => openModal(true)}
         class="rounded {border.color[theme]} {border.all[
           theme
-        ]} hover:(bg-red border-red) transition-all duration-100 ease-out font-sans text-sm antialiased leading-none">
+        ]} hover:(bg-red border-red) focus-visible:(bg-red border-red) transition-all duration-100 ease-out font-sans text-sm antialiased leading-none">
         Șterge-ți contul
       </button>
     </Section>
