@@ -12,6 +12,11 @@ export const placeholderText: ThemeEntry = {
   white: 'text-white',
 }
 
+export const placeholderInputText: ThemeEntry = {
+  default: 'placeholder-gray',
+  white: 'placeholder-gray-light',
+}
+
 export const border: Record<string, ThemeEntry> = {
   color: {
     default: 'border-black',
