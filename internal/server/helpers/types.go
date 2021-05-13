@@ -10,6 +10,5 @@ type StudentUploaderInfo struct {
 	StatusLucrare  string `form:"status"`
 	NumeleElevului string `form:"name"`
 	EmailElev      string `form:"email"`
-	WorkID         string `form:"workID"`
-	URLBaza        string `form:"url"`
+	URL            string `form:"url"`
 }

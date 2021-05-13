@@ -456,9 +456,13 @@ interface UpdateWorkStatusVars {
   status: WorkStatus
 }
 
+interface UpdateWorkStatusData {
+  user: Pick<FullNamer, 'first_name'> & Emailer
+}
+
 type UpdateWorkStatus = Query<
   'update_works_by_pk',
-  ({ first_name: string } & Emailer) | null,
+  UpdateWorkStatusData | null,
   UpdateWorkStatusVars
 >
 

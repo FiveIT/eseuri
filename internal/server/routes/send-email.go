@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/FiveIT/eseuri/internal/meta"
@@ -33,8 +34,7 @@ func SendEmailStatusWork() fiber.Handler {
 			m.SetTemplateID("d-069856a4edc04fd7a0b5ba1709a09ebb")
 		}
 
-		link := senderInfo.URLBaza + "/work/" + senderInfo.WorkID
-		p.SetDynamicTemplateData("link", link)
+		p.SetDynamicTemplateData("link", senderInfo.URL)
 
 		to := mail.NewEmail(senderInfo.NumeleElevului, senderInfo.EmailElev)
 		p.AddTos(to)
@@ -50,9 +50,9 @@ func SendEmailStatusWork() fiber.Handler {
 		_, err := sendgrid.MakeRequest(request)
 
 		if err != nil {
-			return err
+			return fmt.Errorf("failed to send email: %w", err)
 		}
 
-		return c.JSON(fiber.Map{})
+		return c.SendStatus(fiber.StatusOK)
 	}
 }
