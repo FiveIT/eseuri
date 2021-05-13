@@ -85,11 +85,13 @@
   }
 
   $: request = $tr.data?.teacher_requests[0]
-  $: status = !request
-    ? null
-    : request.user.role === 'teacher'
-    ? ('approved' as const)
-    : request.status || ('' as const)
+  $: status = $tr.data
+    ? request
+      ? request.user.role === 'teacher'
+        ? ('approved' as const)
+        : request.status
+      : ('' as const)
+    : null
 
 </script>
 
@@ -102,6 +104,6 @@
     ]} disabled:cursor-default font-sans text-sm antialiased transition-all duration-100 ease-out {borders[
       status || ''
     ]} {bgs[status || '']} leading-none">
-    {status ? labels[status](request?.created_at) : 'Se încarcă...'}
+    {status !== null ? labels[status](request?.created_at) : 'Se încarcă...'}
   </button>
 </LayoutContext>
