@@ -82,36 +82,6 @@ export function fromSubscription<Data = any, Vars extends object = {}>(
   }).pipe(map(handleGraphQLResponse(v => v!)))
 }
 
-export function lazySubscription<Data = any, Vars extends object = {}>(
-  sub: DocumentNode | TypedDocumentNode<Data, Vars> | string
-) {
-  let content: OperationStore<Data, Vars> | undefined
-
-  return (vars?: Vars, context?: Partial<OperationContext>) => {
-    if (content) {
-      if (vars || context) {
-        content.update(data => {
-          if (vars) {
-            data.variables = vars
-          }
-
-          if (context) {
-            data.context = context
-          }
-
-          return data
-        })
-      }
-
-      return content
-    }
-
-    content = subscription(operationStore(sub, vars, context))
-
-    return content
-  }
-}
-
 export function getName({ first_name, middle_name, last_name }: FullNamer) {
   return `${first_name} ${middle_name ? `${middle_name} ` : ''}${last_name}`
 }

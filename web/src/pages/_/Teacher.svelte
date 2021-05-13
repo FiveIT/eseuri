@@ -1,22 +1,17 @@
-<script context="module" lang="ts">
-  import { UNREVISED_WORKS } from '$/graphql/queries'
-  import { lazySubscription } from '$/lib'
-
-  const subscribe = lazySubscription(UNREVISED_WORKS)
-
-</script>
-
 <script lang="ts">
   import Base from './Base.svelte'
   import TeacherSelector from './TeacherSelector.svelte'
   import { partition } from '$/lib'
+  import { UNREVISED_WORKS } from '$/graphql/queries'
+
+  import { operationStore, subscription } from '@urql/svelte'
 
   export let id: number
 
   let hasNoTeacher = false
   let count: [number, number] | undefined
 
-  const content = subscribe()
+  const content = subscription(operationStore(UNREVISED_WORKS))
 
   $: [withTeacher, withNoTeacher] = partition($content.data?.works, w => w.teacher_id === id)
   $: withNoTeacher.sort((a, b) => +!!a.teacher_id - +!!b.teacher_id)
