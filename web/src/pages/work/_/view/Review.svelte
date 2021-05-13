@@ -26,6 +26,7 @@
         body.append('email', update_works_by_pk!.email)
         body.append('status', status)
         body.append('workID', workID.toString())
+        body.append('url', window.location.origin)
 
         return defaultSubmitFn({
           action: `${import.meta.env.VITE_FUNCTIONS_URL}/notify-user`,

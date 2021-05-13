@@ -27,14 +27,14 @@ func SendEmailStatusWork() fiber.Handler {
 
 		p := mail.NewPersonalization()
 
-		if senderInfo.StatusLucrare == "accepted" {
+		if senderInfo.StatusLucrare == "approved" {
 			m.SetTemplateID("d-709b5b58f80543559068014c4e689bfc")
-
-			link := "https://eseuri.com/" + senderInfo.WorkID
-			p.SetDynamicTemplateData("link", link)
 		} else {
 			m.SetTemplateID("d-069856a4edc04fd7a0b5ba1709a09ebb")
 		}
+
+		link := senderInfo.URLBaza + "/work/" + senderInfo.WorkID
+		p.SetDynamicTemplateData("link", link)
 
 		to := mail.NewEmail(senderInfo.NumeleElevului, senderInfo.EmailElev)
 		p.AddTos(to)
@@ -47,12 +47,12 @@ func SendEmailStatusWork() fiber.Handler {
 		var Body = mail.GetRequestBody(m)
 
 		request.Body = Body
-		response, err := sendgrid.API(request)
+		_, err := sendgrid.MakeRequest(request)
 
 		if err != nil {
 			return err
 		}
 
-		return c.SendStatus(response.StatusCode)
+		return c.JSON(fiber.Map{})
 	}
 }
