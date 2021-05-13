@@ -55,7 +55,8 @@ func SendEmailStatusWork() fiber.Handler {
 			return fmt.Errorf("failed to send email: %w", err)
 		}
 
-		logger.Debug().Int("status", response.StatusCode).Msg("sengrid response")
+		logger.Debug().Int("status", response.StatusCode).Msg("sengrid response code")
+		logger.Debug().Str("body", response.Body).Msg("sengrid response body")
 
 		return c.SendStatus(fiber.StatusOK)
 	}
