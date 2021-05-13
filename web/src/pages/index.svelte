@@ -4,10 +4,10 @@
   import UserMenu from './_/User.svelte'
   import TeacherMenu from './_/Teacher.svelte'
   import { status } from '$/lib'
-  import type { BlobPropsInput } from '$/lib'
+  import type { BlobPropsInput, Role } from '$/lib'
 
   import { metatags } from '@roxi/routify'
-  import { isLoading } from '@tmaxmax/svelte-auth0'
+  import { isAuthenticated, isLoading } from '@tmaxmax/svelte-auth0'
 
   metatags.title = 'Acasă - Eseuri'
 
@@ -34,14 +34,29 @@
     rotate: 0,
   }
 
+  let id: number
+  let role: Role | undefined
+  let loading = true
+
+  $: if ($isLoading) {
+    loading = true
+  } else if (!$isAuthenticated) {
+    loading = false
+  } else if ($status) {
+    // eslint-disable-next-line no-extra-semi
+    ;({ id, role } = $status)
+
+    loading = false
+  }
+
 </script>
 
 <Layout {orangeBlobProps} {redBlobProps} {blueBlobProps} transition={{ y: 1000 }}>
   <NavBig />
-  {#if $isLoading}
+  {#if loading}
     <Spinner />
-  {:else if $status?.role === 'teacher'}
-    <TeacherMenu id={$status.id} />
+  {:else if role === 'teacher'}
+    <TeacherMenu {id} />
   {:else}
     <UserMenu />
   {/if}
