@@ -58,6 +58,8 @@ var (
 	HasuraAdminSecret = os.Getenv("HASURA_GRAPHQL_ADMIN_SECRET")
 	// HasuraJWTSecret is required for verifying the tokens used to authorize to the service.
 	HasuraJWTSecret = os.Getenv("HASURA_GRAPHQL_JWT_SECRET")
+	// Sendgrid API key to send emails.
+	SendgridKey = os.Getenv("SENDGRID_KEY")
 	// Auth0 holds the required credentials to use the Auth0 authentication service.
 	Auth0 = &auth0.Auth0{
 		Domain:       os.Getenv("VITE_AUTH0_DOMAIN"),
