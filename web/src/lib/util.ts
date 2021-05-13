@@ -1,8 +1,14 @@
 /* eslint-disable no-redeclare */
 /* eslint-disable no-unused-vars */
 import type { DocumentNode } from 'graphql'
-import type { Client, OperationResult, TypedDocumentNode, OperationContext } from '@urql/svelte'
-import { CombinedError } from '@urql/svelte'
+import type {
+  Client,
+  OperationResult,
+  TypedDocumentNode,
+  OperationContext,
+  OperationStore,
+} from '@urql/svelte'
+import { CombinedError, subscription, operationStore } from '@urql/svelte'
 import type { Readable } from 'svelte/store'
 import { from, Observable } from 'rxjs'
 import { map } from 'rxjs/operators'
@@ -74,6 +80,36 @@ export function fromSubscription<Data = any, Vars extends object = {}>(
 
     return () => obs.unsubscribe()
   }).pipe(map(handleGraphQLResponse(v => v!)))
+}
+
+export function lazySubscription<Data = any, Vars extends object = {}>(
+  sub: DocumentNode | TypedDocumentNode<Data, Vars> | string
+) {
+  let content: OperationStore<Data, Vars> | undefined
+
+  return (vars?: Vars, context?: Partial<OperationContext>) => {
+    if (content) {
+      if (vars || context) {
+        content.update(data => {
+          if (vars) {
+            data.variables = vars
+          }
+
+          if (context) {
+            data.context = context
+          }
+
+          return data
+        })
+      }
+
+      return content
+    }
+
+    content = subscription(operationStore(sub, vars, context))
+
+    return content
+  }
 }
 
 export function getName({ first_name, middle_name, last_name }: FullNamer) {
