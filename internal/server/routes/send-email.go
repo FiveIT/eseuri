@@ -35,13 +35,13 @@ func SendEmailStatusWork() fiber.Handler {
 		} else {
 			m.SetTemplateID("d-069856a4edc04fd7a0b5ba1709a09ebb")
 		}
-
-		p.SetDynamicTemplateData("link", senderInfo.URL)
-
 		to := mail.NewEmail(senderInfo.NumeleElevului, senderInfo.EmailElev)
 		p.AddTos(to)
+		p.SetDynamicTemplateData("link", senderInfo.URL)
 
 		p.SetDynamicTemplateData("first_name", senderInfo.NumeleElevului)
+
+		m.AddPersonalizations(p)
 
 		request := sendgrid.GetRequest(meta.SendgridKey, "/v3/mail/send", "https://api.sendgrid.com")
 		request.Method = "POST"
