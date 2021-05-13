@@ -17,12 +17,20 @@ import {
   UNREVISED_WORK,
   WorkStatus,
 } from '$/graphql/queries'
-import { WorkType, Nullable, getName } from '$/lib'
-import { graphQLSeed, fromQuery, handleGraphQLResponse, mapDefined } from '$/lib'
+import type { WorkType, Nullable } from '$/lib'
+import {
+  graphQLSeed,
+  fromQuery,
+  handleGraphQLResponse,
+  mapDefined,
+  getName,
+  isNonNullable,
+  status,
+} from '$/lib'
 
 import { from, firstValueFrom, lastValueFrom, concat, of } from 'rxjs'
 import type { Observable } from 'rxjs'
-import { map, switchMap, tap } from 'rxjs/operators'
+import { map, switchMap, tap, filter } from 'rxjs/operators'
 import type { Writable } from 'svelte/store'
 
 export interface WorkID {
@@ -153,21 +161,26 @@ export const works = async (url: string, type: WorkType, beginWith?: string) => 
 export const unrevisedWork = (workID: number): Observable<Nullable<UnrevisedWork>> =>
   concat(
     of(undefined),
-    fromQuery(client, UNREVISED_WORK, { workID }).pipe(
-      map(v => v.works_by_pk),
-      mapDefined(
-        (v): UnrevisedWork => ({
-          type: v.essay ? 'essay' : 'characterization',
-          title: v.essay ? v.essay.title.name : v.characterization!.character.name,
-          user: v.user ? getName(v.user) : undefined,
-          data: Promise.resolve({
-            workID,
-            content: v.content,
-          }),
-          status: v.status,
-          teacherID: v.teacher_id!,
-        }),
-        null
+    status.pipe(
+      filter(isNonNullable),
+      switchMap(({ id }) =>
+        fromQuery(client, UNREVISED_WORK, { workID }).pipe(
+          map(v => v.works_by_pk),
+          mapDefined(
+            (v): UnrevisedWork => ({
+              type: v.essay ? 'essay' : 'characterization',
+              title: v.essay ? v.essay.title.name : v.characterization!.character.name,
+              user: v.user && v.user.id !== id ? getName(v.user) : undefined,
+              data: Promise.resolve({
+                workID,
+                content: v.content,
+              }),
+              status: v.status,
+              teacherID: v.teacher_id!,
+            }),
+            null
+          )
+        )
       )
     )
   )
