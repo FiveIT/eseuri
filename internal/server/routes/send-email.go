@@ -7,6 +7,7 @@ import (
 	"github.com/FiveIT/eseuri/internal/meta"
 	"github.com/FiveIT/eseuri/internal/server/helpers"
 	"github.com/gofiber/fiber/v2"
+	"github.com/rs/zerolog"
 	"github.com/sendgrid/sendgrid-go"
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
 )
@@ -15,6 +16,7 @@ func SendEmailStatusWork() fiber.Handler {
 	return func(c *fiber.Ctx) error {
 		var senderInfo helpers.StudentUploaderInfo
 
+		logger := c.Locals("logger").(zerolog.Logger)
 		m := mail.NewV3Mail()
 
 		if err := c.BodyParser(&senderInfo); err != nil {
@@ -47,11 +49,13 @@ func SendEmailStatusWork() fiber.Handler {
 		var Body = mail.GetRequestBody(m)
 
 		request.Body = Body
-		_, err := sendgrid.MakeRequest(request)
+		response, err := sendgrid.MakeRequest(request)
 
 		if err != nil {
 			return fmt.Errorf("failed to send email: %w", err)
 		}
+
+		logger.Debug().Int("status", response.StatusCode).Msg("sengrid response")
 
 		return c.SendStatus(fiber.StatusOK)
 	}
