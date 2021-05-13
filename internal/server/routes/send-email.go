@@ -24,7 +24,7 @@ func SendEmailStatusWork() fiber.Handler {
 		}
 
 		address := "no-reply@eseuri.com"
-		name := "Eseuri Bot"
+		name := "Eseuri"
 		e := mail.NewEmail(name, address)
 		m.SetFrom(e)
 
