@@ -16,23 +16,21 @@
     { body, message }: SubmitArgs,
     goto: GotoHelper
   ) {
-    return fromMutation(client, UPDATE_WORK_STATUS, {
-      status: body.get('status')!.toString() as WorkStatus,
-      workID,
-    }).pipe(
+    const status = body.get('status')!.toString() as WorkStatus
+
+    return fromMutation(client, UPDATE_WORK_STATUS, { status, workID }).pipe(
       switchMap(({ update_works_by_pk }) => {
         const body = new FormData()
-        var status_work = body.get('status')!.toString()
+
         body.append('name', update_works_by_pk!.first_name)
         body.append('email', update_works_by_pk!.email)
-        body.append('status', status_work)
-        body.append("workID", workID.toString())
-        // TODO: Add status and other required fields
+        body.append('status', status)
+        body.append('workID', workID.toString())
 
         return defaultSubmitFn({
           action: `${import.meta.env.VITE_FUNCTIONS_URL}/notify-user`,
           body,
-          timeout:15000,
+          timeout: 15000,
           method: 'POST',
           message: '',
         })
@@ -41,6 +39,7 @@
       tap(() => go('/', alive, goto))
     )
   }
+
 </script>
 
 <script lang="ts">
@@ -50,6 +49,7 @@
   import { goto } from '@roxi/routify'
 
   export let work: UnrevisedWork
+
 </script>
 
 {#await work.data then { workID }}
