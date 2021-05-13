@@ -3,7 +3,7 @@
   import client from '$/graphql/client'
   import { RESOLVE_ASSOCIATION_REQUEST, DELETE_ASSOCIATION, ASSOCIATIONS } from '$/graphql/queries'
   import { notify } from '$/components'
-  import { fromMutation, internalErrorNotification, getName, lazySubscription } from '$/lib'
+  import { fromMutation, internalErrorNotification, getName } from '$/lib'
 
   function user(assoc: Association) {
     return assoc.student ? assoc.student.user : assoc.teacher.user
@@ -47,8 +47,6 @@
     })
   }
 
-  const subscribe = lazySubscription(ASSOCIATIONS)
-
 </script>
 
 <script lang="ts">
@@ -62,11 +60,14 @@
   import type { Role } from '$/lib'
 
   import Modal, { openModal } from '@tmaxmax/renderless-svelte/src/Modal.svelte'
+  import { operationStore, subscription } from '@urql/svelte'
 
   export let userID: number
   export let role: Role
 
-  const content = subscribe({ userID, teacher: role === 'teacher' })
+  const content = subscription(
+    operationStore(ASSOCIATIONS, { userID, teacher: role === 'teacher' })
+  )
   $: $content.variables = { userID, teacher: role === 'teacher' }
   $: if ($content.error) {
     notify({
