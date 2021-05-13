@@ -1,6 +1,6 @@
 <script lang="ts">
   import Base from './internal/Base.svelte'
-  import { placeholderText, text } from '$/lib'
+  import { placeholderInputText, text } from '$/lib'
 
   export let options: readonly any[]
   export let mapper = (option: any) => option
@@ -24,9 +24,7 @@
     {placeholder}
     {required}
     bind:value
-    class="col-span-2 font-sans text-sm placeholder-{placeholderText[theme].slice(5)} {text[
-      theme
-    ]} bg-transparent">
+    class="col-span-2 font-sans text-sm {placeholderInputText[theme]} {text[theme]} bg-transparent">
     {#each options as opt}
       <option value={mapper(opt)} class="text-black">{display(opt)}</option>
     {/each}
