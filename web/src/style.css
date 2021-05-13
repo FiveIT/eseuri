@@ -60,3 +60,66 @@ body {
 .filter-shadow-large {
   filter: drop-shadow(var(--shadow-large));
 }
+
+.placeholder-white::-webkit-input-placeholder {
+  color: var(--white, #fcfaf9) !important;
+  -webkit-text-fill-color: var(--white, #fcfaf9) !important;
+}
+.placeholder-white::-moz-placeholder {
+  color: var(--white, #fcfaf9) !important;
+  -webkit-text-fill-color: var(--white, #fcfaf9) !important;
+}
+.placeholder-white:-ms-input-placeholder {
+  color: var(--white, #fcfaf9) !important;
+  -webkit-text-fill-color: var(--white, #fcfaf9) !important;
+}
+.placeholder-white::-ms-input-placeholder {
+  color: var(--white, #fcfaf9) !important;
+  -webkit-text-fill-color: var(--white, #fcfaf9) !important;
+}
+.placeholder-white::placeholder {
+  color: var(--white, #fcfaf9) !important;
+  -webkit-text-fill-color: var(--white, #fcfaf9) !important;
+}
+
+.placeholder-gray::-webkit-input-placeholder {
+  color: var(--gray, #939393) !important;
+  -webkit-text-fill-color: var(--gray, #fcfaf9) !important;
+}
+.placeholder-gray::-moz-placeholder {
+  color: var(--gray, #939393) !important;
+  -webkit-text-fill-color: var(--gray, #fcfaf9) !important;
+}
+.placeholder-gray:-ms-input-placeholder {
+  color: var(--gray, #939393) !important;
+  -webkit-text-fill-color: var(--gray, #fcfaf9) !important;
+}
+.placeholder-gray::-ms-input-placeholder {
+  color: var(--gray, #939393) !important;
+  -webkit-text-fill-color: var(--gray, #fcfaf9) !important;
+}
+.placeholder-gray::placeholder {
+  color: var(--gray, #939393) !important;
+  -webkit-text-fill-color: var(--gray, #fcfaf9) !important;
+}
+
+.placeholder-gray-light::-webkit-input-placeholder {
+  color: var(--gray-light, #dadada) !important;
+  -webkit-text-fill-color: var(--gray-light, #fcfaf9) !important;
+}
+.placeholder-gray-light::-moz-placeholder {
+  color: var(--gray-light, #dadada) !important;
+  -webkit-text-fill-color: var(--gray-light, #fcfaf9) !important;
+}
+.placeholder-gray-light:-ms-input-placeholder {
+  color: var(--gray-light, #dadada) !important;
+  -webkit-text-fill-color: var(--gray-light, #fcfaf9) !important;
+}
+.placeholder-gray-light::-ms-input-placeholder {
+  color: var(--gray-light, #dadada) !important;
+  -webkit-text-fill-color: var(--gray-light, #fcfaf9) !important;
+}
+.placeholder-gray-light::placeholder {
+  color: var(--gray-light, #dadada) !important;
+  -webkit-text-fill-color: var(--gray-light, #fcfaf9) !important;
+}

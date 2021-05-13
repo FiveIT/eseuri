@@ -12,7 +12,7 @@
   import { from, of, throwError } from 'rxjs'
   import { fromFetch } from 'rxjs/fetch'
   import type { ObservableInput } from 'rxjs'
-  import { filter, switchMap, timeout as rxTimeout } from 'rxjs/operators'
+  import { filter, switchMap, timeout as rxTimeout, first } from 'rxjs/operators'
   import { getContext, setContext } from 'svelte'
   import { writable } from 'svelte/store'
   import type { Readable, Writable } from 'svelte/store'
@@ -102,6 +102,7 @@
         })
       )
         .pipe(
+          first(),
           rxTimeout({
             each: submitArgs.timeout,
             with: () =>

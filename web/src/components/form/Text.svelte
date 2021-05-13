@@ -1,6 +1,6 @@
 <script lang="ts">
   import Base from './internal/Base.svelte'
-  import { text, placeholderText, color } from '$/lib'
+  import { text, placeholderInputText, color } from '$/lib'
 
   export let name: string
   export let placeholder = ''
@@ -20,9 +20,7 @@
     {required}
     bind:value
     type="text"
-    class="col-span-2 {text[theme]} placeholder-{placeholderText[theme].slice(
-      5
-    )} text-sm bg-transparent"
+    class="col-span-2 {text[theme]} {placeholderInputText[theme]} text-sm bg-transparent"
     style="--color: var(--{color[theme]})" />
 </Base>
 

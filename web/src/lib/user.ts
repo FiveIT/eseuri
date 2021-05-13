@@ -6,7 +6,7 @@ import type { Notification, UserStatus } from '.'
 import { requestError, fromStore, fromQuery } from '.'
 
 import { Observable, of, concat, BehaviorSubject } from 'rxjs'
-import { filter, switchMap, take, map, catchError } from 'rxjs/operators'
+import { filter, switchMap, first, map, catchError } from 'rxjs/operators'
 import { fromFetch } from 'rxjs/fetch'
 import type { Writable } from 'svelte/store'
 
@@ -56,7 +56,7 @@ export const statusError: Writable<RequestError | null> = writable(null)
 const fetchStatus = (): Observable<UserStatus | null> =>
   fromStore(authToken).pipe(
     filter(v => !!v),
-    take(1),
+    first(),
     switchMap(token =>
       fromFetch(`${endpoint}/user`, {
         headers: { Authorization: `Bearer ${token}` },

@@ -364,7 +364,7 @@ export const IS_BOOKMARKED = gql<Data<IsBookmarked>, Vars<IsBookmarked>>`
 
 export type UnrevisedWork = ID & {
   status: WorkStatus
-  user: FullNamer | null
+  user: (ID & FullNamer) | null
   teacher_id: number | null
   updated_at: string | null
 } & (
@@ -392,6 +392,7 @@ const UNREVISED_WORK_DATA_FRAGMENT = gql`
   fragment UnrevisedWorkData on works {
     status
     user {
+      id
       first_name
       last_name
       middle_name

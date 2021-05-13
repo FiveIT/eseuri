@@ -1,18 +1,23 @@
+<script context="module" lang="ts">
+  import { WORKS } from '$/graphql/queries'
+  import { lazySubscription } from '$/lib'
+
+  const subscribe = lazySubscription(WORKS)
+
+</script>
+
 <script lang="ts">
   import { Row, Cell, Spinner, Error, Empty } from './table'
   import { statusTranslations } from '../works.svelte'
 
   import type { WorkStatus } from '$/graphql/queries'
-  import { WORKS } from '$/graphql/queries'
 
   import { formatDate, getName } from '$/lib'
-
-  import { subscription, operationStore } from '@urql/svelte'
 
   export let userID: number
   export let status: WorkStatus
 
-  const sub = subscription(operationStore(WORKS, { userID, status }))
+  const sub = subscribe({ userID, status })
   $: $sub.variables = { userID, status }
 
 </script>
