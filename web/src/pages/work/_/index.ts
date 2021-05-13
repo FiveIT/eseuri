@@ -30,7 +30,7 @@ import {
 
 import { from, firstValueFrom, lastValueFrom, concat, of } from 'rxjs'
 import type { Observable } from 'rxjs'
-import { map, switchMap, tap, filter } from 'rxjs/operators'
+import { map, switchMap, tap, filter, first } from 'rxjs/operators'
 import type { Writable } from 'svelte/store'
 
 export interface WorkID {
@@ -163,6 +163,7 @@ export const unrevisedWork = (workID: number): Observable<Nullable<UnrevisedWork
     of(undefined),
     status.pipe(
       filter(isNonNullable),
+      first(),
       switchMap(({ id }) =>
         fromQuery(client, UNREVISED_WORK, { workID }).pipe(
           map(v => v.works_by_pk),
