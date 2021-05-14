@@ -1,7 +1,11 @@
 <script lang="ts" context="module">
+  import { notify } from '$/components'
+  import { internalErrorNotification } from '$/lib'
+
   import { setContext, getContext } from 'svelte'
   import { writable } from 'svelte/store'
   import type { Writable, Readable } from 'svelte/store'
+  import Modal, { openModal } from '@tmaxmax/renderless-svelte/src/Modal.svelte'
 
   import type { Work } from '..'
 
@@ -35,6 +39,30 @@
     setContext(contextKey, ctx)
   }
 
+  export async function bookmark(work: Work, currentlyBookmarking: Writable<boolean>) {
+    currentlyBookmarking.set(true)
+    await openModal(work)
+    currentlyBookmarking.set(false)
+  }
+
+  export async function removeBookmark(work: Work) {
+    try {
+      await work.removeBookmark()
+
+      notify({
+        status: 'success',
+        message: 'Lucrarea nu mai este salvată!',
+      })
+    } catch {
+      notify({
+        ...internalErrorNotification,
+        message: `Eroare la anularea salvării lucrării: ${internalErrorNotification.message.toLocaleLowerCase(
+          'ro-RO'
+        )}`,
+      })
+    }
+  }
+
 </script>
 
 <script lang="ts">
@@ -43,7 +71,6 @@
   import Create from '../bookmark/Modal.svelte'
   import { TRANSITION_EASING as easing, TRANSITION_DURATION as duration } from '$/lib'
   import { fly } from 'svelte/transition'
-  import Modal, { openModal } from '@tmaxmax/renderless-svelte/src/Modal.svelte'
 
   export let work: Work
 
@@ -63,6 +90,8 @@
         disableNavigation = false
       })
   }
+
+  const { bookmarked } = work
 
   const update = () => {
     work = work
@@ -91,27 +120,29 @@
     direction = 1
   }
 
-  async function onKey(ev: KeyboardEvent) {
+  function onKey(ev: KeyboardEvent) {
     if ($currentlyBookmarking || ev.altKey) {
       return
     }
 
     const { code } = ev
+    let handler: (() => void) | undefined
 
     if (keys.prev[code]) {
-      ev.preventDefault()
-
-      await prev()
+      handler = prev
     } else if (keys.next[code]) {
-      ev.preventDefault()
-
-      next()
+      handler = next
     } else if (code === 'KeyB') {
-      ev.preventDefault()
+      if ($bookmarked) {
+        handler = () => removeBookmark(work)
+      } else {
+        handler = () => bookmark(work, currentlyBookmarking)
+      }
+    }
 
-      $currentlyBookmarking = true
-      await openModal(work)
-      $currentlyBookmarking = false
+    if (handler) {
+      ev.preventDefault()
+      handler()
     }
   }
 
