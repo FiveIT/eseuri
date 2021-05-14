@@ -103,10 +103,5 @@
     "setupFilesAfterEnv": [
       "@testing-library/jest-dom/extend-expect"
     ]
-  },
-  "pnpm": {
-    "overrides": {
-      "@urql/core": "2.0.0"
-    }
   }
 }
