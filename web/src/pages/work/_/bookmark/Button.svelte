@@ -1,17 +1,13 @@
 <script lang="ts">
+  import { bookmark, removeBookmark } from '../view/Read.svelte'
+
   import Bookmark from 'svelte-material-icons/Bookmark.svelte'
   import BookmarkOutline from 'svelte-material-icons/BookmarkOutline.svelte'
-  import { openModal } from '@tmaxmax/renderless-svelte/src/Modal.svelte'
 
   import { fade } from 'svelte/transition'
 
-  import {
-    px,
-    TRANSITION_EASING as easing,
-    TRANSITION_DURATION as duration,
-    internalErrorNotification,
-  } from '$/lib'
-  import { notify, Spinner } from '$/components'
+  import { px, TRANSITION_EASING as easing, TRANSITION_DURATION as duration } from '$/lib'
+  import { Spinner } from '$/components'
 
   import { getReader } from '..'
 
@@ -21,45 +17,21 @@
   $: isBookmarked = !!bookmarkStore && $bookmarkStore !== null && $bookmarkStore
   $: loading = !bookmarkStore || $bookmarkStore === null
 
-  const bookmarkHandler = async () => {
-    $currentlyBookmarking = true
-    await openModal($work!)
-    $currentlyBookmarking = false
-  }
-
-  const removeBookmarkHandler = () => {
-    $work!
-      .removeBookmark()
-      .then(() =>
-        notify({
-          status: 'success',
-          message: 'Lucrarea nu mai este salvată!',
-        })
-      )
-      .catch(() =>
-        notify({
-          ...internalErrorNotification,
-          message: `Eroare la anularea salvării lucrării: ${internalErrorNotification.message.toLocaleLowerCase(
-            'ro-RO'
-          )}`,
-        })
-      )
-  }
-
   function onClick() {
-    if (loading) {
+    if (loading || !$work) {
       return
     }
 
     if (isBookmarked) {
-      removeBookmarkHandler()
+      removeBookmark($work)
     } else {
-      bookmarkHandler()
+      bookmark($work, currentlyBookmarking)
     }
   }
 
   const emSize = 1.4
   const size = px(emSize)
+
 </script>
 
 <button
