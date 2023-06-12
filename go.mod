@@ -1,6 +1,6 @@
 module github.com/FiveIT/eseuri
 
-go 1.16
+go 1.17
 
 require (
 	github.com/aws/aws-lambda-go v1.23.0
