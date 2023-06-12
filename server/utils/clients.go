@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"github.com/FiveIT/eseuri/internal/meta"
+	"github.com/FiveIT/eseuri/server/meta"
 	"github.com/google/go-tika/tika"
 	"github.com/machinebox/graphql"
 )

@@ -24,14 +24,13 @@ Obtaining the Apache Tika endpoint:
 Obtaining the endpoint of the application's client (for configuring CORS, for example):
 
 	clientURL := meta.URL()
-
 */
 package meta
 
 import (
 	"os"
 
-	"github.com/FiveIT/eseuri/internal/meta/auth0"
+	"github.com/FiveIT/eseuri/server/meta/auth0"
 	"github.com/rs/zerolog/log"
 )
 

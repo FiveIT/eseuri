@@ -3,9 +3,9 @@ package api
 import (
 	"net/http"
 
-	"github.com/FiveIT/eseuri/internal/server/config"
-	"github.com/FiveIT/eseuri/internal/server/routes"
-	"github.com/FiveIT/eseuri/internal/utils"
+	"github.com/FiveIT/eseuri/server/server/config"
+	"github.com/FiveIT/eseuri/server/server/routes"
+	"github.com/FiveIT/eseuri/server/utils"
 	"github.com/gofiber/adaptor/v2"
 	"github.com/gofiber/fiber/v2"
 )

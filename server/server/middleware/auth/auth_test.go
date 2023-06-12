@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/FiveIT/eseuri/internal/server/middleware/auth"
-	"github.com/FiveIT/eseuri/internal/server/middleware/logger"
-	"github.com/FiveIT/eseuri/internal/testhelper"
+	"github.com/FiveIT/eseuri/server/server/middleware/auth"
+	"github.com/FiveIT/eseuri/server/server/middleware/logger"
+	"github.com/FiveIT/eseuri/server/testhelper"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/utils"
 )

@@ -8,9 +8,9 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/FiveIT/eseuri/internal/server/helpers"
-	"github.com/FiveIT/eseuri/internal/server/middleware/logger"
-	"github.com/FiveIT/eseuri/internal/testhelper"
+	"github.com/FiveIT/eseuri/server/server/helpers"
+	"github.com/FiveIT/eseuri/server/server/middleware/logger"
+	"github.com/FiveIT/eseuri/server/testhelper"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/utils"
 	"github.com/machinebox/graphql"
@@ -63,6 +63,7 @@ func TestLoggerOutput(t *testing.T) {
 
 // Subtests can't run in parallel because they write
 // to the same buffer, which would cause a data race.
+//
 //nolint:tparallel
 func TestGraphQLLogger(t *testing.T) {
 	t.Parallel()

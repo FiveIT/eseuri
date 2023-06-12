@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/FiveIT/eseuri/internal/meta"
-	"github.com/FiveIT/eseuri/internal/server/helpers"
+	"github.com/FiveIT/eseuri/server/meta"
+	"github.com/FiveIT/eseuri/server/server/helpers"
 	jwt "github.com/form3tech-oss/jwt-go"
 	"github.com/gofiber/fiber/v2"
 	jwtware "github.com/gofiber/jwt/v2"
@@ -37,8 +37,9 @@ const (
 	eseuriNamespace = "https://eseuri.com"
 )
 
-//nolint:exhaustivestruct
 // Middleware creates a fiber middleware that checks if the request is authorized.
+//
+//nolint:exhaustivestruct
 func Middleware() func(*fiber.Ctx) error {
 	var (
 		creds jwtCredentials

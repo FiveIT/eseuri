@@ -3,9 +3,9 @@ package routes
 import (
 	"strconv"
 
-	"github.com/FiveIT/eseuri/internal/meta/gqlqueries"
-	"github.com/FiveIT/eseuri/internal/server/helpers"
-	"github.com/FiveIT/eseuri/internal/server/middleware/auth"
+	"github.com/FiveIT/eseuri/server/meta/gqlqueries"
+	"github.com/FiveIT/eseuri/server/server/helpers"
+	"github.com/FiveIT/eseuri/server/server/middleware/auth"
 	"github.com/gofiber/fiber/v2"
 	"github.com/machinebox/graphql"
 )

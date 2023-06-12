@@ -1,8 +1,8 @@
 package utils
 
 import (
-	"github.com/FiveIT/eseuri/internal/server/middleware/auth"
-	"github.com/FiveIT/eseuri/internal/server/middleware/logger"
+	"github.com/FiveIT/eseuri/server/server/middleware/auth"
+	"github.com/FiveIT/eseuri/server/server/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 )
 

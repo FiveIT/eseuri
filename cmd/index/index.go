@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 
-	"github.com/FiveIT/eseuri/internal/meta"
-	"github.com/FiveIT/eseuri/internal/server"
+	"github.com/FiveIT/eseuri/server/meta"
+	"github.com/FiveIT/eseuri/server/server"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	fiberadapter "github.com/awslabs/aws-lambda-go-api-proxy/fiber"

@@ -1,11 +1,11 @@
 package server
 
 import (
-	"github.com/FiveIT/eseuri/internal/meta"
-	"github.com/FiveIT/eseuri/internal/server/config"
-	"github.com/FiveIT/eseuri/internal/server/middleware/auth"
-	"github.com/FiveIT/eseuri/internal/server/middleware/logger"
-	"github.com/FiveIT/eseuri/internal/server/routes"
+	"github.com/FiveIT/eseuri/server/meta"
+	"github.com/FiveIT/eseuri/server/server/config"
+	"github.com/FiveIT/eseuri/server/server/middleware/auth"
+	"github.com/FiveIT/eseuri/server/server/middleware/logger"
+	"github.com/FiveIT/eseuri/server/server/routes"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/recover"

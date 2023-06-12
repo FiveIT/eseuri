@@ -4,7 +4,7 @@ import (
 	"io"
 	"os"
 
-	"github.com/FiveIT/eseuri/internal/server/helpers"
+	"github.com/FiveIT/eseuri/server/server/helpers"
 	"github.com/gofiber/fiber/v2"
 	"github.com/machinebox/graphql"
 	"github.com/rs/zerolog"

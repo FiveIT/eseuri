@@ -10,9 +10,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/FiveIT/eseuri/internal/meta"
-	"github.com/FiveIT/eseuri/internal/server/config"
 	"github.com/FiveIT/eseuri/pkg/request"
+	"github.com/FiveIT/eseuri/server/meta"
+	"github.com/FiveIT/eseuri/server/server/config"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/utils"
 )

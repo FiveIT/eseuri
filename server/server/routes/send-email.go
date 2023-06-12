@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/FiveIT/eseuri/internal/meta"
-	"github.com/FiveIT/eseuri/internal/server/helpers"
+	"github.com/FiveIT/eseuri/server/meta"
+	"github.com/FiveIT/eseuri/server/server/helpers"
 	"github.com/gofiber/fiber/v2"
 	"github.com/rs/zerolog"
 	"github.com/sendgrid/sendgrid-go"
