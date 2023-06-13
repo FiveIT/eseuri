@@ -9,8 +9,8 @@ dependencies:
     specifier: 1.5.0
     version: 1.5.0
   '@tmaxmax/svelte-auth0':
-    specifier: ^1.0.2
-    version: 1.0.2
+    specifier: ^1.1.0
+    version: 1.1.0
   '@urql/devtools':
     specifier: ^2.0.3
     version: 2.0.3(@urql/core@2.1.2)(graphql@15.5.0)
@@ -169,15 +169,8 @@ devDependencies:
 
 packages:
 
-  /@auth0/auth0-spa-js@1.6.2:
-    resolution: {integrity: sha512-FaPLOY3tmBn/kLVroPgsiqtblfowd9bboMOtd7re49WgLp9rGwcI55bcz1wP/b33INi/0jhMlpzRWtyu8OK1wA==}
-    dependencies:
-      browser-tabs-lock: 1.2.14
-      core-js: 3.12.1
-      es-cookie: 1.3.2
-      fast-text-encoding: 1.0.3
-      promise-polyfill: 8.2.0
-      unfetch: 4.2.0
+  /@auth0/auth0-spa-js@2.0.7:
+    resolution: {integrity: sha512-iQ22AZCqOMG0q8/YPkvT4lGe2gsaopZ2kZb2cIBa7w+0hhGJhl6ANpFI6FzAKMzGRGmVocKxYdHha7lxAhbyPA==}
     dev: false
 
   /@babel/code-frame@7.12.11:
@@ -1740,10 +1733,10 @@ packages:
       lodash-es: 4.17.21
     dev: false
 
-  /@tmaxmax/svelte-auth0@1.0.2:
-    resolution: {integrity: sha512-56kcdz+55q7vDDdrTphpJ9NuNrvdlTsc/SJohNP84NjZ2EzcXjJkXjEK8CxZMIUyrAa7l5zV6wSFQbBsaLk6sw==}
+  /@tmaxmax/svelte-auth0@1.1.0:
+    resolution: {integrity: sha512-LqdP6+q3pZ/YZWfq/osFgAksMYqtUJjajQGAb6sg6y6ywTzJE12Lh7A3xYUqpL3KHw47V4vSy4gUKiioi+Wilg==}
     dependencies:
-      '@auth0/auth0-spa-js': 1.6.2
+      '@auth0/auth0-spa-js': 2.0.7
     dev: false
 
   /@tsconfig/svelte@1.0.10:
@@ -2542,13 +2535,6 @@ packages:
     resolution: {integrity: sha512-9o5UecI3GhkpM6DrXr69PblIuWxPKk9Y0jHBRhdocZ2y7YECBFCsHm79Pr3OyR2AvjhDkabFJaDJMYRazHgsow==}
     dev: true
 
-  /browser-tabs-lock@1.2.14:
-    resolution: {integrity: sha512-ssSpCRcvFe4vc098LDnrJOQDfZiG35KhQGB9hthTbwJk5mmUkePwhcMlW61NH3YuIE2Y9uGLqf9yxEBKbaDlaw==}
-    requiresBuild: true
-    dependencies:
-      lodash: 4.17.21
-    dev: false
-
   /browserslist@4.16.6:
     resolution: {integrity: sha512-Wspk/PqO+4W9qp5iUTJsa1B/QrYn1keNCcEP5OvP7WBwT4KaDly0uONYmC6Xa3Z5IqnUgS0KcgLYu1l74x0ZXQ==}
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
@@ -2859,11 +2845,6 @@ packages:
     resolution: {integrity: sha512-1cch+qads4JnDSWsvc7d6nzlKAippwjUlf6vykkTLW53VSV+NkE6muGBToAjEA8pG90cSfcud3JgVmW2ds5TaQ==}
     requiresBuild: true
     dev: true
-
-  /core-js@3.12.1:
-    resolution: {integrity: sha512-Ne9DKPHTObRuB09Dru5AjwKjY4cJHVGu+y5f7coGn1E9Grkc3p2iBwE9AI/nJzsE29mQF7oq+mhYYRqOMFN1Bw==}
-    requiresBuild: true
-    dev: false
 
   /core-util-is@1.0.2:
     resolution: {integrity: sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=}
@@ -3181,10 +3162,6 @@ packages:
       string.prototype.trimstart: 1.0.4
       unbox-primitive: 1.0.1
     dev: true
-
-  /es-cookie@1.3.2:
-    resolution: {integrity: sha512-UTlYYhXGLOy05P/vKVT2Ui7WtC7NiRzGtJyAKKn32g5Gvcjn7KAClLPWlipCtxIus934dFg9o9jXiBL0nP+t9Q==}
-    dev: false
 
   /es-to-primitive@1.2.1:
     resolution: {integrity: sha512-QCOllgZJtaUo9miYBcLChTUaHNjJF3PYs1VidD7AwiEj1kYxKeQTctLAezAOH5ZKRH0g2IgPn6KwB4IT8iRpvA==}
@@ -3533,10 +3510,6 @@ packages:
   /fast-levenshtein@2.0.6:
     resolution: {integrity: sha1-PYpcZog6FqMMqGQ+hR8Zuqd5eRc=}
     dev: true
-
-  /fast-text-encoding@1.0.3:
-    resolution: {integrity: sha512-dtm4QZH9nZtcDt8qJiOH9fcQd1NAgi+K1O2DbE6GG1PPCK/BWfOH3idCTRQ4ImXRUOyopDEgDEnVEE7Y/2Wrig==}
-    dev: false
 
   /fastq@1.11.0:
     resolution: {integrity: sha512-7Eczs8gIPDrVzT+EksYBcupqMyxSHXXrHOLRRxU2/DicV8789MRBRR8+Hc2uWzUupOs4YS4JzBmBxjjCVBxD/g==}
@@ -5081,6 +5054,7 @@ packages:
 
   /lodash@4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
+    dev: true
 
   /log-symbols@3.0.0:
     resolution: {integrity: sha512-dSkNGuI7iG3mfvDzUuYZyvk5dD9ocYCYzNU6CYDE6+Xqd+gwme6Z00NS3dUh8mq/73HaEtT7m6W+yUPtU6BZnQ==}
@@ -5750,10 +5724,6 @@ packages:
     resolution: {integrity: sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==}
     engines: {node: '>=0.4.0'}
     dev: true
-
-  /promise-polyfill@8.2.0:
-    resolution: {integrity: sha512-k/TC0mIcPVF6yHhUvwAp7cvL6I2fFV7TzF1DuGPI8mBh4QQazf36xCKEHKTZKRysEoTQoQdKyP25J8MPJp7j5g==}
-    dev: false
 
   /prompts@2.4.1:
     resolution: {integrity: sha512-EQyfIuO2hPDsX1L/blblV+H7I0knhgAd82cVneCwcdND9B8AuCDuRcBH6yIcG4dFzlOUqbazQqwGjx5xmsNLuQ==}
@@ -6863,10 +6833,6 @@ packages:
       has-symbols: 1.0.2
       which-boxed-primitive: 1.0.2
     dev: true
-
-  /unfetch@4.2.0:
-    resolution: {integrity: sha512-F9p7yYCn6cIW9El1zi0HI6vqpeIvBsr3dSuRO6Xuppb1u5rXpCPmMvLSyECLhybr9isec8Ohl0hPekMVrEinDA==}
-    dev: false
 
   /unicode-canonical-property-names-ecmascript@1.0.4:
     resolution: {integrity: sha512-jDrNnXWHd4oHiTZnx/ZG7gtUTVp+gCcTTKr8L0HjlwphROEW3+Him+IpvC+xcJEFegapiMZyZe02CyuOnRmbnQ==}
