@@ -9,10 +9,10 @@ functions_base_path=/.netlify/functions/index
 build-server:
 	go build \
 	-ldflags "\
-	-X $(go_module)/internal/meta.context=${CONTEXT} \
-	-X $(go_module)/internal/meta.url=${URL} \
-	-X $(go_module)/internal/meta.netlify=${NETLIFY} \
-	-X $(go_module)/internal/meta.FunctionsBasePath=$(functions_base_path) \
+	-X $(go_module)/server/meta.context=${CONTEXT} \
+	-X $(go_module)/server/meta.url=${URL} \
+	-X $(go_module)/server/meta.netlify=${NETLIFY} \
+	-X $(go_module)/server/meta.FunctionsBasePath=$(functions_base_path) \
 	" \
 	-o .$(functions_base_path) ./cmd/index
 
