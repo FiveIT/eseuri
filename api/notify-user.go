@@ -18,7 +18,7 @@ func newEmail() http.Handler {
 	app.Use(utils.Auth)
 	app.Use(utils.AuthAssert)
 
-	app.Post("/", routes.SendEmailStatusWork())
+	app.Use(routes.SendEmailStatusWork())
 
 	return adaptor.FiberApp(app)
 }

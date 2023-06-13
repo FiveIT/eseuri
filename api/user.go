@@ -17,7 +17,7 @@ func newUser() http.Handler {
 	app.Use(utils.Logger)
 	app.Use(utils.Auth)
 
-	app.Get("/", routes.UserInfo(utils.GraphQLClient))
+	app.Use(routes.UserInfo(utils.GraphQLClient))
 
 	return adaptor.FiberApp(app)
 }

@@ -18,7 +18,7 @@ func newUpload() http.Handler {
 	app.Use(utils.Auth)
 	app.Use(utils.AuthAssert)
 
-	app.Post("/", routes.Upload(utils.TikaClient, utils.GraphQLClient))
+	app.Use(routes.Upload(utils.TikaClient, utils.GraphQLClient))
 
 	return adaptor.FiberApp(app)
 }
